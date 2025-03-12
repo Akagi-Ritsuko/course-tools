@@ -38,6 +38,9 @@ export class SystemConfig {
         ], "mooc163": [
             "*://www.icourse163.org/learn/*",
             "*://www.icourse163.org/spoc/learn/*"
+        ],
+        "zsgl": [
+            "*://zsgl.lzlj.com/#/home/courseDetail/*"
         ]
     }
     public static config: { [key: string]: PlatformConfig } = {
@@ -200,6 +203,38 @@ export class SystemConfig {
                 unit: "秒",
                 value: "5",
             }],
+        },
+        zsgl: {
+            name: "知识管理",
+            items: [
+                {
+                    title: "自动挂机",
+                    description: "进入页面自动开始播放视频并处理后续任务",
+                    type: "checkbox",
+                    key: "auto",
+                    value: true,
+                },{
+                    title: "视频静音",
+                    description: "播放视频时自动开启静音",
+                    type: "checkbox",
+                    key: "video_mute",
+                    value: true,
+                },{
+                    title: "播放倍速",
+                    description: "视频播放倍数（1为正常速度）",
+                    type: "text",
+                    key: "video_multiple",
+                    unit: "倍",
+                    value: "1",
+                },{
+                    title: "跳转间隔",
+                    description: "视频完成后等待时间（单位：分钟）",
+                    type: "text",
+                    key: "interval",
+                    unit: "分",
+                    value: "1",
+                }
+            ]
         },
     };
 }
