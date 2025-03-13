@@ -12,6 +12,7 @@ export function CssBtn(btn: HTMLButtonElement): HTMLButtonElement {
     btn.style.cursor = 'pointer';
     btn.style.fontSize = '12px';
     btn.style.marginLeft = '4px';
+    btn.style.zIndex = '10000';
     btn.onmousemove = () => {
         btn.style.boxShadow = '1px 1px 1px 1px #ccc';
     };
