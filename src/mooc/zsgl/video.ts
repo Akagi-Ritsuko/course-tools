@@ -12,30 +12,50 @@ import { Application } from "@App/internal/application";
 import { resolve } from "path";
 
 export class ZsglVideo extends Task {
+  protected outerTimer: NodeJS.Timeout;
   protected timer: NodeJS.Timeout;
   protected video: HTMLVideoElement;
   protected controlBar: HTMLDivElement;
   protected iframe: HTMLIFrameElement;
 
   public Init(): Promise<void> {
-    return new Promise((resolve) => {
-      const outerTimer = setInterval(() => {
+    return new Promise((resolve, reject) => {
+      let attemptCount = 0;
+      this.outerTimer = setInterval(() => {
+        attemptCount++;
+        if (attemptCount > 10) {
+          clearInterval(this.outerTimer);
+          reject(new Error("初始化失败：超过最大尝试次数（10次）"));
+          return;
+        }
         const startButton = document.querySelector(".MuiButton-root");
         if (startButton) {
+          // 修复3：先停止定时器再执行点击
+          // 修复4：移除事件监听避免重复绑定
+          const clickHandler = () => {
+            this.findvideoinit()
+              .then(() => {
+                // 修复点1：移除参数
+                Application.App.log.Debug("视频任务初始化完成");
+                clearInterval(this.outerTimer);
+                resolve(); // 修复点2：显式决议
+              })
+              .catch((e) => {
+                Application.App.log.Error(e.message);
+                reject(e); // 修复点3：错误传递
+              });
+          };
+          startButton.removeEventListener("click", clickHandler);
+          startButton.addEventListener("click", clickHandler, { once: true });
+
           console.log("准备执行startButton", startButton);
           (startButton as HTMLElement).click();
-          clearInterval(outerTimer);
-          this.findvideoinit()
-            .then(resolve)
-            .catch((e) => {
-              Application.App.log.Error(e.message);
-              clearInterval(outerTimer);
-            });
         }
-      }, 500);
+      }, 1000);
     }).then(() => {
-      Application.App.log.Debug("视频任务初始化完成");
-    //   clearInterval(outerTimer);
+      this.initPlayer();
+      this.createControlBar();
+      Application.App.log.Debug("外层初始化最终完成");
     });
   }
 
@@ -117,14 +137,14 @@ export class ZsglVideo extends Task {
             return null;
           }
         };
-
-        const video = deepFindVideo(document);
+        const iframe = document.querySelector("iframe");
+        const iframeDoc =
+          iframe.contentDocument || iframe.contentWindow?.document || document;
+        const video = deepFindVideo(iframeDoc);
         if (video) {
           clearInterval(videoTimer);
           console.info("[视频查找] 视频元素查找成功", video);
           this.video = video;
-          this.initPlayer();
-          this.createControlBar();
           video.addEventListener("ended", () => this.callEvent("complete"));
           resolve();
         } else {
@@ -167,7 +187,8 @@ export class ZsglVideo extends Task {
     // Application.App.log.Debug("控制栏挂载完成", {
     //     buttons: this.controlBar.children.length
     // });
-    const container = document.querySelector("watermarkFrame") || document.body;
+    const container =
+      document.querySelector("#watermarkFrame") || document.body;
     container.prepend(this.controlBar);
     Application.App.log.Debug("控制栏挂载完成", {
       container: container.tagName,

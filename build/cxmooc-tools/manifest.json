@@ -36,13 +36,15 @@
         "*://onlineexamh5new.zhihuishu.com/stuExamWeb.html*",
         "*://studyh5.zhihuishu.com/videoStudy.html*",
         "*://www.icourse163.org/learn/*",
-        "*://www.icourse163.org/spoc/learn/*"
+        "*://www.icourse163.org/spoc/learn/*",
+        "*://zsgl.lzlj.com/*"
       ],
       "js": [
         "src/start.js"
       ],
       "run_at": "document_start",
-      "all_frames": true
+      "all_frames": true,
+      "match_about_blank": true
     }
   ],
   "permissions": [

@@ -2,6 +2,7 @@ import { Mooc, MoocFactory } from '@App/internal/app/mooc';
 import { Application } from '@App/internal/application';
 // import { ZsglCourse } from './course';
 import { ZsglVideo } from './video';
+import { ZsglCourse } from './course';
 export class ZsglPlatform implements MoocFactory{
     public CreateMooc(): Mooc {
         // 通过URL特征进行平台识别
@@ -10,7 +11,10 @@ export class ZsglPlatform implements MoocFactory{
             Application.App.config.SetNamespace('zsgl')
             return new ZsglVideo();
         }
-        return null;
+        if (window.location.hash.includes('/home/studyDetail')) {
+            console.log('当前平台：zsgl');
+            return new ZsglCourse();
+        }
     }
     private isZsglCoursePage(): boolean {
         // console.log("zsgl platform check url:",document.URL);
