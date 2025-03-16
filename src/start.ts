@@ -1,3 +1,13 @@
+/*
+ * @Author: guotao
+ * @Date: 2025-03-15 10:55:02
+ * @LastEditors: guotao
+ * @LastEditTime: 2025-03-15 11:10:08
+ * @FilePath: \course-tools\src\start.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2025 by lzlj, All Rights Reserved. 
+ */
 import { Client, NewChromeServerMessage } from "@App/internal/utils/message";
 import { get, HttpUtils, Injected, InjectedBySrc, Noifications, NotificationOptions } from "@App/internal/utils/utils";
 import { Application, Content, Launcher } from "@App/internal/application";

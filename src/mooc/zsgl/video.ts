@@ -256,4 +256,7 @@ export class ZsglVideo extends Task {
     });
     return this.video.ended;
   }
+  public Next(): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 }
