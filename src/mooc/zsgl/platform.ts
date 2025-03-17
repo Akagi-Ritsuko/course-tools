@@ -12,7 +12,7 @@ export class ZsglPlatform implements MoocFactory{
             return new ZsglVideo();
         }
         if (window.location.hash.includes('/home/studyDetail')) {
-            console.log('当前平台：zsgl');
+            console.log('当前平台：zsgl-studyDetail');
             return new ZsglCourse();
         }
     }

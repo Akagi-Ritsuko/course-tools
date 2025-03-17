@@ -1,6 +1,6 @@
 import {EventListener} from "@App/internal/utils/event";
 
-export type TaskEvent = "complete" | "init" | "stop" | "load";
+export type TaskEvent = "complete" | "init" | "stop" | "load"|'courseDetailTaskComplete';
 export type TaskType = "topic" | "exam" | "video" | "document" | "other";
 
 export abstract class Task extends EventListener<TaskEvent> {

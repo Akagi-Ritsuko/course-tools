@@ -128,7 +128,7 @@ export class PageLog implements Logger {
                     if (isnew) {
                         html += "<span>[有新版本]</span>";
                     }
-                    html += data.injection;
+                    // html += data.injection;
                     this.Info(html);
                 });
             }, 1000);

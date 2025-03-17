@@ -1,4 +1,15 @@
-import { Video } from "@App/mooc/chaoxing/video";
+/*
+ * @Author: guotao
+ * @Date: 2025-03-12 17:19:39
+ * @LastEditors: guotao
+ * @LastEditTime: 2025-03-17 18:04:11
+ * @FilePath: \course-tools\src\mooc\zsgl\video.ts
+ * @Description:
+ *
+ * Copyright (c) 2025 by lzlj, All Rights Reserved.
+ */
+import { Mooc } from "@App/internal/app/mooc";
+import { MoocTaskSet } from "@App/internal/app/mooc";
 import { Task, TaskType } from "@App/internal/app/task";
 import { CssBtn } from "../chaoxing/utils";
 import {
@@ -10,6 +21,8 @@ import {
 } from "@App/internal/utils/utils";
 import { Application } from "@App/internal/application";
 import { resolve } from "path";
+import { hookHttpRequest } from "./utils/utils";
+import { isContext } from "vm";
 
 export class ZsglVideo extends Task {
   protected outerTimer: NodeJS.Timeout;
@@ -17,10 +30,32 @@ export class ZsglVideo extends Task {
   protected video: HTMLVideoElement;
   protected controlBar: HTMLDivElement;
   protected iframe: HTMLIFrameElement;
+  protected courseDetailData: any;
 
   public Init(): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       let attemptCount = 0;
+      await this.hookCourseDetailRequests().then(() => {
+        const chooseTaskTimer = setInterval(() => {
+          attemptCount++;
+          if (attemptCount > 10) {
+            clearInterval(chooseTaskTimer);
+            reject(new Error("初始化失败：超过最大尝试次数（10次）"));
+            return;
+          }
+          const taskDiv = Array.from(
+            document.querySelectorAll("span")
+          ).find((div) =>
+            div.textContent?.includes(`${this.courseDetailData.fileName}`)
+          );
+          console.log("寻找taskDiv", this.courseDetailData.fileName);
+          if (taskDiv) {
+            clearInterval(chooseTaskTimer);
+            taskDiv.click();
+            this.video=document.querySelector("#course-video_html5_api");
+          }
+        }, 1000);
+      }); // 添加钩子函数
       this.outerTimer = setInterval(() => {
         attemptCount++;
         if (attemptCount > 10) {
@@ -29,7 +64,7 @@ export class ZsglVideo extends Task {
           return;
         }
         const startButton = document.querySelector(".MuiButton-root");
-        if (startButton) {
+        if (startButton && this.courseDetailData.cwType === "scorm") {
           // 修复3：先停止定时器再执行点击
           // 修复4：移除事件监听避免重复绑定
           const clickHandler = () => {
@@ -50,15 +85,57 @@ export class ZsglVideo extends Task {
 
           console.log("准备执行startButton", startButton);
           (startButton as HTMLElement).click();
+        } else {
+          resolve();
         }
       }, 1000);
     }).then(() => {
       this.initPlayer();
+      this.Start();
       this.createControlBar();
       Application.App.log.Debug("外层初始化最终完成");
     });
   }
 
+  protected hookCourseDetailRequests(): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      await hookHttpRequest(
+        "queryCourseDetail.do",
+        (response, self) => {
+          Application.App.log.Debug("原始响应数据", response);
+          const responseData = response?.body;
+          if (responseData && responseData?.isCompleted !== "Y") {
+            const courseFileArr = responseData?.courseFileArr;
+            console.log("课程详情数据1", courseFileArr);
+            self.courseDetailData = courseFileArr
+              .map((item: any) => {
+                return {
+                  hasLearned: item.hasLearned,
+                  fileName: item.fileName,
+                  cwType: item.cwType,
+                };
+              })
+              .find((item: any) => item.hasLearned !== "1");
+            console.log("课程详情数据2", self.courseDetailData);
+            resolve();
+          } else {
+            const courseId = responseData?.courseId;
+            const taskKey = `zsgl_task_${courseId}`;
+            const taskStatus = localStorage.getItem(taskKey);
+            const taskStatusObj = taskStatus ? JSON.parse(taskStatus) : null;
+            if (taskStatusObj && Date.now() < taskStatusObj.expire) {
+              taskStatusObj.status = "finished";
+              localStorage.setItem(taskKey, JSON.stringify(taskStatusObj));
+              this.courseDetailData = responseData?.courseFileArr;
+              resolve();
+            }
+            this.Done();
+          }
+        },
+        this
+      );
+    });
+  }
   private findvideoinit(): Promise<void> {
     return new Promise((resolve, reject) => {
       let attemptCount = 0;
@@ -145,13 +222,19 @@ export class ZsglVideo extends Task {
           clearInterval(videoTimer);
           console.info("[视频查找] 视频元素查找成功", video);
           this.video = video;
-          video.addEventListener("ended", () => this.callEvent("complete"));
+          video.addEventListener("ended", () => {
+            Application.App.log.Info("视频播放结束");
+            this.Done();
+          });
           resolve();
         } else {
           console.debug(`[视频查找] 第 ${attemptCount} 次尝试未找到视频`);
         }
       }, 1000);
     });
+  }
+  private videoInit(): Promise<void> {
+    return new Promise((resolve, reject) => {});
   }
   protected initPlayer() {
     Application.App.log.Debug("播放器初始化配置", {
@@ -160,7 +243,8 @@ export class ZsglVideo extends Task {
     });
     this.video.muted = Application.App.config.video_mute;
     this.video.playbackRate = Application.App.config.video_multiple;
-    Application.App.config.auto && this.video.play();
+
+    // Application.App.config.auto && this.video.play();
   }
 
   private createControlBar() {
@@ -213,7 +297,9 @@ export class ZsglVideo extends Task {
     Application.App.log.Debug("切换自动播放状态", {
       newState: Application.App.config.auto,
     });
+
     Application.App.config.auto && this.video.play();
+    !Application.App.config.auto && this.video.pause();
   }
 
   public Start(): Promise<void> {
@@ -221,26 +307,14 @@ export class ZsglVideo extends Task {
       autoConfig: Application.App.config.auto,
       videoPaused: this.video.paused,
     });
-    return new Promise((resolve) => {
-      this.timer = setInterval(() => {
-        // 在Start方法中添加
-        this.video.addEventListener("play", () => {
-          Application.App.log.Debug("播放状态变更", {
-            action: "play",
-            currentTime: this.video.currentTime,
-            duration: this.video.duration,
-          });
-        });
+    return new Promise((resolve, reject) => {
+      console.log(this.video.currentTime, "this.video.currentTime");
 
-        this.video.addEventListener("pause", () => {
-          Application.App.log.Debug("播放状态变更", {
-            action: "pause",
-            currentTime: this.video.currentTime,
-            paused: this.video.paused,
-          });
-        });
-        Application.App.config.auto && this.video.paused && this.video.play();
-      }, 5000);
+      // this.video.currentTime = 0;
+      setTimeout(() => {
+        this.video.currentTime = 0;
+      }, 5000); //为了解决视频播放完成后任务没完成导致无限循环的问题，不知道有没有更好的方法
+      Application.App.config.auto && this.video.play();
       resolve();
     });
   }
@@ -251,9 +325,10 @@ export class ZsglVideo extends Task {
 
   public Done(): boolean {
     // 在ended事件处理中添加
-    this.video.addEventListener("ended", () => {
-      Application.App.log.Debug("视频章节完成");
-    });
+    // this.video.addEventListener("complete", () => {
+    //   Application.App.log.Debug("视频章节完成");
+    // });
+    this.callEvent("courseDetailTaskComplete");
     return this.video.ended;
   }
   public Next(): Promise<void> {

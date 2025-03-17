@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-15 10:55:02
  * @LastEditors: guotao
- * @LastEditTime: 2025-03-16 13:20:48
+ * @LastEditTime: 2025-03-17 18:16:09
  * @FilePath: \course-tools\src\mooc\zsgl\course.ts
  * @Description:
  *
@@ -10,7 +10,9 @@
  */
 import { Task, TaskType } from "@App/internal/app/task";
 import { Application } from "@App/internal/application";
-import { hookHttpRequest } from "./utils/utils";
+import { CssBtn, hookHttpRequest } from "./utils/utils";
+import { ZsglTaskControlBar } from "./task";
+import { createBtn, protocolPrompt } from "@App/internal/utils/utils";
 
 export class ZsglCourse extends Task {
   protected gateTaskData: any;
@@ -26,7 +28,7 @@ export class ZsglCourse extends Task {
             const currentbutton = Array.from(
               document.querySelectorAll("li")
             ).find((li) => {
-              return li.textContent.includes(`第 1 关`);
+              return li.textContent.includes(`第 ${this.studyMapData.gateNameIndex+1} 关`);
             });
             if (currentbutton) {
               clearInterval(checkExistTimer);
@@ -43,7 +45,12 @@ export class ZsglCourse extends Task {
         }
       }); // 添加 await
       await this.hookStudymapGateTaskRequests(); // 添加 await
-      await this.Start();
+      this.defaultStartButton();
+      console.log("Application.App.config.studymap_auto", Application.App.config.studymap_auto);
+      if(Application.App.config.studymap_auto===true){
+        this.Start();
+      }
+      // await this.Start();
       this.addEventListenerOnce("load", () => {
         console.log("reload");
         this.Init();
@@ -52,6 +59,37 @@ export class ZsglCourse extends Task {
     });
   }
 
+  protected defaultStartButton(): void {
+    const statrtBtnCreatTimer = setInterval(() => {
+      const prev = document.querySelector("ul.MuiList-root");
+      console.log(prev, "prev");
+      if (prev) {
+        const startBtn = CssBtn(
+          createBtn(
+            Application.App.config.studymap_auto ? "暂停挂机" : "开始挂机",
+            "点击开始自动挂机",
+            "zsgl-auto-btn"
+          )
+        );
+        startBtn.addEventListener("click", () => {
+          if (startBtn.innerText == '暂停挂机') {
+              Application.App.config.studymap_auto=false
+                startBtn.innerText = "开始挂机";
+                startBtn.title = "点击开始自动挂机";
+                Application.App.log.Info("挂机停止了");
+            } else {
+              Application.App.config.studymap_auto=true
+                startBtn.innerText = '暂停挂机';
+                startBtn.title = "停止挂机,开始好好学习";
+                Application.App.log.Info("挂机开始了");
+                this.Start();
+            }
+        });
+        prev.prepend(startBtn);
+        clearInterval(statrtBtnCreatTimer);
+      }
+    });
+  }
   // 修改拦截方法返回 Promise
   protected hookStudymapGateRequests(): Promise<void> {
     return new Promise((resolve) => {
@@ -61,7 +99,10 @@ export class ZsglCourse extends Task {
           Application.App.log.Debug("原始响应数据", response);
           const responseData = response?.body;
           self.studyMapData = responseData
-            .map((item: { status: number; gateName: any }, index: any) => {
+            .map((item: {
+              taskNum: any;
+              finishTaskNum: any; status: number; gateName: any 
+}, index: any) => {
               const gateName = item.gateName;
               const gateNameIndex = index;
               console.log(gateName, gateNameIndex, "当前关卡");
@@ -69,9 +110,14 @@ export class ZsglCourse extends Task {
                 gateName,
                 gateNameIndex,
                 status: item.status,
+                finishTaskNum: item.finishTaskNum,
+                taskNum: item.taskNum,
               };
             })
-            .find((item: { status: number }) => item.status === 3);
+            .find((item: {
+              finishTaskNum: any;
+              taskNum: any; status: number 
+}) => item.status !== 3||item.finishTaskNum!==item.taskNum);
 
           Application.App.log.Debug("成功拦截课程数据", {
             courseCount: self.studyMapData?.length || 0,
@@ -92,7 +138,7 @@ export class ZsglCourse extends Task {
           Application.App.log.Debug("原始响应数据", response);
           const responseData = response?.body;
           self.gateTaskData = responseData.taskList.find(
-            (item: { status: number }) => item.status === 1
+            (item: { status: number }) => item.status !== 1
           );
           Application.App.log.Debug("成功拦截课程任务数据", {
             taskCount: self.gateTaskData?.length || 0,
@@ -128,15 +174,20 @@ export class ZsglCourse extends Task {
             taskKey,
             JSON.stringify({
               status: "started",
-              // 三个小时后过期
-              expire: Date.now() + 1000 * 60 * 60 * 3,
+              // 十个小时后过期
+              expire: Date.now() + 1000 * 60 * 60 * 10,
             })
           );
         }
       });
       const checkTaskStatusTimer = setInterval(() => {
         const taskStatus = JSON.parse(localStorage.getItem(taskKey) || "{}");
-        if (taskStatus.status === "finished") {
+        if (Date.now() > taskStatus.expire) {
+          localStorage.removeItem(taskKey);
+        }
+        if (taskStatus.status === "finished" && Application.App.config.studymap_auto) {
+          localStorage.removeItem(taskKey);
+          // 任务完成，刷新页面
           clearInterval(checkTaskStatusTimer);
           window.location.reload();
         }

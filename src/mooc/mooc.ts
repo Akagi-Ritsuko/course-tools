@@ -49,9 +49,12 @@ export class mooc implements Launcher {
             clearTimeout(this.timer);
         });
         moocTask.addEventListener("complete", () => {
-            Application.App.log.Warn("任务完成了");
-            alert("任务完成了");
+            Application.App.log.Warn("当前视频任务完成了");
+            // alert("任务完成了");
         });
+        moocTask.addEventListener("courseDetailTaskComplete", (task: Task) => {
+            window.location.reload();
+        })
         moocTask.addEventListener("taskComplete", (index: number, task: Task) => {
             moocTask.SetTaskPointer(index + 1);
             if (!Application.App.config.auto) {
