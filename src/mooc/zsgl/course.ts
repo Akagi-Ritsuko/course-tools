@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-15 10:55:02
  * @LastEditors: guotao
- * @LastEditTime: 2025-03-17 18:16:09
+ * @LastEditTime: 2025-09-25 16:29:23
  * @FilePath: \course-tools\src\mooc\zsgl\course.ts
  * @Description:
  *
@@ -160,15 +160,20 @@ export class ZsglCourse extends Task {
       const taskKey = `zsgl_task_${this.gateTaskData.resourceId}`;
       const checkExistTimer = setInterval(() => {
         console.log("课程任务执行完成", this.gateTaskData.taskName);
-        const currentbutton = Array.from(document.querySelectorAll("p")).find(
-          (li) => {
-            return li.textContent.includes(`${this.gateTaskData.taskName}`);
+        const currentHtmlList = Array.from(document.querySelectorAll("li.MuiListItem-root"));
+        let currentbutton =null;
+        currentHtmlList.forEach((li) => {
+          let currentP= Array.from(li.querySelectorAll("p")).find((p) => {
+            return p.innerText.includes(this.gateTaskData.taskName)
+          })
+          if(currentP){
+            currentbutton= currentP
           }
-        );
+        })
         console.log(currentbutton, "开始任务中的当前按钮");
         if (currentbutton) {
           clearInterval(checkExistTimer);
-          currentbutton.click();
+          (currentbutton as HTMLElement).click();
 
           localStorage.setItem(
             taskKey,

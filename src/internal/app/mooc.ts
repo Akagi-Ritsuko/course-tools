@@ -38,17 +38,18 @@ export interface MoocFactory {
 export class DefaultMoocFactory implements MoocFactory {
     public CreateMooc(): Mooc {
         console.log("create mooc");
-        let mooc = new CxPlatform().CreateMooc();
-        if (mooc == null) {
-            mooc = new ZhsPlatform().CreateMooc();
-        }
-        if (mooc == null) {
-            mooc = new Course163Platform().CreateMooc();
-        }
-        if (mooc == null) {
+        let mooc = new ZsglPlatform().CreateMooc();
+        // let mooc = new CxPlatform().CreateMooc();
+        // if (mooc == null) {
+        //     mooc = new ZhsPlatform().CreateMooc();
+        // }
+        // if (mooc == null) {
+        //     mooc = new Course163Platform().CreateMooc();
+        // }
+        // if (mooc == null) {
             
-            mooc = new ZsglPlatform().CreateMooc();
-        }
+        //     mooc = new ZsglPlatform().CreateMooc();
+        // }
         return mooc;
     }
 }
