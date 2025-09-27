@@ -6,7 +6,7 @@ import { Task } from "@App/internal/app/task";
 import { ZsglPlatform } from "@App/mooc/zsgl/platform";
 
 // 事件
-export type MoocEvent = "complete" | "reload" | "error" | "taskComplete"| "courseDetailTaskComplete";
+export type MoocEvent = "complete" | "reload" | "error" | "taskComplete"| "courseDetailTaskComplete"|'courseTaskComplete';
 
 // 单个Mooc任务,可能会被抛弃
 export interface Mooc {
