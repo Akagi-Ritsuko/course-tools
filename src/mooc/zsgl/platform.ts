@@ -1,19 +1,30 @@
+/*
+ * @Author: guotao
+ * @Date: 2025-09-26 17:51:14
+ * @LastEditors: guotao
+ * @LastEditTime: 2025-09-27 02:32:37
+ * @FilePath: \course-tools1\src\mooc\zsgl\platform.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2025 by lzlj, All Rights Reserved. 
+ */
 import { Mooc, MoocFactory } from '@App/internal/app/mooc';
 import { Application } from '@App/internal/application';
-// import { ZsglCourse } from './course';
-import { ZsglVideo } from './video';
 import { ZsglCourse } from './course';
+// import { ZsglVideo } from './video';
+
+import { ZsglStudyMap } from './studyMap';
 export class ZsglPlatform implements MoocFactory{
     public CreateMooc(): Mooc {
         // 通过URL特征进行平台识别
         if (this.isZsglCoursePage()) {
             console.log('当前平台：zsgl');
             Application.App.config.SetNamespace('zsgl')
-            return new ZsglVideo();
+            return new ZsglCourse();
         }
         if (window.location.hash.includes('/home/studyDetail')) {
             console.log('当前平台：zsgl-studyDetail');
-            return new ZsglCourse();
+            return new ZsglStudyMap();
         }
     }
     private isZsglCoursePage(): boolean {
