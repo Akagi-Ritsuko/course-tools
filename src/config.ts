@@ -40,7 +40,8 @@ export class SystemConfig {
             "*://www.icourse163.org/spoc/learn/*"
         ],
         "zsgl": [
-            "*://zsgl.lzlj.com/#/home/courseDetail/*"
+            "*://zsgl.lzlj.com/#/home/courseDetail/*",
+            "*://zsgl.lzlj.com/#/home/studyDetail/*"
         ]
     }
     public static config: { [key: string]: PlatformConfig } = {
