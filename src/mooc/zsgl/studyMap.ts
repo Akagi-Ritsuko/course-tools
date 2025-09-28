@@ -2,8 +2,8 @@
  * @Author: guotao
  * @Date: 2025-03-15 10:55:02
  * @LastEditors: guotao
- * @LastEditTime: 2025-09-27 02:32:13
- * @FilePath: \course-tools1\src\mooc\zsgl\course.ts
+ * @LastEditTime: 2025-09-28 16:27:16
+ * @FilePath: \course-tools\src\mooc\zsgl\studyMap.ts
  * @Description:
  *
  * Copyright (c) 2025 by lzlj, All Rights Reserved.
@@ -12,7 +12,7 @@ import { Task, TaskType } from "@App/internal/app/task";
 import { Application } from "@App/internal/application";
 import { CssBtn, hookHttpRequest } from "./utils/utils";
 import { createBtn, protocolPrompt } from "@App/internal/utils/utils";
-
+import { NewChromeServerMessage } from "@App/internal/utils/message";
 export class ZsglStudyMap extends Task {
   protected gateTaskData: any;
   protected studyMapData: any;
@@ -51,6 +51,21 @@ export class ZsglStudyMap extends Task {
         }
       }); // 添加 await
       await this.hookStudymapGateTaskRequests(); // 添加 await
+      const taskKey = `zsgl_task_${this.gateTaskData.resourceId}`;
+      Application.App.log.Debug("zsglStudyMap开始初始化任务", taskKey);
+      const msg = NewChromeServerMessage("zsgl-tools");
+      msg.Accept((client, data) => {
+        console.log("zsglStudyMap接受消息", data);
+        // Application.App.log.Debug("zsglStudyMap接受消息", data);
+          switch (data.type) {
+            case taskKey: {
+              // Application.App.log.Debug("studyMap 任务完成", data);
+              console.log("studyMap 任务完成", data);
+              window.location.reload();
+              break;
+            }
+          }
+        });
       console.log("拦截请求完成hookStudymapGateTaskRequests", this.gateTaskData);
       this.defaultStartButton();
       console.log("Application.App.config.studymap_auto", Application.App.config.studymap_auto);
@@ -164,7 +179,6 @@ export class ZsglStudyMap extends Task {
   public Start(): Promise<any> {
     console.log("开始执行课程任务");
     return new Promise((resolve) => {
-      const taskKey = `zsgl_task_${this.gateTaskData.resourceId}`;
       const checkExistTimer = setInterval(() => {
         console.log("课程任务执行完成", this.gateTaskData.taskName);
         const currentHtmlList = Array.from(document.querySelectorAll("li.MuiListItem-root"));
@@ -182,28 +196,28 @@ export class ZsglStudyMap extends Task {
           clearInterval(checkExistTimer);
           (currentbutton as HTMLElement).click();
 
-          localStorage.setItem(
-            taskKey,
-            JSON.stringify({
-              status: "started",
-              // 十个小时后过期
-              expire: Date.now() + 1000 * 60 * 60 * 10,
-            })
-          );
+          // localStorage.setItem(
+          //   taskKey,
+          //   JSON.stringify({
+          //     status: "started",
+          //     // 十个小时后过期
+          //     expire: Date.now() + 1000 * 60 * 60 * 10,
+          //   })
+          // );
         }
       });
-      const checkTaskStatusTimer = setInterval(() => {
-        const taskStatus = JSON.parse(localStorage.getItem(taskKey) || "{}");
-        if (Date.now() > taskStatus.expire) {
-          localStorage.removeItem(taskKey);
-        }
-        if (taskStatus.status === "finished" && Application.App.config.studymap_auto) {
-          localStorage.removeItem(taskKey);
-          // 任务完成，刷新页面
-          clearInterval(checkTaskStatusTimer);
-          window.location.reload();
-        }
-      }, 1000);
+      // const checkTaskStatusTimer = setInterval(() => {
+      //   const taskStatus = JSON.parse(localStorage.getItem(taskKey) || "{}");
+      //   if (Date.now() > taskStatus.expire) {
+      //     localStorage.removeItem(taskKey);
+      //   }
+      //   if (taskStatus.status === "finished" && Application.App.config.studymap_auto) {
+      //     localStorage.removeItem(taskKey);
+      //     // 任务完成，刷新页面
+      //     clearInterval(checkTaskStatusTimer);
+      //     window.location.reload();
+      //   }
+      // }, 1000);
     });
   }
   public Type(): TaskType {
