@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-09-27 02:32:51
  * @LastEditors: guotao
- * @LastEditTime: 2025-09-28 15:58:20
+ * @LastEditTime: 2025-09-30 16:12:59
  * @FilePath: \course-tools\src\mooc\zsgl\course.ts
  * @Description:
  *
@@ -35,6 +35,7 @@ export class ZsglCourse extends EventListener<MoocEvent>
   public Init(): Promise<any> {
     return new Promise(async (resolve) => {
       let first = true;
+      window.onresize = null;
       // this.taskList = new Array<ZsglTask>();
       Application.App.log.Debug("初始化course课程任务");
       window.addEventListener("load", async () => {

@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-12 17:19:39
  * @LastEditors: guotao
- * @LastEditTime: 2025-09-28 14:39:17
+ * @LastEditTime: 2025-09-30 15:49:54
  * @FilePath: \course-tools\src\mooc\zsgl\scorm.ts
  * @Description:
  *

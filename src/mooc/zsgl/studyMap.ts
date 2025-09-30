@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-15 10:55:02
  * @LastEditors: guotao
- * @LastEditTime: 2025-09-28 16:27:16
+ * @LastEditTime: 2025-09-30 14:40:20
  * @FilePath: \course-tools\src\mooc\zsgl\studyMap.ts
  * @Description:
  *
@@ -13,6 +13,7 @@ import { Application } from "@App/internal/application";
 import { CssBtn, hookHttpRequest } from "./utils/utils";
 import { createBtn, protocolPrompt } from "@App/internal/utils/utils";
 import { NewChromeServerMessage } from "@App/internal/utils/message";
+import { createStorageHandler } from "./utils/utils";
 export class ZsglStudyMap extends Task {
   protected gateTaskData: any;
   protected studyMapData: any;
@@ -178,7 +179,7 @@ export class ZsglStudyMap extends Task {
   }
   public Start(): Promise<any> {
     console.log("开始执行课程任务");
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       const checkExistTimer = setInterval(() => {
         console.log("课程任务执行完成", this.gateTaskData.taskName);
         const currentHtmlList = Array.from(document.querySelectorAll("li.MuiListItem-root"));
@@ -195,15 +196,18 @@ export class ZsglStudyMap extends Task {
         if (currentbutton) {
           clearInterval(checkExistTimer);
           (currentbutton as HTMLElement).click();
-
-          // localStorage.setItem(
-          //   taskKey,
-          //   JSON.stringify({
-          //     status: "started",
-          //     // 十个小时后过期
-          //     expire: Date.now() + 1000 * 60 * 60 * 10,
-          //   })
-          // );
+          const taskKey = `zsgl_task_${this.gateTaskData.resourceId}`;
+          localStorage.setItem(
+            taskKey,
+            JSON.stringify({
+              status: "started",
+              // 十个小时后过期
+              expire: Date.now() + 1000 * 60 * 60 * 10,
+            })
+          );
+          const handler = createStorageHandler(taskKey);
+          window.addEventListener("storage", handler);
+          resolve();
         }
       });
       // const checkTaskStatusTimer = setInterval(() => {
@@ -221,6 +225,6 @@ export class ZsglStudyMap extends Task {
     });
   }
   public Type(): TaskType {
-    throw new Error("Method not implemented.");
+    return 'studyMap'
   }
 }
