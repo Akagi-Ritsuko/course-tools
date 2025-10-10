@@ -73,7 +73,7 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
     return Promise.resolve();
   }
 
-  // 返回下一个任务点
+  // 返回下一题
   public Next(): Promise<Task> {
     return;
   }
@@ -81,5 +81,16 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
   // 设置任务点位置
   public SetTaskPointer(index: number): void {
     return;
+  }
+}
+export class ZsglQuestionTask extends ZsglTask {
+  public Start(): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  public Init(): Promise<any> {
+    return new Promise<void>(async (resolve, reject) => {});
+  }
+  public Type(): TaskType {
+    return "exam";
   }
 }

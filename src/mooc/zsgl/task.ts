@@ -23,6 +23,11 @@ export abstract class ZsglTask extends Task {
         super();
         this.taskinfo = taskinfo;
         this.context = context;
+        if (!this.taskinfo?.hasLearned) {
+          //exam 没有hasLearned字段
+          this.done = false;
+          return;
+        }
         if (this.taskinfo.hasLearned==='0') {
             this.done = false;
         } else {
