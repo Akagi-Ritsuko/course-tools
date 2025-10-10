@@ -2,8 +2,8 @@
  * @Author: guotao
  * @Date: 2025-09-26 17:51:14
  * @LastEditors: guotao
- * @LastEditTime: 2025-09-27 02:32:37
- * @FilePath: \course-tools1\src\mooc\zsgl\platform.ts
+ * @LastEditTime: 2025-10-10 16:52:18
+ * @FilePath: \course-tools\src\mooc\zsgl\platform.ts
  * @Description: 
  * 
  * Copyright (c) 2025 by lzlj, All Rights Reserved. 
@@ -14,6 +14,7 @@ import { ZsglCourse } from './course';
 // import { ZsglVideo } from './video';
 
 import { ZsglStudyMap } from './studyMap';
+import { ZsglExam } from './exam';
 export class ZsglPlatform implements MoocFactory{
     public CreateMooc(): Mooc {
         // 通过URL特征进行平台识别
@@ -25,7 +26,11 @@ export class ZsglPlatform implements MoocFactory{
         if (window.location.hash.includes('/home/studyDetail')) {
             console.log('当前平台：zsgl-studyDetail');
             return new ZsglStudyMap();
-        }
+      }
+          if (window.location.hash.includes("/home/examDetail")) {
+            console.log("当前平台：zsgl-examDetail");
+            return new ZsglExam();
+          }
     }
     private isZsglCoursePage(): boolean {
         // console.log("zsgl platform check url:",document.URL);

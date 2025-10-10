@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-15 10:55:02
  * @LastEditors: guotao
- * @LastEditTime: 2025-09-30 14:17:34
+ * @LastEditTime: 2025-10-10 16:51:32
  * @FilePath: \course-tools\src\mooc\zsgl\utils\utils.ts
  * @Description: 
  * 
@@ -19,7 +19,9 @@ export async function hookHttpRequest(urlMatch: string, callback: (response: any
             this.addEventListener('readystatechange', function() {
                 if (this.readyState === 4 && this.status === 200) {
                     try {
-                        const response = JSON.parse(this.responseText);
+                        const response = this.responseText.startsWith("{")
+                          ? JSON.parse(this.responseText)
+                          : this.responseText;
                         callback(response, context);
                     } catch (e) {
                         Application.App.log.Error("数据解析失败", e);
