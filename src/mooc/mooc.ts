@@ -74,6 +74,21 @@ export class mooc implements Launcher {
                 await this.runTask(moocTask);
             }, 0);
         });
+        moocTask.addEventListener(
+          "questionTaskComplete",
+            (index: number, task: Task) => {
+              console.log("questionTaskComplete", index, task);
+            moocTask.SetTaskPointer(index + 1);
+            this.timer = setTimeout(async () => {
+              await task.Submit();
+              await this.runTask(moocTask);
+            }, 0);
+          }
+        );
+        moocTask.addEventListener("examTaskComplete", () => {
+          Application.App.log.Debug("examTaskComplete 当前考试任务完成了");
+          window.close();
+        });
         moocTask.addEventListener("error", (msg: string) => {
             Application.App.log.Fatal(msg);
             alert(msg);
