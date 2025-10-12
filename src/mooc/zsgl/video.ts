@@ -1,8 +1,8 @@
 /*
  * @Author: guotao
  * @Date: 2025-09-28 14:35:39
- * @LastEditors: guotao
- * @LastEditTime: 2025-09-30 17:16:59
+ * @LastEditors: guotao 1531188409@qq.com
+ * @LastEditTime: 2025-10-05 17:57:20
  * @FilePath: \course-tools\src\mooc\zsgl\video.ts
  * @Description: 
  * 
@@ -31,19 +31,49 @@ import { NewChromeClientMessage } from "@App/internal/utils/message";
 export class ZsglVideo extends ZsglTask {
     protected  taskDiv: HTMLSpanElement;
     protected video: HTMLVideoElement;
+    protected videoPlayOrPauseTimer:NodeJS.Timer;
     public Start(): Promise<any> {
         return new Promise<void>(async (resolve, reject) => {
             console.log("zsglVideo开始执行任务", this.taskDiv);
             console.log(' Init window.onblur', window.onblur);
-            document.addEventListener('blur', function (e) { e.stopImmediatePropagation(); e.stopPropagation(); }, true);
-            document.onblur = null;
-            document.onresize = null;
-            document.onfullscreenchange = null;
-            window.onblur = null
-            window.onresize = null
-            document.onvisibilitychange = null
+            const eventPreventHandler = function (this: any,e:Event) {
+                console.log(`${this.name} ${e.type}事件触发`, e);
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+            }
+            //处理页面的事件监听函数的检测
+            window.addEventListener('blur', eventPreventHandler, true);
+            window.addEventListener('resize', eventPreventHandler, true);
+            document.addEventListener('visibilitychange', eventPreventHandler, true);
+            document.addEventListener('resize', eventPreventHandler, true);
+            document.addEventListener('fullscreenchange', eventPreventHandler, true);
+            document.addEventListener('focus', eventPreventHandler, true);
+            document.addEventListener('webkitfullscreenchange', eventPreventHandler, true);
+            document.addEventListener('blur', eventPreventHandler, true);
+            this.video.addEventListener('seeked', eventPreventHandler, true);
+            this.video.addEventListener('seeking', eventPreventHandler, true);
+            // document.onblur = null;
+            // document.onresize = null;
+            // document.onfullscreenchange = null;
+            // window.onblur = null
+            // window.onresize = null
+            // document.onvisibilitychange = null
             // window.removeEventListener('blur',); // 移除事件监听器
+            // 创建具名函数以便在触发后移除监听器
+            const handleTaskDivClick = () => {
+                this.initPlayer(); // 初始化播放器
+                this.videoPlayOrPauseTimer=setInterval(() => {
+                    Application.App.config.auto && this.video.paused && this.video.play();
+                }, 5000);
+                // 事件触发后移除监听器
+                this.taskDiv.removeEventListener('click', handleTaskDivClick, true);
+            };
+            this.taskDiv.addEventListener('click', handleTaskDivClick, true);
+            this.video.addEventListener('pause', () => {
+                console.log('Video paused by browser')
+            });
             this.taskDiv.click();
+            resolve();
         })
     }
     public Type(): TaskType {
@@ -63,8 +93,15 @@ export class ZsglVideo extends ZsglTask {
             console.log("zsglVideo开始初始化任务",this.taskinfo);
             const taskDiv = Array.from(document.querySelectorAll('span')).find((span) => { return span.textContent.includes(`${this.taskinfo.fileName}`) });
             console.log(taskDiv, "zsglVideo任务元素");
-            if(taskDiv){
+            const video=document.querySelector('video#course-video_html5_api') as HTMLVideoElement;
+            if(taskDiv && video){
                 this.taskDiv = taskDiv;
+                this.video = video;
+                this.video.addEventListener('ended', () => {
+                    clearInterval(this.videoPlayOrPauseTimer);
+                    clearInterval(this.videoPlayOrPauseTimer);
+                    this.callEvent('taskComplete')
+                });
                 resolve()
             }
         })
@@ -75,9 +112,15 @@ export class ZsglVideo extends ZsglTask {
       multiple: Application.App.config.video_multiple,
     });
 
-    this.video.muted = Application.App.config.video_mute;
+    this.video.volume = this.video.volume = Application.App.config.video_mute ? 0 : this.video.volume;
+    this.video.muted = false;
     this.video.playbackRate = Application.App.config.video_multiple;
-    this.video.currentTime = 0; //重置播放时间来实现未完成的任务失常不够的问题
+        setTimeout(() => {
+        console.log(this.video.currentTime, "播放时间");
+        this.video.currentTime = 0; 
+        Application.App.config.auto && this.video.play();
+    },5000);
+    //重置播放时间来实现未完成的任务失常不够的问题
     // setTimeout(() => {
     //     this.video.currentTime = 0;//重置播放时间来实现未完成的任务失常不够的问题
     //   }, 5000); 

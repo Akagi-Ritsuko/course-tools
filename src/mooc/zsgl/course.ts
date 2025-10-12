@@ -1,8 +1,8 @@
 /*
  * @Author: guotao
  * @Date: 2025-09-27 02:32:51
- * @LastEditors: guotao
- * @LastEditTime: 2025-09-30 16:12:59
+ * @LastEditors: guotao 1531188409@qq.com
+ * @LastEditTime: 2025-10-03 00:58:43
  * @FilePath: \course-tools\src\mooc\zsgl\course.ts
  * @Description:
  *
@@ -31,7 +31,7 @@ export class ZsglCourse extends EventListener<MoocEvent>
   protected taskList: Array<ZsglTask> = [];
   protected attachments: Array<any>;
 
-  private courseDetailData: any; // 课程详情数据
+  private courseDetailData: any[]=[]; // 课程详情数据
   public Init(): Promise<any> {
     return new Promise(async (resolve) => {
       let first = true;
@@ -79,6 +79,9 @@ export class ZsglCourse extends EventListener<MoocEvent>
                 return item.hasLearned === "0";
               });
             console.log("课程详情数据2", JSON.stringify(self.courseDetailData));
+            resolve();
+          } else {
+            this.callEvent("courseTaskComplete");
             resolve();
           }
         },
