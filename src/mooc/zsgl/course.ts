@@ -1,9 +1,9 @@
 /*
  * @Author: guotao
  * @Date: 2025-09-27 02:32:51
- * @LastEditors: guotao
- * @LastEditTime: 2025-09-27 19:09:46
- * @FilePath: \course-tools1\src\mooc\zsgl\course.ts
+ * @LastEditors: guotao 1531188409@qq.com
+ * @LastEditTime: 2025-10-03 00:58:43
+ * @FilePath: \course-tools\src\mooc\zsgl\course.ts
  * @Description:
  *
  * Copyright (c) 2025 by lzlj, All Rights Reserved.
@@ -31,10 +31,11 @@ export class ZsglCourse extends EventListener<MoocEvent>
   protected taskList: Array<ZsglTask> = [];
   protected attachments: Array<any>;
 
-  private courseDetailData: any; // 课程详情数据
+  private courseDetailData: any[]=[]; // 课程详情数据
   public Init(): Promise<any> {
     return new Promise(async (resolve) => {
       let first = true;
+      window.onresize = null;
       // this.taskList = new Array<ZsglTask>();
       Application.App.log.Debug("初始化course课程任务");
       window.addEventListener("load", async () => {
@@ -61,7 +62,9 @@ export class ZsglCourse extends EventListener<MoocEvent>
           const responseData = response?.body;
           if (responseData && responseData?.isCompleted !== "Y") {
             const courseFileArr = responseData?.courseFileArr;
+            
             console.log("课程详情数据1", courseFileArr);
+            const courseId= responseData?.courseId;
             self.courseDetailData = courseFileArr
               .map((item: any, index: number) => {
                 return {
@@ -69,12 +72,16 @@ export class ZsglCourse extends EventListener<MoocEvent>
                   fileName: item.fileName,
                   cwType: item.cwType,
                   jobIndex: index,
+                  courseId
                 };
               })
               .filter((item: any) => {
                 return item.hasLearned === "0";
               });
             console.log("课程详情数据2", JSON.stringify(self.courseDetailData));
+            resolve();
+          } else {
+            this.callEvent("courseTaskComplete");
             resolve();
           }
         },
