@@ -1,3 +1,13 @@
+/*
+ * @Author: guotao
+ * @Date: 2025-03-15 10:55:02
+ * @LastEditors: guotao
+ * @LastEditTime: 2025-09-27 14:12:00
+ * @FilePath: \course-tools1\src\start.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2025 by lzlj, All Rights Reserved. 
+ */
 import { Client, NewChromeServerMessage } from "@App/internal/utils/message";
 import { get, HttpUtils, Injected, InjectedBySrc, Noifications, NotificationOptions } from "@App/internal/utils/utils";
 import { Application, Content, Launcher } from "@App/internal/application";
@@ -43,24 +53,28 @@ class start implements Launcher {
                 window.postMessage({ type: "cxconfig", key: request.key, value: request.value }, '/');
             }
         });
-        //检查扩展强制更新
-        Application.CheckUpdate((isnew, data) => {
-            if (isnew) {
-                if (data.enforce) {
-                    alert('刷课扩展要求强制更新');
-                    window.open(data.url);
-                    return;
-                }
-            }
-        });
+        // //检查扩展强制更新
+        // Application.CheckUpdate((isnew, data) => {
+        //     if (isnew) {
+        //         if (data.enforce) {
+        //             alert('刷课扩展要求强制更新');
+        //             window.open(data.url);
+        //             return;
+        //         }
+        //     }
+        // });
     }
 }
 
 async function init() {
     let component = new Map<string, any>().set("config", new ChromeConfigItems(await NewBackendConfig())).set("logger", new ConsoleLog());
-
     let application = new Application(Content, new start(), component);
     application.run();
 }
-
 init();
+  window.addEventListener('hashchange', () => {
+    console.log('Hash changed:', location.hash);
+    if(location.hash.includes('home/studyDetail')) {
+      init();
+    }
+  });

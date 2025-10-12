@@ -42,16 +42,26 @@ export class mooc implements Launcher {
     protected timer: NodeJS.Timeout;
 
     protected runMoocTask(moocTask: MoocTaskSet) {
+        Application.App.log.Debug("runMoocTask 开始执行任务:");
         moocTask.addEventListener("reload", () => {
+            Application.App.log.Warn("runMoocTask reload",Application.App.config.auto,moocTask);
             if (Application.App.config.auto) {
                 this.runTask(moocTask);
             }
             clearTimeout(this.timer);
         });
         moocTask.addEventListener("complete", () => {
-            Application.App.log.Warn("任务完成了");
-            alert("任务完成了");
+            Application.App.log.Warn("当前视频任务完成了");
+            // window.close(); 
+            // alert("任务完成了");
         });
+        moocTask.addEventListener("courseDetailTaskComplete", (task: Task) => {
+            window.location.reload();
+        })
+        moocTask.addEventListener("courseTaskComplete", () => {
+            Application.App.log.Debug("courseTaskComplete 当前课程任务完成了");
+            window.close();
+        })
         moocTask.addEventListener("taskComplete", (index: number, task: Task) => {
             moocTask.SetTaskPointer(index + 1);
             if (!Application.App.config.auto) {
@@ -62,7 +72,22 @@ export class mooc implements Launcher {
             this.timer = setTimeout(async () => {
                 await task.Submit();
                 await this.runTask(moocTask);
-            }, interval * 60000);
+            }, 0);
+        });
+        moocTask.addEventListener(
+          "questionTaskComplete",
+            (index: number, task: Task) => {
+              console.log("questionTaskComplete", index, task);
+            moocTask.SetTaskPointer(index + 1);
+            this.timer = setTimeout(async () => {
+              await task.Submit();
+              await this.runTask(moocTask);
+            }, 0);
+          }
+        );
+        moocTask.addEventListener("examTaskComplete", () => {
+          Application.App.log.Debug("examTaskComplete 当前考试任务完成了");
+          window.close();
         });
         moocTask.addEventListener("error", (msg: string) => {
             Application.App.log.Fatal(msg);
@@ -75,22 +100,26 @@ export class mooc implements Launcher {
     protected nowTask: Task;
 
     protected async runTask(moocTask: MoocTaskSet) {
+        Application.App.log.Debug("runTask 开始执行任务:",this.once);
         if (this.once) {
             return;
         }
         this.once = true;
+        Application.App.log.Debug("runTask 开始执行任务:");
         let task = await moocTask.Next();
+        Application.App.log.Info("runTask 当前任务:", task);
         while (task != null) {
             if (task.Done()) {
                 task = await moocTask.Next();
                 continue;
             }
-            if (Application.App.config.answer_ignore && task.Type() == "topic") {
-                task = await moocTask.Next();
-                continue;
-            }
+            // if (Application.App.config.answer_ignore && task.Type() == "topic") {
+            //     task = await moocTask.Next();
+            //     continue;
+            // }
             //开始任务
             if (Application.App.config.auto) {
+                Application.App.log.Info(" runTask 开始任务:", task);
                 await task.Start();
             }
             this.nowTask = task;

@@ -24,6 +24,7 @@
   "homepage": "https://github.com/CodFrm/cxmooc-tools#readme",
   "devDependencies": {
     "@types/chrome": "0.0.103",
+    "@types/crypto-js": "^4.2.2",
     "@types/jest": "^25.2.3",
     "@vuepress/plugin-back-to-top": "^1.7.1",
     "@vuepress/plugin-google-analytics": "^1.7.1",
@@ -42,6 +43,7 @@
   },
   "dependencies": {
     "@types/js-base64": "^2.3.2",
+    "crypto-js": "^4.2.0",
     "md5": "^2.3.0",
     "node-telegram-bot-api": "^0.30.0",
     "vue": "^2.6.12"

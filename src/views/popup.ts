@@ -12,63 +12,92 @@ class popup implements Launcher {
 
     public start() {
         this.vm = new Vue({
-            el: "#platform-config",
-            data: {
-                selectKey: 'cx',
-                configs: SystemConfig.config
-            },
-            async created() {
-                for (let key in this.configs) {
-                    for (let index in this.configs[key].items) {
-                        let item = this.configs[key].items[index];
-                        let val = Application.App.config.GetNamespaceConfig(key, item.key, undefined);
-                        if (val == undefined) {
-                            val = Application.App.config.GetConfig(item.key, item.value);
-                        }
-                        item.value = this.toVal(item.type, val);
-                    }
+          el: "#platform-config",
+          data: {
+            selectKey: "zsgl",
+            configs: SystemConfig.config,
+          },
+          async created() {
+            for (let key in this.configs) {
+              for (let index in this.configs[key].items) {
+                let item = this.configs[key].items[index];
+                let val = Application.App.config.GetNamespaceConfig(
+                  key,
+                  item.key,
+                  undefined
+                );
+                if (val == undefined) {
+                  val = Application.App.config.GetConfig(item.key, item.value);
                 }
-            },
-            methods: {
-                toVal(type: string, val: string): boolean | string {
-                    switch (type) {
-                        case "checkbox": {
-                            return toBool(val);
-                        }
-                        default: {
-                            return val;
-                        }
-                    }
-                },
-                changeTab(key: string) {
-                    this.selectKey = key;
-                },
-                async change(namespace: string, key: string, type: string, val: string | boolean, index: number, prompt: string) {
-                    if (prompt !== undefined) {
-                        // 弹出信息框,还原值
-                        if (!protocolPrompt(prompt, key)) {
-                            let val = Application.App.config.GetNamespaceConfig(namespace, key, undefined);
-                            if (val == undefined) {
-                                val = Application.App.config.GetConfig(key, this.configs[namespace].items[index].value);
-                            }
-                            this.configs[namespace].items[index].value = this.toVal(type, val);
-                            return false;
-                        }
-                    }
-                    if (namespace == "common") {
-                        namespace = "";
-                    }
-                    switch (type) {
-                        case "checkbox": {
-                            await Application.App.config.SetNamespaceConfig(namespace, key, boolToString(<boolean>val));
-                            break;
-                        }
-                        default: {
-                            await Application.App.config.SetNamespaceConfig(namespace, key, <string>val);
-                        }
-                    }
-                }
+                item.value = this.toVal(item.type, val);
+              }
             }
+          },
+          methods: {
+            toVal(type: string, val: string): boolean | string {
+              switch (type) {
+                case "checkbox": {
+                  return toBool(val);
+                }
+                default: {
+                  return val;
+                }
+              }
+            },
+            changeTab(key: string) {
+              this.selectKey = key;
+            },
+            async change(
+              namespace: string,
+              key: string,
+              type: string,
+              val: string | boolean,
+              index: number,
+              prompt: string
+            ) {
+              if (prompt !== undefined) {
+                // 弹出信息框,还原值
+                if (!protocolPrompt(prompt, key)) {
+                  let val = Application.App.config.GetNamespaceConfig(
+                    namespace,
+                    key,
+                    undefined
+                  );
+                  if (val == undefined) {
+                    val = Application.App.config.GetConfig(
+                      key,
+                      this.configs[namespace].items[index].value
+                    );
+                  }
+                  this.configs[namespace].items[index].value = this.toVal(
+                    type,
+                    val
+                  );
+                  return false;
+                }
+              }
+              if (namespace == "common") {
+                namespace = "";
+              }
+              switch (type) {
+                case "checkbox": {
+                  await Application.App.config.SetNamespaceConfig(
+                    namespace,
+                    key,
+                    boolToString(<boolean>val)
+                  );
+                  break;
+                }
+                default: {
+                  await Application.App.config.SetNamespaceConfig(
+                    namespace,
+                    key,
+                    <string>val
+                  );
+                }
+              }
+            },
+          },
         });
 
         let vtoken = <HTMLInputElement>document.querySelector("#vtoken");
@@ -77,23 +106,23 @@ class popup implements Launcher {
         }
         vtoken.value = Application.App.config.GetConfig("vtoken");
 
-        Application.CheckUpdate(function (isnew, data) {
-            let v: any;
-            if (data === undefined) {
-                (<HTMLImageElement>document.getElementById("tiku")).src = "./../img/error.svg";
-                v = SystemConfig.version + ".0";
-            } else {
-                if (isnew) {
-                    var p = document.createElement('p');
-                    p.style.color = "#ff0000";
-                    p.innerHTML = '有新的版本更新:<a href="' + data.url + '" style="float:right;" target="_blank">点我去下载</a>  最新版本:v' + data.version;
-                    document.getElementsByTagName('body')[0].appendChild(p);
-                }
-                document.getElementById("injection").innerHTML = data.injection;
-                v = (SystemConfig.version >= dealHotVersion(data.hotversion) ? SystemConfig.version + ".0" : data.hotversion);
-            }
-            document.getElementById('version').innerHTML = 'v' + v + (Application.App.debug ? " debug" : "");
-        });
+        // Application.CheckUpdate(function (isnew, data) {
+        //     let v: any;
+        //     if (data === undefined) {
+        //         (<HTMLImageElement>document.getElementById("tiku")).src = "./../img/error.svg";
+        //         v = SystemConfig.version + ".0";
+        //     } else {
+        //         if (isnew) {
+        //             var p = document.createElement('p');
+        //             p.style.color = "#ff0000";
+        //             p.innerHTML = '有新的版本更新:<a href="' + data.url + '" style="float:right;" target="_blank">点我去下载</a>  最新版本:v' + data.version;
+        //             document.getElementsByTagName('body')[0].appendChild(p);
+        //         }
+        //         // document.getElementById("injection").innerHTML = data.injection;
+        //         v = (SystemConfig.version >= dealHotVersion(data.hotversion) ? SystemConfig.version + ".0" : data.hotversion);
+        //     }
+        //     document.getElementById('version').innerHTML = 'v' + v + (Application.App.debug ? " debug" : "");
+        // });
     }
 
 }

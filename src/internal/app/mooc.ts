@@ -2,10 +2,19 @@ import {CxPlatform} from "../../mooc/chaoxing/platform";
 import {ZhsPlatform} from "../../mooc/zhihuishu/platform";
 import {Course163Platform} from "../../mooc/course163/platform";
 import {IEventListener} from "@App/internal/utils/event";
-import {Task} from "@App/internal/app/task";
+import { Task } from "@App/internal/app/task";
+import { ZsglPlatform } from "@App/mooc/zsgl/platform";
 
 // 事件
-export type MoocEvent = "complete" | "reload" | "error" | "taskComplete";
+export type MoocEvent =
+  | "complete"
+  | "reload"
+  | "error"
+  | "taskComplete"
+  | "courseDetailTaskComplete"
+  | "courseTaskComplete"
+  | "questionTaskComplete"
+  | "examTaskComplete";
 
 // 单个Mooc任务,可能会被抛弃
 export interface Mooc {
@@ -36,13 +45,19 @@ export interface MoocFactory {
 // 默认工厂
 export class DefaultMoocFactory implements MoocFactory {
     public CreateMooc(): Mooc {
-        let mooc = new CxPlatform().CreateMooc();
-        if (mooc == null) {
-            mooc = new ZhsPlatform().CreateMooc();
-        }
-        if (mooc == null) {
-            mooc = new Course163Platform().CreateMooc();
-        }
+        console.log("create mooc");
+        let mooc = new ZsglPlatform().CreateMooc();
+        // let mooc = new CxPlatform().CreateMooc();
+        // if (mooc == null) {
+        //     mooc = new ZhsPlatform().CreateMooc();
+        // }
+        // if (mooc == null) {
+        //     mooc = new Course163Platform().CreateMooc();
+        // }
+        // if (mooc == null) {
+            
+        //     mooc = new ZsglPlatform().CreateMooc();
+        // }
         return mooc;
     }
 }

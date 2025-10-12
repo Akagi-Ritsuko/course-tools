@@ -3,7 +3,10 @@
  * @param btn 按钮
  */
 export function CssBtn(btn: HTMLButtonElement): HTMLButtonElement {
-    btn.style.position = 'relative';
+    btn.style.position = 'fixed';
+    btn.style.right = '24px';
+    btn.style.bottom = '24px';
+    btn.style.zIndex = '999999999';
     btn.style.color = '#fff';
     btn.style.padding = '0 16px';
     btn.style.display = 'inline-block';
