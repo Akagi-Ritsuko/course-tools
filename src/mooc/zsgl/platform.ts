@@ -2,8 +2,8 @@
  * @Author: guotao
  * @Date: 2025-09-26 17:51:14
  * @LastEditors: guotao
- * @LastEditTime: 2025-10-10 16:52:18
- * @FilePath: \course-tools\src\mooc\zsgl\platform.ts
+ * @LastEditTime: 2025-10-12 14:21:11
+ * @FilePath: \course-tools1\src\mooc\zsgl\platform.ts
  * @Description: 
  * 
  * Copyright (c) 2025 by lzlj, All Rights Reserved. 

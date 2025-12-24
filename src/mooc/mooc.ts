@@ -14,8 +14,11 @@ export class mooc implements Launcher {
             let state = document.readyState;
             Application.App.log.Debug("Start document state:", state);
             let mooc = this.moocFactory.CreateMooc();
+            console.log("mooc start", mooc);
             if (mooc != null) {
                 await mooc.Init();
+                console.log("mooc初始化完成", mooc);
+                console.log((<MoocTaskSet>mooc).Next, "mooc.Next")
                 // MoocTaskSet接口判断,接管流程
                 if ((<MoocTaskSet>mooc).Next != undefined) {
                     this.runMoocTask(<MoocTaskSet>mooc);
@@ -48,6 +51,13 @@ export class mooc implements Launcher {
             if (Application.App.config.auto) {
                 this.runTask(moocTask);
             }
+
+            clearTimeout(this.timer);
+        });
+        moocTask.addEventListener("examReload", () => {
+            Application.App.log.Warn("runMoocTask examReload",Application.App.config.auto,moocTask);
+                this.runTask(moocTask);
+
             clearTimeout(this.timer);
         });
         moocTask.addEventListener("complete", () => {
@@ -107,7 +117,6 @@ export class mooc implements Launcher {
         this.once = true;
         Application.App.log.Debug("runTask 开始执行任务:");
         let task = await moocTask.Next();
-        Application.App.log.Info("runTask 当前任务:", task);
         while (task != null) {
             if (task.Done()) {
                 task = await moocTask.Next();
@@ -118,8 +127,10 @@ export class mooc implements Launcher {
             //     continue;
             // }
             //开始任务
-            if (Application.App.config.auto) {
-                Application.App.log.Info(" runTask 开始任务:", task);
+            if (Application.App.config.auto&&task.Type() !== "exam") {
+                await task.Start();
+            }
+            if (task.Type() == "exam") {
                 await task.Start();
             }
             this.nowTask = task;

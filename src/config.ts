@@ -218,6 +218,13 @@ export class SystemConfig {
                  value: false,
                },
                {
+                 title: "是否自动考试",
+                 description: "开启后会自动考试",
+                 type: "checkbox",
+                 key: "exam_auto",
+                 value: false,
+               },
+               {
                  title: "学习地图任务挂机",
                  description: "进入页面自动开始学习地图并处理后续任务",
                  type: "checkbox",
