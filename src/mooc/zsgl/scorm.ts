@@ -2,8 +2,8 @@
  * @Author: guotao
  * @Date: 2025-03-12 17:19:39
  * @LastEditors: guotao
- * @LastEditTime: 2025-09-30 15:49:54
- * @FilePath: \course-tools\src\mooc\zsgl\scorm.ts
+ * @LastEditTime: 2025-12-24 21:21:03
+ * @FilePath: \course-tools1\src\mooc\zsgl\scorm.ts
  * @Description:
  *
  * Copyright (c) 2025 by lzlj, All Rights Reserved.
@@ -41,6 +41,22 @@ export class ZsglAudio extends ZsglTask {
       Application.App.log.Debug("开始点击任务按钮",this.taskDiv);
       this.taskDiv.click();
       let attemptCount = 0;
+      const eventPreventHandler = function (this: any, e: Event) {
+                console.log(`${this.name} ${e.type}事件触发`, e);
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+            }
+            //处理页面的事件监听函数的检测
+            window.addEventListener('blur', eventPreventHandler, true);
+            window.addEventListener('resize', eventPreventHandler, true);
+            document.addEventListener('visibilitychange', eventPreventHandler, true);
+            document.addEventListener('resize', eventPreventHandler, true);
+            document.addEventListener('fullscreenchange', eventPreventHandler, true);
+            document.addEventListener('focus', eventPreventHandler, true);
+            document.addEventListener('webkitfullscreenchange', eventPreventHandler, true);
+            document.addEventListener('blur', eventPreventHandler, true);
+            // this.video.addEventListener('seeked', eventPreventHandler, true);
+            // this.video.addEventListener('seeking', eventPreventHandler, true);
       this.outerTimer = setInterval(() => {
         attemptCount++;
         if (attemptCount > 10) {
@@ -52,14 +68,14 @@ export class ZsglAudio extends ZsglTask {
         Application.App.log.Debug(" Start开始按钮",JSON.stringify(this.taskinfo));
         if (startButton && this.taskinfo.cwType === "scorm") {
           Application.App.log.Debug("开始点击开始按钮",startButton);
-          // 修复3：先停止定时器再执行点击
+          // 修复3：先停止定时器再执行点击事件，确保视频加载完成
+          clearInterval(this.outerTimer);
           // 修复4：移除事件监听避免重复绑定
           const clickHandler = () => {
             this.findvideoinit()
               .then(() => {
                 // 修复点1：移除参数
                 Application.App.log.Debug("视频任务初始化完成");
-                clearInterval(this.outerTimer);
                 this.exitBtn = document.querySelector("span.exit");
                 const container =document.querySelector("#watermarkFrame") || document.body;
                 const prev = document.createElement("div");
@@ -80,6 +96,7 @@ export class ZsglAudio extends ZsglTask {
           console.log("准备执行startButton", startButton);
           (startButton as HTMLElement).click();
         } else {
+          clearInterval(this.outerTimer);
           resolve();
         }
       }, 1000);
@@ -98,10 +115,28 @@ export class ZsglAudio extends ZsglTask {
     this.video.muted = Application.App.config.video_mute;
     this.video.playbackRate = Application.App.config.video_multiple;
     this.video.currentTime = 0; //重置播放时间来实现未完成的任务失常不够的问题
-    // setTimeout(() => {
-    //     this.video.currentTime = 0;//重置播放时间来实现未完成的任务失常不够的问题
-    //   }, 5000); 
 
+    const eventPreventHandler = function (this: any, e: Event) {
+          console.log(`${this.name} ${e.type}事件触发`, e);
+          e.stopImmediatePropagation();
+          e.stopPropagation();
+      }
+    
+    // 添加对视频元素的事件阻止
+    this.video.addEventListener('seeked', eventPreventHandler, true);
+    this.video.addEventListener('seeking', eventPreventHandler, true);
+    
+    // 处理页面失去焦点导致视频暂停的问题：阻止页面级别的事件传播
+    window.addEventListener('blur', eventPreventHandler, true);
+    window.addEventListener('resize', eventPreventHandler, true);
+    document.addEventListener('visibilitychange', eventPreventHandler, true);
+    document.addEventListener('resize', eventPreventHandler, true);
+    document.addEventListener('fullscreenchange', eventPreventHandler, true);
+    document.addEventListener('focus', eventPreventHandler, true);
+    document.addEventListener('webkitfullscreenchange', eventPreventHandler, true);
+    document.addEventListener('blur', eventPreventHandler, true);
+    
+    // 确保视频在初始化后自动播放
     Application.App.config.auto && this.video.play();
   }
   public Init(): Promise<void> {
@@ -220,13 +255,33 @@ export class ZsglAudio extends ZsglTask {
         if (video) {
           clearInterval(videoTimer);
           console.info("[视频查找] 视频元素查找成功", video);
+          clearInterval(this.outerTimer);
           this.video = video;
+          
+          // 添加视频暂停自动恢复的定时器
+          const videoPlayOrPauseTimer = setInterval(() => {
+            Application.App.config.auto && this.video.paused && this.video.play();
+          }, 5000);
+          
           video.addEventListener("ended", () => {
             Application.App.log.Info("视频播放结束");
+            // 清除自动恢复定时器
+            clearInterval(videoPlayOrPauseTimer);
             this.callEvent("taskComplete"); // 触发事件
             Application.App.log.Debug("退出按钮",this.exitBtn);
             this.exitBtn.click(); // 触发退出按钮
           }, { once: true });
+          
+          // 确保视频在页面失去焦点时继续播放
+          video.addEventListener('pause', () => {
+            console.log('Video paused, attempting to resume...');
+            setTimeout(() => {
+              if (this.video.paused && Application.App.config.auto) {
+                this.video.play();
+              }
+            }, 100);
+          }, true);
+          
           resolve();
         } else {
           console.debug(`[视频查找] 第 ${attemptCount} 次尝试未找到视频`);
