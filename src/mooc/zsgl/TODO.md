@@ -1,0 +1,217 @@
+# 问题清单
+
+## 1. 解决考试的答案问题
+
+### 问题描述
+- 考试模块需要获取并显示正确答案
+- 当前答案解密和匹配逻辑需要验证
+
+### 相关文件
+- `src/mooc/zsgl/exam.ts` - 考试模块
+- `src/mooc/zsgl/constants.ts` - AES解密配置
+
+### 待办事项
+- [ ] 验证AES解密配置是否正确
+- [ ] 测试答案匹配逻辑
+- [ ] 优化答案显示方式
+
+---
+
+## 2. 解决SCORM类型任务的各种子类型问题
+
+### 问题描述
+当前 `factory.ts` 中对SCORM类型的处理不够完善，需要支持更多子类型：
+
+```typescript
+case "video":
+    return new ZsglVideo(document, taskinfo);
+case "knowledge":
+case "document":
+case "audio":
+case "URL":
+    Application.App.log.Debug(`暂不支持的课程类型: ${taskinfo.cwType}`);
+    return null;
+```
+
+### 相关文件
+- `src/mooc/zsgl/factory.ts` - 任务工厂
+- `src/mooc/zsgl/scorm.ts` - SCORM任务
+- `src/mooc/zsgl/video.ts` - 视频任务
+
+### 待办事项
+- [ ] 实现 `knowledge` 类型任务处理
+- [ ] 实现 `document` 类型任务处理（文档阅读）
+- [ ] 实现 `audio` 类型任务处理（音频播放）
+- [ ] 实现 `URL` 类型任务处理（链接访问）
+- [ ] 统一各类型的基类和接口
+
+### 类型说明
+| 类型 | 说明 | 处理方式 |
+|------|------|----------|
+| `video` | 视频任务 | 自动播放视频 |
+| `scorm` | SCORM课件 | 自动播放课件内视频 |
+| `knowledge` | 知识点 | 待实现 |
+| `document` | 文档 | 自动标记已读 |
+| `audio` | 音频 | 自动播放音频 |
+| `URL` | 链接 | 自动访问链接 |
+
+---
+
+## 2.1 实现 URL 类型任务处理
+
+### 功能描述
+`URL` 类型任务是课程中的外部链接资源，需要实现自动访问并标记完成。
+
+### 实现方案
+1. **自动访问**：检测到URL类型任务时，自动在新窗口打开链接
+2. **标记完成**：访问后自动标记任务为已完成
+3. **等待机制**：等待一定时间后自动跳转到下一个任务
+
+### 相关代码位置
+`src/mooc/zsgl/factory.ts#L44-45`:
+```typescript
+case "URL":
+    Application.App.log.Debug(`暂不支持的课程类型: ${taskinfo.cwType}`);
+    return null;
+```
+
+### 待办事项
+- [ ] 创建 `ZsglUrl` 任务类（继承 `ZsglTask`）
+- [ ] 实现 `Init()` 方法：获取链接地址
+- [ ] 实现 `Start()` 方法：自动打开链接
+- [ ] 实现 `Done()` 方法：判断是否完成
+- [ ] 在 `factory.ts` 中注册新类型
+- [ ] 添加配置项：是否自动打开URL链接
+
+### 新建文件
+- `src/mooc/zsgl/url.ts` - URL任务处理模块
+
+### 代码设计
+```typescript
+// src/mooc/zsgl/url.ts
+export class ZsglUrl extends ZsglTask {
+    protected url: string;
+    
+    public async Start(): Promise<any> {
+        // 自动打开链接
+        if (this.url) {
+            window.open(this.url, '_blank');
+            // 等待一段时间后标记完成
+            await sleep(3000);
+            this.callEvent("taskComplete");
+        }
+    }
+    
+    public Type(): TaskType {
+        return "url";
+    }
+}
+```
+
+### 配置项
+```typescript
+{
+    title: "自动打开链接",
+    description: "自动打开课程中的外部链接资源",
+    type: "checkbox",
+    key: "auto_open_url",
+    value: true,
+},
+```
+
+---
+
+## 3. 新增每日积分模式模块
+
+### 问题描述
+需要新增一个自动刷课模式，用于自动完成当天的积分任务。
+
+### 功能需求
+1. **模式切换**：用户可以选择开启/关闭每日积分模式
+2. **自动刷课**：自动播放未完成的课程视频
+3. **积分统计**：显示当天已获得的积分
+4. **任务队列**：自动获取当天可做的积分任务列表
+5. **智能跳过**：跳过已完成或不可用的任务
+
+### 相关文件
+- `src/mooc/zsgl/platform.ts` - 平台工厂（需要添加新模式判断）
+- `src/config.ts` - 配置项（需要添加新配置）
+- 新建 `src/mooc/zsgl/dailyPoints.ts` - 每日积分模块
+
+### 待办事项
+- [ ] 设计每日积分模式的架构
+- [ ] 实现积分任务列表获取
+- [ ] 实现自动刷课逻辑
+- [ ] 添加积分统计功能
+- [ ] 添加UI控制面板
+- [ ] 添加配置项到 `config.ts`
+
+### 配置项设计
+```typescript
+{
+    title: "每日积分模式",
+    description: "自动刷课获取当天积分",
+    type: "checkbox",
+    key: "daily_points_mode",
+    value: false,
+},
+{
+    title: "目标积分",
+    description: "每天目标获得的积分数",
+    type: "text",
+    key: "daily_points_target",
+    unit: "分",
+    value: "100",
+},
+```
+
+---
+
+## 4. 学习地图选修部分支持
+
+### 问题描述
+当前学习地图模块可能未正确处理选修课程部分，需要确认是否需要支持学习地图中的选修课程。
+
+### 功能需求
+1. **选修识别**：识别学习地图中的选修课程
+2. **选修处理**：根据配置决定是否自动学习选修课程
+3. **进度同步**：确保选修课程进度正确同步
+
+### 相关文件
+- `src/mooc/zsgl/studyMap.ts` - 学习地图模块
+- `src/mooc/zsgl/platform.ts` - 平台工厂
+
+### 待办事项
+- [ ] 调研学习地图选修课程的数据结构
+- [ ] 确定选修课程的判断逻辑
+- [ ] 实现选修课程的过滤/包含功能
+- [ ] 添加配置项：是否学习选修课程
+
+### 配置项设计
+```typescript
+{
+    title: "学习选修课程",
+    description: "在学习地图中是否自动学习选修课程",
+    type: "checkbox",
+    key: "study_elective_courses",
+    value: false,
+},
+```
+
+---
+
+## 优先级排序
+
+| 优先级 | 问题 | 预计工作量 |
+|--------|------|------------|
+| P0 | 考试答案问题 | 中 |
+| P1 | SCORM子类型支持 | 高 |
+| P2 | 每日积分模式 | 高 |
+
+---
+
+## 更新日志
+
+| 日期 | 更新内容 |
+|------|----------|
+| 2025-03-09 | 创建问题清单 |

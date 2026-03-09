@@ -211,12 +211,12 @@ export class SystemConfig {
              name: "知识管理",
              items: [
                {
-                 title: "视频任务挂机",
-                 description: "进入页面自动开始播放视频并处理后续任务",
-                 type: "checkbox",
-                 key: "auto",
-                 value: false,
-               },
+                title: "视频任务挂机",
+                description: "进入页面自动开始播放视频并处理后续任务",
+                type: "checkbox",
+                key: "auto",
+                value: true,
+              },
                {
                  title: "是否自动考试",
                  description: "开启后会自动考试",
