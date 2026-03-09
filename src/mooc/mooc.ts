@@ -2,7 +2,11 @@ import {Launcher, Application} from "@App/internal/application";
 import {Mooc, MoocFactory, MoocTaskSet} from "@App/internal/app/mooc";
 import {Task} from "@App/internal/app/task";
 
-export class mooc implements Launcher {
+/**
+ * MoocLauncher 启动器类
+ * 负责初始化和运行Mooc任务
+ */
+export class MoocLauncher implements Launcher {
     protected moocFactory: MoocFactory;
 
     constructor(moocFactory: MoocFactory) {
@@ -13,15 +17,15 @@ export class mooc implements Launcher {
         try {
             let state = document.readyState;
             Application.App.log.Debug("Start document state:", state);
-            let mooc = this.moocFactory.CreateMooc();
-            console.log("mooc start", mooc);
-            if (mooc != null) {
-                await mooc.Init();
-                console.log("mooc初始化完成", mooc);
-                console.log((<MoocTaskSet>mooc).Next, "mooc.Next")
+            let moocInstance = this.moocFactory.CreateMooc();
+            console.log("mooc start", moocInstance);
+            if (moocInstance != null) {
+                await moocInstance.Init();
+                console.log("mooc初始化完成", moocInstance);
+                console.log((<MoocTaskSet>moocInstance).Next, "mooc.Next");
                 // MoocTaskSet接口判断,接管流程
-                if ((<MoocTaskSet>mooc).Next != undefined) {
-                    this.runMoocTask(<MoocTaskSet>mooc);
+                if ((<MoocTaskSet>moocInstance).Next != undefined) {
+                    this.runMoocTask(<MoocTaskSet>moocInstance);
                 }
             }
         } catch (e) {

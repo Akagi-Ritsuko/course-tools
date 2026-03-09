@@ -2,39 +2,55 @@
  * @Author: guotao
  * @Date: 2025-09-26 17:51:14
  * @LastEditors: guotao
- * @LastEditTime: 2025-10-12 14:21:11
+ * @LastEditTime: 2025-03-09
  * @FilePath: \course-tools1\src\mooc\zsgl\platform.ts
- * @Description: 
- * 
- * Copyright (c) 2025 by lzlj, All Rights Reserved. 
+ * @Description: zsgl 平台工厂
+ *
+ * Copyright (c) 2025 by lzlj, All Rights Reserved.
  */
 import { Mooc, MoocFactory } from '@App/internal/app/mooc';
 import { Application } from '@App/internal/application';
 import { ZsglCourse } from './course';
-// import { ZsglVideo } from './video';
-
 import { ZsglStudyMap } from './studyMap';
 import { ZsglExam } from './exam';
-export class ZsglPlatform implements MoocFactory{
+import { ZSGL_CONSTANTS } from './constants';
+
+/**
+ * ZsglPlatform 平台工厂类
+ * 根据页面URL特征来返回对应的mooc任务
+ */
+export class ZsglPlatform implements MoocFactory {
+    /**
+     * 创建Mooc实例
+     * 通过URL特征进行平台识别
+     */
     public CreateMooc(): Mooc {
-        // 通过URL特征进行平台识别
+        // 课程详情页
         if (this.isZsglCoursePage()) {
-            console.log('当前平台：zsgl');
-            Application.App.config.SetNamespace('zsgl')
+            Application.App.log.Info('当前平台：zsgl');
+            Application.App.config.SetNamespace('zsgl');
             return new ZsglCourse();
         }
-        if (window.location.hash.includes('/home/studyDetail')) {
-            console.log('当前平台：zsgl-studyDetail');
+
+        // 学习地图页
+        if (window.location.hash.includes(ZSGL_CONSTANTS.URL_PATTERNS.HOME_STUDY_DETAIL)) {
+            Application.App.log.Info('当前平台：zsgl-studyDetail');
             return new ZsglStudyMap();
-      }
-          if (window.location.hash.includes("/home/examDetail")) {
-            console.log("当前平台：zsgl-examDetail");
+        }
+
+        // 考试详情页
+        if (window.location.hash.includes(ZSGL_CONSTANTS.URL_PATTERNS.HOME_EXAM_DETAIL)) {
+            Application.App.log.Info('当前平台：zsgl-examDetail');
             return new ZsglExam();
-          }
+        }
+
+        return null;
     }
+
+    /**
+     * 检查是否为zsgl课程页面
+     */
     private isZsglCoursePage(): boolean {
-        // console.log("zsgl platform check url:",document.URL);
-        // return document.URL.indexOf('/courseDetail')>0;
-            return window.location.hash.includes('/home/courseDetail/');
+        return window.location.hash.includes(ZSGL_CONSTANTS.URL_PATTERNS.HOME_COURSE_DETAIL);
     }
 }
