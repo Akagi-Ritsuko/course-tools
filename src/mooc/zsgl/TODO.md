@@ -200,6 +200,81 @@ export class ZsglUrl extends ZsglTask {
 
 ---
 
+## 5. 焦点变化和页面最小化时视频暂停问题
+
+### 问题描述
+当浏览器标签页失去焦点或页面最小化时，视频会自动暂停播放，影响自动刷课功能。
+
+### 问题原因
+1. **浏览器策略**：现代浏览器为了节省资源，会在页面不可见时限制媒体播放
+2. **页面检测**：网站可能通过 `visibilitychange`、`blur` 等事件检测用户行为
+3. **事件监听**：网站可能监听了焦点变化事件并暂停视频
+
+### 相关文件
+- `src/mooc/zsgl/scorm.ts` - SCORM任务（视频播放逻辑）
+- `src/mooc/zsgl/video.ts` - 视频任务
+- `src/mooc/zsgl/utils/utils.ts` - 事件阻止工具函数
+
+### 当前实现
+已有 `setupEventPrevention()` 函数尝试阻止这些事件：
+```typescript
+export function setupEventPrevention(target: Window | Document | HTMLElement): void {
+    const handler = createEventPreventHandler();
+    const events = [
+        'blur', 'resize', 'visibilitychange', 'fullscreenchange',
+        'focus', 'webkitfullscreenchange'
+    ];
+    events.forEach(event => {
+        target.addEventListener(event, handler, true);
+    });
+}
+```
+
+### 待办事项
+- [ ] 调研浏览器页面可见性API的工作原理
+- [ ] 验证当前事件阻止是否生效
+- [ ] 尝试使用 `Page Visibility API` 欺骗检测
+- [ ] 考虑使用 `Object.defineProperty` 修改 `document.hidden` 属性
+- [ ] 测试最小化后的视频恢复机制
+
+### 解决方案思路
+1. **事件拦截**：在捕获阶段拦截并阻止 `visibilitychange`、`blur` 等事件
+2. **属性欺骗**：重写 `document.hidden`、`document.visibilityState` 属性
+3. **定时恢复**：检测视频暂停后自动恢复播放（已实现 `setupVideoAutoResume`）
+4. **Web Worker**：使用 Web Worker 保持后台运行
+
+### 代码优化方向
+```typescript
+// 方案1：重写 visibilityState
+Object.defineProperty(document, 'visibilityState', {
+    get: () => 'visible',
+    configurable: true
+});
+
+Object.defineProperty(document, 'hidden', {
+    get: () => false,
+    configurable: true
+});
+
+// 方案2：阻止 visibilitychange 事件传播
+document.addEventListener('visibilitychange', (e) => {
+    e.stopImmediatePropagation();
+}, true);
+```
+
+### 配置项
+```typescript
+{
+    title: "后台继续播放",
+    description: "页面最小化或失去焦点时继续播放视频",
+    type: "checkbox",
+    key: "background_play",
+    value: true,
+},
+```
+
+---
+
 ## 优先级排序
 
 | 优先级 | 问题 | 预计工作量 |
