@@ -1,7 +1,7 @@
 import { ChromeConfigItems, NewFrontendGetConfig } from "@App/internal/utils/config";
 import { ConsoleLog, Logger, PageLog } from "@App/internal/utils/log";
 import { Application, Frontend } from "@App/internal/application";
-import { mooc } from "@App/mooc/mooc";
+import { MoocLauncher } from "@App/mooc/mooc";
 import { CxPlatform } from "@App/mooc/chaoxing/platform";
 
 
@@ -17,5 +17,5 @@ let component = new Map<string, any>().
     set("config", new ChromeConfigItems(NewFrontendGetConfig())).
     set("logger", logger);
 
-let app = new Application(Frontend, new mooc(new CxPlatform()), component);
+let app = new Application(Frontend, new MoocLauncher(new CxPlatform()), component);
 app.run();

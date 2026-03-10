@@ -1,10 +1,10 @@
 /*
  * @Author: guotao
  * @Date: 2025-09-27 02:32:51
- * @LastEditors: guotao 1531188409@qq.com
- * @LastEditTime: 2025-10-03 00:58:43
+ * @LastEditors: guotao
+ * @LastEditTime: 2025-03-09
  * @FilePath: \course-tools\src\mooc\zsgl\course.ts
- * @Description:
+ * @Description: zsgl 课程任务管理
  *
  * Copyright (c) 2025 by lzlj, All Rights Reserved.
  */
@@ -14,275 +14,294 @@ import { TaskFactory } from "./factory";
 import { Mooc, MoocTaskSet, MoocEvent } from "@App/internal/app/mooc";
 import { Task } from "@App/internal/app/task";
 import { EventListener } from "@App/internal/utils/event";
-import { hookHttpRequest } from "./utils/utils";
-import { prototype } from "vue/types/umd";
-import { CssBtn } from "./utils/utils";
+import { hookHttpRequest, CssBtn, TimerManager, findElementByText } from "./utils/utils";
 import {
-  randNumber,
-  post,
-  substrex,
-  protocolPrompt,
-  createBtn,
+    createBtn,
+    protocolPrompt,
 } from "@App/internal/utils/utils";
+import { CourseDetailItem, TaskInfo } from "./types";
+import { ZSGL_CONSTANTS } from "./constants";
 
-//课程任务
-export class ZsglCourse extends EventListener<MoocEvent>
-  implements MoocTaskSet {
-  protected taskList: Array<ZsglTask> = [];
-  protected attachments: Array<any>;
+/**
+ * ZsglCourse 课程任务类
+ * 继承自 EventListener<MoocEvent> 并实现 MoocTaskSet 接口
+ */
+export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet {
+    /** 任务列表 */
+    protected taskList: Array<ZsglTask> = [];
+    /** 附件列表 */
+    protected attachments: Array<any>;
+    /** 课程详情数据 */
+    private courseDetailData: CourseDetailItem[] = [];
+    /** 定时器管理器 */
+    private timerManager: TimerManager = new TimerManager();
+    /** 任务索引 */
+    protected taskIndex: number = 0;
 
-  private courseDetailData: any[]=[]; // 课程详情数据
-  public Init(): Promise<any> {
-    return new Promise(async (resolve) => {
-      let first = true;
-      window.onresize = null;
-      // this.taskList = new Array<ZsglTask>();
-      Application.App.log.Debug("初始化course课程任务");
-      window.addEventListener("load", async () => {
-        Application.App.log.Debug("document.addEventListener(load)");
-        let prev: HTMLElement;
-        const container =
-          document.querySelector("#watermarkFrame") || document.body;
-        prev = document.createElement("div");
-        container.prepend(prev);
-        const bar = new ZsglCourseControlBar(prev);
-          await this.hookCourseDetailRequests(); // 获取课程详情
-        this.OperateCard();
-        first && resolve(undefined);
-        first = false;
-      });
-    });
-  }
-  protected hookCourseDetailRequests(): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      await hookHttpRequest(
-        "queryCourseDetail.do",
-        (response, self) => {
-          Application.App.log.Debug("原始响应数据", response);
-          const responseData = response?.body;
-          if (responseData && responseData?.isCompleted !== "Y") {
-            const courseFileArr = responseData?.courseFileArr;
+    public Init(): Promise<any> {
+        return new Promise(async (resolve) => {
+            let first = true;
+            window.onresize = null;
+            Application.App.log.Debug("初始化course课程任务");
+            Application.App.log.Debug("当前页面URL:", window.location.href);
+            Application.App.log.Debug("当前页面hash:", window.location.hash);
             
-            console.log("课程详情数据1", courseFileArr);
-            const courseId= responseData?.courseId;
-            self.courseDetailData = courseFileArr
-              .map((item: any, index: number) => {
-                return {
-                  hasLearned: item.hasLearned,
-                  fileName: item.fileName,
-                  cwType: item.cwType,
-                  jobIndex: index,
-                  courseId
-                };
-              })
-              .filter((item: any) => {
-                return item.hasLearned === "0";
-              });
-            console.log("课程详情数据2", JSON.stringify(self.courseDetailData));
-            resolve();
-          } else {
-            this.callEvent("courseTaskComplete");
-            resolve();
-          }
-        },
-        this
-      );
-    });
-  }
-  public Stop(): Promise<any> {
-    throw new Error("Method not implemented.");
-  }
+            // 先设置钩子，再等待页面加载
+            this.hookCourseDetailRequests();
+            
+            window.addEventListener("load", async () => {
+                Application.App.log.Debug("document.addEventListener(load)");
+                let prev: HTMLElement;
+                const container =
+                    document.querySelector(ZSGL_CONSTANTS.SELECTORS.WATERMARK_FRAME) || document.body;
+                prev = document.createElement("div");
+                container.prepend(prev);
+                const bar = new ZsglCourseControlBar(prev);
+                this.OperateCard();
+                first && resolve(undefined);
+                first = false;
+            });
 
-  protected taskIndex: number = 0;
-
-  public Next(): Promise<Task> {
-    return new Promise((resolve) => {
-      if (this.taskList.length > this.taskIndex) {
-        resolve(this.taskList[this.taskIndex]);
-        return this.taskIndex++;
-      } else {
-        this.callEvent("courseTaskComplete");
-      }
-      // 当页任务点全部结束,翻页.由于会重新加载窗口调用reload,在加载完成之后再返回任务点.(本方法是同步调用,所以使用此种方法)
-      // this.addEventListenerOnce("reload", async () => {
-      //     // resolve(await this.Next());
-      // })
-      // this.nextPage(null);
-    });
-  }
-
-  public SetTaskPointer(index: number): void {
-    this.taskIndex = index;
-  }
-
-  // 操作任务卡,一个页面会包含很多任务,取出来
-  public async OperateCard() {
-    // 构建任务
-    console.log(
-      "OperateCard 课程详情数据2",
-      JSON.stringify(this.courseDetailData),
-      this.courseDetailData.length
-    );
-    const loadedFlagValue = this.courseDetailData[0];
-    let attemptCount = 0;
-    const checkTimer = setInterval(async () => {
-      attemptCount++;
-      if (attemptCount > 10) {
-        clearInterval(checkTimer);
-        this.callEvent("courseTaskComplete"); // 如果课程详情数据为空,则表示课程已经完成,直接调用完成事件
-        return;
-      }
-      // this.callEvent("courseTaskComplete");
-      const taskDiv = Array.from(
-        document.querySelectorAll("span")
-      ).find((div) => div.textContent?.includes(`${loadedFlagValue.fileName}`));
-      console.log("寻找taskDiv", loadedFlagValue.fileName);
-      if (taskDiv) {
-        clearInterval(checkTimer);
-        for (let index = 0; index < this.courseDetailData.length; index++) {
-          let value = this.courseDetailData[index];
-          let task: ZsglTask;
-          // 任务工厂去创建对应的任务对象
-          task = TaskFactory.CreateCourseTask(value);
-          console.log("OperateCard task", task, index);
-          console.log("OperateCard taskList", this.taskList);
-          if (!task) {
-            continue;
-          }
-          task.jobIndex = index;
-          this.taskList.push(task);
-          console.log("OperateCard taskList after", this.taskList);
-          task.addEventListener("complete", () => {
-            this.callEvent("taskComplete", index, task);
-          });
-          await task.Init();
-          }
-          this.taskIndex = 0;
-          this.callEvent("reload");
-      }
-    }, 500);
-
-
-  }
-
-  protected afterPage(): HTMLElement {
-    //感觉奇葩的方法...
-    let els = document.querySelectorAll(
-      "div.ncells > *:not(.currents) > .orange01"
-    );
-    let now = <HTMLElement>document.querySelector("div.ncells > .currents");
-    for (let i = 0; i < els.length; i++) {
-      if (
-        now.getBoundingClientRect().top < els[i].getBoundingClientRect().top
-      ) {
-        return <HTMLElement>els[i];
-      }
+            // 如果页面已经加载完成，直接执行
+            if (document.readyState === "complete" || document.readyState === "interactive") {
+                Application.App.log.Debug("页面已加载完成，直接初始化");
+                let prev: HTMLElement;
+                const container =
+                    document.querySelector(ZSGL_CONSTANTS.SELECTORS.WATERMARK_FRAME) || document.body;
+                prev = document.createElement("div");
+                container.prepend(prev);
+                const bar = new ZsglCourseControlBar(prev);
+                this.OperateCard();
+                first && resolve(undefined);
+                first = false;
+            }
+        });
     }
-    return null;
-  }
 
-  protected nextPage(num: number) {
-    let el =
-      <HTMLElement>document.querySelector("span.currents ~ span") ||
-      <HTMLElement>document.querySelector(".prev_next.next");
-    if (el != undefined) {
-      return el.click();
+    /** 钩子获取课程详情请求 */
+    protected hookCourseDetailRequests(): void {
+        Application.App.log.Debug("设置HTTP钩子，监听:", ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_COURSE_DETAIL);
+        
+        const originalOpen = XMLHttpRequest.prototype.open;
+        const self = this;
+
+        XMLHttpRequest.prototype.open = function (method: string, url: string) {
+            Application.App.log.Debug("拦截到HTTP请求:", url);
+            
+            if (url.includes(ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_COURSE_DETAIL)) {
+                Application.App.log.Info("匹配到课程详情请求:", url);
+                
+                this.addEventListener('readystatechange', function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        try {
+                            Application.App.log.Debug("课程详情请求响应:", this.responseText.substring(0, 500));
+                            
+                            const response = this.responseText.startsWith("{")
+                                ? JSON.parse(this.responseText)
+                                : this.responseText;
+                            
+                            const responseData = response?.body;
+                            if (responseData && responseData?.isCompleted !== "Y") {
+                                const courseFileArr = responseData?.courseFileArr;
+                                const courseId = responseData?.courseId;
+                                self.courseDetailData = courseFileArr
+                                    .map((item: any, index: number): CourseDetailItem => {
+                                        return {
+                                            hasLearned: item.hasLearned,
+                                            fileName: item.fileName,
+                                            cwType: item.cwType,
+                                            jobIndex: index,
+                                            courseId
+                                        };
+                                    })
+                                    .filter((item: CourseDetailItem) => {
+                                        return item.hasLearned === "0";
+                                    });
+                                Application.App.log.Info("课程详情数据已获取，共", self.courseDetailData.length, "个未完成任务");
+                                Application.App.log.Debug("课程详情数据", self.courseDetailData);
+                            } else {
+                                Application.App.log.Info("课程已完成或无数据");
+                                self.callEvent("courseTaskComplete");
+                            }
+                        } catch (e) {
+                            Application.App.log.Error("数据解析失败", e);
+                        }
+                    }
+                });
+            }
+            return originalOpen.apply(this, arguments as any);
+        };
     }
-    //只往后执行
-    el = this.afterPage();
-    if (el == undefined) {
-      //进行有锁任务查找
-      if (
-        document.querySelector("div.ncells > *:not(.currents) > .lock") ==
-        undefined
-      ) {
-        return this.callEvent("complete");
-      }
-      return setTimeout(() => {
-        if (num > 5) {
-          return this.callEvent("error", "被锁卡住了,请手动处理");
+
+    public Stop(): Promise<any> {
+        this.timerManager.clearAll();
+        this.taskList.forEach(task => task.Stop());
+        return Promise.resolve();
+    }
+
+    public Next(): Promise<Task> {
+        return new Promise((resolve) => {
+            if (this.taskList.length > this.taskIndex) {
+                resolve(this.taskList[this.taskIndex]);
+                return this.taskIndex++;
+            } else {
+                this.callEvent("courseTaskComplete");
+            }
+        });
+    }
+
+    public SetTaskPointer(index: number): void {
+        this.taskIndex = index;
+    }
+
+    /** 操作任务卡,一个页面会包含很多任务,取出来 */
+    public async OperateCard(): Promise<void> {
+        Application.App.log.Debug("OperateCard 课程详情数据长度:", this.courseDetailData.length);
+        
+        if (this.courseDetailData.length === 0) {
+            Application.App.log.Warn("课程详情数据为空，等待数据...");
+            // 等待数据加载
+            let waitCount = 0;
+            this.timerManager.setInterval("waitForData", () => {
+                waitCount++;
+                Application.App.log.Debug("等待课程数据...", waitCount);
+                
+                if (this.courseDetailData.length > 0) {
+                    this.timerManager.clearInterval("waitForData");
+                    this.processCourseData();
+                } else if (waitCount > 20) {
+                    this.timerManager.clearInterval("waitForData");
+                    Application.App.log.Error("等待课程数据超时");
+                    this.callEvent("courseTaskComplete");
+                }
+            }, 1000);
+            return;
         }
-        Application.App.log.Info("等待解锁");
-        this.nextPage(num + 1);
-      }, 5000);
+
+        this.processCourseData();
     }
-    (<any>el.parentElement.querySelector("a>span")).click();
-  }
+
+    /** 处理课程数据 */
+    private async processCourseData(): Promise<void> {
+        const loadedFlagValue = this.courseDetailData[0];
+        let attemptCount = 0;
+
+        this.timerManager.setInterval("checkTaskDiv", async () => {
+            attemptCount++;
+            if (attemptCount > ZSGL_CONSTANTS.MAX_ATTEMPT_COUNT) {
+                this.timerManager.clearInterval("checkTaskDiv");
+                this.callEvent("courseTaskComplete");
+                return;
+            }
+
+            const taskDiv = findElementByText("span", loadedFlagValue.fileName);
+            Application.App.log.Debug("寻找taskDiv", loadedFlagValue.fileName);
+
+            if (taskDiv) {
+                this.timerManager.clearInterval("checkTaskDiv");
+                await this.buildTasks();
+                this.taskIndex = 0;
+                this.callEvent("reload");
+            }
+        }, ZSGL_CONSTANTS.CHECK_INTERVAL_MS);
+    }
+
+    /** 构建任务列表 */
+    private async buildTasks(): Promise<void> {
+        Application.App.log.Info("开始构建任务列表，共", this.courseDetailData.length, "个任务");
+        
+        for (let index = 0; index < this.courseDetailData.length; index++) {
+            const value = this.courseDetailData[index];
+            Application.App.log.Debug(`构建任务 ${index + 1}:`, value.fileName, "类型:", value.cwType);
+            
+            const task = TaskFactory.CreateCourseTask(value);
+
+            if (!task) {
+                Application.App.log.Warn(`任务 ${index + 1} 创建失败，跳过`);
+                continue;
+            }
+
+            task.jobIndex = index;
+            this.taskList.push(task);
+            task.addEventListener("complete", () => {
+                this.callEvent("taskComplete", index, task);
+            });
+            await task.Init();
+            Application.App.log.Debug(`任务 ${index + 1} 初始化完成`);
+        }
+        
+        Application.App.log.Info("任务列表构建完成，共", this.taskList.length, "个有效任务");
+    }
+
+    /** 获取下一页元素 */
+    protected afterPage(): HTMLElement | null {
+        const els = document.querySelectorAll(
+            `${ZSGL_CONSTANTS.SELECTORS.NCELLS} > *:not(${ZSGL_CONSTANTS.SELECTORS.CURRENTS}) > ${ZSGL_CONSTANTS.SELECTORS.ORANGE01}`
+        );
+        const now = document.querySelector(`${ZSGL_CONSTANTS.SELECTORS.NCELLS} > ${ZSGL_CONSTANTS.SELECTORS.CURRENTS}`) as HTMLElement;
+        
+        for (let i = 0; i < els.length; i++) {
+            if (now && now.getBoundingClientRect().top < els[i].getBoundingClientRect().top) {
+                return els[i] as HTMLElement;
+            }
+        }
+        return null;
+    }
+
+    /** 翻页 */
+    protected nextPage(num: number): void {
+        let el =
+            document.querySelector(`${ZSGL_CONSTANTS.SELECTORS.CURRENTS} ~ span`) as HTMLElement ||
+            document.querySelector(ZSGL_CONSTANTS.SELECTORS.PREV_NEXT) as HTMLElement;
+        
+        if (el != undefined) {
+            return el.click();
+        }
+
+        el = this.afterPage();
+        if (el == undefined) {
+            if (
+                document.querySelector(`${ZSGL_CONSTANTS.SELECTORS.NCELLS} > *:not(${ZSGL_CONSTANTS.SELECTORS.CURRENTS}) > ${ZSGL_CONSTANTS.SELECTORS.LOCK}`) ==
+                undefined
+            ) {
+                return this.callEvent("complete");
+            }
+            setTimeout(() => {
+                if (num > 5) {
+                    return this.callEvent("error", ZSGL_CONSTANTS.ERROR_MESSAGES.LOCKED);
+                }
+                Application.App.log.Info("等待解锁");
+                this.nextPage(num + 1);
+            }, 5000);
+            return;
+        }
+        (el.parentElement?.querySelector("a>span") as HTMLElement)?.click();
+    }
 }
+
+/**
+ * ZsglCourseControlBar 课程控制栏类
+ */
 export class ZsglCourseControlBar extends ZsglTaskControlBar {
-  public defaultBtn() {
-    super.defaultBtn();
-    let pass = CssBtn(
-      createBtn("秒过视频", "秒过视频会被后台检测到", "cx-btn")
-    );
-    let downloadSubtitle = CssBtn(
-      createBtn("下载字幕", "我要下载字幕一同食用")
-    );
-    pass.style.background = "#F57C00";
-    downloadSubtitle.style.background = "#638EE1";
-    this.prev.append(pass, this.download(), downloadSubtitle);
-    pass.onclick = () => {
-      if (
-        !protocolPrompt("秒过视频会产生不良记录,是否继续?", "boom_no_prompt")
-      ) {
-        return;
-      }
-      // (<ZsglVideo>this.task).sendEndTimePack((isPassed: boolean) => {
-      //     if (isPassed) {
-      //         alert('秒过成功,刷新后查看效果');
-      //     } else {
-      //         alert('操作失败,错误');
-      //     }
-      // });
-    };
-    downloadSubtitle.onclick = () => {
-      // (<Video>this.task).downloadSubtitle();
-    };
-  }
+    public defaultBtn(): void {
+        super.defaultBtn();
+        const pass = CssBtn(
+            createBtn(ZSGL_CONSTANTS.BUTTON_TEXT.PASS_VIDEO, "秒过视频会被后台检测到", ZSGL_CONSTANTS.CSS_CLASSES.CX_BTN)
+        );
+        const downloadSubtitle = CssBtn(
+            createBtn(ZSGL_CONSTANTS.BUTTON_TEXT.DOWNLOAD_SUBTITLE, "我要下载字幕一同食用")
+        );
+        pass.style.background = "#F57C00";
+        downloadSubtitle.style.background = "#638EE1";
+        this.prev.append(pass, this.download(), downloadSubtitle);
+        
+        pass.onclick = () => {
+            if (!protocolPrompt("秒过视频会产生不良记录,是否继续?", "boom_no_prompt")) {
+                return;
+            }
+        };
+        
+        downloadSubtitle.onclick = () => {
+        };
+    }
 }
-
-// // 考试
-// export class CxExamTopic implements Mooc {
-//     public Init(): any {
-//         window.addEventListener("load", () => {
-//             let el = <HTMLInputElement>document.querySelector("#paperId");
-//             let info = "0";
-//             if (el) {
-//                 info = el.value;
-//             }
-//             let task = TaskFactory.CreateExamTopicTask(window, {
-//                 refer: document.URL,
-//                 id: "exam-" + info,
-//                 info: info,
-//             });
-//             task.Init();
-//             if (document.URL.indexOf("exam/test/reVersionTestStartNew") > 0) {
-//                 if (Application.App.config.auto) {
-//                     task.Start();
-//                 }
-//             }
-//         });
-//     }
-// }
-
-// // 作业
-// export class CxHomeWork implements Mooc {
-//     public Init(): any {
-//         window.onload = () => {
-//             let el = (<HTMLInputElement>document.querySelector("#workLibraryId"));
-//             let info = "";
-//             if (el) {
-//                 info = el.value;
-//             }
-//             let task = TaskFactory.CreateHomeworkTopicTask(window, {
-//                 refer: document.URL,
-//                 id: info,
-//                 info: info,
-//             });
-//             task.Init();
-//             if (Application.App.config.auto && <HTMLInputElement>document.querySelector("#workLibraryId")) {
-//                 task.Start();
-//             }
-//         }
-//     }
-// }
