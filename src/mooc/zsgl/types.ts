@@ -13,6 +13,8 @@ export interface TaskInfo {
     jobIndex: number;
     courseId?: string;
     property?: TaskProperty;
+    playTime?: number;
+    learnedDuration?: number;
 }
 
 export interface TaskProperty {
