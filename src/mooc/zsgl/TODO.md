@@ -197,10 +197,141 @@ export class ZsglUrl extends ZsglTask {
     value: false,
 },
 ```
+---
+## 5. 学习地图任务完成后未返回学习地图页面问题
+
+### 问题描述
+学习地图的任务跳转到具体任务完成后，没有关闭任务页面并返回到学习地图页面开启下一次任务。学习地图页面和具体任务页面是不同的网页。
+
+### 问题表现
+1. **任务页面未关闭**：任务完成后，任务页面保持打开状态
+2. **未返回学习地图**：没有自动跳转回学习地图页面
+3. **无法继续任务**：无法自动开启下一个任务
+4. **需要手动操作**：用户需要手动关闭任务页面并返回学习地图
+
+### 问题原因
+1. **页面URL不同**：学习地图页面和任务页面使用不同的URL路径
+   - 学习地图页面：`/home/studyDetail`
+   - 任务页面：`/home/courseDetail/`
+2. **任务完成检测**：任务完成后没有正确检测到并触发返回逻辑
+3. **导航逻辑缺失**：缺少任务完成后返回学习地图的导航代码
+
+### 相关文件
+- `src/mooc/zsgl/studyMap.ts` - 学习地图模块
+- `src/mooc/zsgl/course.ts` - 课程任务模块
+- `src/mooc/zsgl/video.ts` - 视频任务模块
+- `src/mooc/zsgl/task.ts` - 任务基类
+
+### 当前实现
+查看 `studyMap.ts` 中的 `Start()` 方法：
+```typescript
+public Start(): Promise<any> {
+    Application.App.log.Info("开始执行课程任务");
+    return new Promise<void>((resolve) => {
+        this.timerManager.setInterval("findTaskBtn", () => {
+            // 查找并点击任务按钮
+            const currentbutton = ...;
+            if (currentbutton) {
+                this.timerManager.clearInterval("findTaskBtn");
+                currentbutton.click();
+                
+                // 保存任务状态
+                const taskStatus: TaskStatus = {
+                    status: "started",
+                    expire: Date.now() + ZSGL_CONSTANTS.TASK_EXPIRE_MS,
+                };
+                localStorage.setItem(taskKey, JSON.stringify(taskStatus));
+                
+                // ❌ 缺少：任务完成后返回学习地图的逻辑
+                resolve();
+            }
+        }, ZSGL_CONSTANTS.CHECK_INTERVAL_MS);
+    });
+}
+```
+
+### 待办事项
+- [ ] 研究任务完成的检测机制
+- [ ] 实现任务完成后返回学习地图页面的导航逻辑
+- [ ] 添加任务页面关闭机制
+- [ ] 确保返回后能够自动开启下一个任务
+- [ ] 测试完整的任务流程：学习地图 → 任务 → 学习地图 → 下一个任务
+
+### 解决方案思路
+1. **监听任务完成事件**：在任务模块中监听任务完成事件
+2. **返回学习地图**：任务完成后导航回学习地图页面
+3. **关闭任务页面**：使用 `window.close()` 或导航关闭当前页面
+4. **重新初始化**：返回学习地图后重新初始化学习地图模块
+5. **自动开启下一个任务**：学习地图模块自动检测并开启下一个任务
+
+### 代码设计
+```typescript
+// 在 studyMap.ts 的 Start() 方法中添加
+public Start(): Promise<any> {
+    Application.App.log.Info("开始执行课程任务");
+    return new Promise<void>((resolve) => {
+        this.timerManager.setInterval("findTaskBtn", () => {
+            const currentbutton = ...;
+            if (currentbutton) {
+                this.timerManager.clearInterval("findTaskBtn");
+                currentbutton.click();
+                
+                const taskKey = `${ZSGL_CONSTANTS.STORAGE_PREFIX}${this.gateTaskData.resourceId}`;
+                const taskStatus: TaskStatus = {
+                    status: "started",
+                    expire: Date.now() + ZSGL_CONSTANTS.TASK_EXPIRE_MS,
+                };
+                localStorage.setItem(taskKey, JSON.stringify(taskStatus));
+                
+                // ✅ 新增：监听任务完成
+                const handler = createStorageHandler(taskKey);
+                window.addEventListener("storage", handler);
+                
+                resolve();
+            }
+        }, ZSGL_CONSTANTS.CHECK_INTERVAL_MS);
+    });
+}
+
+// 修改 createStorageHandler 函数
+export function createStorageHandler(key: string): StorageHandler {
+    const handler = function (event: StorageEvent) {
+        if (event.key === key) {
+            const taskStatus = JSON.parse(event.newValue || "{}");
+            if (taskStatus.status === "finished") {
+                window.removeEventListener('storage', handler);
+                
+                // ✅ 新增：返回学习地图页面
+                Application.App.log.Info("任务完成，返回学习地图页面");
+                window.location.href = "#/home/studyDetail";
+            }
+        }
+    } as StorageHandler;
+    handler.key = key;
+    return handler;
+}
+```
+
+### 配置项设计
+```typescript
+{
+    title: "任务完成后自动返回",
+    description: "任务完成后自动返回学习地图页面",
+    type: "checkbox",
+    key: "auto_return_to_studymap",
+    value: true,
+},
+{
+    title: "任务完成后关闭页面",
+    description: "任务完成后自动关闭任务页面",
+    type: "checkbox",
+    key: "auto_close_task_page",
+    value: true,
+},
+```
 
 ---
-
-## 5. 焦点变化和页面最小化时视频暂停问题
+## 6. 焦点变化和页面最小化时视频暂停问题
 
 ### 问题描述
 当浏览器标签页失去焦点或页面最小化时，视频会自动暂停播放，影响自动刷课功能。
@@ -279,6 +410,7 @@ document.addEventListener('visibilitychange', (e) => {
 
 | 优先级 | 问题 | 预计工作量 |
 |--------|------|------------|
+| P0 | 学习地图任务完成后未返回学习地图页面问题 | 高 |
 | P0 | 考试答案问题 | 中 |
 | P1 | SCORM子类型支持 | 高 |
 | P2 | 每日积分模式 | 高 |
