@@ -2,8 +2,8 @@
  * @Author: guotao
  * @Date: 2025-09-27 02:32:51
  * @LastEditors: guotao
- * @LastEditTime: 2025-03-09
- * @FilePath: \course-tools\src\mooc\zsgl\course.ts
+ * @LastEditTime: 2026-03-10 22:14:01
+ * @FilePath: \course-tools1\src\mooc\zsgl\course.ts
  * @Description: zsgl 课程任务管理
  *
  * Copyright (c) 2025 by lzlj, All Rights Reserved.
@@ -19,7 +19,7 @@ import {
     createBtn,
     protocolPrompt,
 } from "@App/internal/utils/utils";
-import { CourseDetailItem, TaskInfo } from "./types";
+import { CourseDetailItem, TaskInfo, TaskStatus } from "./types";
 import { ZSGL_CONSTANTS } from "./constants";
 
 /**
@@ -46,7 +46,10 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
             Application.App.log.Debug("当前页面URL:", window.location.href);
             Application.App.log.Debug("当前页面hash:", window.location.hash);
             
-            // 先设置钩子，再等待页面加载
+            this.addEventListener("courseTaskComplete", () => {
+                this.notifyStudyMapCourseComplete();
+            });
+            
             this.hookCourseDetailRequests();
             
             window.addEventListener("load", async () => {
@@ -137,6 +140,32 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
         this.timerManager.clearAll();
         this.taskList.forEach(task => task.Stop());
         return Promise.resolve();
+    }
+
+    /** 通知学习地图课程完成 */
+    private notifyStudyMapCourseComplete(): void {
+        const now = Date.now();
+        
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key?.startsWith(ZSGL_CONSTANTS.STORAGE_PREFIX)) {
+                try {
+                    const value = JSON.parse(localStorage.getItem(key) || "{}");
+                    if (value.status === "started" && value.expire > now) {
+                        const taskStatus: TaskStatus = {
+                            status: "finished",
+                            expire: value.expire,
+                        };
+                        localStorage.setItem(key, JSON.stringify(taskStatus));
+                        Application.App.log.Info("课程完成，已更新 localStorage", key);
+                        return;
+                    }
+                } catch (e) {
+                    Application.App.log.Warn("解析 localStorage 失败", key);
+                }
+            }
+        }
+        Application.App.log.Warn("未找到对应的课程状态 key");
     }
 
     public Next(): Promise<Task> {

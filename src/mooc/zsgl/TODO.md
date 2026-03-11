@@ -39,21 +39,28 @@ case "URL":
 - `src/mooc/zsgl/video.ts` - 视频任务
 
 ### 待办事项
-- [ ] 实现 `knowledge` 类型任务处理
+- [x] 实现 `knowledge` 类型任务处理（课程页面部分已完成，待测试）
+  - [x] 创建 knowledge.ts 模块
+  - [x] 实现 playTime 和 learnedDuration 时长计算
+  - [x] 实现"立即学习"按钮点击
+  - [x] 实现 iframe 加载等待
+  - [x] 实现剩余时长等待后退出
+  - [ ] 学习地图中的 knowledge 类型支持
+  - [ ] iframe 加载判断优化（跨域处理）
 - [ ] 实现 `document` 类型任务处理（文档阅读）
 - [ ] 实现 `audio` 类型任务处理（音频播放）
 - [ ] 实现 `URL` 类型任务处理（链接访问）
 - [ ] 统一各类型的基类和接口
 
 ### 类型说明
-| 类型 | 说明 | 处理方式 |
-|------|------|----------|
-| `video` | 视频任务 | 自动播放视频 |
-| `scorm` | SCORM课件 | 自动播放课件内视频 |
-| `knowledge` | 知识点 | 待实现 |
-| `document` | 文档 | 自动标记已读 |
-| `audio` | 音频 | 自动播放音频 |
-| `URL` | 链接 | 自动访问链接 |
+| 类型 | 说明 | 处理方式 | 状态 |
+|------|------|----------|------|
+| `video` | 视频任务 | 自动播放视频 | ✅ 已实现 |
+| `scorm` | SCORM课件 | 自动播放课件内视频 | ✅ 已实现 |
+| `knowledge` | 知识点 | 等待学习时长后退出 | 🔄 进行中 |
+| `document` | 文档 | 自动标记已读 | ⏳ 待实现 |
+| `audio` | 音频 | 自动播放音频 | ⏳ 待实现 |
+| `URL` | 链接 | 自动访问链接 | ⏳ 待实现 |
 
 ---
 
@@ -133,18 +140,30 @@ export class ZsglUrl extends ZsglTask {
 4. **任务队列**：自动获取当天可做的积分任务列表
 5. **智能跳过**：跳过已完成或不可用的任务
 
+### 积分类型说明
+- **学习积分**：学习未学习的课程，在所有课程中寻找未完成的课程
+  - 积分计算：0.4 * 时长（分钟）
+  - 每日上限：100分
+- **贡献积分**：阅读自己的知识
+  - 积分计算：0.6/次
+  - 每日上限：300分
+- **互动积分**：点击自己的知识的分享按钮
+  - 积分计算：1.6/次（分享0.6 + 被分享1）
+  - 每日上限：100分
+
 ### 相关文件
-- `src/mooc/zsgl/platform.ts` - 平台工厂（需要添加新模式判断）
-- `src/config.ts` - 配置项（需要添加新配置）
-- 新建 `src/mooc/zsgl/dailyPoints.ts` - 每日积分模块
+- `src/mooc/zsgl/platform.ts` - 平台工厂（已添加新模式判断）✅
+- `src/internal/utils/config.ts` - 配置项（已添加新配置）✅
+- `src/mooc/zsgl/dailyPoints.ts` - 每日积分模块（已创建）✅
 
 ### 待办事项
-- [ ] 设计每日积分模式的架构
-- [ ] 实现积分任务列表获取
-- [ ] 实现自动刷课逻辑
-- [ ] 添加积分统计功能
-- [ ] 添加UI控制面板
-- [ ] 添加配置项到 `config.ts`
+- [x] 设计每日积分模式的架构
+- [x] 实现积分任务列表获取
+- [x] 实现自动刷课逻辑
+- [x] 添加积分统计功能
+- [x] 添加UI控制面板
+- [x] 添加配置项到 `config.ts`
+- [ ] 测试和验证功能
 
 ### 配置项设计
 ```typescript
@@ -156,10 +175,41 @@ export class ZsglUrl extends ZsglTask {
     value: false,
 },
 {
+    title: "知识页面链接",
+    description: "用于刷取贡献积分和互动积分的知识页面URL",
+    type: "text",
+    key: "knowledge_page_url",
+    value: "",
+},
+{
     title: "目标积分",
     description: "每天目标获得的积分数",
     type: "text",
     key: "daily_points_target",
+    unit: "分",
+    value: "100",
+},
+{
+    title: "学习积分上限",
+    description: "每日学习积分上限",
+    type: "text",
+    key: "learning_points_limit",
+    unit: "分",
+    value: "100",
+},
+{
+    title: "贡献积分上限",
+    description: "每日贡献积分上限",
+    type: "text",
+    key: "contribution_points_limit",
+    unit: "分",
+    value: "300",
+},
+{
+    title: "互动积分上限",
+    description: "每日互动积分上限",
+    type: "text",
+    key: "interaction_points_limit",
     unit: "分",
     value: "100",
 },
@@ -251,11 +301,11 @@ public Start(): Promise<any> {
 ```
 
 ### 待办事项
-- [ ] 研究任务完成的检测机制
-- [ ] 实现任务完成后返回学习地图页面的导航逻辑
-- [ ] 添加任务页面关闭机制
-- [ ] 确保返回后能够自动开启下一个任务
-- [ ] 测试完整的任务流程：学习地图 → 任务 → 学习地图 → 下一个任务
+- [x] 研究任务完成的检测机制
+- [x] 实现任务完成后返回学习地图页面的导航逻辑（已实现 localStorage 通信）
+- [x] 添加任务页面关闭机制（已在 mooc.ts 中实现 window.close()）
+- [x] 确保返回后能够自动开启下一个任务
+- [ ] ⏳ 待验证：测试完整的任务流程：学习地图 → 任务 → 学习地图 → 下一个任务
 
 ### 解决方案思路
 1. **监听任务完成事件**：在任务模块中监听任务完成事件
