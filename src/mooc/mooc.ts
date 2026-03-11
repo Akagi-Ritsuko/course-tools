@@ -74,7 +74,7 @@ export class MoocLauncher implements Launcher {
         })
         moocTask.addEventListener("courseTaskComplete", () => {
             Application.App.log.Debug("courseTaskComplete 当前课程任务完成了");
-            window.close();
+            // window.close();
         })
         moocTask.addEventListener("taskComplete", (index: number, task: Task) => {
             moocTask.SetTaskPointer(index + 1);

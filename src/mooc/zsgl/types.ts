@@ -29,6 +29,8 @@ export interface CourseDetailItem {
     cwType: CourseWorkType;
     jobIndex: number;
     courseId: string;
+    playTime?: number;
+    learnedDuration?: number;
 }
 
 export interface QuestionInfo {
