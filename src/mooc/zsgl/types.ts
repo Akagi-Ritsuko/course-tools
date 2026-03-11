@@ -60,11 +60,27 @@ export interface TaskStatus {
     expire: number;
 }
 
+export interface CourseItem {
+  courseId: string;
+  courseName: string;
+  iscompleted: number;
+  [key: string]: any;
+}
+
+export interface CourseListResponse {
+  code: number;
+  body: {
+    courseArr: CourseItem[];
+    [key: string]: any;
+  };
+  message: string;
+}
+
 export interface HttpResponse {
-    body: any;
-    isCompleted?: string;
-    courseFileArr?: any[];
-    courseId?: string;
+  body: any;
+  isCompleted?: string;
+  courseFileArr?: any[];
+  courseId?: string;
 }
 
 export type HttpRequestCallback = (response: HttpResponse, context: any) => void;

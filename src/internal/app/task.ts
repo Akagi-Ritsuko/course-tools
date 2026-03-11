@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-15 10:21:49
  * @LastEditors: guotao
- * @LastEditTime: 2025-09-27 13:57:30
+ * @LastEditTime: 2026-03-11 22:33:38
  * @FilePath: \course-tools1\src\internal\app\task.ts
  * @Description: 
  * 
@@ -11,7 +11,10 @@
 import {EventListener} from "@App/internal/utils/event";
 
 export type TaskEvent = "complete" | "init" | "stop" | "load"|'courseDetailTaskComplete'|'courseTaskComplete'|'taskComplete';
-export type TaskType = "topic" | "exam" | "video" | "document" | "other" | "audio" | "studyMap" | "knowledge";
+<<<<<<< HEAD
+export type TaskType = "topic" | "exam" | "video" | "document" | "other" | "audio" | "studyMap" | "knowledge"|"dailyPoints";
+=======
+>>>>>>> zsglTools-home
 
 export abstract class Task extends EventListener<TaskEvent> {
     // 初始化任务

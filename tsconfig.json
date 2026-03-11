@@ -3,15 +3,23 @@
         "outDir": "./dist/",
         "noImplicitAny": true,
         "module": "commonjs",
-        "target": "es5",
+        "target": "es6",
         "allowJs": true,
         "baseUrl": ".",
+        "downlevelIteration": true,
+        "skipLibCheck": true,
         "paths": {
             "@App/*": [
                 "src/*"
             ],
             "@Test/*": [
                 "tests/*"
+            ],
+            "@/lib/*": [
+                "src/lib/*"
+            ],
+            "@/components/*": [
+                "src/components/*"
             ]
         }
     },

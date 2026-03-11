@@ -10,7 +10,7 @@ export interface ConfigItems extends Config {
   GetNamespaceConfig(
     namespace: string,
     key: string,
-    defaultVal?: string
+    defaultVal?: string,
   ): string;
 
   vtoken: string;
@@ -24,6 +24,12 @@ export interface ConfigItems extends Config {
   interval: number;
   topic_interval: number;
   super_mode: boolean;
+  knowledge_page_url: string;
+  daily_points_mode: boolean;
+  daily_points_target: number;
+  learning_points_limit: number;
+  contribution_points_limit: number;
+  interaction_points_limit: number;
 }
 
 // 缓存默认值
@@ -39,126 +45,178 @@ for (let key in SystemConfig.config) {
 }
 
 export class ChromeConfigItems implements ConfigItems {
-  protected config: Config;
-  protected Namespace: string = "";
-  protected localCache: { [key: string]: any };
+         protected config: Config;
+         protected Namespace: string = "";
+         protected localCache: { [key: string]: any };
 
-  constructor(config: Config) {
-    this.config = config;
-    let list: string[] = [];
-    configDefaultValue.forEach((val, key) => {
-      list.push(key);
-    });
-    this.config.Watch(list, (key, val) => {
-      this.localCache[key] = val;
-    });
-    this.localCache = localStorage;
-  }
+         constructor(config: Config) {
+           this.config = config;
+           let list: string[] = [];
+           configDefaultValue.forEach((val, key) => {
+             list.push(key);
+           });
+           this.config.Watch(list, (key, val) => {
+             this.localCache[key] = val;
+           });
+           this.localCache = localStorage;
+         }
 
-  // 设置配置的命名空间,储存格式为 namepace_configkey
-  public SetNamespace(namespace: string): void {
-    this.Namespace = namespace + "_";
-  }
+         // 设置配置的命名空间,储存格式为 namepace_configkey
+         public SetNamespace(namespace: string): void {
+           this.Namespace = namespace + "_";
+         }
 
-  public ConfigList(): any {
-    return this.config.ConfigList();
-  }
+         public ConfigList(): any {
+           return this.config.ConfigList();
+         }
 
-  public SetNamespaceConfig(
-    namespace: string,
-    key: string,
-    val: string
-  ): Promise<any> {
-    return this.config.SetConfig(namespace + "_" + key, val);
-  }
+         public SetNamespaceConfig(
+           namespace: string,
+           key: string,
+           val: string,
+         ): Promise<any> {
+           return this.config.SetConfig(namespace + "_" + key, val);
+         }
 
-  public GetNamespaceConfig(
-    namespace: string,
-    key: string,
-    defaultVal?: string
-  ): string {
-    return this.config.GetConfig(namespace + "_" + key, defaultVal);
-  }
+         public GetNamespaceConfig(
+           namespace: string,
+           key: string,
+           defaultVal?: string,
+         ): string {
+           return this.config.GetConfig(namespace + "_" + key, defaultVal);
+         }
 
-  public GetConfig(key: string, defaultVal?: string): string {
-    let val = this.config.GetConfig(this.Namespace + key);
-    if (val == undefined) {
-      return this.config.GetConfig(key, defaultVal);
-    }
-    return val || defaultVal;
-  }
+         public GetConfig(key: string, defaultVal?: string): string {
+           let val = this.config.GetConfig(this.Namespace + key);
+           if (val == undefined) {
+             return this.config.GetConfig(key, defaultVal);
+           }
+           return val || defaultVal;
+         }
 
-  public Watch(key: string | string[], callback: ConfigWatchCallback): void {
-    this.config.Watch(key, callback);
-  }
+         public Watch(
+           key: string | string[],
+           callback: ConfigWatchCallback,
+         ): void {
+           this.config.Watch(key, callback);
+         }
 
-  public get super_mode() {
-    return toBool(this.GetConfig("super_mode", "true"));
-  }
+         public get super_mode() {
+           return toBool(this.GetConfig("super_mode", "true"));
+         }
 
-  public get vtoken() {
-    return this.GetConfig("vtoken", "");
-  }
+         public get vtoken() {
+           return this.GetConfig("vtoken", "");
+         }
 
-  public get rand_answer() {
-    return toBool(this.GetConfig("rand_answer", "false"));
-  }
+         public get rand_answer() {
+           return toBool(this.GetConfig("rand_answer", "false"));
+         }
 
-  public get auto() {
-    return toBool(this.GetConfig("auto", "true"));
-  }
+         public get auto() {
+           return toBool(this.GetConfig("auto", "true"));
+         }
 
-  public set auto(val: boolean) {
-    this.SetConfig("auto", boolToString(val));
-  }
-  public get studymap_auto() {
-    return toBool(this.GetConfig("map_auto", "false"));
-  }
-  public set studymap_auto(val: boolean) {
-    this.SetConfig("map_auto", boolToString(val));
-  }
+         public set auto(val: boolean) {
+           this.SetConfig("auto", boolToString(val));
+         }
+         public get studymap_auto() {
+           return toBool(this.GetConfig("map_auto", "false"));
+         }
+         public set studymap_auto(val: boolean) {
+           this.SetConfig("map_auto", boolToString(val));
+         }
 
-  public get video_mute() {
-    return toBool(this.GetConfig("video_mute", "true"));
-  }
+         public get knowledge_page_url(): string {
+           return this.GetConfig("knowledge_page_url", "");
+         }
 
-  public get answer_ignore() {
-    return toBool(this.GetConfig("answer_ignore", "false"));
-  }
+         public set knowledge_page_url(val: string) {
+           this.SetConfig("knowledge_page_url", val);
+         }
 
-  public get video_cdn() {
-    let val = this.GetConfig("video_cdn");
-    if (val == "默认") {
-      return "";
-    }
-    return val;
-  }
+         public get daily_points_mode(): boolean {
+           return toBool(this.GetConfig("daily_points_mode", "false"));
+         }
 
-  public get video_multiple() {
-    return parseFloat(this.GetConfig("video_multiple"));
-  }
+         public set daily_points_mode(val: boolean) {
+           this.SetConfig("daily_points_mode", boolToString(val));
+         }
 
-  public get interval() {
-    let interval = parseFloat(this.GetConfig("interval", "0.1"));
-    interval = interval * 100;
-    return (
-      Math.floor(randNumber(interval - interval / 2, interval + interval / 2)) /
-      100
-    );
-  }
+         public get daily_points_target(): number {
+           return parseInt(this.GetConfig("daily_points_target", "100"));
+         }
 
-  public SetConfig(key: string, val: any): Promise<any> {
-    return this.config.SetConfig(this.Namespace + key, val);
-  }
+         public set daily_points_target(val: number) {
+           this.SetConfig("daily_points_target", val.toString());
+         }
 
-  public get topic_interval() {
-    return parseInt(this.GetConfig("topic_interval", "5"));
-  }
+         public get learning_points_limit(): number {
+           return parseInt(this.GetConfig("learning_points_limit", "100"));
+         }
 
-  public set topic_interval(val: number) {
-    this.SetConfig("topic_interval", val);
-  }
-}
+         public set learning_points_limit(val: number) {
+           this.SetConfig("learning_points_limit", val.toString());
+         }
+
+         public get contribution_points_limit(): number {
+           return parseInt(this.GetConfig("contribution_points_limit", "300"));
+         }
+
+         public set contribution_points_limit(val: number) {
+           this.SetConfig("contribution_points_limit", val.toString());
+         }
+
+         public get interaction_points_limit(): number {
+           return parseInt(this.GetConfig("interaction_points_limit", "100"));
+         }
+
+         public set interaction_points_limit(val: number) {
+           this.SetConfig("interaction_points_limit", val.toString());
+         }
+
+         public get video_mute() {
+           return toBool(this.GetConfig("video_mute", "true"));
+         }
+
+         public get answer_ignore() {
+           return toBool(this.GetConfig("answer_ignore", "false"));
+         }
+
+         public get video_cdn() {
+           let val = this.GetConfig("video_cdn");
+           if (val == "默认") {
+             return "";
+           }
+           return val;
+         }
+
+         public get video_multiple() {
+           return parseFloat(this.GetConfig("video_multiple"));
+         }
+
+         public get interval() {
+           let interval = parseFloat(this.GetConfig("interval", "0.1"));
+           interval = interval * 100;
+           return (
+             Math.floor(
+               randNumber(interval - interval / 2, interval + interval / 2),
+             ) / 100
+           );
+         }
+
+         public SetConfig(key: string, val: any): Promise<any> {
+           return this.config.SetConfig(this.Namespace + key, val);
+         }
+
+         public get topic_interval() {
+           return parseInt(this.GetConfig("topic_interval", "5"));
+         }
+
+         public set topic_interval(val: number) {
+           this.SetConfig("topic_interval", val);
+         }
+       }
 
 export interface Config {
   GetConfig(key: string, defaultVal?: string): string;
