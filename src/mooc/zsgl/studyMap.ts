@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-15 10:55:02
  * @LastEditors: guotao
- * @LastEditTime: 2025-03-09
+ * @LastEditTime: 2026-03-10 17:17:33
  * @FilePath: \course-tools\src\mooc\zsgl\studyMap.ts
  * @Description: zsgl 学习地图模块
  *
@@ -30,8 +30,9 @@ export class ZsglStudyMap extends Task {
     public Init(): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             try {
-                // 先执行拦截请求
+                // 先注册所有HTTP请求钩子
                 await this.hookStudymapGateRequests();
+                await this.hookStudymapGateTaskRequests();
                 
                 // 数据获取完成后执行元素查找
                 if (this.studyMapData) {
@@ -39,8 +40,6 @@ export class ZsglStudyMap extends Task {
                 } else {
                     this.Done();
                 }
-
-                await this.hookStudymapGateTaskRequests();
                 
                 const taskKey = `${ZSGL_CONSTANTS.STORAGE_PREFIX}${this.gateTaskData?.resourceId}`;
                 Application.App.log.Debug("zsglStudyMap开始初始化任务", taskKey);
@@ -135,7 +134,10 @@ export class ZsglStudyMap extends Task {
                         startBtn.innerText = ZSGL_CONSTANTS.BUTTON_TEXT.STOP_AUTO;
                         startBtn.title = "停止挂机,开始好好学习";
                         Application.App.log.Info("挂机开始了");
-                        this.Init();
+                        // this.Init();
+                        if (this.gateTaskData ) {
+                             this.Start();
+                        }
                     }
                 });
 
@@ -183,20 +185,34 @@ export class ZsglStudyMap extends Task {
     /** 拦截学习地图关卡任务请求 */
     protected hookStudymapGateTaskRequests(): Promise<void> {
         return new Promise((resolve) => {
+            let resolved = false;
+            
+            const timeout = setTimeout(() => {
+                if (!resolved) {
+                    Application.App.log.Warn("关卡任务请求拦截超时，继续执行");
+                    resolved = true;
+                    resolve();
+                }
+            }, 5000);
+
             hookHttpRequest(
                 ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_STUDYMAP_GATE_TASK,
                 (response, self) => {
-                    Application.App.log.Debug("原始响应数据queryStudymapGateTask", response);
-                    const responseData = response?.body;
-                    self.gateTaskData = responseData.taskList.find(
-                        (item: { status: number }) => item.status !== 1
-                    );
-                    Application.App.log.Debug("成功拦截课程任务数据queryStudymapGateTask", {
-                        taskCount: self.gateTaskData?.length || 0,
-                        taskName: self.gateTaskData?.taskName || "",
-                        taskId: self.gateTaskData?.resourceId || "",
-                    });
-                    resolve();
+                    if (!resolved) {
+                        Application.App.log.Debug("原始响应数据queryStudymapGateTask", response);
+                        const responseData = response?.body;
+                        self.gateTaskData = responseData.taskList.find(
+                            (item: { status: number }) => item.status !== 1
+                        );
+                        Application.App.log.Debug("成功拦截课程任务数据queryStudymapGateTask", {
+                            taskCount: self.gateTaskData?.length || 0,
+                            taskName: self.gateTaskData?.taskName || "",
+                            taskId: self.gateTaskData?.resourceId || "",
+                        });
+                        clearTimeout(timeout);
+                        resolved = true;
+                        resolve();
+                    }
                 },
                 this
             );

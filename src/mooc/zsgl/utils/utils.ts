@@ -13,6 +13,54 @@ import { ZSGL_CONSTANTS } from "../constants";
 import { HttpRequestCallback, HttpResponse, EventPreventHandler } from "../types";
 
 /**
+ * 存储所有HTTP请求钩子的Map
+ */
+const httpHooks: Map<string, Array<{ callback: HttpRequestCallback; context: any }>> = new Map();
+
+/**
+ * 保存原始的XMLHttpRequest.prototype.open
+ */
+const originalOpen = XMLHttpRequest.prototype.open;
+
+/**
+ * 初始化HTTP钩子（只执行一次）
+ */
+let hooksInitialized = false;
+
+function initializeHooks() {
+    if (hooksInitialized) return;
+    hooksInitialized = true;
+
+    XMLHttpRequest.prototype.open = function (method: string, url: string) {
+        Application.App.log.Debug("拦截到HTTP请求:", url);
+        
+        httpHooks.forEach((hooks, urlMatch) => {
+            if (url.includes(urlMatch)) {
+                Application.App.log.Debug("匹配到钩子:", urlMatch);
+                
+                this.addEventListener('readystatechange', function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        try {
+                            const response: HttpResponse = this.responseText.startsWith("{")
+                                ? JSON.parse(this.responseText)
+                                : this.responseText;
+                            
+                            hooks.forEach(hook => {
+                                hook.callback(response, hook.context);
+                            });
+                        } catch (e) {
+                            Application.App.log.Error("数据解析失败", e);
+                        }
+                    }
+                });
+            }
+        });
+        
+        return originalOpen.apply(this, arguments as any);
+    };
+}
+
+/**
  * 封装的通用HTTP请求钩子函数
  * @param urlMatch URL匹配字符串
  * @param callback 回调函数
@@ -23,25 +71,14 @@ export async function hookHttpRequest(
     callback: HttpRequestCallback,
     context: any
 ): Promise<void> {
-    const originalOpen = XMLHttpRequest.prototype.open;
-
-    XMLHttpRequest.prototype.open = function (method: string, url: string) {
-        if (url.includes(urlMatch)) {
-            this.addEventListener('readystatechange', function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    try {
-                        const response: HttpResponse = this.responseText.startsWith("{")
-                            ? JSON.parse(this.responseText)
-                            : this.responseText;
-                        callback(response, context);
-                    } catch (e) {
-                        Application.App.log.Error("数据解析失败", e);
-                    }
-                }
-            });
-        }
-        return originalOpen.apply(this, arguments as any);
-    };
+    initializeHooks();
+    
+    if (!httpHooks.has(urlMatch)) {
+        httpHooks.set(urlMatch, []);
+    }
+    
+    httpHooks.get(urlMatch)!.push({ callback, context });
+    Application.App.log.Debug("注册HTTP钩子:", urlMatch);
 }
 // 修正语法错误并添加类型声明
 export interface StorageHandler {
