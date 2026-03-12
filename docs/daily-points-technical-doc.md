@@ -201,6 +201,127 @@ private listenForMessages() {
 - 消息处理函数添加类型检查
 - 避免在 `window.onload` 之后注册监听器
 
+### 6. Bug修复记录（2026-03-12）
+
+#### 6.1 消息监听器未初始化
+
+**问题描述：**
+`setupMessageListener()` 方法定义了但从未被调用，导致 `REFRESH_POINTS` 消息无法被接收。
+
+**修复方案：**
+在 `Init()` 方法中调用 `setupMessageListener()`：
+
+```typescript
+public Init(): Promise<void> {
+  return new Promise<void>(async (resolve, reject) => {
+    try {
+      this.loadPointsState();
+      this.setupMessageListener();  // 添加此行
+      Application.App.log.Info("每日积分模式初始化完成", this.pointsState);
+      resolve();
+    } catch (error) {
+      Application.App.log.Error("每日积分模式初始化失败", error);
+      reject(error);
+    }
+  });
+}
+```
+
+#### 6.2 知识页面链接未传递导致任务执行错误
+
+**问题描述：**
+点击开始后，`getNextTask()` 返回 `course` 而不是 `knowledgeRead` 或 `knowledgeShare`，导致知识阅读和知识分享任务未执行。
+
+**问题原因：**
+`CONFIRM_START_TASK` 消息中包含 `data.knowledgeLink`，但 `executeTaskAfterConfirm()` 没有使用这个数据设置 `this.knowledgePageUrl`。`getNextTask()` 检查 `this.knowledgePageUrl`，如果为空则跳过知识任务。
+
+**修复方案：**
+在消息监听器中提取并设置 `knowledgePageUrl`：
+
+```typescript
+protected setupMessageListener(): void {
+  window.addEventListener("message", (event) => {
+    if (event.source !== window) return;
+
+    const message = event.data;
+
+    if (message.type === "STOP_DAILY_POINTS") {
+      this.stopTask();
+    } else if (message.type === "REFRESH_POINTS") {
+      this.handleRefreshPoints();
+    } else if (message.type === "CONFIRM_START_TASK") {
+      if (message.data?.knowledgeLink) {
+        this.knowledgePageUrl = message.data.knowledgeLink;
+      }
+      this.executeTaskAfterConfirm();
+    }
+  });
+}
+```
+
+#### 6.3 刷新按钮无法获取积分详情
+
+**问题描述：**
+点击刷新按钮时，`handleRefreshPoints()` 检查 `this.sid`，但 `this.sid` 为空，导致无法调用API。
+
+**问题原因：**
+`this.sid` 只在 `executeTaskAfterConfirm()` 中通过 `extractSidFromStorage()` 设置，刷新时未调用。
+
+**修复方案：**
+在 `handleRefreshPoints()` 中添加 sid 提取逻辑：
+
+```typescript
+protected async handleRefreshPoints(): Promise<void> {
+  Application.App.log.Info("手动刷新积分进度");
+  Application.App.log.Debug("手动刷新积分进度");
+
+  if (!this.sid) {
+    this.extractSidFromStorage();
+  }
+
+  if (this.sid) {
+    const result = await this.fetchPointsDetail();
+    if (result.success) {
+      this.updatePointsStateFromApi(result.data);
+      window.postMessage({
+        type: "POINTS_UPDATED",
+        data: {
+          learning: this.pointsState.learning,
+          contribution: this.pointsState.contribution,
+          interaction: this.pointsState.interaction,
+        },
+      }, "*");
+    }
+  } else {
+    Application.App.log.Warn("无法获取sid，无法刷新积分");
+  }
+}
+```
+
+#### 6.4 悬浮窗打开时积分显示为0
+
+**问题描述：**
+悬浮窗创建后，积分进度显示为0，但刷新按钮可以正常刷新。
+
+**问题原因：**
+`executeTaskAfterConfirm()` 中获取积分后没有发送 `POINTS_UPDATED` 消息给 panel 更新显示。
+
+**修复方案：**
+在 `executeTaskAfterConfirm()` 中添加消息发送：
+
+```typescript
+this.updatePointsStateFromApi(pointsResult.data);
+
+window.postMessage({
+  type: "POINTS_UPDATED",
+  data: {
+    learning: this.pointsState.learning,
+    contribution: this.pointsState.contribution,
+    interaction: this.pointsState.interaction,
+  },
+}, "*");
+```
+
 ---
 
 ## 每日积分系统技术说明
@@ -496,6 +617,111 @@ export type PointsTaskType =
 - [ ] 添加错误边界处理
 - [ ] 代码注释完善
 
+##### 7.2.5 待开发功能（优先级：高）
+
+###### 1. 每日积分Tab UI优化
+- [ ] 添加学习积分获取上限输入框
+- [ ] 优化label和input之间的间距，加快布局
+
+**涉及文件：**
+- `src/views/components/DailyPointsConfig.vue`
+
+**实现要点：**
+```typescript
+// 新增学习积分上限配置
+interface DailyPointsConfig {
+  knowledgeLink: string;
+  learningLimit: number;      // 新增：学习积分上限
+  contributionLimit: number;
+  interactionLimit: number;
+}
+```
+
+###### 2. 学习积分获取功能迭代
+- [ ] 实现课程学习任务的自动执行
+- [ ] 添加课程进度检测
+- [ ] 支持多课程顺序学习
+
+**涉及文件：**
+- `src/mooc/zsgl/dailyPoints.ts` - `executeCourseTask()` 方法
+
+**实现要点：**
+```typescript
+protected async executeCourseTask(): Promise<void> {
+  // 1. 获取课程列表
+  // 2. 筛选未完成课程
+  // 3. 自动播放课程视频
+  // 4. 检测学习进度
+  // 5. 更新积分状态
+}
+```
+
+###### 3. 积分无变化检测
+- [ ] 新增校验：如果获取的积分详情与上次没有变化，自动结束每日积分任务
+- [ ] 添加连续无变化次数计数
+- [ ] 设置无变化阈值（如连续3次无变化则停止）
+
+**涉及文件：**
+- `src/mooc/zsgl/dailyPoints.ts`
+
+**实现要点：**
+```typescript
+private noChangeCount: number = 0;
+private readonly NO_CHANGE_THRESHOLD: number = 3;
+
+protected checkPointsChanged(newData: PointsData, oldData: PointsData): boolean {
+  return JSON.stringify(newData) !== JSON.stringify(oldData);
+}
+
+// 在任务执行循环中
+if (!this.checkPointsChanged(newPoints, this.lastPoints)) {
+  this.noChangeCount++;
+  if (this.noChangeCount >= this.NO_CHANGE_THRESHOLD) {
+    Application.App.log.Info("积分连续无变化，自动停止任务");
+    this.stopTask();
+    return;
+  }
+} else {
+  this.noChangeCount = 0;
+}
+```
+
+###### 4. 积分详情接口参数优化
+- [ ] 修改获取积分详情接口的请求参数
+- [ ] 时间范围从"年初到年末"改为"当天到月末"
+
+**涉及文件：**
+- `src/mooc/zsgl/dailyPoints.ts` - `fetchPointsDetail()` 方法
+
+**实现要点：**
+```typescript
+protected async fetchPointsDetail(): Promise<ApiResponse<PointsData[]>> {
+  const now = new Date();
+  const startDate = this.formatDate(now);  // 当天
+  
+  // 计算月末日期
+  const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  const endDateStr = this.formatDate(endDate);  // 月末
+  
+  // 原代码使用年初到年末
+  // const startTime = `${now.getFullYear()}-01-01`;
+  // const endTime = `${now.getFullYear()}-12-31`;
+  
+  // 修改为当天到月末
+  const startTime = startDate;
+  const endTime = endDateStr;
+  
+  // ... 发送请求
+}
+
+private formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+```
+
 ### 8. 文件清单
 
 ```
@@ -567,6 +793,6 @@ module.exports = {
 
 ---
 
-*文档版本: 1.0.0*
+*文档版本: 1.1.0*
 *最后更新: 2026-03-12*
 *作者: AI Assistant*

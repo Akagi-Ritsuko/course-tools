@@ -1,4 +1,5 @@
 import { Application } from "../application";
+import { ZsglDailyPoints } from "../../mooc/zsgl/dailyPoints";
 
 export interface PointsProgressData {
   knowledgeLink: string;
@@ -7,30 +8,32 @@ export interface PointsProgressData {
 }
 
 export class DailyPointsFloatingPanel {
-  private container: HTMLDivElement | null = null;
-  private isRunning = false;
-  private progressData = {
-    learning: { current: 0, limit: 100 },
-    contribution: { current: 0, limit: 300 },
-    interaction: { current: 0, limit: 100 },
-  };
+         private container: HTMLDivElement | null = null;
+         private isRunning = false;
+         private isStopped = false;
+         private progressData = {
+           learning: { current: 0, limit: 100 },
+           contribution: { current: 0, limit: 300 },
+           interaction: { current: 0, limit: 100 },
+         };
 
-  constructor() {
-    console.log("[每日积分] panel: 构造函数被调用");
-    this.init();
-  }
+         constructor() {
+           console.log("[每日积分] panel: 构造函数被调用");
+           this.init();
+         }
 
-  private init() {
-    console.log("[每日积分] panel: init方法被调用");
-    window.addEventListener("load", () => {
-      console.log("[每日积分] panel: window.onload 触发");
-      this.injectStyles();
-      this.listenForMessages();
-    });
-  }
+         private init() {
+           console.log("[每日积分] panel: init方法被调用");
+           window.addEventListener("load", () => {
+             console.log("[每日积分] panel: window.onload 触发");
+             this.injectStyles();
+             this.listenForMessages();
+              new ZsglDailyPoints();
+           });
+         }
 
-  private injectStyles() {
-    const css = `
+         private injectStyles() {
+           const css = `
       .daily-points-panel {
         width: 320px;
         position: fixed;
@@ -64,6 +67,12 @@ export class DailyPointsFloatingPanel {
         font-weight: 600;
       }
 
+      .daily-points-panel .panel-header .header-buttons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .daily-points-panel .panel-header .refresh-btn,
       .daily-points-panel .panel-header .close-btn {
         background: rgba(255, 255, 255, 0.2);
         border: none;
@@ -75,10 +84,19 @@ export class DailyPointsFloatingPanel {
         font-size: 16px;
         line-height: 1;
         transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
+      .daily-points-panel .panel-header .refresh-btn:hover,
       .daily-points-panel .panel-header .close-btn:hover {
         background: rgba(255, 255, 255, 0.3);
+      }
+
+      .daily-points-panel .panel-header .refresh-btn svg {
+        width: 14px;
+        height: 14px;
       }
 
       .daily-points-panel .panel-content {
@@ -151,6 +169,8 @@ export class DailyPointsFloatingPanel {
       .daily-points-panel .panel-footer {
         padding: 12px 16px;
         border-top: 1px solid #e2e8f0;
+        display: flex;
+        gap: 12px;
       }
 
       .daily-points-panel .stop-btn {
@@ -183,122 +203,380 @@ export class DailyPointsFloatingPanel {
         background: #dcfce7;
         color: #16a34a;
       }
+
+      .daily-points-panel .status-badge.stopped {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      .confirmation-dialog {
+        width: 400px;
+      }
+
+      .confirmation-dialog .panel-header {
+        cursor: default !important;
+      }
+
+      .confirmation-content {
+        line-height: 1.6;
+      }
+
+      .confirmation-title {
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #1e293b;
+      }
+
+      .task-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 16px 0;
+      }
+
+      .task-list li {
+        padding: 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #475569;
+      }
+
+      .task-icon {
+        font-size: 16px;
+      }
+
+      .confirmation-notice {
+        background: #fef3c7;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 16px;
+      }
+
+      .confirmation-notice p {
+        margin: 0 0 8px 0;
+        font-weight: 500;
+        color: #92400e;
+      }
+
+      .confirmation-notice ul {
+        margin: 0;
+        padding-left: 20px;
+        color: #a16207;
+      }
+
+      .confirmation-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        color: #64748b;
+      }
+
+      .confirmation-checkbox input {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+
+      .cancel-btn {
+        flex: 1;
+        padding: 10px;
+        background: #e2e8f0;
+        color: #475569;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .cancel-btn:hover {
+        background: #cbd5e1;
+      }
+
+      .confirm-btn {
+        flex: 1;
+        padding: 10px;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .confirm-btn:disabled {
+        background: #94a3b8;
+        cursor: not-allowed;
+      }
+
+      .confirm-btn:not(:disabled):hover {
+        background: #2563eb;
+      }
     `;
 
-    const style = document.createElement("style");
-    style.innerHTML = css;
-    document.head.appendChild(style);
-  }
+           const style = document.createElement("style");
+           style.innerHTML = css;
+           document.head.appendChild(style);
+         }
 
-  private listenForMessages() {
-    console.log("[每日积分] panel: 初始化消息监听");
-    window.addEventListener("message", (event) => {
-      if (event.source !== window) return;
+         private listenForMessages() {
+           console.log("[每日积分] panel: 初始化消息监听");
+           window.addEventListener("message", (event) => {
+             if (event.source !== window) return;
 
-      const message = event.data;
-      console.log("[每日积分] panel: 收到页面消息", message);
+             const message = event.data;
+             console.log("[每日积分] panel: 收到页面消息1", message);
 
-      if (message.type === "START_DAILY_POINTS") {
-        console.log("[每日积分] panel: 处理START_DAILY_POINTS", message.data);
-        this.start(message.data);
-      } else if (message.type === "STOP_DAILY_POINTS") {
-        console.log("[每日积分] panel: 处理STOP_DAILY_POINTS");
-        this.stop();
-      } else if (message.type === "UPDATE_PROGRESS") {
-        console.log("[每日积分] panel: 处理UPDATE_PROGRESS", message.data);
-        this.updateProgress(message.data);
-      }
-    });
-  }
+             if (message.type === "START_DAILY_POINTS") {
+               console.log(
+                 "[每日积分] panel: 处理START_DAILY_POINTS",
+                 message.data,
+               );
+               this.start(message.data);
+             } else if (message.type === "STOP_DAILY_POINTS") {
+               console.log("[每日积分] panel: 处理STOP_DAILY_POINTS");
+               this.stop();
+             } else if (message.type === "UPDATE_PROGRESS") {
+               console.log(
+                 "[每日积分] panel: 处理UPDATE_PROGRESS",
+                 message.data,
+               );
+               this.updateProgress(message.data);
+             } else if (message.type === "POINTS_UPDATED") {
+               console.log(
+                 "[每日积分] panel: 处理POINTS_UPDATED",
+                 message.data,
+               );
+               if (message.data) {
+                 this.updateProgress(message.data);
+               }
+             } else if (message.type === "TASK_STOPPED") {
+               console.log("[每日积分] panel: 处理TASK_STOPPED");
+               this.handleTaskStopped();
+             }
+           });
+         }
 
-  public start(data: PointsProgressData) {
-    console.log(
-      "[每日积分] panel: start方法被调用",
-      data,
-      "isRunning:",
-      this.isRunning,
-    );
-    if (this.isRunning) {
-      console.log("[每日积分] panel: 任务已在运行中，跳过");
-      return;
-    }
+         public start(data: PointsProgressData) {
+           console.log(
+             "[每日积分] panel: start方法被调用",
+             data,
+             "isRunning:",
+             this.isRunning,
+           );
+           if (this.isRunning) {
+             console.log("[每日积分] panel: 任务已在运行中，跳过");
+             return;
+           }
 
-    this.isRunning = true;
-    this.progressData.contribution.limit = data.contributionLimit || 300;
-    this.progressData.interaction.limit = data.interactionLimit || 100;
+           this.progressData.contribution.limit = data.contributionLimit || 300;
+           this.progressData.interaction.limit = data.interactionLimit || 100;
 
-    console.log("[每日积分] panel: 创建悬浮窗");
-    this.createPanel();
-    Application.App.log?.Info("每日积分任务已开始");
-  }
+           this.showConfirmationDialog(() => {
+             this.isRunning = true;
+             this.isStopped = false;
+             console.log("[每日积分] panel: 创建进度悬浮窗");
+             this.createPanel();
 
-  public stop() {
-    console.log("[每日积分] panel: stop方法被调用");
-    this.isRunning = false;
-    this.removePanel();
-    Application.App.log?.Info("每日积分任务已停止");
-  }
+             window.postMessage(
+               { type: "CONFIRM_START_TASK", data: data },
+               "*",
+             );
 
-  public updateProgress(data: {
-    learning?: { current: number; limit?: number };
-    contribution?: { current: number; limit?: number };
-    interaction?: { current: number; limit?: number };
-  }) {
-    if (data.learning) {
-      this.progressData.learning.current = data.learning.current;
-      if (data.learning.limit)
-        this.progressData.learning.limit = data.learning.limit;
-    }
-    if (data.contribution) {
-      this.progressData.contribution.current = data.contribution.current;
-      if (data.contribution.limit)
-        this.progressData.contribution.limit = data.contribution.limit;
-    }
-    if (data.interaction) {
-      this.progressData.interaction.current = data.interaction.current;
-      if (data.interaction.limit)
-        this.progressData.interaction.limit = data.interaction.limit;
-    }
-    this.updatePanelContent();
-  }
+             Application.App.log?.Info("每日积分任务已开始");
+           });
+         }
 
-  private createPanel() {
-    if (this.container) return;
+         public stop() {
+           console.log("[每日积分] panel: stop方法被调用");
+           this.isRunning = false;
+           this.isStopped = false;
+           this.removePanel();
+           Application.App.log?.Info("每日积分任务已停止");
+         }
 
-    this.container = document.createElement("div");
-    this.container.className = "daily-points-panel";
-    this.container.innerHTML = this.getPanelHTML();
-    document.body.appendChild(this.container);
+         private handleTaskStopped() {
+           this.isStopped = true;
+           this.updateStatusBadge();
+         }
 
-    this.initDraggable();
-    this.loadPosition();
-  }
+         private updateStatusBadge() {
+           if (!this.container) return;
+           const badge = this.container.querySelector(".status-badge");
+           if (badge) {
+             badge.textContent = "已停止";
+             badge.classList.remove("running");
+             badge.classList.add("stopped");
+           }
+         }
 
-  private removePanel() {
-    if (this.container) {
-      this.container.remove();
-      this.container = null;
-    }
-  }
+         public updateProgress(data: {
+           learning?: { current: number; limit?: number };
+           contribution?: { current: number; limit?: number };
+           interaction?: { current: number; limit?: number };
+         }) {
+           if (data.learning) {
+             this.progressData.learning.current = data.learning.current;
+             if (data.learning.limit)
+               this.progressData.learning.limit = data.learning.limit;
+           }
+           if (data.contribution) {
+             this.progressData.contribution.current = data.contribution.current;
+             if (data.contribution.limit)
+               this.progressData.contribution.limit = data.contribution.limit;
+           }
+           if (data.interaction) {
+             this.progressData.interaction.current = data.interaction.current;
+             if (data.interaction.limit)
+               this.progressData.interaction.limit = data.interaction.limit;
+           }
+           this.updatePanelContent();
+         }
 
-  private getPanelHTML(): string {
-    const learningPercent = this.getPercent(this.progressData.learning);
-    const contributionPercent = this.getPercent(this.progressData.contribution);
-    const interactionPercent = this.getPercent(this.progressData.interaction);
-    const totalPercent = this.getTotalPercent();
+         private createPanel() {
+           if (this.container) return;
 
-    return `
+           this.container = document.createElement("div");
+           this.container.className = "daily-points-panel";
+           this.container.innerHTML = this.getPanelHTML();
+           document.body.appendChild(this.container);
+
+           this.initDraggable();
+           this.loadPosition();
+         }
+
+         private removePanel() {
+           if (this.container) {
+             this.container.remove();
+             this.container = null;
+           }
+         }
+
+         public showConfirmationDialog(onConfirm: () => void): void {
+           if (this.container) {
+             this.container.remove();
+             this.container = null;
+           }
+
+           this.container = document.createElement("div");
+           this.container.className = "daily-points-panel confirmation-dialog";
+           this.container.innerHTML = this.getConfirmationHTML();
+           document.body.appendChild(this.container);
+
+           this.centerDialog();
+
+           const confirmBtn = this.container.querySelector(
+             "#daily-points-confirm",
+           ) as HTMLButtonElement;
+           const cancelBtn = this.container.querySelector(
+             "#daily-points-cancel",
+           ) as HTMLElement;
+           const checkbox = this.container.querySelector(
+             "#agree-terms",
+           ) as HTMLInputElement;
+
+           checkbox?.addEventListener("change", () => {
+             if (checkbox.checked) {
+               confirmBtn.disabled = false;
+             } else {
+               confirmBtn.disabled = true;
+             }
+           });
+
+           confirmBtn?.addEventListener("click", () => {
+             this.removePanel();
+             onConfirm();
+           });
+
+           cancelBtn?.addEventListener("click", () => {
+             this.removePanel();
+           });
+         }
+
+         private getConfirmationHTML(): string {
+           return `
+    <div class="panel-header" style="cursor: default;">
+      <h3>每日积分任务说明</h3>
+    </div>
+    <div class="panel-content">
+      <div class="confirmation-content">
+        <p class="confirmation-title">即将开始执行以下任务：</p>
+        <ul class="task-list">
+          <li><span class="task-icon">📚</span> 学习积分：自动观看课程视频获取积分（上限100分）</li>
+          <li><span class="task-icon">📖</span> 贡献积分：通过知识阅读获取积分（上限300分）</li>
+          <li><span class="task-icon">💬</span> 互动积分：通过知识分享获取积分（上限100分）</li>
+        </ul>
+        <div class="confirmation-notice">
+          <p>⚠️ 注意事项：</p>
+          <ul>
+            <li>任务执行期间请勿关闭页面</li>
+            <li>可随时点击"结束任务"停止</li>
+            <li>积分数据仅供参考，以实际为准</li>
+          </ul>
+        </div>
+        <label class="confirmation-checkbox">
+          <input type="checkbox" id="agree-terms" />
+          <span>我已了解任务内容，同意开始执行</span>
+        </label>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <button class="cancel-btn" id="daily-points-cancel">取消</button>
+      <button class="confirm-btn" id="daily-points-confirm" disabled>开始任务</button>
+    </div>
+  `;
+         }
+
+         private centerDialog(): void {
+           if (!this.container) return;
+
+           const containerWidth = this.container.offsetWidth;
+           const containerHeight = this.container.offsetHeight;
+           const windowWidth = window.innerWidth;
+           const windowHeight = window.innerHeight;
+
+           this.container.style.left =
+             (windowWidth - containerWidth) / 2 + "px";
+           this.container.style.top =
+             (windowHeight - containerHeight) / 2 + "px";
+         }
+
+         private getPanelHTML(): string {
+           const learningPercent = this.getPercent(this.progressData.learning);
+           const contributionPercent = this.getPercent(
+             this.progressData.contribution,
+           );
+           const interactionPercent = this.getPercent(
+             this.progressData.interaction,
+           );
+           const totalPercent = this.getTotalPercent();
+           const statusClass = this.isStopped ? "stopped" : "running";
+           const statusText = this.isStopped ? "已停止" : "运行中";
+
+           return `
       <div class="panel-header" id="daily-points-header">
-        <h3>每日积分进度 <span class="status-badge running">运行中</span></h3>
-        <button class="close-btn" id="daily-points-close">×</button>
+        <h3>每日积分进度 <span class="status-badge ${statusClass}">${statusText}</span></h3>
+        <div class="header-buttons">
+          <button class="refresh-btn" id="daily-points-refresh" title="刷新">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+              <path d="M21 3v5h-5"/>
+            </svg>
+          </button>
+          <button class="close-btn" id="daily-points-close">×</button>
+        </div>
       </div>
       <div class="panel-content">
         <div class="progress-item">
           <div class="progress-label">
             <span class="label">学习积分</span>
             <span class="value">${this.progressData.learning.current} / ${
-      this.progressData.learning.limit
-    }</span>
+             this.progressData.learning.limit
+           }</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill learning" style="width: ${learningPercent}%"></div>
@@ -309,8 +587,8 @@ export class DailyPointsFloatingPanel {
           <div class="progress-label">
             <span class="label">贡献积分</span>
             <span class="value">${this.progressData.contribution.current} / ${
-      this.progressData.contribution.limit
-    }</span>
+             this.progressData.contribution.limit
+           }</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill contribution" style="width: ${contributionPercent}%"></div>
@@ -321,8 +599,8 @@ export class DailyPointsFloatingPanel {
           <div class="progress-label">
             <span class="label">互动积分</span>
             <span class="value">${this.progressData.interaction.current} / ${
-      this.progressData.interaction.limit
-    }</span>
+             this.progressData.interaction.limit
+           }</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill interaction" style="width: ${interactionPercent}%"></div>
@@ -343,155 +621,167 @@ export class DailyPointsFloatingPanel {
         <button class="stop-btn" id="daily-points-stop">结束任务</button>
       </div>
     `;
-  }
+         }
 
-  private updatePanelContent() {
-    if (!this.container) return;
+         private updatePanelContent() {
+           if (!this.container) return;
 
-    const learningPercent = this.getPercent(this.progressData.learning);
-    const contributionPercent = this.getPercent(this.progressData.contribution);
-    const interactionPercent = this.getPercent(this.progressData.interaction);
-    const totalPercent = this.getTotalPercent();
+           const learningPercent = this.getPercent(this.progressData.learning);
+           const contributionPercent = this.getPercent(
+             this.progressData.contribution,
+           );
+           const interactionPercent = this.getPercent(
+             this.progressData.interaction,
+           );
+           const totalPercent = this.getTotalPercent();
 
-    const content = this.container.querySelector(".panel-content");
-    if (content) {
-      const items = content.querySelectorAll(".progress-item");
+           const content = this.container.querySelector(".panel-content");
+           if (content) {
+             const items = content.querySelectorAll(".progress-item");
 
-      items[0].querySelector(
-        ".value",
-      )!.textContent = `${this.progressData.learning.current} / ${this.progressData.learning.limit}`;
-      (items[0].querySelector(
-        ".progress-fill",
-      ) as HTMLElement)!.style.width = `${learningPercent}%`;
+             items[0].querySelector(
+               ".value",
+             )!.textContent = `${this.progressData.learning.current} / ${this.progressData.learning.limit}`;
+             (items[0].querySelector(
+               ".progress-fill",
+             ) as HTMLElement)!.style.width = `${learningPercent}%`;
 
-      items[1].querySelector(
-        ".value",
-      )!.textContent = `${this.progressData.contribution.current} / ${this.progressData.contribution.limit}`;
-      (items[1].querySelector(
-        ".progress-fill",
-      ) as HTMLElement)!.style.width = `${contributionPercent}%`;
+             items[1].querySelector(
+               ".value",
+             )!.textContent = `${this.progressData.contribution.current} / ${this.progressData.contribution.limit}`;
+             (items[1].querySelector(
+               ".progress-fill",
+             ) as HTMLElement)!.style.width = `${contributionPercent}%`;
 
-      items[2].querySelector(
-        ".value",
-      )!.textContent = `${this.progressData.interaction.current} / ${this.progressData.interaction.limit}`;
-      (items[2].querySelector(
-        ".progress-fill",
-      ) as HTMLElement)!.style.width = `${interactionPercent}%`;
+             items[2].querySelector(
+               ".value",
+             )!.textContent = `${this.progressData.interaction.current} / ${this.progressData.interaction.limit}`;
+             (items[2].querySelector(
+               ".progress-fill",
+             ) as HTMLElement)!.style.width = `${interactionPercent}%`;
 
-      const totalItem = items[3];
-      totalItem.querySelector(".value")!.textContent = `${totalPercent.toFixed(
-        1,
-      )}%`;
-      (totalItem.querySelector(
-        ".progress-fill",
-      ) as HTMLElement)!.style.width = `${totalPercent}%`;
-    }
-  }
+             const totalItem = items[3];
+             totalItem.querySelector(
+               ".value",
+             )!.textContent = `${totalPercent.toFixed(1)}%`;
+             (totalItem.querySelector(
+               ".progress-fill",
+             ) as HTMLElement)!.style.width = `${totalPercent}%`;
+           }
+         }
 
-  private getPercent(data: { current: number; limit: number }): number {
-    return Math.min((data.current / data.limit) * 100, 100);
-  }
+         private getPercent(data: { current: number; limit: number }): number {
+           return Math.min((data.current / data.limit) * 100, 100);
+         }
 
-  private getTotalPercent(): number {
-    const totalCurrent =
-      this.progressData.learning.current +
-      this.progressData.contribution.current +
-      this.progressData.interaction.current;
-    const totalLimit =
-      this.progressData.learning.limit +
-      this.progressData.contribution.limit +
-      this.progressData.interaction.limit;
-    return Math.min((totalCurrent / totalLimit) * 100, 100);
-  }
+         private getTotalPercent(): number {
+           const totalCurrent =
+             this.progressData.learning.current +
+             this.progressData.contribution.current +
+             this.progressData.interaction.current;
+           const totalLimit =
+             this.progressData.learning.limit +
+             this.progressData.contribution.limit +
+             this.progressData.interaction.limit;
+           return Math.min((totalCurrent / totalLimit) * 100, 100);
+         }
 
-  private initDraggable() {
-    if (!this.container) return;
+         private initDraggable() {
+           if (!this.container) return;
 
-    const header = this.container.querySelector(
-      "#daily-points-header",
-    ) as HTMLElement;
-    const closeBtn = this.container.querySelector(
-      "#daily-points-close",
-    ) as HTMLElement;
-    const stopBtn = this.container.querySelector(
-      "#daily-points-stop",
-    ) as HTMLElement;
+           const header = this.container.querySelector(
+             "#daily-points-header",
+           ) as HTMLElement;
+           const closeBtn = this.container.querySelector(
+             "#daily-points-close",
+           ) as HTMLElement;
+           const refreshBtn = this.container.querySelector(
+             "#daily-points-refresh",
+           ) as HTMLElement;
+           const stopBtn = this.container.querySelector(
+             "#daily-points-stop",
+           ) as HTMLElement;
 
-    closeBtn?.addEventListener("click", () => this.stop());
-    stopBtn?.addEventListener("click", () => this.stop());
+           closeBtn?.addEventListener("click", () => this.stop());
+           refreshBtn?.addEventListener("click", () => {
+             window.postMessage({ type: "REFRESH_POINTS" }, "*");
+           });
+           stopBtn?.addEventListener("click", () => {
+             window.postMessage({ type: "STOP_DAILY_POINTS" }, "*");
+           });
 
-    if (header) {
-      header.onmousedown = (downEvent: MouseEvent) => {
-        const relaX = downEvent.clientX - this.container!.offsetLeft;
-        const relaY = downEvent.clientY - this.container!.offsetTop;
+           if (header) {
+             header.onmousedown = (downEvent: MouseEvent) => {
+               const relaX = downEvent.clientX - this.container!.offsetLeft;
+               const relaY = downEvent.clientY - this.container!.offsetTop;
 
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
-        const containerWidth = this.container!.offsetWidth;
-        const containerHeight = this.container!.offsetHeight;
+               const windowWidth = window.innerWidth;
+               const windowHeight = window.innerHeight;
+               const containerWidth = this.container!.offsetWidth;
+               const containerHeight = this.container!.offsetHeight;
 
-        document.onmousemove = (moveEvent: MouseEvent) => {
-          let targetX = moveEvent.clientX - relaX;
-          let targetY = moveEvent.clientY - relaY;
+               document.onmousemove = (moveEvent: MouseEvent) => {
+                 let targetX = moveEvent.clientX - relaX;
+                 let targetY = moveEvent.clientY - relaY;
 
-          if (targetX <= 0) targetX = 0;
-          if (targetY <= 0) targetY = 0;
-          if (targetX >= windowWidth - containerWidth)
-            targetX = windowWidth - containerWidth;
-          if (targetY >= windowHeight - containerHeight)
-            targetY = windowHeight - containerHeight;
+                 if (targetX <= 0) targetX = 0;
+                 if (targetY <= 0) targetY = 0;
+                 if (targetX >= windowWidth - containerWidth)
+                   targetX = windowWidth - containerWidth;
+                 if (targetY >= windowHeight - containerHeight)
+                   targetY = windowHeight - containerHeight;
 
-          this.container!.style.left = targetX + "px";
-          this.container!.style.top = targetY + "px";
-        };
+                 this.container!.style.left = targetX + "px";
+                 this.container!.style.top = targetY + "px";
+               };
 
-        document.onmouseup = () => {
-          document.onmouseup = null;
-          document.onmousemove = null;
-          this.savePosition();
-        };
-      };
-    }
-  }
+               document.onmouseup = () => {
+                 document.onmouseup = null;
+                 document.onmousemove = null;
+                 this.savePosition();
+               };
+             };
+           }
+         }
 
-  private loadPosition() {
-    if (!this.container) return;
+         private loadPosition() {
+           if (!this.container) return;
 
-    const x = parseInt(
-      Application.App.config?.GetConfig("daily_points_x", "60") || "60",
-    );
-    const y = parseInt(
-      Application.App.config?.GetConfig("daily_points_y", "40") || "40",
-    );
+           const x = parseInt(
+             Application.App.config?.GetConfig("daily_points_x", "60") || "60",
+           );
+           const y = parseInt(
+             Application.App.config?.GetConfig("daily_points_y", "40") || "40",
+           );
 
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    const containerWidth = this.container.offsetWidth;
-    const containerHeight = this.container.offsetHeight;
+           const windowWidth = window.innerWidth;
+           const windowHeight = window.innerHeight;
+           const containerWidth = this.container.offsetWidth;
+           const containerHeight = this.container.offsetHeight;
 
-    let finalX = x;
-    let finalY = y;
+           let finalX = x;
+           let finalY = y;
 
-    if (finalX < 0) finalX = 0;
-    if (finalX >= windowWidth - containerWidth)
-      finalX = windowWidth - containerWidth;
-    if (finalY < 0) finalY = 0;
-    if (finalY >= windowHeight - containerHeight)
-      finalY = windowHeight - containerHeight;
+           if (finalX < 0) finalX = 0;
+           if (finalX >= windowWidth - containerWidth)
+             finalX = windowWidth - containerWidth;
+           if (finalY < 0) finalY = 0;
+           if (finalY >= windowHeight - containerHeight)
+             finalY = windowHeight - containerHeight;
 
-    this.container.style.left = finalX + "px";
-    this.container.style.top = finalY + "px";
-  }
+           this.container.style.left = finalX + "px";
+           this.container.style.top = finalY + "px";
+         }
 
-  private savePosition() {
-    if (!this.container) return;
-    Application.App.config?.SetConfig(
-      "daily_points_x",
-      this.container.style.left.replace("px", ""),
-    );
-    Application.App.config?.SetConfig(
-      "daily_points_y",
-      this.container.style.top.replace("px", ""),
-    );
-  }
-}
+         private savePosition() {
+           if (!this.container) return;
+           Application.App.config?.SetConfig(
+             "daily_points_x",
+             this.container.style.left.replace("px", ""),
+           );
+           Application.App.config?.SetConfig(
+             "daily_points_y",
+             this.container.style.top.replace("px", ""),
+           );
+         }
+       }
