@@ -1,16 +1,15 @@
 import {Launcher, Application} from "@App/internal/application";
 import {Mooc, MoocFactory, MoocTaskSet} from "@App/internal/app/mooc";
 import {Task} from "@App/internal/app/task";
+import {DailyPointsFloatingPanel} from "@App/internal/utils/dailyPointsPanel";
 
-/**
- * MoocLauncher 启动器类
- * 负责初始化和运行Mooc任务
- */
 export class MoocLauncher implements Launcher {
     protected moocFactory: MoocFactory;
+    protected dailyPointsPanel: DailyPointsFloatingPanel;
 
     constructor(moocFactory: MoocFactory) {
         this.moocFactory = moocFactory;
+        this.dailyPointsPanel = new DailyPointsFloatingPanel();
     }
 
     public async start() {
@@ -23,7 +22,6 @@ export class MoocLauncher implements Launcher {
                 await moocInstance.Init();
                 console.log("mooc初始化完成", moocInstance);
                 console.log((<MoocTaskSet>moocInstance).Next, "mooc.Next");
-                // MoocTaskSet接口判断,接管流程
                 if ((<MoocTaskSet>moocInstance).Next != undefined) {
                     this.runMoocTask(<MoocTaskSet>moocInstance);
                 }
@@ -31,7 +29,6 @@ export class MoocLauncher implements Launcher {
         } catch (e) {
             Application.App.log.Fatal("扩展发生了一个致命错误:", e);
         }
-        //最小化警告
         if (top == self) {
             let isShow = false;
             document.addEventListener("visibilitychange", () => {
@@ -66,15 +63,12 @@ export class MoocLauncher implements Launcher {
         });
         moocTask.addEventListener("complete", () => {
             Application.App.log.Warn("当前视频任务完成了");
-            // window.close(); 
-            // alert("任务完成了");
         });
         moocTask.addEventListener("courseDetailTaskComplete", (task: Task) => {
             window.location.reload();
         })
         moocTask.addEventListener("courseTaskComplete", () => {
             Application.App.log.Debug("courseTaskComplete 当前课程任务完成了");
-            window.close();
         })
         moocTask.addEventListener("taskComplete", (index: number, task: Task) => {
             moocTask.SetTaskPointer(index + 1);
@@ -109,7 +103,6 @@ export class MoocLauncher implements Launcher {
         });
     }
 
-    // 防止taskComplete和reload冲突
     protected once: boolean = false;
     protected nowTask: Task;
 
@@ -126,11 +119,6 @@ export class MoocLauncher implements Launcher {
                 task = await moocTask.Next();
                 continue;
             }
-            // if (Application.App.config.answer_ignore && task.Type() == "topic") {
-            //     task = await moocTask.Next();
-            //     continue;
-            // }
-            //开始任务
             if (Application.App.config.auto&&task.Type() !== "exam") {
                 await task.Start();
             }

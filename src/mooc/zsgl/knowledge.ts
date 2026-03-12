@@ -80,13 +80,23 @@ export class ZsglKnowledge extends ZsglTask {
                     return;
                 }
 
-                const startButton = Array.from(
+                const allButtons = Array.from(
                     document.querySelectorAll("button.MuiButton-root")
-                ).find(btn => btn.textContent?.includes("立即学习")) as HTMLButtonElement;
+                );
+                Application.App.log.Debug(`[开始按钮查找] 找到 ${allButtons.length} 个按钮`);
+                
+                allButtons.forEach((btn, index) => {
+                    Application.App.log.Debug(`[开始按钮查找] 按钮${index}: "${btn.textContent?.trim()}"`);
+                });
+
+                const startButton = allButtons.find(btn => {
+                    const text = btn.textContent?.trim() || "";
+                    return text.includes("立即学习") || text.includes("开始学习") || text.includes("学习");
+                }) as HTMLButtonElement;
 
                 if (startButton) {
                     this.timerManager.clearInterval("findStartBtn");
-                    Application.App.log.Info("[开始按钮查找] 找到开始按钮，点击");
+                    Application.App.log.Info(`[开始按钮查找] 找到开始按钮，点击: "${startButton.textContent?.trim()}"`);
                     startButton.click();
                     resolve();
                 }
@@ -109,12 +119,20 @@ export class ZsglKnowledge extends ZsglTask {
                     return;
                 }
 
+                const allIframes = document.querySelectorAll("iframe");
+                Application.App.log.Debug(`[iframe 查找] 找到 ${allIframes.length} 个 iframe`);
+                
+                allIframes.forEach((iframe, index) => {
+                    Application.App.log.Debug(`[iframe 查找] iframe${index}: src="${(iframe as HTMLIFrameElement).src?.substring(0, 100)}"`);
+                });
+
                 const iframe = document.querySelector("iframe") as HTMLIFrameElement;
                 if (iframe && iframe.src) {
                     this.timerManager.clearInterval("findIframe");
                     this.iframe = iframe;
                     
                     this.exitBtn = document.querySelector(ZSGL_CONSTANTS.SELECTORS.EXIT_SPAN);
+                    Application.App.log.Debug(`[iframe 查找] 退出按钮: ${this.exitBtn ? "找到" : "未找到"}`);
                     
                     Application.App.log.Info("[iframe 查找] iframe 加载完成");
                     resolve();
@@ -127,7 +145,8 @@ export class ZsglKnowledge extends ZsglTask {
     private calculateRemainingTime(): number {
         const playTime = (this.taskinfo.playTime || 0) * 1000;
         const learnedDuration = this.taskinfo.learnedDuration || 0;
-        return playTime - learnedDuration;
+        Application.App.log.Debug(`playTime: ${playTime}, learnedDuration: ${learnedDuration}`);
+        return playTime - learnedDuration+3000;
     }
 
     /** 等待后退出 */
@@ -140,9 +159,17 @@ export class ZsglKnowledge extends ZsglTask {
             remainingTime: remainingTime / 1000 + "秒"
         });
 
+        Application.App.log.Debug(`退出按钮状态: ${this.exitBtn ? "存在" : "不存在"}`);
+        Application.App.log.Debug(`iframe 状态: ${this.iframe ? "存在" : "不存在"}`);
+
         if (remainingTime <= 0) {
             Application.App.log.Info("学习时长已满足，直接退出");
-            this.exitBtn?.click();
+            if (this.exitBtn) {
+                Application.App.log.Info("点击退出按钮");
+                this.exitBtn.click();
+            } else {
+                Application.App.log.Warn("退出按钮不存在，无法点击");
+            }
             this.callEvent("taskComplete");
             return;
         }
@@ -152,7 +179,12 @@ export class ZsglKnowledge extends ZsglTask {
         await new Promise<void>(resolve => {
             this.timerManager.setTimeout("waitDuration", () => {
                 Application.App.log.Info("学习时长已满足，退出");
-                this.exitBtn?.click();
+                if (this.exitBtn) {
+                    Application.App.log.Info("点击退出按钮");
+                    this.exitBtn.click();
+                } else {
+                    Application.App.log.Warn("退出按钮不存在，无法点击");
+                }
                 this.callEvent("taskComplete");
                 resolve();
             }, remainingTime);
