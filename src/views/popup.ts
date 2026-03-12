@@ -9,8 +9,7 @@ import { TabsRoot, TabsList, TabsTrigger, TabsContent } from '@/components/ui/ta
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import DailyPointsConfig from './components/DailyPointsConfig.vue';
-import PointsProgressDialog from './components/PointsProgressDialog.vue';
+import DailyPointsConfig from "./components/DailyPointsConfig.vue";
 
 class popup implements Launcher {
     protected vm: ReturnType<typeof createApp>;
@@ -29,17 +28,10 @@ class popup implements Launcher {
             Input,
             Label,
             DailyPointsConfig,
-            PointsProgressDialog,
           },
           setup() {
             const selectKey = ref("zsgl");
             const configs = ref(SystemConfig.config);
-            const showProgressDialog = ref(false);
-            const pointsData = ref({
-              learning: { current: 0, limit: 100 },
-              contribution: { current: 0, limit: 300 },
-              interaction: { current: 0, limit: 100 },
-            });
 
             const toVal = (type: string, val: string): boolean | string => {
               switch (type) {
@@ -59,10 +51,13 @@ class popup implements Launcher {
                   let val = Application.App.config.GetNamespaceConfig(
                     key,
                     item.key,
-                    undefined
+                    undefined,
                   );
                   if (val == undefined) {
-                    val = Application.App.config.GetConfig(item.key, item.value);
+                    val = Application.App.config.GetConfig(
+                      item.key,
+                      item.value,
+                    );
                   }
                   item.value = toVal(item.type, val);
                 }
@@ -79,24 +74,24 @@ class popup implements Launcher {
               type: string,
               val: string | boolean,
               index: number,
-              prompt: string
+              prompt: string,
             ) => {
               if (prompt !== undefined) {
                 if (!protocolPrompt(prompt, key)) {
                   let val = Application.App.config.GetNamespaceConfig(
                     namespace,
                     key,
-                    undefined
+                    undefined,
                   );
                   if (val == undefined) {
                     val = Application.App.config.GetConfig(
                       key,
-                      configs.value[namespace].items[index].value
+                      configs.value[namespace].items[index].value,
                     );
                   }
                   configs.value[namespace].items[index].value = toVal(
                     type,
-                    val
+                    val,
                   );
                   return false;
                 }
@@ -109,7 +104,7 @@ class popup implements Launcher {
                   await Application.App.config.SetNamespaceConfig(
                     namespace,
                     key,
-                    boolToString(<boolean>val)
+                    boolToString(<boolean>val),
                   );
                   break;
                 }
@@ -117,20 +112,92 @@ class popup implements Launcher {
                   await Application.App.config.SetNamespaceConfig(
                     namespace,
                     key,
-                    <string>val
+                    <string>val,
                   );
                 }
               }
             };
 
             const handleStartDailyPoints = (config: any) => {
-              console.log('开始每日积分任务', config);
-              showProgressDialog.value = true;
-            };
+              console.log("[每日积分] popup: 点击开始按钮", config);
 
-            const handleStopDailyPoints = () => {
-              console.log('停止每日积分任务');
-              showProgressDialog.value = false;
+              const targetUrl =
+                config.knowledgeLink ||
+                "https://zsgl.lzlj.com/znWeb/znPortal/#/home/homePage";
+              console.log("[每日积分] popup: 目标URL", targetUrl);
+
+              chrome.tabs.query(
+                { active: true, currentWindow: true },
+                (tabs) => {
+                  const currentTab = tabs[0];
+                  if (!currentTab?.id) {
+                    console.error("[每日积分] popup: 没有找到当前标签页");
+                    return;
+                  }
+
+                  console.log("[每日积分] popup: 当前标签页", currentTab);
+
+                  chrome.tabs.onUpdated.addListener(function listener(
+                    tabId,
+                    info,
+                  ) {
+                    if (tabId === currentTab.id && info.status === "complete") {
+                      console.log("[每日积分] popup: 标签页跳转完成");
+                      chrome.tabs.onUpdated.removeListener(listener);
+
+                      const sendMessageWithRetry = (
+                        tabId: number,
+                        message: any,
+                        retries: number = 5,
+                        delay: number = 2000,
+                      ) => {
+                        console.log(
+                          `[每日积分] popup: 尝试发送消息 (剩余重试次数: ${retries})`,
+                        );
+
+                        chrome.tabs.sendMessage(tabId, message, (response) => {
+                          if (chrome.runtime.lastError) {
+                            console.warn(
+                              "[每日积分] popup: 发送消息失败",
+                              chrome.runtime.lastError.message,
+                            );
+
+                            if (retries > 0) {
+                              console.log(
+                                `[每日积分] popup: ${delay}ms 后重试...`,
+                              );
+                              setTimeout(() => {
+                                sendMessageWithRetry(
+                                  tabId,
+                                  message,
+                                  retries - 1,
+                                  delay,
+                                );
+                              }, delay);
+                            } else {
+                              console.error(
+                                "[每日积分] popup: 重试次数用尽，消息发送失败",
+                              );
+                            }
+                          } else {
+                            console.log("[每日积分] popup: 收到响应", response);
+                          }
+                        });
+                      };
+
+                      setTimeout(() => {
+                        sendMessageWithRetry(currentTab.id!, {
+                          type: "START_DAILY_POINTS",
+                          data: config,
+                        });
+                      }, 2000);
+                    }
+                  });
+
+                  chrome.tabs.update(currentTab.id, { url: targetUrl });
+                  console.log("[每日积分] popup: 开始跳转到目标页面");
+                },
+              );
             };
 
             onMounted(() => {
@@ -140,16 +207,13 @@ class popup implements Launcher {
             return {
               selectKey,
               configs,
-              showProgressDialog,
-              pointsData,
               changeTab,
               change,
               handleStartDailyPoints,
-              handleStopDailyPoints,
             };
           },
           template: `
-            <div class="min-h-screen bg-background">
+            <div class="w-[420px] min-h-[500px] bg-background">
               <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4">
                 <h1 class="text-white text-lg font-medium">
                   <span class="text-blue-200">网课</span>小工具
@@ -227,15 +291,6 @@ class popup implements Launcher {
                 <p class="mt-4 text-xs text-muted-foreground text-center">
                   Tips: 鼠标放置选项上,可以查看详细内容哦
                 </p>
-              </div>
-              
-              <div v-if="showProgressDialog" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                <PointsProgressDialog
-                  :learning="pointsData.learning"
-                  :contribution="pointsData.contribution"
-                  :interaction="pointsData.interaction"
-                  @stop="handleStopDailyPoints"
-                />
               </div>
             </div>
           `,

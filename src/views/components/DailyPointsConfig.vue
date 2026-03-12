@@ -63,7 +63,10 @@ const handleStart = () => {
         />
       </div>
       
-      <Button class="w-full" @click="handleStart">
+      <Button 
+        class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-2.5 rounded-md transition-all duration-200 shadow-md hover:shadow-lg" 
+        @click="handleStart"
+      >
         开始
       </Button>
     </CardContent>
