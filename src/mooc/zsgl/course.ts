@@ -114,7 +114,9 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
                                             fileName: item.fileName,
                                             cwType: item.cwType,
                                             jobIndex: index,
-                                            courseId
+                                            courseId,
+                                            playTime: item.playTime,
+                                            learnedDuration: item.learnedDuration,
                                         };
                                     })
                                     .filter((item: CourseDetailItem) => {
