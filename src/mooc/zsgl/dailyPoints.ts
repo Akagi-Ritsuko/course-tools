@@ -7,7 +7,12 @@
  */
 import { Task, TaskType } from "@App/internal/app/task";
 import { Application } from "@App/internal/application";
-import { TimerManager, hookHttpRequest } from "./utils/utils";
+import {
+  TimerManager,
+  hookHttpRequest,
+  sendApiRequest,
+  ApiResponse,
+} from "./utils/utils";
 import { NewChromeServerMessage } from "@App/internal/utils/message";
 import { CourseItem, CourseListResponse } from "./types";
 
@@ -46,30 +51,66 @@ export interface DailyPointsState {
  */
 export type PointsTaskType = "course" | "knowledgeRead" | "knowledgeShare";
 
-/**
- * ZsglDailyPoints 每日积分模式类
- */
+export interface KnowledgeReadResponse {
+  code: number;
+  body: {
+    id: string;
+    name: string;
+    [key: string]: any;
+  };
+  message: string;
+}
+
+export interface KnowledgeShareResponse {
+  body: {
+    body: any;
+    code: number;
+    message: string;
+  };
+  code: string;
+  file: any;
+  message: string;
+  user: any;
+}
+
+export interface PointsDetailItem {
+  rate: number;
+  ruleId: string;
+  ruleName: string;
+  userPoint: number;
+}
+
+export interface PointsDetailResponse {
+  body: PointsDetailItem[];
+  code: string;
+  file: any;
+  message: string;
+  user: any;
+}
+
+const API_BASE_URL = "https://zsgl.lzlj.com/learn/app/clientapi";
+const DEFAULT_TIMEOUT = 30000;
+
 export class ZsglDailyPoints extends Task {
-  /** 积分状态 */
   protected pointsState: DailyPointsState;
-  /** 定时器管理器 */
   private timerManager: TimerManager = new TimerManager();
-  /** 知识页面链接 */
   protected knowledgePageUrl: string;
-  /** 当前任务类型 */
   protected currentTaskType: PointsTaskType | null = null;
-  /** 任务队列 */
   protected taskQueue: PointsTaskType[] = [];
+  protected isTaskStopped: boolean = false;
+  protected callCount: number = 0;
+  protected pageId: string = "";
+  protected sid: string = "";
+  protected accumulatedPoints: number = 0;
+  protected pointsGap: number = 0;
 
   constructor() {
     super();
     this.knowledgePageUrl = Application.App.config.knowledge_page_url || "";
     this.pointsState = this.initPointsState();
+    this.Init(); // 初始化任务
   }
 
-  /**
-   * 初始化积分状态
-   */
   private initPointsState(): DailyPointsState {
     return {
       learning: {
@@ -95,22 +136,17 @@ export class ZsglDailyPoints extends Task {
     };
   }
 
-  /**
-   * 加载积分状态（从localStorage）
-   */
   protected loadPointsState(): void {
     const saved = localStorage.getItem("zsgl_daily_points_state");
     if (saved) {
       try {
         const state = JSON.parse(saved) as DailyPointsState;
-        // 检查是否是今天的数据
         const today = new Date().setHours(0, 0, 0, 0);
         const lastUpdateDay = new Date(state.lastUpdate).setHours(0, 0, 0, 0);
 
         if (today === lastUpdateDay) {
           this.pointsState = state;
         } else {
-          // 新的一天，重置积分
           this.pointsState = this.initPointsState();
         }
       } catch (e) {
@@ -120,9 +156,6 @@ export class ZsglDailyPoints extends Task {
     }
   }
 
-  /**
-   * 保存积分状态（到localStorage）
-   */
   protected savePointsState(): void {
     this.pointsState.lastUpdate = Date.now();
     localStorage.setItem(
@@ -131,9 +164,377 @@ export class ZsglDailyPoints extends Task {
     );
   }
 
-  /**
-   * 更新积分
-   */
+  public stopTask(): void {
+    Application.App.log.Info("停止每日积分任务");
+    Application.App.log.Debug("停止每日积分任务");
+    this.isTaskStopped = true;
+    this.pointsState.isRunning = false;
+    this.timerManager.clearAll();
+    this.savePointsState();
+
+    window.postMessage({ type: "TASK_STOPPED" }, "*");
+
+    Application.App.log.Info("每日积分任务已停止");
+    Application.App.log.Debug("每日积分任务已停止");
+  }
+
+  protected setupMessageListener(): void {
+    window.addEventListener("message", (event) => {
+      if (event.source !== window) return;
+
+      const message = event.data;
+
+      if (message.type === "STOP_DAILY_POINTS") {
+        this.stopTask();
+      } else if (message.type === "REFRESH_POINTS") {
+        this.handleRefreshPoints();
+      } else if (message.type === "CONFIRM_START_TASK") {
+        if (message.data?.knowledgeLink) {
+          this.knowledgePageUrl = message.data.knowledgeLink;
+        }
+        this.executeTaskAfterConfirm();
+      }
+    });
+  }
+
+  protected async executeTaskAfterConfirm(): Promise<void> {
+    Application.App.log.Info("用户确认开始任务，开始执行");
+    Application.App.log.Debug("用户确认开始任务，开始执行");
+
+    this.extractPageIdFromUrl();
+    this.extractSidFromStorage();
+
+    if (!this.pageId) {
+      Application.App.log.Warn("无法从知识页面链接中提取pageId");
+      return;
+    }
+
+    if (!this.sid) {
+      Application.App.log.Warn("无法从localStorage中获取sid");
+      return;
+    }
+
+    Application.App.log.Info(`提取到pageId: ${this.pageId}, sid: ${this.sid}`);
+    Application.App.log.Debug(`提取到pageId: ${this.pageId}, sid: ${this.sid}`);
+
+    const pointsResult = await this.fetchPointsDetail();
+    if (!pointsResult.success) {
+      Application.App.log.Error("获取积分详情失败");
+      return;
+    }
+
+    this.updatePointsStateFromApi(pointsResult.data);
+
+    window.postMessage(
+      {
+        type: "POINTS_UPDATED",
+        data: {
+          learning: this.pointsState.learning,
+          contribution: this.pointsState.contribution,
+          interaction: this.pointsState.interaction,
+        },
+      },
+      "*",
+    );
+
+    if (this.isAllPointsFull()) {
+      Application.App.log.Info("所有积分已达上限，停止每日积分模式");
+      Application.App.log.Debug("所有积分已达上限，停止每日积分模式");
+      return;
+    }
+
+    this.pointsState.isRunning = true;
+    this.isTaskStopped = false;
+    this.savePointsState();
+
+    const nextTask = this.getNextTask();
+    if (nextTask) {
+      Application.App.log.Info(`开始执行任务：${nextTask}`);
+      Application.App.log.Debug(`开始执行任务：${nextTask}`);
+      this.currentTaskType = nextTask;
+
+      switch (nextTask) {
+        case "course":
+          // await this.executeCourseTask();
+          break;
+        case "knowledgeRead":
+          await this.executeKnowledgeReadTask();
+          break;
+        case "knowledgeShare":
+          await this.executeKnowledgeShareTask();
+          break;
+      }
+    }
+  }
+
+  protected extractPageIdFromUrl(): void {
+    if (this.knowledgePageUrl) {
+      const match = this.knowledgePageUrl.match(
+        /knowledgePage\/([A-Fa-f0-9]+)/,
+      );
+      if (match && match[1]) {
+        this.pageId = match[1];
+        Application.App.log.Info(`从知识页面链接提取pageId: ${this.pageId}`);
+        Application.App.log.Debug(`从知识页面链接提取pageId: ${this.pageId}`);
+        return;
+      }
+    }
+
+    const currentUrl = window.location.href;
+    const match = currentUrl.match(/knowledgePage\/([A-Fa-f0-9]+)/);
+    if (match && match[1]) {
+      this.pageId = match[1];
+      Application.App.log.Info(`从当前页面URL提取pageId: ${this.pageId}`);
+      Application.App.log.Debug(`从当前页面URL提取pageId: ${this.pageId}`);
+    }
+  }
+
+  protected extractSidFromStorage(): void {
+    try {
+      const sessionInfo = localStorage.getItem("sessionInfo");
+      if (sessionInfo) {
+        const session = JSON.parse(sessionInfo);
+        if (session.sid) {
+          this.sid = session.sid;
+          Application.App.log.Info(`从localStorage获取sid: ${this.sid}`);
+          Application.App.log.Debug(`从localStorage获取sid: ${this.sid}`);
+          return;
+        }
+      }
+
+      const allKeys = Object.keys(localStorage);
+      for (const key of allKeys) {
+        if (
+          key.toLowerCase().includes("session") ||
+          key.toLowerCase().includes("sid")
+        ) {
+          const value = localStorage.getItem(key);
+          if (value) {
+            try {
+              const parsed = JSON.parse(value);
+              if (parsed.sid) {
+                this.sid = parsed.sid;
+                Application.App.log.Info(
+                  `从localStorage[${key}]获取sid: ${this.sid}`,
+                );
+                Application.App.log.Debug(
+                  `从localStorage[${key}]获取sid: ${this.sid}`,
+                );
+                return;
+              }
+            } catch {
+              if (value.length > 10 && /^[A-Fa-f0-9]+$/.test(value)) {
+                this.sid = value;
+                Application.App.log.Info(
+                  `从localStorage[${key}]获取sid: ${this.sid}`,
+                );
+                Application.App.log.Debug(
+                  `从localStorage[${key}]获取sid: ${this.sid}`,
+                );
+                return;
+              }
+            }
+          }
+        }
+      }
+
+      Application.App.log.Warn("未能在localStorage中找到sid");
+    } catch (e) {
+      Application.App.log.Error("提取sid失败", e);
+    }
+  }
+
+  protected async sendApiRequest<T = any>(
+    method: "GET" | "POST",
+    url: string,
+    params?: Record<string, string | number>,
+    body?: Record<string, any>,
+    headers?: Record<string, string>,
+    timeout: number = DEFAULT_TIMEOUT,
+  ): Promise<ApiResponse<T>> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+    try {
+      let requestUrl = url;
+      const fetchOptions: RequestInit = {
+        method,
+        signal: controller.signal,
+        credentials: "include",
+      };
+
+      if (params && Object.keys(params).length > 0) {
+        const queryString = Object.entries(params)
+          .map(
+            ([key, value]) =>
+              `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`,
+          )
+          .join("&");
+        requestUrl = `${url}${url.includes("?") ? "&" : "?"}${queryString}`;
+      }
+
+      if (body && method === "POST") {
+        fetchOptions.body = JSON.stringify(body);
+      }
+
+      const defaultHeaders: Record<string, string> = {
+        Accept: "application/json",
+        Pragma: "no-cache",
+      };
+
+      if (method === "POST") {
+        defaultHeaders["Content-Type"] = "application/json";
+      }
+
+      fetchOptions.headers = {
+        ...defaultHeaders,
+        ...headers,
+      };
+
+      Application.App.log.Debug(`发送API请求: ${method} ${requestUrl}`);
+
+      const response = await fetch(requestUrl, fetchOptions);
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        Application.App.log.Error(
+          `API请求失败: ${response.status} ${response.statusText}`,
+        );
+        return {
+          success: false,
+          data: null,
+          error: `HTTP错误: ${response.status} ${response.statusText}`,
+          status: response.status,
+        };
+      }
+
+      const data = await response.json();
+      Application.App.log.Debug(`API响应成功:`, data);
+
+      return {
+        success: true,
+        data,
+        error: null,
+        status: response.status,
+      };
+    } catch (error) {
+      clearTimeout(timeoutId);
+
+      if (error.name === "AbortError") {
+        Application.App.log.Error(`API请求超时: ${url}`);
+        return {
+          success: false,
+          data: null,
+          error: "请求超时",
+          status: 0,
+        };
+      }
+
+      Application.App.log.Error(`API请求异常:`, error);
+      return {
+        success: false,
+        data: null,
+        error: error.message || "未知错误",
+        status: 0,
+      };
+    }
+  }
+
+  protected async fetchKnowledgeRead(): Promise<
+    ApiResponse<KnowledgeReadResponse>
+  > {
+    Application.App.log.Info(`获取知识阅读: pageId=${this.pageId}`);
+    Application.App.log.Debug(`获取知识阅读: pageId=${this.pageId}`);
+
+    return this.sendApiRequest<KnowledgeReadResponse>(
+      "GET",
+      `${API_BASE_URL}/knowledgecloud/page/details.do`,
+      {
+        pageId: this.pageId,
+        sid: this.sid,
+        os: 99,
+      },
+    );
+  }
+
+  protected async fetchKnowledgeShare(): Promise<
+    ApiResponse<KnowledgeShareResponse>
+  > {
+    Application.App.log.Info(`获取知识分享: pageId=${this.pageId}`);
+    Application.App.log.Debug(`获取知识分享: pageId=${this.pageId}`);
+
+    return this.sendApiRequest<KnowledgeShareResponse>(
+      "GET",
+      `${API_BASE_URL}/knowledge/cloud/page/like/isShareOut.do`,
+      {
+        pageId: this.pageId,
+        shareOutType: "",
+        sid: this.sid,
+        os: 99,
+      },
+    );
+  }
+
+  protected async fetchPointsDetail(): Promise<
+    ApiResponse<PointsDetailResponse>
+  > {
+    const today = new Date();
+    const startTime = `${today.getFullYear()}-01-01`;
+    const endTime = `${today.getFullYear()}-12-31`;
+
+    Application.App.log.Info(`获取积分详情: ${startTime} ~ ${endTime}`);
+    Application.App.log.Debug(`获取积分详情: ${startTime} ~ ${endTime}`);
+
+    return this.sendApiRequest<PointsDetailResponse>(
+      "POST",
+      `${API_BASE_URL}/personal/statistics/queryUserPointPercent.do`,
+      {
+        os: 99,
+        sid: this.sid,
+      },
+      {
+        startTime,
+        endTime,
+      },
+    );
+  }
+
+  protected updatePointsStateFromApi(data: PointsDetailResponse | null): void {
+    if (!data || !data.body) {
+      Application.App.log.Warn("积分详情数据为空");
+      return;
+    }
+
+    for (const item of data.body) {
+      Application.App.log.Info(
+        `积分项: ${item.ruleName} (${item.ruleId}) = ${item.userPoint}`,
+      );
+      Application.App.log.Debug(
+        `积分项: ${item.ruleName} (${item.ruleId}) = ${item.userPoint}`,
+      );
+
+      if (item.ruleId === "knowledge_read_point") {
+        this.pointsState.contribution.current = item.userPoint;
+        Application.App.log.Info(`更新贡献积分: ${item.userPoint}`);
+        Application.App.log.Debug(`更新贡献积分: ${item.userPoint}`);
+      } else if (item.ruleId === "knowledge_shared") {
+        this.pointsState.interaction.current = item.userPoint;
+        Application.App.log.Info(`更新互动积分: ${item.userPoint}`);
+        Application.App.log.Debug(`更新互动积分: ${item.userPoint}`);
+      }
+    }
+
+    this.savePointsState();
+    this.updatePointsPanel();
+  }
+
+  protected calculatePointsGap(type: PointsType): number {
+    const status = this.pointsState[type];
+    const target = status.target || status.limit;
+    const gap = target - status.current;
+    return Math.max(0, gap);
+  }
+
   protected updatePoints(type: PointsType, points: number): void {
     const status = this.pointsState[type];
     status.current = Math.min(status.current + points, status.limit);
@@ -142,27 +543,23 @@ export class ZsglDailyPoints extends Task {
     Application.App.log.Info(
       `${type}积分增加 ${points}，当前：${status.current}/${status.limit}`,
     );
+    Application.App.log.Debug(
+      `${type}积分增加 ${points}，当前：${status.current}/${status.limit}`,
+    );
   }
 
-  /**
-   * 检查积分是否达到上限
-   */
   protected isPointsFull(type: PointsType): boolean {
-    return this.pointsState[type].current >= this.pointsState[type].limit;
+    return (
+      this.pointsState[type].current >=
+      (this.pointsState[type].target || this.pointsState[type].limit)
+    );
   }
 
-  /**
-   * 检查所有积分是否都达到上限
-   */
   protected isAllPointsFull(): boolean {
     return Object.values(PointsType).every((type) => this.isPointsFull(type));
   }
 
-  /**
-   * 获取下一个任务
-   */
   protected getNextTask(): PointsTaskType | null {
-    // 优先级：知识分享 > 知识阅读 > 普通课程
     if (!this.isPointsFull(PointsType.INTERACTION) && this.knowledgePageUrl) {
       return "knowledgeShare";
     }
@@ -183,7 +580,9 @@ export class ZsglDailyPoints extends Task {
     return new Promise<void>(async (resolve, reject) => {
       try {
         this.loadPointsState();
+        this.setupMessageListener();
         Application.App.log.Info("每日积分模式初始化完成", this.pointsState);
+        Application.App.log.Debug("每日积分模式初始化完成", this.pointsState);
         resolve();
       } catch (error) {
         Application.App.log.Error("每日积分模式初始化失败", error);
@@ -196,6 +595,7 @@ export class ZsglDailyPoints extends Task {
     return new Promise<void>(async (resolve) => {
       if (this.isAllPointsFull()) {
         Application.App.log.Info("所有积分已达上限，停止每日积分模式");
+        Application.App.log.Debug("所有积分已达上限，停止每日积分模式");
         resolve();
         return;
       }
@@ -206,6 +606,7 @@ export class ZsglDailyPoints extends Task {
       const nextTask = this.getNextTask();
       if (nextTask) {
         Application.App.log.Info(`开始执行任务：${nextTask}`);
+        Application.App.log.Debug(`开始执行任务：${nextTask}`);
         this.currentTaskType = nextTask;
 
         switch (nextTask) {
@@ -225,44 +626,39 @@ export class ZsglDailyPoints extends Task {
     });
   }
 
-  /**
-   * 执行普通课程任务
-   */
   protected async executeCourseTask(): Promise<void> {
     Application.App.log.Info("开始普通课程任务");
+    Application.App.log.Debug("开始普通课程任务");
 
-    // 导航至课程列表页面
     const targetUrl = "https://zsgl.lzlj.com/znWeb/znPortal/#/home/course";
     if (!window.location.href.includes("/home/course")) {
       Application.App.log.Info("跳转到课程列表页面");
+      Application.App.log.Debug("跳转到课程列表页面");
       window.location.href = targetUrl;
       return;
     }
 
-    // 拦截课程列表接口
     const courseData = await this.hookCourseListRequest();
     if (!courseData) {
       Application.App.log.Error("获取课程列表数据失败");
       return;
     }
 
-    // 查找未完成的课程
     const unfinishedCourse = this.findUnfinishedCourseFromData(courseData);
     if (!unfinishedCourse) {
       Application.App.log.Info("当前页没有未完成的课程，尝试点击查看更多");
+      Application.App.log.Debug("当前页没有未完成的课程，尝试点击查看更多");
 
-      // 点击查看更多按钮
       const hasMore = await this.clickViewMoreButton();
       if (hasMore) {
-        // 重新执行课程任务
         await this.executeCourseTask();
       } else {
         Application.App.log.Info("所有课程已完成");
+        Application.App.log.Debug("所有课程已完成");
       }
       return;
     }
 
-    // 在页面中找到并点击对应的课程元素
     const courseElement = await this.findCourseElementByName(
       unfinishedCourse.courseName,
     );
@@ -271,22 +667,20 @@ export class ZsglDailyPoints extends Task {
       return;
     }
 
-    // 设置任务完成监听
     this.setupCourseTaskCompletionListener();
 
-    // 点击课程
     courseElement.click();
     Application.App.log.Info("点击课程，等待跳转", unfinishedCourse.courseName);
+    Application.App.log.Debug(
+      "点击课程，等待跳转",
+      unfinishedCourse.courseName,
+    );
   }
 
-  /**
-   * 拦截课程列表请求
-   */
   protected async hookCourseListRequest(): Promise<CourseItem[] | null> {
     return new Promise((resolve) => {
       let resolved = false;
 
-      // 设置超时
       const timeout = setTimeout(() => {
         if (!resolved) {
           Application.App.log.Warn("课程列表请求拦截超时");
@@ -314,32 +708,23 @@ export class ZsglDailyPoints extends Task {
         this,
       );
 
-      // 如果数据已经存在，直接返回
-      // 某些情况下页面可能已经加载完成
-      setTimeout(() => {
-        // 尝试从页面中获取数据
-      }, 1000);
+      setTimeout(() => {}, 1000);
     });
   }
 
-  /**
-   * 从数据中查找未完成的课程
-   */
   protected findUnfinishedCourseFromData(
     courseArr: CourseItem[],
   ): CourseItem | null {
     for (const course of courseArr) {
       if (course.iscompleted === 0) {
         Application.App.log.Info("找到未完成的课程", course.courseName);
+        Application.App.log.Debug("找到未完成的课程", course.courseName);
         return course;
       }
     }
     return null;
   }
 
-  /**
-   * 根据课程名称查找课程元素
-   */
   protected async findCourseElementByName(
     courseName: string,
   ): Promise<HTMLElement | null> {
@@ -347,7 +732,6 @@ export class ZsglDailyPoints extends Task {
       this.timerManager.setInterval(
         "findCourseElement",
         () => {
-          // 查找所有可能的课程元素
           const elements = document.querySelectorAll(
             "div.defineTitle, div.jss209, [class*='defineTitle']",
           );
@@ -361,7 +745,6 @@ export class ZsglDailyPoints extends Task {
               this.timerManager.clearInterval("findCourseElement");
               Application.App.log.Debug("找到课程元素", text);
 
-              // 找到可点击的父元素
               let clickableElement: HTMLElement | null = element as HTMLElement;
               let attempts = 0;
               while (clickableElement && attempts < 5) {
@@ -377,7 +760,6 @@ export class ZsglDailyPoints extends Task {
                 attempts++;
               }
 
-              // 如果没找到可点击的父元素，返回元素本身
               resolve(element as HTMLElement);
               return;
             }
@@ -386,7 +768,6 @@ export class ZsglDailyPoints extends Task {
         500,
       );
 
-      // 10秒后超时
       setTimeout(() => {
         this.timerManager.clearInterval("findCourseElement");
         resolve(null);
@@ -394,9 +775,6 @@ export class ZsglDailyPoints extends Task {
     });
   }
 
-  /**
-   * 点击查看更多按钮
-   */
   protected async clickViewMoreButton(): Promise<boolean> {
     return new Promise((resolve) => {
       const buttons = document.querySelectorAll("button");
@@ -404,9 +782,9 @@ export class ZsglDailyPoints extends Task {
       for (const button of buttons) {
         if (button.textContent?.includes("查看更多")) {
           Application.App.log.Info("点击查看更多按钮");
+          Application.App.log.Debug("点击查看更多按钮");
           button.click();
 
-          // 等待页面加载
           setTimeout(() => {
             resolve(true);
           }, 2000);
@@ -415,13 +793,11 @@ export class ZsglDailyPoints extends Task {
       }
 
       Application.App.log.Info("未找到查看更多按钮");
+      Application.App.log.Debug("未找到查看更多按钮");
       resolve(false);
     });
   }
 
-  /**
-   * 设置课程任务完成监听
-   */
   protected setupCourseTaskCompletionListener(): void {
     const msg = NewChromeServerMessage("zsgl-tools");
     msg.Accept((client, data) => {
@@ -429,12 +805,11 @@ export class ZsglDailyPoints extends Task {
 
       if (data.type === "courseTaskComplete") {
         Application.App.log.Info("课程任务完成");
+        Application.App.log.Debug("课程任务完成");
 
-        // 计算学习积分（假设每个任务10分钟）
         const points = 0.4 * 10;
         this.updatePoints(PointsType.LEARNING, points);
 
-        // 返回课程列表页面，继续下一个任务
         setTimeout(() => {
           window.location.href =
             "https://zsgl.lzlj.com/znWeb/znPortal/#/home/course";
@@ -443,161 +818,165 @@ export class ZsglDailyPoints extends Task {
     });
   }
 
-  /**
-   * 执行知识阅读任务
-   */
   protected async executeKnowledgeReadTask(): Promise<void> {
-    Application.App.log.Info("开始知识阅读任务");
+    Application.App.log.Info("开始知识阅读任务（API方式）");
+    Application.App.log.Debug("开始知识阅读任务（API方式）");
 
-    // 检查是否配置了知识页面链接
-    if (!this.knowledgePageUrl) {
-      Application.App.log.Warn("未配置知识页面链接，跳过贡献积分任务");
+    this.pointsGap = this.calculatePointsGap(PointsType.CONTRIBUTION);
+    this.accumulatedPoints = 0;
+    this.callCount = 0;
+
+    Application.App.log.Info(`贡献积分分差: ${this.pointsGap}`);
+    Application.App.log.Debug(`贡献积分分差: ${this.pointsGap}`);
+
+    if (this.pointsGap <= 0) {
+      Application.App.log.Info("贡献积分已达目标，跳过知识阅读任务");
+      Application.App.log.Debug("贡献积分已达目标，跳过知识阅读任务");
       return;
     }
 
-    // 跳转到知识页面
-    if (!window.location.href.includes(this.knowledgePageUrl)) {
-      Application.App.log.Info("跳转到知识页面");
-      window.location.href = this.knowledgePageUrl;
-      return;
-    }
+    this.isTaskStopped = false;
 
-    // 查找自己的知识项
-    const knowledgeItem = await this.findMyKnowledgeItem();
-    if (!knowledgeItem) {
-      Application.App.log.Info("没有找到自己的知识项");
-      return;
-    }
+    while (!this.isTaskStopped && this.accumulatedPoints < this.pointsGap) {
+      const result = await this.fetchKnowledgeRead();
 
-    // 点击阅读知识
-    await this.clickAndReadKnowledge(knowledgeItem);
-  }
+      if (result.success) {
+        this.callCount++;
+        this.accumulatedPoints += 0.6;
+        Application.App.log.Info(
+          `知识阅读成功，第${this.callCount}次调用，累积积分: ${this.accumulatedPoints}/${this.pointsGap}`,
+        );
+        Application.App.log.Debug(
+          `知识阅读成功，第${this.callCount}次调用，累积积分: ${this.accumulatedPoints}/${this.pointsGap}`,
+        );
 
-  /**
-   * 查找自己的知识项
-   */
-  protected async findMyKnowledgeItem(): Promise<HTMLElement | null> {
-    return new Promise((resolve) => {
-      this.timerManager.setInterval(
-        "findKnowledgeItem",
-        () => {
-          const items = document.querySelectorAll(
-            ".knowledge-item, .MuiListItem-root, .list-item",
-          );
-          for (const item of items) {
-            // 查找可点击的知识项
-            if (
-              item.getAttribute("clickable") ||
-              item.classList.contains("clickable")
-            ) {
-              this.timerManager.clearInterval("findKnowledgeItem");
-              resolve(item as HTMLElement);
-              return;
+        if (this.callCount % 10 === 0) {
+          const pointsResult = await this.fetchPointsDetail();
+          if (pointsResult.success) {
+            this.updatePointsStateFromApi(pointsResult.data);
+            this.pointsGap = this.calculatePointsGap(PointsType.CONTRIBUTION);
+            this.accumulatedPoints = 0;
+            Application.App.log.Info(`重新计算分差: ${this.pointsGap}`);
+            Application.App.log.Debug(`重新计算分差: ${this.pointsGap}`);
+
+            if (this.pointsGap <= 0) {
+              Application.App.log.Info("贡献积分已达目标，停止知识阅读任务");
+              Application.App.log.Debug("贡献积分已达目标，停止知识阅读任务");
+              break;
             }
           }
-        },
-        500,
-      );
+        }
+      } else {
+        Application.App.log.Warn(`知识阅读失败: ${result.error}`);
+      }
 
-      // 10秒后超时
-      setTimeout(() => {
-        this.timerManager.clearInterval("findKnowledgeItem");
-        resolve(null);
-      }, 10000);
-    });
-  }
+      const delay = Math.floor(Math.random() * 15000) + 1000;
+      await this.sleep(delay);
+    }
 
-  /**
-   * 点击并阅读知识
-   */
-  protected async clickAndReadKnowledge(item: HTMLElement): Promise<void> {
-    item.click();
-    Application.App.log.Info("点击知识项，开始阅读");
-
-    // 等待阅读完成（模拟阅读时间）
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    // 更新贡献积分
-    this.updatePoints(PointsType.CONTRIBUTION, 0.6);
-    Application.App.log.Info("知识阅读完成，获得0.6贡献积分");
-
-    // 返回知识列表页面
-    window.history.back();
-
-    // 继续下一个知识阅读
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    if (!this.isPointsFull(PointsType.CONTRIBUTION)) {
-      await this.executeKnowledgeReadTask();
+    if (this.isTaskStopped) {
+      Application.App.log.Info("知识阅读任务已被停止");
+      Application.App.log.Debug("知识阅读任务已被停止");
     } else {
-      Application.App.log.Info("贡献积分已达上限");
+      Application.App.log.Info("贡献积分已达目标，知识阅读任务完成");
+      Application.App.log.Debug("贡献积分已达目标，知识阅读任务完成");
     }
   }
 
-  /**
-   * 执行知识分享任务
-   */
+  protected sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   protected async executeKnowledgeShareTask(): Promise<void> {
-    Application.App.log.Info("开始知识分享任务");
+    Application.App.log.Info("开始知识分享任务（API方式）");
+    Application.App.log.Debug("开始知识分享任务（API方式）");
 
-    // 检查是否配置了知识页面链接
-    if (!this.knowledgePageUrl) {
-      Application.App.log.Warn("未配置知识页面链接，跳过互动积分任务");
+    this.pointsGap = this.calculatePointsGap(PointsType.INTERACTION);
+    this.accumulatedPoints = 0;
+    this.callCount = 0;
+
+    Application.App.log.Info(`互动积分分差: ${this.pointsGap}`);
+    Application.App.log.Debug(`互动积分分差: ${this.pointsGap}`);
+
+    if (this.pointsGap <= 0) {
+      Application.App.log.Info("互动积分已达目标，跳过知识分享任务");
+      Application.App.log.Debug("互动积分已达目标，跳过知识分享任务");
       return;
     }
 
-    // 跳转到知识页面
-    if (!window.location.href.includes(this.knowledgePageUrl)) {
-      Application.App.log.Info("跳转到知识页面");
-      window.location.href = this.knowledgePageUrl;
-      return;
+    this.isTaskStopped = false;
+
+    while (!this.isTaskStopped && this.accumulatedPoints < this.pointsGap) {
+      const result = await this.fetchKnowledgeShare();
+
+      if (result.success) {
+        this.callCount++;
+        this.accumulatedPoints += 0.6;
+        Application.App.log.Info(
+          `知识分享成功，第${this.callCount}次调用，累积积分: ${this.accumulatedPoints}/${this.pointsGap}`,
+        );
+        Application.App.log.Debug(
+          `知识分享成功，第${this.callCount}次调用，累积积分: ${this.accumulatedPoints}/${this.pointsGap}`,
+        );
+
+        if (this.callCount % 10 === 0) {
+          const pointsResult = await this.fetchPointsDetail();
+          if (pointsResult.success) {
+            this.updatePointsStateFromApi(pointsResult.data);
+            this.pointsGap = this.calculatePointsGap(PointsType.INTERACTION);
+            this.accumulatedPoints = 0;
+            Application.App.log.Info(`重新计算分差: ${this.pointsGap}`);
+
+            if (this.pointsGap <= 0) {
+              Application.App.log.Info("互动积分已达目标，停止知识分享任务");
+              Application.App.log.Debug("互动积分已达目标，停止知识分享任务");
+              break;
+            }
+          }
+        }
+      } else {
+        Application.App.log.Warn(`知识分享失败: ${result.error}`);
+      }
+
+      const delay = Math.floor(Math.random() * 15000) + 1000;
+      await this.sleep(delay);
     }
 
-    // 查找自己的知识项
-    const knowledgeItem = await this.findMyKnowledgeItem();
-    if (!knowledgeItem) {
-      Application.App.log.Info("没有找到自己的知识项");
-      return;
+    if (this.isTaskStopped) {
+      Application.App.log.Info("知识分享任务已被停止");
+      Application.App.log.Debug("知识分享任务已被停止");
+    } else {
+      Application.App.log.Info("互动积分已达目标，知识分享任务完成");
+      Application.App.log.Debug("互动积分已达目标，知识分享任务完成");
     }
-
-    // 点击分享按钮
-    await this.clickShareButton(knowledgeItem);
   }
 
-  /**
-   * 点击分享按钮
-   */
-  protected async clickShareButton(item: HTMLElement): Promise<void> {
-    // 查找分享按钮
-    const shareButton = item.querySelector(
-      ".share-button, [class*='share']",
-    ) as HTMLElement;
-    if (!shareButton) {
-      Application.App.log.Warn("未找到分享按钮");
-      return;
+  protected async handleRefreshPoints(): Promise<void> {
+    Application.App.log.Info("手动刷新积分进度");
+    Application.App.log.Debug("手动刷新积分进度");
+
+    if (!this.sid) {
+      this.extractSidFromStorage();
     }
 
-    shareButton.click();
-    Application.App.log.Info("点击分享按钮");
-
-    // 等待分享完成
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // 更新互动积分（分享0.6 + 被分享1 = 1.6）
-    this.updatePoints(PointsType.INTERACTION, 1.6);
-    Application.App.log.Info("知识分享完成，获得1.6互动积分");
-
-    // 继续下一个分享
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    if (!this.isPointsFull(PointsType.INTERACTION)) {
-      // 查找下一个知识项
-      const nextItem = await this.findMyKnowledgeItem();
-      if (nextItem) {
-        await this.clickShareButton(nextItem);
+    if (this.sid) {
+      const result = await this.fetchPointsDetail();
+      if (result.success) {
+        this.updatePointsStateFromApi(result.data);
+        window.postMessage(
+          {
+            type: "POINTS_UPDATED",
+            data: {
+              learning: this.pointsState.learning,
+              contribution: this.pointsState.contribution,
+              interaction: this.pointsState.interaction,
+            },
+          },
+          "*",
+        );
       }
     } else {
-      Application.App.log.Info("互动积分已达上限");
+      Application.App.log.Warn("无法获取sid，无法刷新积分");
     }
   }
 
@@ -605,17 +984,11 @@ export class ZsglDailyPoints extends Task {
     return this.isAllPointsFull();
   }
 
-  /**
-   * 获取积分进度百分比
-   */
   protected getPointsProgress(type: PointsType): number {
     const status = this.pointsState[type];
     return Math.min((status.current / status.limit) * 100, 100);
   }
 
-  /**
-   * 获取总积分进度
-   */
   protected getTotalProgress(): number {
     const totalCurrent = Object.values(PointsType).reduce((sum, type) => {
       return sum + this.pointsState[type].current;
@@ -628,9 +1001,6 @@ export class ZsglDailyPoints extends Task {
     return Math.min((totalCurrent / totalLimit) * 100, 100);
   }
 
-  /**
-   * 创建积分显示面板
-   */
   protected createPointsPanel(): HTMLElement {
     const panel = document.createElement("div");
     panel.className = "zsgl-points-panel";
@@ -685,7 +1055,6 @@ export class ZsglDailyPoints extends Task {
             </div>
         `;
 
-    // 添加样式
     const style = document.createElement("style");
     style.textContent = `
             .zsgl-points-panel {
@@ -759,7 +1128,6 @@ export class ZsglDailyPoints extends Task {
         `;
     document.head.appendChild(style);
 
-    // 关闭按钮事件
     const closeBtn = panel.querySelector(".close-btn");
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
@@ -770,9 +1138,6 @@ export class ZsglDailyPoints extends Task {
     return panel;
   }
 
-  /**
-   * 显示积分面板
-   */
   public showPointsPanel(): void {
     const existingPanel = document.querySelector(".zsgl-points-panel");
     if (existingPanel) {
@@ -783,14 +1148,10 @@ export class ZsglDailyPoints extends Task {
     document.body.appendChild(panel);
   }
 
-  /**
-   * 更新积分面板
-   */
   protected updatePointsPanel(): void {
     const panel = document.querySelector(".zsgl-points-panel");
     if (!panel) return;
 
-    // 更新学习积分
     const learningProgress = panel.querySelector(
       ".points-item:nth-child(1) .points-progress",
     ) as HTMLElement;
@@ -804,7 +1165,6 @@ export class ZsglDailyPoints extends Task {
       learningText.textContent = `${this.pointsState.learning.current}/${this.pointsState.learning.limit}`;
     }
 
-    // 更新贡献积分
     const contributionProgress = panel.querySelector(
       ".points-item:nth-child(2) .points-progress",
     ) as HTMLElement;
@@ -818,7 +1178,6 @@ export class ZsglDailyPoints extends Task {
       contributionText.textContent = `${this.pointsState.contribution.current}/${this.pointsState.contribution.limit}`;
     }
 
-    // 更新互动积分
     const interactionProgress = panel.querySelector(
       ".points-item:nth-child(3) .points-progress",
     ) as HTMLElement;
@@ -832,7 +1191,6 @@ export class ZsglDailyPoints extends Task {
       interactionText.textContent = `${this.pointsState.interaction.current}/${this.pointsState.interaction.limit}`;
     }
 
-    // 更新总进度
     const totalProgress = panel.querySelector(
       ".points-total .points-progress",
     ) as HTMLElement;
