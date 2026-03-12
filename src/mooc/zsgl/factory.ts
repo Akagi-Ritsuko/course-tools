@@ -14,6 +14,7 @@ import { createBtn } from "@App/internal/utils/utils";
 import { ZsglTask, ZsglTaskControlBar } from "./task";
 import { ZsglAudio } from "./scorm";
 import { ZsglVideo } from "./video";
+import { ZsglKnowledge } from "./knowledge";
 import { ZsglQuestionTask } from "./exam";
 import { TaskInfo, CourseWorkType } from "./types";
 import { SUPPORTED_COURSE_TYPES } from "./constants";
@@ -39,6 +40,7 @@ export class TaskFactory {
             case "video":
                 return new ZsglVideo(document, taskinfo);
             case "knowledge":
+                return new ZsglKnowledge(document, taskinfo);
             case "document":
             case "audio":
             case "URL":
