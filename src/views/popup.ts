@@ -9,6 +9,7 @@ import { TabsRoot, TabsList, TabsTrigger, TabsContent } from '@/components/ui/ta
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import DailyPointsConfig from "./components/DailyPointsConfig.vue";
 
 class popup implements Launcher {
@@ -27,6 +28,11 @@ class popup implements Launcher {
             Button,
             Input,
             Label,
+            Card,
+            CardContent,
+            CardHeader,
+            CardTitle,
+            CardDescription,
             DailyPointsConfig,
           },
           setup() {
@@ -213,7 +219,7 @@ class popup implements Launcher {
             };
           },
           template: `
-            <div class="w-[420px] min-h-[500px] bg-background">
+            <div class="w-[480px] h-[520px] bg-background overflow-hidden">
               <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4">
                 <h1 class="text-white text-lg font-medium">
                   <span class="text-blue-200">网课</span>小工具
@@ -244,42 +250,49 @@ class popup implements Launcher {
                       v-for="(config, key) in configs" 
                       :key="key"
                       :value="key"
-                      class="space-y-3"
                     >
-                      <div 
-                        v-for="(item, index) in config.items" 
-                        :key="item.key"
-                        class="flex items-center gap-2"
-                      >
-                        <template v-if="item.type === 'text'">
-                          <Label :for="item.key" class="min-w-24 text-sm" :title="item.description">
-                            {{ item.title }}:
-                          </Label>
-                          <Input
-                            :id="item.key"
-                            v-model="item.value"
-                            type="text"
-                            class="flex-1 h-8 text-sm"
-                            :title="item.description"
-                            @input="change(key, item.key, 'text', item.value, index, item.prompt)"
-                          />
-                          <Label v-if="item.unit" class="text-sm text-muted-foreground">
-                            {{ item.unit }}
-                          </Label>
-                        </template>
-                        <template v-else-if="item.type === 'checkbox'">
-                          <input
-                            type="checkbox"
-                            :id="item.key"
-                            v-model="item.value"
-                            class="w-4 h-4 rounded border-gray-300"
-                            @change="change(key, item.key, 'checkbox', item.value, index, item.prompt)"
-                          />
-                          <Label :for="item.key" class="text-sm cursor-pointer" :title="item.description">
-                            {{ item.title }}
-                          </Label>
-                        </template>
-                      </div>
+                      <Card class="w-full">
+                        <CardHeader class="pb-3">
+                          <CardTitle class="text-base">{{ config.name }}配置</CardTitle>
+                          <CardDescription class="text-xs">配置{{ config.name }}平台相关参数</CardDescription>
+                        </CardHeader>
+                        <CardContent class="space-y-3">
+                          <div 
+                            v-for="(item, index) in config.items" 
+                            :key="item.key"
+                            class="flex items-center gap-2"
+                          >
+                            <template v-if="item.type === 'text'">
+                              <Label :for="item.key" class="min-w-24 text-sm" :title="item.description">
+                                {{ item.title }}:
+                              </Label>
+                              <Input
+                                :id="item.key"
+                                v-model="item.value"
+                                type="text"
+                                class="flex-1 h-8 text-sm"
+                                :title="item.description"
+                                @input="change(key, item.key, 'text', item.value, index, item.prompt)"
+                              />
+                              <Label v-if="item.unit" class="text-sm text-muted-foreground">
+                                {{ item.unit }}
+                              </Label>
+                            </template>
+                            <template v-else-if="item.type === 'checkbox'">
+                              <input
+                                type="checkbox"
+                                :id="item.key"
+                                v-model="item.value"
+                                class="w-4 h-4 rounded border-gray-300"
+                                @change="change(key, item.key, 'checkbox', item.value, index, item.prompt)"
+                              />
+                              <Label :for="item.key" class="text-sm cursor-pointer" :title="item.description">
+                                {{ item.title }}
+                              </Label>
+                            </template>
+                          </div>
+                        </CardContent>
+                      </Card>
                     </TabsContent>
                     
                     <TabsContent value="daily-points">

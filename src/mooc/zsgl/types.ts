@@ -49,6 +49,7 @@ export interface StudyMapData {
     status: number;
     finishTaskNum: number;
     taskNum: number;
+    studymapGateId?: string;
 }
 
 export interface GateTaskData {
@@ -85,7 +86,7 @@ export interface HttpResponse {
   courseId?: string;
 }
 
-export type HttpRequestCallback = (response: HttpResponse, context: any) => void;
+export type HttpRequestCallback = (response: HttpResponse, context: any, url: string) => void;
 
 export interface EventPreventHandler {
     (this: any, e: Event): void;

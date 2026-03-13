@@ -53,7 +53,7 @@ function initializeHooks() {
                 : this.responseText;
 
               hooks.forEach((hook) => {
-                hook.callback(response, hook.context);
+                hook.callback(response, hook.context, url);
               });
             } catch (e) {
               Application.App.log.Error("数据解析失败", e);
@@ -161,6 +161,15 @@ export function setupEventPrevention(
     "fullscreenchange",
     "focus",
     "webkitfullscreenchange",
+    "mouseout",
+    "mouseleave",
+    "focusout",
+    "focusin",
+    "pagehide",
+    "pageshow",
+    "beforeunload",
+    "freeze",
+    "resume",
   ];
 
   events.forEach((event) => {
@@ -174,8 +183,16 @@ export function setupEventPrevention(
  */
 export function setupVideoEventPrevention(video: HTMLVideoElement): void {
   const handler = createEventPreventHandler();
-  video.addEventListener("seeked", handler, true);
-  video.addEventListener("seeking", handler, true);
+  const videoEvents = [
+    "seeked",
+    "seeking",
+    "ratechange",
+    "volumechange",
+  ];
+
+  videoEvents.forEach((event) => {
+    video.addEventListener(event, handler, true);
+  });
 }
 
 /**

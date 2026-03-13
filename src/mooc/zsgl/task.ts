@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-09-26 17:51:14
  * @LastEditors: guotao
- * @LastEditTime: 2025-03-09
+ * @LastEditTime: 2026-03-12 23:36:18
  * @FilePath: \course-tools1\src\mooc\zsgl\task.ts
  * @Description: zsgl 任务基类
  *
@@ -93,7 +93,7 @@ export class ZsglTaskControlBar {
         const startBtn = CssBtn(
             createBtn(
                 Application.App.config.auto ? ZSGL_CONSTANTS.BUTTON_TEXT.STOP_AUTO : ZSGL_CONSTANTS.BUTTON_TEXT.START_AUTO,
-                "点击开始自动挂机",
+                "控制所有课程页面的自动挂机状态",
                 ZSGL_CONSTANTS.CSS_CLASSES.CX_BTN
             )
         );
@@ -102,13 +102,14 @@ export class ZsglTaskControlBar {
             if (startBtn.innerText === ZSGL_CONSTANTS.BUTTON_TEXT.STOP_AUTO) {
                 Application.App.config.auto = false;
                 startBtn.innerText = ZSGL_CONSTANTS.BUTTON_TEXT.START_AUTO;
-                startBtn.title = "点击开始自动挂机";
+                startBtn.title = "控制所有课程页面的自动挂机状态";
                 Application.App.log.Info("挂机停止了");
             } else {
                 Application.App.config.auto = true;
                 startBtn.innerText = ZSGL_CONSTANTS.BUTTON_TEXT.STOP_AUTO;
                 startBtn.title = "停止挂机,开始好好学习";
                 Application.App.log.Info("挂机开始了");
+                 Application.App.log.Debug("挂机开始，请勿刷新页面",this.task);
                 this.task?.Start();
             }
         };

@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-09-27 02:32:51
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-10 22:14:01
+ * @LastEditTime: 2026-03-13 02:58:27
  * @FilePath: \course-tools1\src\mooc\zsgl\course.ts
  * @Description: zsgl 课程任务管理
  *
@@ -59,7 +59,7 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
                     document.querySelector(ZSGL_CONSTANTS.SELECTORS.WATERMARK_FRAME) || document.body;
                 prev = document.createElement("div");
                 container.prepend(prev);
-                const bar = new ZsglCourseControlBar(prev);
+                // const bar = new ZsglCourseControlBar(prev);
                 this.OperateCard();
                 first && resolve(undefined);
                 first = false;
@@ -73,7 +73,7 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
                     document.querySelector(ZSGL_CONSTANTS.SELECTORS.WATERMARK_FRAME) || document.body;
                 prev = document.createElement("div");
                 container.prepend(prev);
-                const bar = new ZsglCourseControlBar(prev);
+                // const bar = new ZsglCourseControlBar(prev);
                 this.OperateCard();
                 first && resolve(undefined);
                 first = false;
@@ -104,28 +104,36 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
                                 : this.responseText;
                             
                             const responseData = response?.body;
-                            if (responseData && responseData?.isCompleted !== "Y") {
-                                const courseFileArr = responseData?.courseFileArr;
-                                const courseId = responseData?.courseId;
-                                self.courseDetailData = courseFileArr
-                                    .map((item: any, index: number): CourseDetailItem => {
-                                        return {
-                                            hasLearned: item.hasLearned,
-                                            fileName: item.fileName,
-                                            cwType: item.cwType,
-                                            jobIndex: index,
-                                            courseId,
-                                            playTime: item.playTime,
-                                            learnedDuration: item.learnedDuration,
-                                        };
-                                    })
-                                    .filter((item: CourseDetailItem) => {
-                                        return item.hasLearned === "0";
-                                    });
-                                Application.App.log.Info("课程详情数据已获取，共", self.courseDetailData.length, "个未完成任务");
-                                Application.App.log.Debug("课程详情数据", self.courseDetailData);
+                            const courseFileArr = responseData?.courseFileArr;
+                            const courseId = responseData?.courseId;
+                            
+                            if (courseFileArr && courseFileArr.length > 0) {
+                                const allCompleted = courseFileArr.every((item: any) => item.hasLearned === "1");
+                                
+                                if (allCompleted) {
+                                    Application.App.log.Info("课程已完成，所有任务都已学习");
+                                    self.callEvent("courseTaskComplete");
+                                } else {
+                                    self.courseDetailData = courseFileArr
+                                        .map((item: any, index: number): CourseDetailItem => {
+                                            return {
+                                                hasLearned: item.hasLearned,
+                                                fileName: item.fileName,
+                                                cwType: item.cwType,
+                                                jobIndex: index,
+                                                courseId,
+                                                playTime: item.playTime,
+                                                learnedDuration: item.learnedDuration,
+                                            };
+                                        })
+                                        .filter((item: CourseDetailItem) => {
+                                            return item.hasLearned === "0";
+                                        });
+                                    Application.App.log.Info("课程详情数据已获取，共", self.courseDetailData.length, "个未完成任务");
+                                    Application.App.log.Debug("课程详情数据", self.courseDetailData);
+                                }
                             } else {
-                                Application.App.log.Info("课程已完成或无数据");
+                                Application.App.log.Info("课程数据为空");
                                 self.callEvent("courseTaskComplete");
                             }
                         } catch (e) {
@@ -172,7 +180,7 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
 
     public Next(): Promise<Task> {
         return new Promise((resolve) => {
-            if (this.taskList.length > this.taskIndex) {
+            if (this.taskList.length >= this.taskIndex) {
                 resolve(this.taskList[this.taskIndex]);
                 return this.taskIndex++;
             } else {

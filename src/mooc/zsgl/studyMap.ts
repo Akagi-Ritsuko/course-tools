@@ -2,8 +2,8 @@
  * @Author: guotao
  * @Date: 2025-03-15 10:55:02
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-10 17:17:33
- * @FilePath: \course-tools\src\mooc\zsgl\studyMap.ts
+ * @LastEditTime: 2026-03-13 01:33:52
+ * @FilePath: \course-tools1\src\mooc\zsgl\studyMap.ts
  * @Description: zsgl 学习地图模块
  *
  * Copyright (c) 2025 by lzlj, All Rights Reserved.
@@ -40,14 +40,13 @@ export class ZsglStudyMap extends Task {
                 } else {
                     this.Done();
                 }
-                
                 const taskKey = `${ZSGL_CONSTANTS.STORAGE_PREFIX}${this.gateTaskData?.resourceId}`;
                 Application.App.log.Debug("zsglStudyMap开始初始化任务", taskKey);
 
                 this.setupMessageListener(taskKey);
                 Application.App.log.Debug("拦截请求完成hookStudymapGateTaskRequests", this.gateTaskData);
-                this.defaultStartButton();
-                Application.App.log.Debug("Application.App.config.studymap_auto", Application.App.config.studymap_auto);
+                // this.defaultStartButton();
+                Application.App.log.Debug("Application.App.config.auto", Application.App.config.auto);
 
                 this.addEventListenerOnce("load", () => {
                     Application.App.log.Debug("reload");
@@ -77,7 +76,8 @@ export class ZsglStudyMap extends Task {
                     currentbutton.addEventListener('click', async () => {
                         Application.App.log.Info('按钮被点击，开始执行任务');
                         // 这里添加自定义逻辑
-                        if (this.gateTaskData && Application.App.config.studymap_auto === true) {
+                        await this.hookStudymapGateTaskRequests();
+                        if (this.gateTaskData && Application.App.config.auto === true) {
                             await this.Start();
                         }
                     });
@@ -117,20 +117,20 @@ export class ZsglStudyMap extends Task {
             if (prev) {
                 const startBtn = CssBtn(
                     createBtn(
-                        Application.App.config.studymap_auto ? ZSGL_CONSTANTS.BUTTON_TEXT.STOP_AUTO : ZSGL_CONSTANTS.BUTTON_TEXT.START_AUTO,
-                        "点击开始自动挂机",
+                        Application.App.config.auto ? ZSGL_CONSTANTS.BUTTON_TEXT.STOP_AUTO : ZSGL_CONSTANTS.BUTTON_TEXT.START_AUTO,
+                        "控制所有课程页面的自动挂机状态",
                         ZSGL_CONSTANTS.CSS_CLASSES.ZSGL_AUTO_BTN
                     )
                 );
 
                 startBtn.addEventListener("click", () => {
                     if (startBtn.innerText === ZSGL_CONSTANTS.BUTTON_TEXT.STOP_AUTO) {
-                        Application.App.config.studymap_auto = false;
+                        Application.App.config.auto = false;
                         startBtn.innerText = ZSGL_CONSTANTS.BUTTON_TEXT.START_AUTO;
-                        startBtn.title = "点击开始自动挂机";
+                        startBtn.title = "控制所有课程页面的自动挂机状态";
                         Application.App.log.Info("挂机停止了");
                     } else {
-                        Application.App.config.studymap_auto = true;
+                        Application.App.config.auto = true;
                         startBtn.innerText = ZSGL_CONSTANTS.BUTTON_TEXT.STOP_AUTO;
                         startBtn.title = "停止挂机,开始好好学习";
                         Application.App.log.Info("挂机开始了");
@@ -155,6 +155,8 @@ export class ZsglStudyMap extends Task {
                 (response, self) => {
                     Application.App.log.Debug("原始响应数据", response);
                     const responseData = response?.body;
+                    const skipElective = Application.App.config.skip_elective;
+                    Application.App.log.Debug("是否跳过选修课程", skipElective);
                     self.studyMapData = responseData
                         .map((item: any, index: number): StudyMapData => {
                             const gateName = item.gateName;
@@ -166,13 +168,20 @@ export class ZsglStudyMap extends Task {
                                 status: item.status,
                                 finishTaskNum: item.finishTaskNum,
                                 taskNum: item.taskNum,
+                                studymapGateId: item.studymapGateId,
                             };
                         })
-                        .find((item: StudyMapData) => item.status !== 3 || item.finishTaskNum !== item.taskNum);
-
+                        .find((item: StudyMapData) => {
+                            if (skipElective) {
+                                return item.status != 3;
+                            }
+                            return item.finishTaskNum !== item.taskNum;
+                        });
+                    
                     Application.App.log.Debug("成功拦截课程数据", {
                         courseCount: self.studyMapData?.length || 0,
                         gateName: self.studyMapData?.gateName || "",
+                        studymapGateId: self.studyMapData?.studymapGateId || "",
                     });
                     Application.App.log.Debug("筛选的结果数据", self.studyMapData);
                     resolve();
@@ -193,13 +202,25 @@ export class ZsglStudyMap extends Task {
                     resolved = true;
                     resolve();
                 }
-            }, 5000);
+            }, 3000);
 
             hookHttpRequest(
                 ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_STUDYMAP_GATE_TASK,
-                (response, self) => {
+                (response, self, url) => {
                     if (!resolved) {
+                        const urlParams = new URLSearchParams(url.split('?')[1]);
+                        const requestGateId = urlParams.get('studymapGateId');
+                        
                         Application.App.log.Debug("原始响应数据queryStudymapGateTask", response);
+                        Application.App.log.Debug("请求的studymapGateId:", requestGateId, "期望的studymapGateId:", self.studyMapData?.studymapGateId);
+                        
+                        if (requestGateId && self.studyMapData?.studymapGateId && 
+                            requestGateId !== self.studyMapData.studymapGateId) {
+                            Application.App.log.Debug("studymapGateId不匹配，跳过此请求，继续等待正确的请求");
+                            
+                            return;
+                        }
+                        
                         const responseData = response?.body;
                         self.gateTaskData = responseData.taskList.find(
                             (item: { status: number }) => item.status !== 1

@@ -208,11 +208,11 @@ export class SystemConfig {
            //     }],
            // },
            zsgl: {
-             name: "知识管理",
-             items: [
-               {
-                title: "视频任务挂机",
-                description: "进入页面自动开始播放视频并处理后续任务",
+            name: "知识管理",
+            items: [
+              {
+                title: "自动挂机",
+                description: "控制所有课程页面的自动挂机状态（包括视频、学习地图等任务）",
                 type: "checkbox",
                 key: "auto",
                 value: true,
@@ -225,10 +225,10 @@ export class SystemConfig {
                  value: false,
                },
                {
-                 title: "学习地图任务挂机",
-                 description: "进入页面自动开始学习地图并处理后续任务",
+                 title: "跳过选修",
+                 description: "开启后自动挂机时会跳过选修课程",
                  type: "checkbox",
-                 key: "map_auto",
+                 key: "skip_elective",
                  value: false,
                },
                {

@@ -103,6 +103,9 @@ export class ZsglDailyPoints extends Task {
   protected sid: string = "";
   protected accumulatedPoints: number = 0;
   protected pointsGap: number = 0;
+  protected noChangeCount: number = 0;
+  protected readonly NO_CHANGE_THRESHOLD: number = 3;
+  protected lastPointsData: PointsDetailItem[] = [];
 
   constructor() {
     super();
@@ -192,6 +195,15 @@ export class ZsglDailyPoints extends Task {
         if (message.data?.knowledgeLink) {
           this.knowledgePageUrl = message.data.knowledgeLink;
         }
+        if (message.data?.learningLimit) {
+          this.pointsState.learning.limit = message.data.learningLimit;
+        }
+        if (message.data?.contributionLimit) {
+          this.pointsState.contribution.limit = message.data.contributionLimit;
+        }
+        if (message.data?.interactionLimit) {
+          this.pointsState.interaction.limit = message.data.interactionLimit;
+        }
         this.executeTaskAfterConfirm();
       }
     });
@@ -204,6 +216,13 @@ export class ZsglDailyPoints extends Task {
     this.extractPageIdFromUrl();
     this.extractSidFromStorage();
 
+    const pointsResult = await this.fetchPointsDetail();
+    if (!pointsResult.success) {
+      Application.App.log.Error("获取积分详情失败");
+      return;
+    }
+
+    this.updatePointsStateFromApi(pointsResult.data);
     if (!this.pageId) {
       Application.App.log.Warn("无法从知识页面链接中提取pageId");
       return;
@@ -217,25 +236,7 @@ export class ZsglDailyPoints extends Task {
     Application.App.log.Info(`提取到pageId: ${this.pageId}, sid: ${this.sid}`);
     Application.App.log.Debug(`提取到pageId: ${this.pageId}, sid: ${this.sid}`);
 
-    const pointsResult = await this.fetchPointsDetail();
-    if (!pointsResult.success) {
-      Application.App.log.Error("获取积分详情失败");
-      return;
-    }
 
-    this.updatePointsStateFromApi(pointsResult.data);
-
-    window.postMessage(
-      {
-        type: "POINTS_UPDATED",
-        data: {
-          learning: this.pointsState.learning,
-          contribution: this.pointsState.contribution,
-          interaction: this.pointsState.interaction,
-        },
-      },
-      "*",
-    );
 
     if (this.isAllPointsFull()) {
       Application.App.log.Info("所有积分已达上限，停止每日积分模式");
@@ -478,12 +479,15 @@ export class ZsglDailyPoints extends Task {
   protected async fetchPointsDetail(): Promise<
     ApiResponse<PointsDetailResponse>
   > {
-    const today = new Date();
-    const startTime = `${today.getFullYear()}-01-01`;
-    const endTime = `${today.getFullYear()}-12-31`;
+    const now = new Date();
+    // const startDate = this.formatDate(now);
+     const today = new Date();
+    const startDate=`${today.getFullYear()}-01-01`
+    const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    const endDateStr = this.formatDate(endDate);
 
-    Application.App.log.Info(`获取积分详情: ${startTime} ~ ${endTime}`);
-    Application.App.log.Debug(`获取积分详情: ${startTime} ~ ${endTime}`);
+    Application.App.log.Info(`获取积分详情: ${startDate} ~ ${endDateStr}`);
+    Application.App.log.Debug(`获取积分详情: ${startDate} ~ ${endDateStr}`);
 
     return this.sendApiRequest<PointsDetailResponse>(
       "POST",
@@ -493,8 +497,8 @@ export class ZsglDailyPoints extends Task {
         sid: this.sid,
       },
       {
-        startTime,
-        endTime,
+        startTime: startDate,
+        endTime: endDateStr,
       },
     );
   }
@@ -521,11 +525,32 @@ export class ZsglDailyPoints extends Task {
         this.pointsState.interaction.current = item.userPoint;
         Application.App.log.Info(`更新互动积分: ${item.userPoint}`);
         Application.App.log.Debug(`更新互动积分: ${item.userPoint}`);
+      } else if (
+        item.ruleId === "46EA49C2D06E49BD9C59F21B94687D59" ||
+        item.ruleId === "24E2D4D119E74B76AC349FA12A0B646C"
+      ) {
+        this.pointsState.learning.current = 0;
+        this.pointsState.learning.current += item.userPoint;
+        Application.App.log.Info(`更新学习积分（${item.ruleName}）: +${item.userPoint}，当前: ${this.pointsState.learning.current}`);
+        Application.App.log.Debug(`更新学习积分（${item.ruleName}）: +${item.userPoint}，当前: ${this.pointsState.learning.current}`);
       }
     }
 
     this.savePointsState();
-    this.updatePointsPanel();
+
+    if (!this.checkPointsChanged(data.body)) {
+      this.noChangeCount++;
+      Application.App.log.Warn(`积分无变化，连续无变化次数: ${this.noChangeCount}/${this.NO_CHANGE_THRESHOLD}`);
+      if (this.noChangeCount >= this.NO_CHANGE_THRESHOLD) {
+        Application.App.log.Info("积分连续无变化达到阈值，自动停止任务");
+        this.stopTask();
+        return;
+      }
+    } else {
+      this.noChangeCount = 0;
+    }
+
+    this.lastPointsData = data.body;
   }
 
   protected calculatePointsGap(type: PointsType): number {
@@ -539,7 +564,7 @@ export class ZsglDailyPoints extends Task {
     const status = this.pointsState[type];
     status.current = Math.min(status.current + points, status.limit);
     this.savePointsState();
-    this.updatePointsPanel();
+    // this.updatePointsPanel();
     Application.App.log.Info(
       `${type}积分增加 ${points}，当前：${status.current}/${status.limit}`,
     );
@@ -887,6 +912,20 @@ export class ZsglDailyPoints extends Task {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  protected checkPointsChanged(newData: PointsDetailItem[]): boolean {
+    if (this.lastPointsData.length === 0) {
+      return true;
+    }
+    return JSON.stringify(newData) !== JSON.stringify(this.lastPointsData);
+  }
+
+  protected formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   protected async executeKnowledgeShareTask(): Promise<void> {
     Application.App.log.Info("开始知识分享任务（API方式）");
     Application.App.log.Debug("开始知识分享任务（API方式）");
@@ -1148,56 +1187,57 @@ export class ZsglDailyPoints extends Task {
     document.body.appendChild(panel);
   }
 
-  protected updatePointsPanel(): void {
-    const panel = document.querySelector(".zsgl-points-panel");
-    if (!panel) return;
+  // protected updatePointsPanel(): void {
+  //   Application.App.log.Debug("Updating points panel");
+  //   const panel = document.querySelector(".zsgl-points-panel");
+  //   if (!panel) return;
 
-    const learningProgress = panel.querySelector(
-      ".points-item:nth-child(1) .points-progress",
-    ) as HTMLElement;
-    const learningText = panel.querySelector(
-      ".points-item:nth-child(1) .points-text",
-    );
-    if (learningProgress && learningText) {
-      learningProgress.style.width = `${this.getPointsProgress(
-        PointsType.LEARNING,
-      )}%`;
-      learningText.textContent = `${this.pointsState.learning.current}/${this.pointsState.learning.limit}`;
-    }
+  //   const learningProgress = panel.querySelector(
+  //     ".points-item:nth-child(1) .points-progress",
+  //   ) as HTMLElement;
+  //   const learningText = panel.querySelector(
+  //     ".points-item:nth-child(1) .points-text",
+  //   );
+  //   if (learningProgress && learningText) {
+  //     learningProgress.style.width = `${this.getPointsProgress(
+  //       PointsType.LEARNING,
+  //     )}%`;
+  //     learningText.textContent = `${this.pointsState.learning.current}/${this.pointsState.learning.limit}`;
+  //   }
 
-    const contributionProgress = panel.querySelector(
-      ".points-item:nth-child(2) .points-progress",
-    ) as HTMLElement;
-    const contributionText = panel.querySelector(
-      ".points-item:nth-child(2) .points-text",
-    );
-    if (contributionProgress && contributionText) {
-      contributionProgress.style.width = `${this.getPointsProgress(
-        PointsType.CONTRIBUTION,
-      )}%`;
-      contributionText.textContent = `${this.pointsState.contribution.current}/${this.pointsState.contribution.limit}`;
-    }
+  //   const contributionProgress = panel.querySelector(
+  //     ".points-item:nth-child(2) .points-progress",
+  //   ) as HTMLElement;
+  //   const contributionText = panel.querySelector(
+  //     ".points-item:nth-child(2) .points-text",
+  //   );
+  //   if (contributionProgress && contributionText) {
+  //     contributionProgress.style.width = `${this.getPointsProgress(
+  //       PointsType.CONTRIBUTION,
+  //     )}%`;
+  //     contributionText.textContent = `${this.pointsState.contribution.current}/${this.pointsState.contribution.limit}`;
+  //   }
 
-    const interactionProgress = panel.querySelector(
-      ".points-item:nth-child(3) .points-progress",
-    ) as HTMLElement;
-    const interactionText = panel.querySelector(
-      ".points-item:nth-child(3) .points-text",
-    );
-    if (interactionProgress && interactionText) {
-      interactionProgress.style.width = `${this.getPointsProgress(
-        PointsType.INTERACTION,
-      )}%`;
-      interactionText.textContent = `${this.pointsState.interaction.current}/${this.pointsState.interaction.limit}`;
-    }
+  //   const interactionProgress = panel.querySelector(
+  //     ".points-item:nth-child(3) .points-progress",
+  //   ) as HTMLElement;
+  //   const interactionText = panel.querySelector(
+  //     ".points-item:nth-child(3) .points-text",
+  //   );
+  //   if (interactionProgress && interactionText) {
+  //     interactionProgress.style.width = `${this.getPointsProgress(
+  //       PointsType.INTERACTION,
+  //     )}%`;
+  //     interactionText.textContent = `${this.pointsState.interaction.current}/${this.pointsState.interaction.limit}`;
+  //   }
 
-    const totalProgress = panel.querySelector(
-      ".points-total .points-progress",
-    ) as HTMLElement;
-    const totalText = panel.querySelector(".points-total .points-text");
-    if (totalProgress && totalText) {
-      totalProgress.style.width = `${this.getTotalProgress()}%`;
-      totalText.textContent = `${this.getTotalProgress().toFixed(1)}%`;
-    }
-  }
+  //   const totalProgress = panel.querySelector(
+  //     ".points-total .points-progress",
+  //   ) as HTMLElement;
+  //   const totalText = panel.querySelector(".points-total .points-text");
+  //   if (totalProgress && totalText) {
+  //     totalProgress.style.width = `${this.getTotalProgress()}%`;
+  //     totalText.textContent = `${this.getTotalProgress().toFixed(1)}%`;
+  //   }
+  // }
 }

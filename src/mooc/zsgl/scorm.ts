@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-12 17:19:39
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-09 23:22:57
+ * @LastEditTime: 2026-03-13 02:40:07
  * @FilePath: \course-tools1\src\mooc\zsgl\scorm.ts
  * @Description: zsgl SCORM/音频任务模块
  *
@@ -102,8 +102,8 @@ export class ZsglAudio extends ZsglTask {
             multiple: Application.App.config.video_multiple,
         });
 
-        this.video.muted = Application.App.config.video_mute;
-        this.video.playbackRate = Application.App.config.video_multiple;
+        this.video.volume = Application.App.config.video_mute ? 0 : this.video.volume; // 设置音量
+        this.video.muted = false;
         this.video.currentTime = 0;
 
         // 添加对视频元素的事件阻止
@@ -111,8 +111,36 @@ export class ZsglAudio extends ZsglTask {
         setupEventPrevention(document);
         setupVideoEventPrevention(this.video);
 
+        // 监听播放速率变化
+        this.watchPlaybackRate();
+
+        // 延迟重置播放时间来实现未完成的任务时常不够的问题
+        setTimeout(() => {
+            Application.App.log.Debug(this.video.currentTime, "播放时间");
+            this.video.currentTime = 0;
+            this.setPlaybackRate();
+        }, ZSGL_CONSTANTS.PLAYER_INIT_DELAY_MS);
+
         // 等待视频源加载后再播放
         this.waitForVideoSourceAndPlay();
+    }
+
+    /** 设置视频播放速率 */
+    private setPlaybackRate(): void {
+        const rate = Application.App.config.video_multiple;
+        Application.App.log.Debug(`[播放速率] 设置播放速率为 ${rate}x`);
+        this.video.playbackRate = rate;
+    }
+
+    /** 监听播放速率变化并保持设置 */
+    private watchPlaybackRate(): void {
+        const rate = Application.App.config.video_multiple;
+        this.video.addEventListener('ratechange', () => {
+            if (this.video.playbackRate !== rate) {
+                Application.App.log.Debug(`[播放速率] 检测到速率被重置为 ${this.video.playbackRate}x，重新设置为 ${rate}x`);
+                this.video.playbackRate = rate;
+            }
+        });
     }
 
     /** 等待视频源加载并播放 */
@@ -137,6 +165,8 @@ export class ZsglAudio extends ZsglTask {
 
             if (hasSource) {
                 Application.App.log.Info("[播放尝试] 视频源已加载，开始播放");
+                this.setPlaybackRate();
+                this.video.currentTime = 0;
                 Application.App.config.auto && this.video.play().catch((e) => {
                     Application.App.log.Warn("[播放尝试] 播放失败:", e.message);
                 });
@@ -158,6 +188,7 @@ export class ZsglAudio extends ZsglTask {
         // 同时监听视频事件
         this.video.addEventListener('loadedmetadata', () => {
             Application.App.log.Info("[视频事件] loadedmetadata - 视频元数据已加载");
+            this.setPlaybackRate();
             Application.App.config.auto && this.video.play().catch((e) => {
                 Application.App.log.Warn("[视频事件] 播放失败:", e.message);
             });
@@ -165,6 +196,7 @@ export class ZsglAudio extends ZsglTask {
 
         this.video.addEventListener('canplay', () => {
             Application.App.log.Info("[视频事件] canplay - 视频可以播放");
+            this.setPlaybackRate();
             Application.App.config.auto && this.video.play().catch((e) => {
                 Application.App.log.Warn("[视频事件] 播放失败:", e.message);
             });
@@ -306,7 +338,15 @@ export class ZsglAudio extends ZsglTask {
         this.timerManager.setInterval("videoAutoResume", () => {
             if (Application.App.config.auto && this.video.paused) {
                 Application.App.log.Debug("[自动恢复] 视频暂停，尝试恢复播放");
-                this.video.play().catch((e) => {
+                // 先静音再播放，绕过浏览器自动播放策略
+                const wasMuted = this.video.muted;
+                this.video.muted = true;
+                this.video.play().then(() => {
+                    // 播放成功后恢复静音状态
+                    this.video.muted = wasMuted || Application.App.config.video_mute;
+                    this.setMute();
+                    this.setPlaybackRate();
+                }).catch((e) => {
                     Application.App.log.Warn("[自动恢复] 播放失败:", e.message);
                 });
             }
@@ -317,12 +357,36 @@ export class ZsglAudio extends ZsglTask {
             Application.App.log.Debug('[视频事件] Video paused, attempting to resume...');
             setTimeout(() => {
                 if (this.video.paused && Application.App.config.auto) {
-                    this.video.play().catch((e) => {
+                    // 先静音再播放，绕过浏览器自动播放策略
+                    const wasMuted = this.video.muted;
+                    this.video.muted = true;
+                    this.video.play().then(() => {
+                        // 播放成功后恢复静音状态
+                        this.video.muted = wasMuted || Application.App.config.video_mute;
+                        this.setMute();
+                    }).catch((e) => {
                         Application.App.log.Warn("[自动恢复] 播放失败:", e.message);
                     });
                 }
             }, 100);
         }, true);
+
+        // 监听播放事件，确保倍速和静音设置
+        this.video.addEventListener('play', () => {
+            Application.App.log.Debug('[视频事件] Video playing, applying settings...');
+            // 延迟设置，确保播放器初始化完成
+            setTimeout(() => {
+                this.setPlaybackRate();
+                this.setMute();
+            }, 100);
+        }, true);
+    }
+
+    /** 设置视频静音 */
+    private setMute(): void {
+        const mute = Application.App.config.video_mute;
+        Application.App.log.Debug(`[静音设置] 设置静音状态为 ${mute}`);
+        this.video.volume = mute ? 0 : 1;
     }
 
     /** 设置视频结束处理 */
