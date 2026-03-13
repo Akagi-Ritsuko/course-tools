@@ -66,7 +66,7 @@ export interface TaskStatus {
 export interface CourseItem {
   courseId: string;
   courseName: string;
-  iscompleted: number;
+  iscompleted: number | string;
   [key: string]: any;
 }
 
@@ -74,6 +74,7 @@ export interface CourseListResponse {
   code: number;
   body: {
     courseArr: CourseItem[];
+    totalPage?: number;
     [key: string]: any;
   };
   message: string;

@@ -17,6 +17,19 @@ export class MoocLauncher implements Launcher {
             let state = document.readyState;
             Application.App.log.Debug("Start document state:", state);
             let moocInstance = this.moocFactory.CreateMooc();
+
+            (window as any).__moocInstance__ = moocInstance;
+            (window as any).__moocInstances__ =
+              (window as any).__moocInstances__ || [];
+            if (moocInstance) {
+              (window as any).__moocInstances__.push({
+                instance: moocInstance,
+                type: moocInstance.constructor?.name,
+                createdAt: new Date().toISOString(),
+                url: window.location.href,
+              });
+            }
+
             console.log("mooc start", moocInstance);
             if (moocInstance != null) {
                 await moocInstance.Init();

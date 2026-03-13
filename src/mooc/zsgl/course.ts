@@ -156,24 +156,31 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
     private notifyStudyMapCourseComplete(): void {
         const now = Date.now();
         
+        const prefixes = [ZSGL_CONSTANTS.STORAGE_PREFIX, "zsgl_daily_task_"];
+
         for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key?.startsWith(ZSGL_CONSTANTS.STORAGE_PREFIX)) {
-                try {
-                    const value = JSON.parse(localStorage.getItem(key) || "{}");
-                    if (value.status === "started" && value.expire > now) {
-                        const taskStatus: TaskStatus = {
-                            status: "finished",
-                            expire: value.expire,
-                        };
-                        localStorage.setItem(key, JSON.stringify(taskStatus));
-                        Application.App.log.Info("课程完成，已更新 localStorage", key);
-                        return;
-                    }
-                } catch (e) {
-                    Application.App.log.Warn("解析 localStorage 失败", key);
+          const key = localStorage.key(i);
+          for (const prefix of prefixes) {
+            if (key?.startsWith(prefix)) {
+              try {
+                const value = JSON.parse(localStorage.getItem(key) || "{}");
+                if (value.status === "started" && value.expire > now) {
+                  const taskStatus: TaskStatus = {
+                    status: "finished",
+                    expire: value.expire,
+                  };
+                  localStorage.setItem(key, JSON.stringify(taskStatus));
+                  Application.App.log.Info(
+                    "课程完成，已更新 localStorage",
+                    key,
+                  );
+                  return;
                 }
+              } catch (e) {
+                Application.App.log.Warn("解析 localStorage 失败", key);
+              }
             }
+          }
         }
         Application.App.log.Warn("未找到对应的课程状态 key");
     }

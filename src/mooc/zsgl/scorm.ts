@@ -2,8 +2,8 @@
  * @Author: guotao
  * @Date: 2025-03-12 17:19:39
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-13 02:40:07
- * @FilePath: \course-tools1\src\mooc\zsgl\scorm.ts
+ * @LastEditTime: 2026-03-13 14:59:24
+ * @FilePath: \course-tools\src\mooc\zsgl\scorm.ts
  * @Description: zsgl SCORM/音频任务模块
  *
  * Copyright (c) 2025 by lzlj, All Rights Reserved.
@@ -167,9 +167,9 @@ export class ZsglAudio extends ZsglTask {
                 Application.App.log.Info("[播放尝试] 视频源已加载，开始播放");
                 this.setPlaybackRate();
                 this.video.currentTime = 0;
-                Application.App.config.auto && this.video.play().catch((e) => {
-                    Application.App.log.Warn("[播放尝试] 播放失败:", e.message);
-                });
+                if (Application.App.config.auto) {
+                    this.clickPlayButton();
+                }
                 return;
             }
 
@@ -189,18 +189,44 @@ export class ZsglAudio extends ZsglTask {
         this.video.addEventListener('loadedmetadata', () => {
             Application.App.log.Info("[视频事件] loadedmetadata - 视频元数据已加载");
             this.setPlaybackRate();
-            Application.App.config.auto && this.video.play().catch((e) => {
-                Application.App.log.Warn("[视频事件] 播放失败:", e.message);
-            });
+            if (Application.App.config.auto) {
+                this.clickPlayButton();
+            }
         }, { once: true });
 
         this.video.addEventListener('canplay', () => {
             Application.App.log.Info("[视频事件] canplay - 视频可以播放");
             this.setPlaybackRate();
-            Application.App.config.auto && this.video.play().catch((e) => {
-                Application.App.log.Warn("[视频事件] 播放失败:", e.message);
-            });
+            if (Application.App.config.auto) {
+                this.clickPlayButton();
+            }
         }, { once: true });
+    }
+
+    /** 点击播放按钮 */
+    private clickPlayButton(): void {
+        const xgStartBtn = document.querySelector('xg-start.xgplayer-start') as HTMLElement;
+        
+        // 先静音，绕过浏览器自动播放策略
+        this.video.muted = true;
+        
+        if (xgStartBtn) {
+            Application.App.log.Debug("[点击播放] 找到播放按钮，点击播放", xgStartBtn);
+            xgStartBtn.click();
+        } else {
+            Application.App.log.Debug("[点击播放] 未找到播放按钮，尝试直接播放");
+            this.video.play().then(() => {
+                Application.App.log.Debug("[点击播放] 播放成功");
+            }).catch((e) => {
+                Application.App.log.Warn("[点击播放] 播放失败:", e.message);
+                const btn = document.querySelector('xg-start.xgplayer-start') as HTMLElement;
+                if (btn) {
+                    btn.click();
+                }
+            });
+        }
+        this.setMute();
+        this.setPlaybackRate();
     }
 
     public Init(): Promise<void> {
@@ -338,17 +364,7 @@ export class ZsglAudio extends ZsglTask {
         this.timerManager.setInterval("videoAutoResume", () => {
             if (Application.App.config.auto && this.video.paused) {
                 Application.App.log.Debug("[自动恢复] 视频暂停，尝试恢复播放");
-                // 先静音再播放，绕过浏览器自动播放策略
-                const wasMuted = this.video.muted;
-                this.video.muted = true;
-                this.video.play().then(() => {
-                    // 播放成功后恢复静音状态
-                    this.video.muted = wasMuted || Application.App.config.video_mute;
-                    this.setMute();
-                    this.setPlaybackRate();
-                }).catch((e) => {
-                    Application.App.log.Warn("[自动恢复] 播放失败:", e.message);
-                });
+                this.clickPlayButton();
             }
         }, ZSGL_CONSTANTS.VIDEO_PLAY_RESUME_INTERVAL_MS);
 
@@ -357,16 +373,7 @@ export class ZsglAudio extends ZsglTask {
             Application.App.log.Debug('[视频事件] Video paused, attempting to resume...');
             setTimeout(() => {
                 if (this.video.paused && Application.App.config.auto) {
-                    // 先静音再播放，绕过浏览器自动播放策略
-                    const wasMuted = this.video.muted;
-                    this.video.muted = true;
-                    this.video.play().then(() => {
-                        // 播放成功后恢复静音状态
-                        this.video.muted = wasMuted || Application.App.config.video_mute;
-                        this.setMute();
-                    }).catch((e) => {
-                        Application.App.log.Warn("[自动恢复] 播放失败:", e.message);
-                    });
+                    this.clickPlayButton();
                 }
             }, 100);
         }, true);
