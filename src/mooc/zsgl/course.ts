@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-09-27 02:32:51
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-13 02:58:27
+ * @LastEditTime: 2026-03-14 02:51:03
  * @FilePath: \course-tools1\src\mooc\zsgl\course.ts
  * @Description: zsgl 课程任务管理
  *
@@ -37,6 +37,8 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
     private timerManager: TimerManager = new TimerManager();
     /** 任务索引 */
     protected taskIndex: number = 0;
+    /** 当前课程ID */
+    protected currentCourseId: string = "";
 
     public Init(): Promise<any> {
         return new Promise(async (resolve) => {
@@ -49,6 +51,9 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
             this.addEventListener("courseTaskComplete", () => {
                 this.notifyStudyMapCourseComplete();
             });
+            
+            // 设置页面关闭监听
+            this.setupCloseCourseListener();
             
             this.hookCourseDetailRequests();
             
@@ -107,6 +112,11 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
                             const courseFileArr = responseData?.courseFileArr;
                             const courseId = responseData?.courseId;
                             
+                            // 保存当前课程ID
+                            if (courseId) {
+                                self.currentCourseId = courseId;
+                            }
+                            
                             if (courseFileArr && courseFileArr.length > 0) {
                                 const allCompleted = courseFileArr.every((item: any) => item.hasLearned === "1");
                                 
@@ -152,7 +162,7 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
         return Promise.resolve();
     }
 
-    /** 通知学习地图课程完成 */
+    /** 通知学习地图课程完成,也可能是通知每日任务 */
     private notifyStudyMapCourseComplete(): void {
         const now = Date.now();
         
@@ -183,6 +193,66 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
           }
         }
         Application.App.log.Warn("未找到对应的课程状态 key");
+    }
+
+    /** 设置页面关闭监听 */
+    private setupCloseCourseListener(): void {
+        window.addEventListener('storage', (e: StorageEvent) => {
+            if (e.key && e.key.startsWith('zsgl_close_course_') && e.newValue) {
+                try {
+                    const closeStatus = JSON.parse(e.newValue);
+                    if (closeStatus.status === 'close') {
+                        Application.App.log.Info(`[关闭监听] 收到关闭课程通知: courseId=${closeStatus.courseId}`);
+                        Application.App.log.Debug(`[关闭监听] 收到关闭课程通知`, closeStatus);
+                        
+                        // 清理标志位
+                        localStorage.removeItem(e.key);
+                        
+                        // 尝试关闭页面
+                        this.closeCoursePage();
+                    }
+                } catch (err) {
+                    Application.App.log.Warn(`[关闭监听] 解析关闭状态失败: ${err}`);
+                }
+            }
+        });
+
+        // 轮询检测关闭标志位
+        this.timerManager.setInterval('checkCloseFlag', () => {
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('zsgl_close_course_')) {
+                    try {
+                        const value = JSON.parse(localStorage.getItem(key) || '{}');
+                        if (value.status === 'close') {
+                            Application.App.log.Info(`[关闭轮询] 检测到关闭标志: ${key}`);
+                            localStorage.removeItem(key);
+                            this.closeCoursePage();
+                            return;
+                        }
+                    } catch (err) {
+                        Application.App.log.Warn(`[关闭轮询] 解析失败: ${err}`);
+                    }
+                }
+            }
+        }, 3000);
+    }
+
+    /** 关闭课程页面 */
+    private closeCoursePage(): void {
+        Application.App.log.Info('[关闭页面] 尝试关闭课程页面');
+        
+        // 先停止所有任务
+        this.Stop();
+        
+        // 尝试关闭窗口
+        window.close();
+        
+        // 如果 window.close() 不起作用（可能是因为脚本打开的窗口），提示用户
+        setTimeout(() => {
+            Application.App.log.Info('[关闭页面] 无法自动关闭页面，请手动关闭');
+            alert('学习积分已达上限，请关闭此页面');
+        }, 1000);
     }
 
     public Next(): Promise<Task> {

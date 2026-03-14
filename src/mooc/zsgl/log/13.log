@@ -1,0 +1,27 @@
+18:18:31.148 start.ts:50 [每日积分] start: 收到消息 {type: 'START_DAILY_POINTS', data: {…}}
+18:18:31.148 start.ts:55 [每日积分] start: 转发START_DAILY_POINTS消息到页面 {knowledgeLink: '', learningLimit: 100, contributionLimit: 300, interactionLimit: 100}
+18:18:31.149 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'START_DAILY_POINTS', data: {…}}
+18:18:31.149 dailyPointsPanel.ts:325 [每日积分] panel: 处理START_DAILY_POINTS {knowledgeLink: '', learningLimit: 100, contributionLimit: 300, interactionLimit: 100}
+18:18:31.149 dailyPointsPanel.ts:349 [每日积分] panel: start方法被调用 {knowledgeLink: '', learningLimit: 100, contributionLimit: 300, interactionLimit: 100} isRunning: false
+18:18:35.780 dailyPointsPanel.ts:360 [每日积分] panel: 创建进度悬浮窗
+18:18:35.784 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'CONFIRM_START_TASK', data: {…}}
+18:18:35.784 log.ts:179 [debug 18:18:35 ] 用户确认开始任务，开始执行
+18:18:35.785 log.ts:179 [debug 18:18:35 ] 从localStorage获取sid: B371A136CDEC49259820E092C24ECAEF
+18:18:35.785 log.ts:179 [debug 18:18:35 ] 获取积分详情: 2026-03-13 ~ 2026-03-31
+18:18:35.786 log.ts:179 [debug 18:18:35 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=B371A136CDEC49259820E092C24ECAEF
+18:18:36.026 log.ts:179 [debug 18:18:36 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+18:18:36.028 log.ts:179 [debug 18:18:36 ] 积分项: 学习课程 (24E2D4D119E74B76AC349FA12A0B646C) = 98
+18:18:36.029 log.ts:179 [debug 18:18:36 ] 更新学习积分（学习课程）: +98，当前: 98
+18:18:36.029 log.ts:179 [debug 18:18:36 ] 积分项: 知识阅读 (knowledge_reading_point) = 2
+18:18:36.030 log.ts:179 [debug 18:18:36 ] 积分项: 知识被阅读 (knowledge_read_point) = 0
+18:18:36.030 log.ts:179 [debug 18:18:36 ] 更新贡献积分: 0
+18:18:36.031 log.ts:179 [debug 18:18:36 ] 开始执行任务：course
+18:18:36.032 log.ts:179 [debug 18:18:36 ] 开始普通课程任务
+18:18:36.033 log.ts:179 [debug 18:18:36 ] 主动请求课程列表: curPage=1
+18:18:36.033 log.ts:179 [debug 18:18:36 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/course/courselist.do?curPage=1&numPerPage=30&sortType=2&ver=3.8.2&sid=B371A136CDEC49259820E092C24ECAEF&os=99
+18:18:36.041 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+18:18:36.042 dailyPointsPanel.ts:337 [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+18:18:36.357 log.ts:179 [debug 18:18:36 ] API响应成功: {body: {…}, code: '0', message: '操作成功', totalPage: '214'}
+18:18:49.246 log.ts:197  [warn 18:18:49 ] 请注意!最小化可能导致视频无法正常播放!允许切换窗口.
+Warn @ log.ts:197
+eval @ mooc.ts:59

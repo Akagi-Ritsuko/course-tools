@@ -253,7 +253,25 @@ export class ZsglVideo extends ZsglTask {
             Application.App.log.Info("[视频事件] 视频播放结束");
             // 清除自动恢复定时器
             this.timerManager.clearInterval("videoAutoResume");
+            // 通知视频任务完成（用于积分检查）
+            this.notifyVideoTaskComplete();
             this.callEvent("taskComplete");
         }, { once: true });
+    }
+
+    /** 通知视频任务完成 */
+    private notifyVideoTaskComplete(): void {
+        if (this.taskinfo.courseId) {
+            const videoKey = `zsgl_video_complete_${this.taskinfo.courseId}_${this.taskinfo.jobIndex}`;
+            const videoStatus = {
+                status: "finished",
+                courseId: this.taskinfo.courseId,
+                taskId: this.taskinfo.jobIndex,
+                timestamp: Date.now()
+            };
+            localStorage.setItem(videoKey, JSON.stringify(videoStatus));
+            Application.App.log.Info(`[视频完成通知] 已设置: ${videoKey}`);
+            Application.App.log.Debug(`[视频完成通知] 已设置: ${videoKey}`, videoStatus);
+        }
     }
 }

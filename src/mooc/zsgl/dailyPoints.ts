@@ -193,18 +193,24 @@ export class ZsglDailyPoints extends Task {
       } else if (message.type === "REFRESH_POINTS") {
         this.handleRefreshPoints();
       } else if (message.type === "CONFIRM_START_TASK") {
+        Application.App.log.Debug("收到确认开始任务消息",message.data?.learningLimit,message.data?.contributionLimit,message.data?.interactionLimit);
         if (message.data?.knowledgeLink) {
           this.knowledgePageUrl = message.data.knowledgeLink;
         }
         if (message.data?.learningLimit) {
-          this.pointsState.learning.limit = message.data.learningLimit;
+          this.pointsState.learning.target = message.data.learningLimit;
+          Application.App.log.Info(`设置学习积分上限目标: ${message.data.learningLimit}`);
         }
         if (message.data?.contributionLimit) {
-          this.pointsState.contribution.limit = message.data.contributionLimit;
+          this.pointsState.contribution.target = message.data.contributionLimit;
+          Application.App.log.Info(`设置贡献积分目标: ${message.data.contributionLimit}`);
         }
         if (message.data?.interactionLimit) {
-          this.pointsState.interaction.limit = message.data.interactionLimit;
+          this.pointsState.interaction.target = message.data.interactionLimit;
+          Application.App.log.Info(`设置互动积分目标: ${message.data.interactionLimit}`);
         }
+        // 保存用户设置的积分上限
+        this.savePointsState();
         this.executeTaskAfterConfirm();
       }
     });
@@ -226,26 +232,60 @@ export class ZsglDailyPoints extends Task {
   private waitForTaskComplete(courseId: string): Promise<boolean> {
     return new Promise((resolve) => {
       const taskKey = `${this.DAILY_POINTS_TASK_PREFIX}${courseId}`;
+      let resolved = false;
+
+      const cleanup = () => {
+        if (timeoutId) clearTimeout(timeoutId);
+        window.removeEventListener('storage', storageHandler);
+        checkInterval && clearInterval(checkInterval);
+      };
+
+      const storageHandler = (e: StorageEvent) => {
+        if (e.key === taskKey && e.newValue) {
+          try {
+            const status = JSON.parse(e.newValue);
+            if (status.status === "finished" && !resolved) {
+              resolved = true;
+              cleanup();
+              localStorage.removeItem(taskKey);
+              Application.App.log.Info(`任务完成 (storage事件): ${taskKey}`);
+              Application.App.log.Debug(`任务完成 (storage事件): ${taskKey}`);
+              resolve(true);
+            }
+          } catch (err) {
+            Application.App.log.Warn(`解析任务状态失败: ${err}`);
+          }
+        }
+      };
+
+      window.addEventListener('storage', storageHandler);
 
       const checkInterval = setInterval(() => {
+        if (resolved) {
+          clearInterval(checkInterval);
+          return;
+        }
         const statusStr = localStorage.getItem(taskKey);
         if (statusStr) {
           const status = JSON.parse(statusStr);
           if (status.status === "finished") {
-            clearInterval(checkInterval);
+            resolved = true;
+            cleanup();
             localStorage.removeItem(taskKey);
-            Application.App.log.Info(`任务完成: ${taskKey}`);
-            Application.App.log.Debug(`任务完成: ${taskKey}`);
+            // Application.App.log.Info(`任务完成 (轮询检测): ${taskKey}`);
+            // Application.App.log.Debug(`任务完成 (轮询检测): ${taskKey}`);
             resolve(true);
-            return;
           }
         }
-      }, 1000);
+      }, 3000);
 
-      setTimeout(() => {
-        clearInterval(checkInterval);
-        Application.App.log.Warn(`等待任务完成超时: ${taskKey}`);
-        resolve(false);
+      const timeoutId = setTimeout(() => {
+        if (!resolved) {
+          resolved = true;
+          cleanup();
+          // Application.App.log.Warn(`等待任务完成超时: ${taskKey}`);
+          resolve(false);
+        }
       }, 30 * 60 * 1000);
     });
   }
@@ -549,10 +589,18 @@ export class ZsglDailyPoints extends Task {
         this.pointsState.contribution.current = item.userPoint;
         Application.App.log.Info(`更新贡献积分: ${item.userPoint}`);
         Application.App.log.Debug(`更新贡献积分: ${item.userPoint}`);
-      } else if (item.ruleId === "knowledge_shared") {
-        this.pointsState.interaction.current = item.userPoint;
-        Application.App.log.Info(`更新互动积分: ${item.userPoint}`);
-        Application.App.log.Debug(`更新互动积分: ${item.userPoint}`);
+      } else if (
+        item.ruleId === "knowledge_shared" ||
+        item.ruleId === "knowledge_sharing"
+      ) {
+        // 互动积分 = knowledge_shared + knowledge_sharing
+        if (item.ruleId === "knowledge_shared") {
+          this.pointsState.interaction.current = item.userPoint;
+        } else if (item.ruleId === "knowledge_sharing") {
+          this.pointsState.interaction.current += item.userPoint;
+        }
+        Application.App.log.Info(`更新互动积分: ${this.pointsState.interaction.current}`);
+        Application.App.log.Debug(`更新互动积分: ${this.pointsState.interaction.current}`);
       } else if (
         item.ruleId === "46EA49C2D06E49BD9C59F21B94687D59" ||
         item.ruleId === "24E2D4D119E74B76AC349FA12A0B646C"
@@ -584,11 +632,11 @@ export class ZsglDailyPoints extends Task {
     if (!this.checkPointsChanged(data.body) && isNotRefresh) {
       this.noChangeCount++;
       Application.App.log.Warn(
-        `积分无变化，连续无变化次数: ${this.noChangeCount}/${this.NO_CHANGE_THRESHOLD}`,
+        `积分无变化，连续无变化次数: ${this.noChangeCount}/2`,
       );
-      if (this.noChangeCount >= this.NO_CHANGE_THRESHOLD) {
-        Application.App.log.Info("积分连续无变化达到阈值，自动停止任务");
-        this.stopTask();
+      if (this.noChangeCount >= 0) {
+        Application.App.log.Info("积分连续两次无变化，尝试切换到下一个任务");
+        this.switchToNextTask();
         return;
       }
     } else {
@@ -596,6 +644,30 @@ export class ZsglDailyPoints extends Task {
     }
 
     this.lastPointsData = data.body;
+  }
+
+  /** 切换到下一个任务 */
+  protected async switchToNextTask(): Promise<void> {
+    const nextTask = this.getNextTask();
+    if (nextTask && nextTask !== this.currentTaskType) {
+      Application.App.log.Info(`切换到下一个任务: ${nextTask}`);
+      this.noChangeCount = 0;
+      this.currentTaskType = nextTask;
+      switch (nextTask) {
+        case "course":
+          await this.executeCourseTask();
+          break;
+        case "knowledgeRead":
+          await this.executeKnowledgeReadTask();
+          break;
+        case "knowledgeShare":
+          await this.executeKnowledgeShareTask();
+          break;
+      }
+    } else {
+      Application.App.log.Info("没有下一个任务，自动停止任务");
+      this.stopTask();
+    }
   }
 
   protected calculatePointsGap(type: PointsType): number {
@@ -651,6 +723,7 @@ export class ZsglDailyPoints extends Task {
       try {
         this.loadPointsState();
         this.setupMessageListener();
+        this.setupVideoCompleteListener();
         Application.App.log.Info("每日积分模式初始化完成", this.pointsState);
         Application.App.log.Debug("每日积分模式初始化完成", this.pointsState);
         resolve();
@@ -659,6 +732,86 @@ export class ZsglDailyPoints extends Task {
         reject(error);
       }
     });
+  }
+
+  /** 设置视频完成监听 */
+  private setupVideoCompleteListener(): void {
+    window.addEventListener('storage', (e: StorageEvent) => {
+      if (e.key && e.key.startsWith('zsgl_video_complete_') && e.newValue) {
+        try {
+          const videoStatus = JSON.parse(e.newValue);
+          if (videoStatus.status === 'finished') {
+            Application.App.log.Info(`[视频完成监听] 收到视频完成通知: courseId=${videoStatus.courseId}, taskId=${videoStatus.taskId}`);
+            Application.App.log.Debug(`[视频完成监听] 收到视频完成通知`, videoStatus);
+            this.handleVideoTaskComplete(videoStatus.courseId);
+            localStorage.removeItem(e.key);
+          }
+        } catch (err) {
+          Application.App.log.Warn(`[视频完成监听] 解析视频状态失败: ${err}`);
+        }
+      }
+    });
+
+    this.timerManager.setInterval('checkVideoComplete', () => {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('zsgl_video_complete_')) {
+          try {
+            const value = JSON.parse(localStorage.getItem(key) || '{}');
+            if (value.status === 'finished') {
+              Application.App.log.Info(`[视频完成轮询] 检测到视频完成: ${key}`);
+              this.handleVideoTaskComplete(value.courseId);
+              localStorage.removeItem(key);
+            }
+          } catch (err) {
+            Application.App.log.Warn(`[视频完成轮询] 解析失败: ${err}`);
+          }
+        }
+      }
+    }, 5000);
+  }
+
+  /** 处理视频任务完成 */
+  private async handleVideoTaskComplete(courseId: string): Promise<void> {
+    if (!courseId) {
+      Application.App.log.Warn('[积分检查] courseId 为空，跳过积分检查');
+      return;
+    }
+
+    Application.App.log.Info('[积分检查] 开始检查积分是否达到上限');
+    
+    const pointsResult = await this.fetchPointsDetail();
+    if (!pointsResult.success || !pointsResult.data) {
+      Application.App.log.Warn('[积分检查] 获取积分详情失败');
+      return;
+    }
+
+    this.updatePointsStateFromApi(pointsResult.data, false);
+
+    const learningPoints = this.pointsState.learning.current;
+    const learningTarget = this.pointsState.learning.target || this.pointsState.learning.limit;
+
+    Application.App.log.Info(`[积分检查] 当前学习积分: ${learningPoints}/${learningTarget}`);
+
+    if (learningPoints >= learningTarget) {
+      Application.App.log.Info('[积分检查] 学习积分已达目标，发送关闭课程通知');
+      this.notifyCloseCourse(courseId);
+    } else {
+      Application.App.log.Info('[积分检查] 学习积分未达目标，继续执行');
+    }
+  }
+
+  /** 通知课程页面关闭 */
+  private notifyCloseCourse(courseId: string): void {
+    const closeKey = `zsgl_close_course_${courseId}`;
+    const closeStatus = {
+      status: 'close',
+      courseId: courseId,
+      timestamp: Date.now()
+    };
+    localStorage.setItem(closeKey, JSON.stringify(closeStatus));
+    Application.App.log.Info(`[关闭通知] 已设置关闭标志: ${closeKey}`);
+    Application.App.log.Debug(`[关闭通知] 已设置关闭标志: ${closeKey}`, closeStatus);
   }
 
   public Start(): Promise<any> {
@@ -715,15 +868,32 @@ export class ZsglDailyPoints extends Task {
       Application.App.log.Info(`查询课程列表第 ${curPage} 页`);
 
       const response = await this.fetchCourseListWithPage(curPage);
+      
+      Application.App.log.Debug(`课程列表响应:`, response);
+      Application.App.log.Debug(`response.body:`, response?.body);
+      Application.App.log.Debug(`response.body.courseArr:`, response?.body?.courseArr);
+      Application.App.log.Debug(`response.body.courseArr length:`, response?.body?.courseArr?.length);
 
-      if (!response || !response.body || !response.body.courseArr) {
-        Application.App.log.Error(`获取课程列表失败: 第 ${curPage} 页`);
+      if (!response) {
+        Application.App.log.Error(`获取课程列表失败: response为null`);
+        break;
+      }
+      
+      if (!response.body) {
+        Application.App.log.Error(`获取课程列表失败: response.body为空`, response);
+        break;
+      }
+      
+      if (!response.body.courseArr) {
+        Application.App.log.Error(`获取课程列表失败: courseArr为空`, response.body);
         break;
       }
 
       const unfinishedCourse = this.findUnfinishedCourseFromData(
         response.body.courseArr,
       );
+
+      Application.App.log.Debug(`findUnfinishedCourseFromData 结果:`, unfinishedCourse);
 
       if (unfinishedCourse) {
         Application.App.log.Info(
@@ -748,12 +918,14 @@ export class ZsglDailyPoints extends Task {
         }
       }
 
-      const totalPage = parseInt(response.body.totalPage as any) || 1;
+      const totalPage = parseInt((response as any).totalPage || response.body.totalPage) || 1;
+      Application.App.log.Debug(`当前页: ${curPage}, 总页数: ${totalPage}`);
       if (curPage >= totalPage) {
         Application.App.log.Info("所有课程已完成");
         break;
       }
 
+      Application.App.log.Debug(`继续查询下一页: ${curPage + 1}`);
       curPage++;
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
@@ -784,6 +956,7 @@ export class ZsglDailyPoints extends Task {
     );
 
     if (result.success && result.data) {
+      Application.App.log.Debug(`fetchCourseListWithPage 成功, result.data:`, result.data);
       if (result.data.body && result.data.body.totalPage !== undefined) {
         this.courseListParams.totalPage = result.data.body.totalPage;
         Application.App.log.Debug(
@@ -793,7 +966,7 @@ export class ZsglDailyPoints extends Task {
       return result.data;
     }
 
-    Application.App.log.Error(`请求课程列表失败: ${result.error}`);
+    Application.App.log.Error(`请求课程列表失败: ${result.error}, result:`, result);
     return null;
   }
 
@@ -807,15 +980,18 @@ export class ZsglDailyPoints extends Task {
   protected findUnfinishedCourseFromData(
     courseArr: CourseItem[],
   ): CourseItem | null {
+    Application.App.log.Debug(`开始查找未完成课程, 共 ${courseArr.length} 个课程`);
     for (const course of courseArr) {
-      const isCompleted = course.iscompleted;
+      const isCompleted = course.isCompleted;
       const isUnfinished = isCompleted === 0 || isCompleted === "0";
+      Application.App.log.Debug(`课程: ${course.courseName}, isCompleted: ${isCompleted}, isUnfinished: ${isUnfinished}`);
       if (isUnfinished) {
         Application.App.log.Info("找到未完成的课程", course.courseName);
         Application.App.log.Debug("找到未完成的课程", course.courseName);
         return course;
       }
     }
+    Application.App.log.Debug("未找到未完成的课程");
     return null;
   }
 
@@ -892,25 +1068,25 @@ export class ZsglDailyPoints extends Task {
     });
   }
 
-  protected setupCourseTaskCompletionListener(): void {
-    const msg = NewChromeServerMessage("zsgl-tools");
-    msg.Accept((client, data) => {
-      Application.App.log.Debug("每日积分模式收到消息", data);
+  // protected setupCourseTaskCompletionListener(): void {
+  //   const msg = NewChromeServerMessage("zsgl-tools");
+  //   msg.Accept((client, data) => {
+  //     Application.App.log.Debug("每日积分模式收到消息", data);
 
-      if (data.type === "courseTaskComplete") {
-        Application.App.log.Info("课程任务完成");
-        Application.App.log.Debug("课程任务完成");
+  //     if (data.type === "courseTaskComplete") {
+  //       Application.App.log.Info("课程任务完成");
+  //       Application.App.log.Debug("课程任务完成");
 
-        const points = 0.4 * 10;
-        this.updatePoints(PointsType.LEARNING, points);
+  //       const points = 0.4 * 10;
+  //       this.updatePoints(PointsType.LEARNING, points);
 
-        setTimeout(() => {
-          window.location.href =
-            "https://zsgl.lzlj.com/znWeb/znPortal/#/home/course";
-        }, 2000);
-      }
-    });
-  }
+  //       setTimeout(() => {
+  //         window.location.href =
+  //           "https://zsgl.lzlj.com/znWeb/znPortal/#/home/course";
+  //       }, 2000);
+  //     }
+  //   });
+  // }
 
   protected async executeKnowledgeReadTask(): Promise<void> {
     if (!this.pageId) {
