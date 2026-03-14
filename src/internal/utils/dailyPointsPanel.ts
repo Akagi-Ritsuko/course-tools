@@ -398,7 +398,7 @@ export class DailyPointsFloatingPanel {
            this.isRunning = false;
            this.isStopped = false;
            this.removePanel();
-           window.postMessage({ type: "STOP_DAILY_POINTS" }, "*");
+          //  window.postMessage({ type: "STOP_DAILY_POINTS" }, "*");
            Application.App.log?.Info("每日积分任务已停止");
          }
 
@@ -705,7 +705,10 @@ export class DailyPointsFloatingPanel {
              "#daily-points-stop",
            ) as HTMLElement;
 
-           closeBtn?.addEventListener("click", () => this.stop());
+           closeBtn?.addEventListener("click", () => {
+             this.stop();
+             window.postMessage({ type: "STOP_DAILY_POINTS" }, "*");
+           });
            refreshBtn?.addEventListener("click", () => {
              window.postMessage({ type: "REFRESH_POINTS" }, "*");
            });

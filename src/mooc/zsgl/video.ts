@@ -34,7 +34,7 @@ export class ZsglVideo extends ZsglTask {
     public Start(): Promise<any> {
         return new Promise<void>(async (resolve, reject) => {
             Application.App.log.Debug("zsglVideo开始执行任务", this.taskDiv);
-
+            this.setupVideoEndHandler(); // 设置视频结束处理函数
             // 处理页面的事件监听函数的检测
             setupEventPrevention(window);
             setupEventPrevention(document);
@@ -68,7 +68,7 @@ export class ZsglVideo extends ZsglTask {
             if (taskDiv && video) {
                 this.taskDiv = taskDiv;
                 this.video = video;
-                this.setupVideoEndHandler();
+                // this.setupVideoEndHandler();
                 resolve();
             } else {
                 Application.App.log.Error("初始化失败：未找到视频元素或任务元素");

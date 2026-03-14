@@ -634,7 +634,7 @@ export class ZsglDailyPoints extends Task {
       Application.App.log.Warn(
         `积分无变化，连续无变化次数: ${this.noChangeCount}/2`,
       );
-      if (this.noChangeCount >= 0) {
+      if (this.noChangeCount >= 2) {
         Application.App.log.Info("积分连续两次无变化，尝试切换到下一个任务");
         this.switchToNextTask();
         return;
@@ -649,7 +649,7 @@ export class ZsglDailyPoints extends Task {
   /** 切换到下一个任务 */
   protected async switchToNextTask(): Promise<void> {
     const nextTask = this.getNextTask();
-    if (nextTask && nextTask !== this.currentTaskType) {
+    if (nextTask) {
       Application.App.log.Info(`切换到下一个任务: ${nextTask}`);
       this.noChangeCount = 0;
       this.currentTaskType = nextTask;
@@ -795,7 +795,9 @@ export class ZsglDailyPoints extends Task {
 
     if (learningPoints >= learningTarget) {
       Application.App.log.Info('[积分检查] 学习积分已达目标，发送关闭课程通知');
+      
       this.notifyCloseCourse(courseId);
+      this.stopTask()
     } else {
       Application.App.log.Info('[积分检查] 学习积分未达目标，继续执行');
     }
@@ -1144,6 +1146,7 @@ export class ZsglDailyPoints extends Task {
             if (this.pointsGap <= 0) {
               Application.App.log.Info("贡献积分已达目标，停止知识阅读任务");
               Application.App.log.Debug("贡献积分已达目标，停止知识阅读任务");
+              // this.switchToNextTask();
               break;
             }
           }
@@ -1162,6 +1165,8 @@ export class ZsglDailyPoints extends Task {
     } else {
       Application.App.log.Info("贡献积分已达目标，知识阅读任务完成");
       Application.App.log.Debug("贡献积分已达目标，知识阅读任务完成");
+      // 执行下一个任务
+      await this.switchToNextTask();
     }
   }
 
@@ -1227,7 +1232,7 @@ export class ZsglDailyPoints extends Task {
           `知识分享成功，第${this.callCount}次调用，累积积分: ${this.accumulatedPoints}/${this.pointsGap}`,
         );
 
-        if (this.callCount % 10 === 0) {
+        if (this.callCount % 2 === 0) {
           const pointsResult = await this.fetchPointsDetail();
           if (pointsResult.success) {
             this.updatePointsStateFromApi(pointsResult.data);
@@ -1238,6 +1243,7 @@ export class ZsglDailyPoints extends Task {
             if (this.pointsGap <= 0) {
               Application.App.log.Info("互动积分已达目标，停止知识分享任务");
               Application.App.log.Debug("互动积分已达目标，停止知识分享任务");
+              // this.switchToNextTask();
               break;
             }
           }
@@ -1256,6 +1262,8 @@ export class ZsglDailyPoints extends Task {
     } else {
       Application.App.log.Info("互动积分已达目标，知识分享任务完成");
       Application.App.log.Debug("互动积分已达目标，知识分享任务完成");
+      // 执行下一个任务
+      await this.switchToNextTask();
     }
   }
 
@@ -1455,58 +1463,4 @@ export class ZsglDailyPoints extends Task {
     const panel = this.createPointsPanel();
     document.body.appendChild(panel);
   }
-
-  // protected updatePointsPanel(): void {
-  //   Application.App.log.Debug("Updating points panel");
-  //   const panel = document.querySelector(".zsgl-points-panel");
-  //   if (!panel) return;
-
-  //   const learningProgress = panel.querySelector(
-  //     ".points-item:nth-child(1) .points-progress",
-  //   ) as HTMLElement;
-  //   const learningText = panel.querySelector(
-  //     ".points-item:nth-child(1) .points-text",
-  //   );
-  //   if (learningProgress && learningText) {
-  //     learningProgress.style.width = `${this.getPointsProgress(
-  //       PointsType.LEARNING,
-  //     )}%`;
-  //     learningText.textContent = `${this.pointsState.learning.current}/${this.pointsState.learning.limit}`;
-  //   }
-
-  //   const contributionProgress = panel.querySelector(
-  //     ".points-item:nth-child(2) .points-progress",
-  //   ) as HTMLElement;
-  //   const contributionText = panel.querySelector(
-  //     ".points-item:nth-child(2) .points-text",
-  //   );
-  //   if (contributionProgress && contributionText) {
-  //     contributionProgress.style.width = `${this.getPointsProgress(
-  //       PointsType.CONTRIBUTION,
-  //     )}%`;
-  //     contributionText.textContent = `${this.pointsState.contribution.current}/${this.pointsState.contribution.limit}`;
-  //   }
-
-  //   const interactionProgress = panel.querySelector(
-  //     ".points-item:nth-child(3) .points-progress",
-  //   ) as HTMLElement;
-  //   const interactionText = panel.querySelector(
-  //     ".points-item:nth-child(3) .points-text",
-  //   );
-  //   if (interactionProgress && interactionText) {
-  //     interactionProgress.style.width = `${this.getPointsProgress(
-  //       PointsType.INTERACTION,
-  //     )}%`;
-  //     interactionText.textContent = `${this.pointsState.interaction.current}/${this.pointsState.interaction.limit}`;
-  //   }
-
-  //   const totalProgress = panel.querySelector(
-  //     ".points-total .points-progress",
-  //   ) as HTMLElement;
-  //   const totalText = panel.querySelector(".points-total .points-text");
-  //   if (totalProgress && totalText) {
-  //     totalProgress.style.width = `${this.getTotalProgress()}%`;
-  //     totalText.textContent = `${this.getTotalProgress().toFixed(1)}%`;
-  //   }
-  // }
 }
