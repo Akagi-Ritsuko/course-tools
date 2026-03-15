@@ -1,0 +1,98 @@
+16:05:02.977 main.2faaeed8.js:1 showSearch true
+16:05:03.012 log.ts:179 [debug 16:5:3 ] 原始响应数据 {code: 0, body: Array(3), message: '成功'}
+16:05:03.012 log.ts:179 [debug 16:5:3 ] 是否跳过选修课程 true
+16:05:03.012 log.ts:179 [debug 16:5:3 ] 刷题练习（不限次数） 0 当前关卡
+16:05:03.012 log.ts:179 [debug 16:5:3 ] 阅读参赛说明 1 当前关卡
+16:05:03.012 log.ts:179 [debug 16:5:3 ] 参与竞赛 2 当前关卡
+16:05:03.012 log.ts:179 [debug 16:5:3 ] 成功拦截课程数据 {courseCount: 0, gateName: '刷题练习（不限次数）', studymapGateId: '0C5E41F573624BEFBA9436D943D68D59'}
+16:05:03.012 log.ts:179 [debug 16:5:3 ] 筛选的结果数据 {gateName: '刷题练习（不限次数）', gateNameIndex: 0, status: 1, finishTaskNum: 0, taskNum: 1, …}
+16:05:03.012 log.ts:179 [debug 16:5:3 ] 注册HTTP钩子: queryStudymapGateTask.do
+16:05:03.014 main.2faaeed8.js:1 showSearch true
+16:05:03.017 main.2faaeed8.js:1 showSearch true
+16:05:03.020 log.ts:179 [debug 16:5:3 ] 拦截到HTTP请求: /learn/app/clientapi/studymap/queryStudymapGateTask.do?studymapId=2DD692DB9112429BBC1D58248F7FCE26&studymapGateId=0C5E41F573624BEFBA9436D943D68D59&os=99&sid=8E1364AD863147CBA9EDA11F3CABCF42
+16:05:03.020 log.ts:179 [debug 16:5:3 ] 匹配到钩子: queryStudymapGateTask.do
+16:05:03.271 log.ts:179 [debug 16:5:3 ] 原始响应数据queryStudymapGateTask {code: 0, body: {…}, message: '成功'}无属性
+16:05:03.272 log.ts:179 [debug 16:5:3 ] 请求的studymapGateId: 0C5E41F573624BEFBA9436D943D68D59 期望的studymapGateId: 0C5E41F573624BEFBA9436D943D68D59
+16:05:03.272 log.ts:179 [debug 16:5:3 ] 成功拦截课程任务数据queryStudymapGateTask {taskCount: 0, taskName: '', taskId: ''}
+16:05:03.273 main.2faaeed8.js:1 showSearch true
+16:05:03.783 log.ts:179 [debug 16:5:3 ] 注册HTTP钩子: queryStudymapGateTask.do
+16:05:03.784 log.ts:179 [debug 16:5:3 ] <li class=​"MuiListItem-root jss122 jss123 MuiListItem-gutters MuiListItem-alignItemsFlexStart" style=​"padding-left:​ 20px;​ padding-top:​ 20px;​ padding-bottom:​ 20px;​ cursor:​ pointer;​">​第 1 关​</li>​flex init当前按钮 第 1 关
+16:05:03.785 log.ts:179 [debug 16:5:3 ] zsglStudyMap开始初始化任务 zsgl_task_undefined
+16:05:03.785 log.ts:179 [debug 16:5:3 ] 拦截请求完成hookStudymapGateTaskRequests undefined
+16:05:03.785 log.ts:179 [debug 16:5:3 ] Application.App.config.auto true
+16:05:03.786 mooc.ts:42 mooc初始化完成 ZsglStudyMap {event: {…}, studyMapDataList: Array(3), timerManager: TimerManager, studyMapData: {…}, gateTaskData: undefined}
+16:05:03.786 mooc.ts:43 undefined 'mooc.Next'
+16:05:06.792 log.ts:197  [warn 16:5:6 ] 关卡任务请求拦截超时，继续执行
+Warn @ log.ts:197
+eval @ studyMap.ts:187
+setTimeout
+eval @ studyMap.ts:185
+hookStudymapGateTaskRequests @ studyMap.ts:183
+eval @ studyMap.ts:85
+eval @ studyMap.ts:8
+__awaiter @ studyMap.ts:4
+eval @ studyMap.ts:82
+eval @ studyMap.ts:90
+eval @ studyMap.ts:8
+__awaiter @ studyMap.ts:4
+eval @ studyMap.ts:75
+setInterval
+setInterval @ utils.ts:203
+eval @ studyMap.ts:75
+eval @ studyMap.ts:74
+eval @ studyMap.ts:8
+__awaiter @ studyMap.ts:4
+setupCurrentLevelButton @ studyMap.ts:73
+eval @ studyMap.ts:48
+fulfilled @ studyMap.ts:5
+Promise.then
+step @ studyMap.ts:7
+fulfilled @ studyMap.ts:5
+Promise.then
+step @ studyMap.ts:7
+eval @ studyMap.ts:8
+__awaiter @ studyMap.ts:4
+eval @ studyMap.ts:40
+Init @ studyMap.ts:40
+eval @ mooc.ts:41
+eval @ mooc.ts:8
+__awaiter @ mooc.ts:4
+start @ mooc.ts:22
+run @ application.ts:44
+eval @ mooc.ts:31
+./src/mooc.ts @ VM6689:490
+__webpack_require__ @ VM6689:694
+(匿名) @ VM6689:718
+(匿名) @ VM6689:720
+Injected @ utils.ts:173
+eval @ start.ts:23
+xmlhttp.onreadystatechange @ utils.ts:239
+PendingScript
+Injected @ utils.ts:173
+eval @ start.ts:23
+xmlhttp.onreadystatechange @ utils.ts:239
+XMLHttpRequest.send
+get @ utils.ts:246
+eval @ start.ts:22
+fulfilled @ start.ts:5
+Promise.then
+step @ start.ts:7
+eval @ start.ts:8
+__awaiter @ start.ts:4
+start @ start.ts:19
+run @ application.ts:44
+eval @ start.ts:80
+fulfilled @ start.ts:5
+Promise.then
+step @ start.ts:7
+eval @ start.ts:8
+__awaiter @ start.ts:4
+init @ start.ts:75
+eval @ start.ts:83
+./src/start.ts @ start.js:85
+__webpack_require__ @ start.js:125
+(匿名) @ start.js:136
+(匿名) @ start.js:138
+16:05:19.551 log.ts:197  [warn 16:5:19 ] 请注意!最小化可能导致视频无法正常播放!允许切换窗口.
+Warn @ log.ts:197
+eval @ mooc.ts:59

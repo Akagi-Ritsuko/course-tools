@@ -85,7 +85,7 @@ export class ZsglTaskControlBar {
         prev.style.textAlign = "center";
         prev.style.width = "100%";
         prev.prepend(this.prev);
-        this.defaultBtn();
+        // this.defaultBtn();
     }
 
     /** 默认按钮 */

@@ -84,16 +84,18 @@ export class MoocLauncher implements Launcher {
             Application.App.log.Debug("courseTaskComplete 当前课程任务完成了");
         })
         moocTask.addEventListener("taskComplete", (index: number, task: Task) => {
+            Application.App.log.Debug("taskComplete事件触发");
             moocTask.SetTaskPointer(index + 1);
             if (!Application.App.config.auto) {
                 return;
             }
             let interval = Application.App.config.interval;
             Application.App.log.Info(interval + "分钟后自动切换下一个任务点");
+
             this.timer = setTimeout(async () => {
                 await task.Submit();
                 await this.runTask(moocTask);
-            }, 0);
+            }, interval * 60 * 1000);
         });
         moocTask.addEventListener(
           "questionTaskComplete",

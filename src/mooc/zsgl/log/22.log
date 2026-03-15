@@ -1,0 +1,130 @@
+17:21:02.618 已导航到https://zsgl.lzlj.com/znWeb/znPortal/
+17:21:02.788 dailyPointsPanel.ts:16 [每日积分] panel: 构造函数被调用
+17:21:02.789 dailyPointsPanel.ts:20 [每日积分] panel: init方法被调用
+17:21:02.789 log.ts:179 [debug 17:21:2 ] Start document state: loading
+17:21:02.789 mooc.ts:8 create mooc
+17:21:02.789 log.ts:188 [info 17:21:2 ] 当前平台：zsgl-studyDetail
+17:21:02.789 mooc.ts:39 mooc start ZsglStudyMap {event: {…}, studyMapDataList: Array(0), timerManager: TimerManager}
+17:21:02.790 log.ts:179 [debug 17:21:2 ] 注册HTTP钩子: queryStudymapGate.do
+17:21:02.849 webim.min.js:1 navigator.userAgent=mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/145.0.0.0 safari/537.36 edg/145.0.0.0
+17:21:02.849 webim.min.js:1 BROWSER_INFO: type=chrome, ver=145.0.0.0
+17:21:03.644 log.ts:179 [debug 17:21:3 ] 拦截到HTTP请求: /znWeb/znPortal/lang/zh.json
+17:21:03.646 main.2faaeed8.js:1 0530-1
+17:21:03.660 main.2faaeed8.js:1 showSearch true
+17:21:03.679 log.ts:179 [debug 17:21:3 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryHomeChannelModule.do?pageId=SY0010092&sid=8E1364AD863147CBA9EDA11F3CABCF42&os=99
+17:21:03.680 log.ts:179 [debug 17:21:3 ] 拦截到HTTP请求: /learn/app/clientapi/home/getPcGlobalManagement.do?pageId=SY0010092&sid=8E1364AD863147CBA9EDA11F3CABCF42&os=99
+17:21:03.681 log.ts:179 [debug 17:21:3 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=8E1364AD863147CBA9EDA11F3CABCF42
+17:21:03.713 main.2faaeed8.js:1 showSearch true
+17:21:03.716 log.ts:179 [debug 17:21:3 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/userPermissions.do?os=99&sid=8E1364AD863147CBA9EDA11F3CABCF42
+17:21:03.717 log.ts:179 [debug 17:21:3 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryHomeGlobalInfo.do?pageId=SY0010092&sid=8E1364AD863147CBA9EDA11F3CABCF42&os=99
+17:21:03.717 log.ts:179 [debug 17:21:3 ] 拦截到HTTP请求: /learn/app/clientapi/message/getMessageListType.do?sid=8E1364AD863147CBA9EDA11F3CABCF42&os=99
+17:21:03.827 dailyPointsPanel.ts:22 [每日积分] panel: window.onload 触发
+17:21:03.828 dailyPointsPanel.ts:318 [每日积分] panel: 初始化消息监听
+17:21:03.829 log.ts:179 [debug 17:21:3 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1773556783725, isRunning: true, …}
+17:21:03.924 log.ts:179 [debug 17:21:3 ] 拦截到HTTP请求: /learn/app/clientapi/misc/queryVasOperation2NativeList.do?sid=8E1364AD863147CBA9EDA11F3CABCF42&os=99
+17:21:03.932 main.2faaeed8.js:1 --------------- Sun Mar 15 2026 17:21:03 GMT+0800 (中国标准时间)
+17:21:03.933 log.ts:179 [debug 17:21:3 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryUserHomeList.do?time=1773566463933&sid=8E1364AD863147CBA9EDA11F3CABCF42&os=99
+17:21:04.104 main.2faaeed8.js:1 showSearch true
+17:21:04.181 main.2faaeed8.js:1 showSearch true
+17:21:04.190 5392.a94416b9.chunk.js:1 {id: '2DD692DB9112429BBC1D58248F7FCE26'} 'paramsparamsparamsparams'
+17:21:04.196 main.2faaeed8.js:1 showSearch true
+17:21:04.200 log.ts:179 [debug 17:21:4 ] 拦截到HTTP请求: /learn/app/clientapi/studymap/queryStudymapGate.do?studymapId=2DD692DB9112429BBC1D58248F7FCE26&os=99&sid=8E1364AD863147CBA9EDA11F3CABCF42
+17:21:04.201 log.ts:179 [debug 17:21:4 ] 匹配到钩子: queryStudymapGate.do
+17:21:04.207 main.2faaeed8.js:1 com.mlearning.paznluzhoulaojiao appId-------
+17:21:04.207 log.ts:179 [debug 17:21:4 ] 拦截到HTTP请求: /learn/app/newPersonDetail.do?sid=8E1364AD863147CBA9EDA11F3CABCF42&os=99
+17:21:04.208 log.ts:179 [debug 17:21:4 ] 拦截到HTTP请求: /learn-login/queryUserInfoBound.do?os=99&sid=8E1364AD863147CBA9EDA11F3CABCF42
+17:21:04.209 log.ts:179 [debug 17:21:4 ] 拦截到HTTP请求: /learn/app/clientapi/knowledgecloud/home/getPermissionStatus.do?sid=8E1364AD863147CBA9EDA11F3CABCF42&os=99
+17:21:04.399 main.2faaeed8.js:1 showSearch true
+17:21:04.419 log.ts:179 [debug 17:21:4 ] 原始响应数据 {code: 0, body: Array(3), message: '成功'}
+17:21:04.419 log.ts:179 [debug 17:21:4 ] 是否跳过选修课程 true
+17:21:04.419 log.ts:179 [debug 17:21:4 ] 刷题练习（不限次数） 0 当前关卡 status: 1 finishTaskNum: 0 taskNum: 1
+17:21:04.420 log.ts:179 [debug 17:21:4 ] 阅读参赛说明 1 当前关卡 status: 1 finishTaskNum: 0 taskNum: 1
+17:21:04.420 log.ts:179 [debug 17:21:4 ] 参与竞赛 2 当前关卡 status: 3 finishTaskNum: 1 taskNum: 1
+17:21:04.420 log.ts:179 [debug 17:21:4 ] 成功拦截课程数据 {courseCount: 0, gateName: '刷题练习（不限次数）', studymapGateId: '0C5E41F573624BEFBA9436D943D68D59'}
+17:21:04.420 log.ts:179 [debug 17:21:4 ] 筛选的结果数据 {gateName: '刷题练习（不限次数）', gateNameIndex: 0, status: 1, finishTaskNum: 0, taskNum: 1, …}
+17:21:04.420 log.ts:179 [debug 17:21:4 ] 注册HTTP钩子: queryStudymapGateTask.do
+17:21:04.421 main.2faaeed8.js:1 showSearch true
+17:21:04.425 main.2faaeed8.js:1 showSearch true
+17:21:04.428 log.ts:179 [debug 17:21:4 ] 拦截到HTTP请求: /learn/app/clientapi/studymap/queryStudymapGateTask.do?studymapId=2DD692DB9112429BBC1D58248F7FCE26&studymapGateId=0C5E41F573624BEFBA9436D943D68D59&os=99&sid=8E1364AD863147CBA9EDA11F3CABCF42
+17:21:04.429 log.ts:179 [debug 17:21:4 ] 匹配到钩子: queryStudymapGateTask.do
+17:21:04.691 log.ts:179 [debug 17:21:4 ] 原始响应数据queryStudymapGateTask {code: 0, body: {…}, message: '成功'}
+17:21:04.692 log.ts:179 [debug 17:21:4 ] 请求的studymapGateId: 0C5E41F573624BEFBA9436D943D68D59 期望的studymapGateId: 0C5E41F573624BEFBA9436D943D68D59
+17:21:04.696 main.2faaeed8.js:1 showSearch true
+17:21:05.201 log.ts:179 [debug 17:21:5 ] 注册HTTP钩子: queryStudymapGateTask.do
+17:21:05.203 log.ts:179 [debug 17:21:5 ] <li class=​"MuiListItem-root jss122 jss123 MuiListItem-gutters MuiListItem-alignItemsFlexStart" style=​"padding-left:​ 20px;​ padding-top:​ 20px;​ padding-bottom:​ 20px;​ cursor:​ pointer;​">​第 1 关​</li>​flex init当前按钮 第 1 关
+17:21:05.203 log.ts:179 [debug 17:21:5 ] zsglStudyMap开始初始化任务 zsgl_task_undefined
+17:21:05.203 log.ts:179 [debug 17:21:5 ] 拦截请求完成hookStudymapGateTaskRequests undefined
+17:21:05.203 log.ts:179 [debug 17:21:5 ] Application.App.config.auto true
+17:21:05.204 mooc.ts:42 mooc初始化完成 ZsglStudyMap {event: {…}, studyMapDataList: Array(3), timerManager: TimerManager, studyMapData: {…}, gateTaskData: undefined}
+17:21:05.204 mooc.ts:43 undefined 'mooc.Next'
+17:21:08.217 log.ts:197  [warn 17:21:8 ] 关卡任务请求拦截超时，继续执行
+Warn @ log.ts:197
+eval @ studyMap.ts:187
+setTimeout
+eval @ studyMap.ts:185
+hookStudymapGateTaskRequests @ studyMap.ts:183
+eval @ studyMap.ts:85
+eval @ studyMap.ts:8
+__awaiter @ studyMap.ts:4
+eval @ studyMap.ts:82
+eval @ studyMap.ts:90
+eval @ studyMap.ts:8
+__awaiter @ studyMap.ts:4
+eval @ studyMap.ts:75
+setInterval
+setInterval @ utils.ts:203
+eval @ studyMap.ts:75
+eval @ studyMap.ts:74
+eval @ studyMap.ts:8
+__awaiter @ studyMap.ts:4
+setupCurrentLevelButton @ studyMap.ts:73
+eval @ studyMap.ts:48
+fulfilled @ studyMap.ts:5
+Promise.then
+step @ studyMap.ts:7
+fulfilled @ studyMap.ts:5
+Promise.then
+step @ studyMap.ts:7
+eval @ studyMap.ts:8
+__awaiter @ studyMap.ts:4
+eval @ studyMap.ts:40
+Init @ studyMap.ts:40
+eval @ mooc.ts:41
+eval @ mooc.ts:8
+__awaiter @ mooc.ts:4
+start @ mooc.ts:22
+run @ application.ts:44
+eval @ mooc.ts:31
+./src/mooc.ts @ VM10641:490
+__webpack_require__ @ VM10641:694
+(匿名) @ VM10641:718
+(匿名) @ VM10641:720
+Injected @ utils.ts:173
+eval @ start.ts:23
+xmlhttp.onreadystatechange @ utils.ts:239
+PendingScript
+Injected @ utils.ts:173
+eval @ start.ts:23
+xmlhttp.onreadystatechange @ utils.ts:239
+XMLHttpRequest.send
+get @ utils.ts:246
+eval @ start.ts:22
+fulfilled @ start.ts:5
+Promise.then
+step @ start.ts:7
+eval @ start.ts:8
+__awaiter @ start.ts:4
+start @ start.ts:19
+run @ application.ts:44
+eval @ start.ts:80
+fulfilled @ start.ts:5
+Promise.then
+step @ start.ts:7
+eval @ start.ts:8
+__awaiter @ start.ts:4
+init @ start.ts:75
+eval @ start.ts:83
+./src/start.ts @ start.js:85
+__webpack_require__ @ start.js:125
+(匿名) @ start.js:136
+(匿名) @ start.js:138

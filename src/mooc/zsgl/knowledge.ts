@@ -170,7 +170,7 @@ export class ZsglKnowledge extends ZsglTask {
             } else {
                 Application.App.log.Warn("退出按钮不存在，无法点击");
             }
-            this.callEvent("taskComplete");
+            this.callEvent("complete");
             return;
         }
 
@@ -185,7 +185,7 @@ export class ZsglKnowledge extends ZsglTask {
                 } else {
                     Application.App.log.Warn("退出按钮不存在，无法点击");
                 }
-                this.callEvent("taskComplete");
+                this.callEvent("complete");
                 resolve();
             }, remainingTime);
         });

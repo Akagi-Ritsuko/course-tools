@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-15 10:55:02
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-13 01:33:52
+ * @LastEditTime: 2026-03-15 22:57:46
  * @FilePath: \course-tools1\src\mooc\zsgl\studyMap.ts
  * @Description: zsgl 学习地图模块
  *
@@ -24,6 +24,7 @@ export class ZsglStudyMap extends Task {
     protected gateTaskData: GateTaskData;
     /** 学习地图数据 */
     protected studyMapData: StudyMapData;
+    protected studyMapDataList: StudyMapData[] = [];
     /** 定时器管理器 */
     private timerManager: TimerManager = new TimerManager();
 
@@ -154,14 +155,14 @@ export class ZsglStudyMap extends Task {
                 ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_STUDYMAP_GATE,
                 (response, self) => {
                     Application.App.log.Debug("原始响应数据", response);
-                    const responseData = response?.body;
+                    self.studyMapDataList = response?.body;
                     const skipElective = Application.App.config.skip_elective;
                     Application.App.log.Debug("是否跳过选修课程", skipElective);
-                    self.studyMapData = responseData
+                    self.studyMapData = self.studyMapDataList
                         .map((item: any, index: number): StudyMapData => {
                             const gateName = item.gateName;
                             const gateNameIndex = index;
-                            Application.App.log.Debug(gateName, gateNameIndex, "当前关卡");
+                            Application.App.log.Debug(gateName, gateNameIndex, "当前关卡", "status:", item.status, "finishTaskNum:", item.finishTaskNum, "taskNum:", item.taskNum);
                             return {
                                 gateName,
                                 gateNameIndex,
@@ -223,8 +224,45 @@ export class ZsglStudyMap extends Task {
                         
                         const responseData = response?.body;
                         self.gateTaskData = responseData.taskList.find(
-                            (item: { status: number }) => item.status !== 1
+                            (item: { resourceType: number; status: number }) => 
+                                item.status !== 1 && item.resourceType !== 2
                         );
+                        
+                        if (!self.gateTaskData) {
+                            const unfinishedTasks = responseData.taskList.filter(
+                                (item: { status: number }) => item.status !== 1
+                            );
+                            const examTasks = unfinishedTasks.filter(
+                                (item: { resourceType: number }) => item.resourceType === 2
+                            );
+                            
+                            if (unfinishedTasks.length === 0) {
+                                Application.App.log.Info("当前关卡所有任务已完成，跳过此关卡");
+                                const currentIndex = self.studyMapData?.gateNameIndex;
+                                if (currentIndex !== undefined && self.studyMapDataList[currentIndex]) {
+                                    self.studyMapDataList[currentIndex].status = 3;
+                                }
+                                self.findNextLevelAndStart();
+                                clearTimeout(timeout);
+                                resolved = true;
+                                resolve();
+                                return;
+                            }
+                            
+                            if (unfinishedTasks.length === examTasks.length) {
+                                Application.App.log.Info("当前关卡只剩考试任务未完成，跳过此关卡");
+                                const currentIndex = self.studyMapData?.gateNameIndex;
+                                if (currentIndex !== undefined && self.studyMapDataList[currentIndex]) {
+                                    self.studyMapDataList[currentIndex].status = 1;
+                                }
+                                self.findNextLevelAndStart();
+                                clearTimeout(timeout);
+                                resolved = true;
+                                resolve();
+                                return;
+                            }
+                        }
+                        
                         Application.App.log.Debug("成功拦截课程任务数据queryStudymapGateTask", {
                             taskCount: self.gateTaskData?.length || 0,
                             taskName: self.gateTaskData?.taskName || "",
@@ -238,6 +276,41 @@ export class ZsglStudyMap extends Task {
                 this
             );
         });
+    }
+
+    /** 查找下一个关卡并开始执行 */
+    private async findNextLevelAndStart(): Promise<void> {
+        const skipElective = Application.App.config.skip_elective;
+        
+        this.studyMapData = this.studyMapDataList
+            .map((item: any, index: number): StudyMapData => {
+                return {
+                    gateName: item.gateName,
+                    gateNameIndex: index,
+                    status: item.status,
+                    finishTaskNum: item.finishTaskNum,
+                    taskNum: item.taskNum,
+                    studymapGateId: item.studymapGateId,
+                };
+            })
+            .find((item: StudyMapData) => {
+                if (skipElective) {
+                    return item.status != 3;
+                }
+                return item.finishTaskNum !== item.taskNum;
+            });
+        
+        if (this.studyMapData) {
+            Application.App.log.Info("找到下一个关卡", this.studyMapData.gateName);
+            await this.setupCurrentLevelButton();
+            await this.hookStudymapGateTaskRequests();
+            if (this.gateTaskData && Application.App.config.auto === true) {
+                await this.Start();
+            }
+        } else {
+            Application.App.log.Info("所有关卡已完成");
+            this.studyMapData = null;
+        }
     }
 
     public Done(): boolean {

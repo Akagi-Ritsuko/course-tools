@@ -17,19 +17,15 @@ import sources = chrome.devtools.panels.sources;
 
 class start implements Launcher {
   public async start() {
-    if (Application.App.debug) {
-      let cacheJsonText = JSON.stringify(
-        await Application.App.config.ConfigList(),
+    let cacheJsonText = JSON.stringify(
+      await Application.App.config.ConfigList(),
+    );
+    get(chrome.extension.getURL("src/mooc.js"), function(source: string) {
+      Injected(
+        document,
+        "window.configData=" + cacheJsonText + ";\n" + source,
       );
-      get(chrome.extension.getURL("src/mooc.js"), function(source: string) {
-        Injected(
-          document,
-          "window.configData=" + cacheJsonText + ";\n" + source,
-        );
-      });
-    } else {
-      chrome.runtime.sendMessage({ status: "loading" });
-    }
+    });
     let msg = NewChromeServerMessage("cxmooc-tools");
     msg.Accept((client, data) => {
       switch (data.type) {

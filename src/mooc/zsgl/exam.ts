@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-09
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-09 22:03:23
+ * @LastEditTime: 2026-03-15 15:10:13
  * @FilePath: \course-tools1\src\mooc\zsgl\exam.ts
  * @Description: zsgl 考试模块
  *
@@ -66,7 +66,7 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
 
             if (startButton) {
                 startButton.addEventListener("click", async () => {
-                    Application.App.log.Info("按钮被点击，开始考试");
+                    Application.App.log.Info("点击了返回按钮");
                 });
                 Application.App.log.Debug("找到返回按钮", startButton);
                 this.timerManager.clearInterval("checkReturnBtn");

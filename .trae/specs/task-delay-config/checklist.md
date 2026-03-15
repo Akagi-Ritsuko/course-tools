@@ -1,0 +1,9 @@
+- [x] `PointsProgressData` 接口包含 `taskDelay` 字段
+- [x] `DailyPointsConfig.vue` 显示任务延迟配置输入框
+- [x] 配置项显示 tips 说明："实际延迟 = 配置值 ± 5秒，最小为 0，为 0 则不等待"
+- [x] 配置项默认值为 8 秒
+- [x] `dailyPoints.ts` 正确接收并使用 `taskDelay` 配置
+- [x] 延迟计算逻辑正确：实际延迟 = 配置值 ± 5秒，最小为 0
+- [x] 延迟为 0 时跳过 sleep 调用
+- [x] 知识阅读任务使用配置的延迟时间
+- [x] 知识分享任务使用配置的延迟时间

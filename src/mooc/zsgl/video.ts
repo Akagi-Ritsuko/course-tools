@@ -30,6 +30,8 @@ export class ZsglVideo extends ZsglTask {
     protected video: HTMLVideoElement;
     /** 定时器管理器 */
     private timerManager: TimerManager = new TimerManager();
+    /** 保持活跃的音频元素 */
+    private keepAliveAudio: HTMLAudioElement | null = null;
 
     public Start(): Promise<any> {
         return new Promise<void>(async (resolve, reject) => {
@@ -39,6 +41,7 @@ export class ZsglVideo extends ZsglTask {
             setupEventPrevention(window);
             setupEventPrevention(document);
             setupVideoEventPrevention(this.video);
+            this.startKeepAlive();
 
             // 创建具名函数以便在触发后移除监听器
             const handleTaskDivClick = () => {
@@ -52,6 +55,44 @@ export class ZsglVideo extends ZsglTask {
             this.taskDiv.click();
             resolve();
         });
+    }
+
+    /** 启动保持活跃机制 */
+    private startKeepAlive(): void {
+        if (this.keepAliveAudio) return;
+        
+        this.keepAliveAudio = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=");
+        this.keepAliveAudio.loop = true;
+        this.keepAliveAudio.volume = 0.001;
+        
+        this.keepAliveAudio.play().then(() => {
+            Application.App.log.Info("[保持活跃] 已启动后台播放保持机制");
+        }).catch((e) => {
+            Application.App.log.Warn("[保持活跃] 启动失败:", e.message);
+        });
+
+        document.addEventListener('visibilitychange', this.handleVisibilityChange.bind(this));
+    }
+
+    /** 停止保持活跃机制 */
+    private stopKeepAlive(): void {
+        if (this.keepAliveAudio) {
+            this.keepAliveAudio.pause();
+            this.keepAliveAudio = null;
+        }
+        document.removeEventListener('visibilitychange', this.handleVisibilityChange.bind(this));
+    }
+
+    /** 处理页面可见性变化 */
+    private handleVisibilityChange(): void {
+        if (document.hidden) {
+            Application.App.log.Debug("[保持活跃] 页面隐藏，继续后台播放");
+            if (this.keepAliveAudio && this.keepAliveAudio.paused) {
+                this.keepAliveAudio.play().catch(() => {});
+            }
+        } else {
+            Application.App.log.Debug("[保持活跃] 页面显示");
+        }
     }
 
     public Type(): TaskType {
@@ -79,6 +120,7 @@ export class ZsglVideo extends ZsglTask {
 
     public Stop(): Promise<void> {
         this.timerManager.clearAll();
+        this.stopKeepAlive();
         return Promise.resolve();
     }
 
@@ -251,11 +293,11 @@ export class ZsglVideo extends ZsglTask {
     private setupVideoEndHandler(): void {
         this.video.addEventListener("ended", () => {
             Application.App.log.Info("[视频事件] 视频播放结束");
-            // 清除自动恢复定时器
+            Application.App.log.Debug("[视频事件] 视频播放结束");
             this.timerManager.clearInterval("videoAutoResume");
-            // 通知视频任务完成（用于积分检查）
+            this.stopKeepAlive();
             this.notifyVideoTaskComplete();
-            this.callEvent("taskComplete");
+            this.callEvent("complete");
         }, { once: true });
     }
 

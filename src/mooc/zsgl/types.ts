@@ -54,6 +54,7 @@ export interface StudyMapData {
 
 export interface GateTaskData {
     taskName: string;
+    resourceType: string;
     resourceId: string;
     status: number;
 }

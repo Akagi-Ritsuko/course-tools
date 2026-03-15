@@ -17,6 +17,7 @@ export interface ConfigItems extends Config {
   rand_answer: boolean;
   auto: boolean;
   skip_elective: boolean;
+  // exam_auto: boolean;
   video_mute: boolean;
   answer_ignore: boolean;
   video_cdn: string;
@@ -345,6 +346,7 @@ class backendConfig implements Config {
   }
 
   public SetConfig(key: string, val: any): Promise<void> {
+    console.log("SetConfig  setconfig:" + key + "=" + val);
     return new Promise<any>((resolve) => {
       let info: { [key: string]: number } = {};
       info[key] = val;

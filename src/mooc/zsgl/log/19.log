@@ -1,0 +1,1077 @@
+10:53:24.425 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 1083, screenY: 127, clientX: 1079, clientY: 47, …}
+10:53:24.447 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 1006, screenY: 126, clientX: 1002, clientY: 46, …}
+10:53:24.447 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1006, screenY: 126, clientX: 1002, clientY: 46, …}
+10:53:24.475 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 856, screenY: 123, clientX: 852, clientY: 43, …}
+10:53:24.476 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 851, screenY: 123, clientX: 847, clientY: 43, …}
+10:53:24.492 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 765, screenY: 120, clientX: 761, clientY: 40, …}
+10:53:24.492 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 765, screenY: 120, clientX: 761, clientY: 40, …}
+10:53:24.493 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 753, screenY: 120, clientX: 749, clientY: 40, …}
+10:53:24.555 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 400, screenY: 120, clientX: 396, clientY: 40, …}
+10:53:24.556 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 400, screenY: 120, clientX: 396, clientY: 40, …}
+10:53:24.556 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 400, screenY: 120, clientX: 396, clientY: 40, …}
+10:53:24.556 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 400, screenY: 120, clientX: 396, clientY: 40, …}
+10:53:24.556 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 400, screenY: 120, clientX: 396, clientY: 40, …}
+10:53:24.556 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 400, screenY: 120, clientX: 396, clientY: 40, …}
+10:53:24.556 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 400, screenY: 120, clientX: 396, clientY: 40, …}
+10:53:24.556 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 400, screenY: 120, clientX: 396, clientY: 40, …}
+10:53:24.556 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 400, screenY: 120, clientX: 396, clientY: 40, …}
+10:53:24.579 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 320, screenY: 119, clientX: 316, clientY: 39, …}
+10:53:24.579 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 320, screenY: 119, clientX: 316, clientY: 39, …}
+10:53:24.579 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 320, screenY: 119, clientX: 316, clientY: 39, …}
+10:53:24.596 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 274, screenY: 114, clientX: 270, clientY: 34, …}
+10:53:24.596 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 274, screenY: 114, clientX: 270, clientY: 34, …}
+10:53:24.603 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 260, screenY: 113, clientX: 256, clientY: 33, …}
+10:53:24.603 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 260, screenY: 113, clientX: 256, clientY: 33, …}
+10:53:24.604 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 260, screenY: 113, clientX: 256, clientY: 33, …}
+10:53:24.605 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 257, screenY: 112, clientX: 253, clientY: 32, …}
+10:53:24.605 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 257, screenY: 112, clientX: 253, clientY: 32, …}
+10:53:24.732 log.ts:179 [debug 10:53:24 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/E61361FAD9D744F1AAF3C71873375176/1708929383193_s_17.ts
+10:53:24.743 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 208, screenY: 78, clientX: 204, clientY: -2, …}
+10:53:24.744 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 208, screenY: 78, clientX: 204, clientY: -2, …}
+10:53:24.744 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 208, screenY: 78, clientX: 204, clientY: -2, …}
+10:53:24.744 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 208, screenY: 78, clientX: 204, clientY: -2, …}
+10:53:24.744 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 208, screenY: 78, clientX: 204, clientY: -2, …}
+10:53:24.744 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 208, screenY: 78, clientX: 204, clientY: -2, …}
+10:53:24.744 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 208, screenY: 78, clientX: 204, clientY: -2, …}
+10:53:24.744 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 208, screenY: 78, clientX: 204, clientY: -2, …}
+10:53:24.745 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 208, screenY: 78, clientX: 204, clientY: -2, …}
+10:53:24.745 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 208, screenY: 78, clientX: 204, clientY: -2, …}
+10:53:25.411 utils.ts:137 unknown focus事件触发 Event {isTrusted: true, type: 'focus', target: Window, currentTarget: Window, eventPhase: 2, …}
+10:53:25.413 utils.ts:137 unknown beforeunload事件触发 BeforeUnloadEvent {isTrusted: true, returnValue: '', type: 'beforeunload', target: document, currentTarget: Window, …}
+10:53:25.460 utils.ts:137 unknown pagehide事件触发 PageTransitionEvent {isTrusted: true, persisted: false, type: 'pagehide', target: document, currentTarget: Window, …}
+10:53:25.461 utils.ts:137 unknown visibilitychange事件触发 Event {isTrusted: true, type: 'visibilitychange', target: document, currentTarget: Window, eventPhase: 1, …}
+10:53:25.511 已导航到https://zsgl.lzlj.com/
+10:53:25.697 dailyPointsPanel.ts:16 [每日积分] panel: 构造函数被调用
+10:53:25.697 dailyPointsPanel.ts:20 [每日积分] panel: init方法被调用
+10:53:25.697 log.ts:179 [debug 10:53:25 ] Start document state: loading
+10:53:25.697 mooc.ts:8 create mooc
+10:53:25.698 log.ts:188 [info 10:53:25 ] 当前平台：zsgl
+10:53:25.698 mooc.ts:39 mooc start ZsglCourse {event: {…}, taskList: Array(0), courseDetailData: Array(0), timerManager: TimerManager, taskIndex: 0, …}
+10:53:25.698 log.ts:179 [debug 10:53:25 ] 初始化course课程任务
+10:53:25.698 log.ts:179 [debug 10:53:25 ] 当前页面URL: https://zsgl.lzlj.com/#/home/courseDetail/N003284
+10:53:25.698 log.ts:179 [debug 10:53:25 ] 当前页面hash: #/home/courseDetail/N003284
+10:53:25.698 log.ts:179 [debug 10:53:25 ] 设置HTTP钩子，监听: queryCourseDetail.do
+10:53:25.713 webim.min.js:1 navigator.userAgent=mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/145.0.0.0 safari/537.36 edg/145.0.0.0
+10:53:25.713 webim.min.js:1 BROWSER_INFO: type=chrome, ver=145.0.0.0
+10:53:26.404 log.ts:179 [debug 10:53:26 ] 拦截到HTTP请求: /znWeb/znPortal/lang/zh.json
+10:53:26.408 main.2faaeed8.js:1 0530-1
+10:53:26.432 main.2faaeed8.js:1 showSearch true
+10:53:26.460 log.ts:179 [debug 10:53:26 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryHomeChannelModule.do?pageId=SY0010092&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:26.461 log.ts:179 [debug 10:53:26 ] 拦截到HTTP请求: /learn/app/clientapi/home/getPcGlobalManagement.do?pageId=SY0010092&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:26.462 log.ts:179 [debug 10:53:26 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:26.503 main.2faaeed8.js:1 showSearch true
+10:53:26.506 log.ts:179 [debug 10:53:26 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/userPermissions.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:26.506 log.ts:179 [debug 10:53:26 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryHomeGlobalInfo.do?pageId=SY0010092&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:26.507 log.ts:179 [debug 10:53:26 ] 拦截到HTTP请求: /learn/app/clientapi/message/getMessageListType.do?sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:26.518 dailyPointsPanel.ts:22 [每日积分] panel: window.onload 触发
+10:53:26.520 dailyPointsPanel.ts:318 [每日积分] panel: 初始化消息监听
+10:53:26.520 log.ts:179 [debug 10:53:26 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1773440795964, isRunning: true}
+10:53:26.520 log.ts:179 [debug 10:53:26 ] document.addEventListener(load)
+10:53:26.521 log.ts:179 [debug 10:53:26 ] OperateCard 课程详情数据长度: 0
+10:53:26.521 log.ts:197  [warn 10:53:26 ] 课程详情数据为空，等待数据...
+Warn @ log.ts:197
+eval @ course.ts:255
+eval @ course.ts:8
+__awaiter @ course.ts:4
+OperateCard @ course.ts:252
+eval @ course.ts:68
+eval @ course.ts:8
+__awaiter @ course.ts:4
+eval @ course.ts:61
+10:53:26.521 mooc.ts:42 mooc初始化完成 ZsglCourse {event: {…}, taskList: Array(0), courseDetailData: Array(0), timerManager: TimerManager, taskIndex: 0, …}
+10:53:26.521 mooc.ts:43 Next() {
+        return new Promise((resolve) => {
+            if (this.taskList.length >= this.taskIndex) {
+                resolve(this.taskList[this.taskIndex]);
+                return this.taskIn… 'mooc.Next'
+10:53:26.521 log.ts:179 [debug 10:53:26 ] runMoocTask 开始执行任务:
+10:53:26.686 main.2faaeed8.js:1 --------------- Sat Mar 14 2026 10:53:26 GMT+0800 (中国标准时间)
+10:53:26.686 log.ts:179 [debug 10:53:26 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryUserHomeList.do?time=1773456806686&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:26.689 log.ts:179 [debug 10:53:26 ] 拦截到HTTP请求: /learn/app/clientapi/misc/queryVasOperation2NativeList.do?sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:26.865 main.2faaeed8.js:1 showSearch true
+10:53:26.871 main.2faaeed8.js:1 com.mlearning.paznluzhoulaojiao appId-------
+10:53:26.872 log.ts:179 [debug 10:53:26 ] 拦截到HTTP请求: /learn/app/newPersonDetail.do?sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:26.872 log.ts:179 [debug 10:53:26 ] 拦截到HTTP请求: /learn-login/queryUserInfoBound.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:26.873 log.ts:179 [debug 10:53:26 ] 拦截到HTTP请求: /learn/app/clientapi/knowledgecloud/home/getPermissionStatus.do?sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:26.954 main.2faaeed8.js:1 showSearch true
+10:53:27.038 main.2faaeed8.js:1 showSearch true
+10:53:27.162 main.2faaeed8.js:1 showSearch true
+10:53:27.173 log.ts:179 [debug 10:53:27 ] 拦截到HTTP请求: /learn/app/clientapi/course/queryCourseDetail.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:27.174 log.ts:179 [debug 10:53:27 ] 拦截到HTTP请求: /learn/app/clientapi/course/relatedResources.do?courseId=N003284&type=2&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:27.175 log.ts:179 [debug 10:53:27 ] 拦截到HTTP请求: /learn/app/clientapi/course/queryCourseBaseInfo.do?courseId=N003284&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:27.176 log.ts:179 [debug 10:53:27 ] 拦截到HTTP请求: /learn/app/clientapi/user/personDetail.do?searchedUserId=51A0C28038F643F59B89D714776508D3&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:27.432 808.d56623c9.chunk.js:1  Uncaught (in promise) TypeError: Failed to execute 'removeChild' on 'Node': parameter 1 is not of type 'Node'.
+    at 808.d56623c9.chunk.js:1:10947
+    at u (9561.4bf2dc71.js:2:4080981)
+    at Generator._invoke (9561.4bf2dc71.js:2:4080769)
+    at Generator.next (9561.4bf2dc71.js:2:4081410)
+    at r (9561.4bf2dc71.js:2:5831066)
+    at s (9561.4bf2dc71.js:2:5831269)
+    at 9561.4bf2dc71.js:2:5831328
+    at new Promise (<anonymous>)
+    at a.getIsWatermark (9561.4bf2dc71.js:2:5831209)
+    at 808.d56623c9.chunk.js:1:11517
+(匿名) @ 808.d56623c9.chunk.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 808.d56623c9.chunk.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+value @ 808.d56623c9.chunk.js:1
+F @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+Xo @ 9561.4bf2dc71.js:2
+$o @ 9561.4bf2dc71.js:2
+fc @ 9561.4bf2dc71.js:2
+We @ 9561.4bf2dc71.js:2
+Ue @ 9561.4bf2dc71.js:2
+He @ 9561.4bf2dc71.js:2
+e.reportChanged @ 9561.4bf2dc71.js:2
+t.setNewValue @ 9561.4bf2dc71.js:2
+e.write @ 9561.4bf2dc71.js:2
+set @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+Ee @ 9561.4bf2dc71.js:2
+n @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+setTimeout
+value @ main.2faaeed8.js:1
+Ee @ 9561.4bf2dc71.js:2
+n @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+Ee @ 9561.4bf2dc71.js:2
+n @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+value @ main.2faaeed8.js:1
+F @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+ic @ 9561.4bf2dc71.js:2
+Gc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+pc @ 9561.4bf2dc71.js:2
+el @ 9561.4bf2dc71.js:2
+render @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+49209 @ main.2faaeed8.js:1
+n @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+n.O @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+10:53:27.449 log.ts:179 [debug 10:53:27 ] 课程详情请求响应: {"code":0,"body":{"activtiyPrice":0,"advertArr":[],"author":"","averageScore":"4.9","bowseNumber":"375","canComment":"1","canDownload":"0","canFF":"0","canRate":"1","chapters":[],"classifyList":[{"courseId":"","fullName":"企业文化>文化历史","fullPath":"7|4|7|||7|5|2","id":"752","name":"文化历史","pageId":"","parentId":"747","type":"COURSE_AREA"},{"courseId":"","fullName":"企业文化>技术营销","fullPath":"7|4|7|||8|5|3","id":"853","name":"技术营销","pageId":"","parentId":"747","type":"COURSE_AREA"}],"clockInInterval":0,"c
+10:53:27.450 log.ts:179 [debug 10:53:27 ] 课程详情数据 (4) [{…}, {…}, {…}, {…}]
+10:53:27.451 log.ts:179 [debug 10:53:27 ] 拦截到HTTP请求: /learn/app/clientapi/user/isOpenHumanSocietyVas.do?sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:27.531 log.ts:179 [debug 10:53:27 ] 等待课程数据... 1
+10:53:27.774 log.ts:179 [debug 10:53:27 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/selectResourceRule.do?resourceId=N003284&resourceType=0&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:27.965 8222.6209a852.chunk.js:1 2222
+10:53:27.995 log.ts:179 [debug 10:53:27 ] 拦截到HTTP请求: /learn/app/clientapi/course/commenthead.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:27.996 log.ts:179 [debug 10:53:27 ] 拦截到HTTP请求: /learn/app/clientapi/course/comment.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:27.997 log.ts:179 [debug 10:53:27 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1708928482707&courseId=N003284&bizType=0&bizId=&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:27.998 log.ts:179 [debug 10:53:27 ] 拦截到HTTP请求: /learn/app/clientapi/course/uploadCourseLearnStatus.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:27.999 log.ts:179 [debug 10:53:27 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:27.999 log.ts:179 [debug 10:53:27 ] 拦截到HTTP请求: /learn/app/clientapi/course/preview.do?coursewareId=1708928482707&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:28.000 log.ts:179 [debug 10:53:28 ] 拦截到HTTP请求: /learn/app/clientapi/misc/queryVasOperation2NativeList.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:28.008 main.2faaeed8.js:1  The provided value 'Middle' is not a valid enum value of type CanvasTextBaseline.
+ye @ main.2faaeed8.js:1
+e.showWatermark @ 808.d56623c9.chunk.js:1
+(匿名) @ 808.d56623c9.chunk.js:1
+setTimeout
+(匿名) @ 808.d56623c9.chunk.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+value @ 808.d56623c9.chunk.js:1
+F @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+Xo @ 9561.4bf2dc71.js:2
+$o @ 9561.4bf2dc71.js:2
+fc @ 9561.4bf2dc71.js:2
+We @ 9561.4bf2dc71.js:2
+Ue @ 9561.4bf2dc71.js:2
+He @ 9561.4bf2dc71.js:2
+e.reportChanged @ 9561.4bf2dc71.js:2
+t.setNewValue @ 9561.4bf2dc71.js:2
+e.write @ 9561.4bf2dc71.js:2
+set @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+Ee @ 9561.4bf2dc71.js:2
+n @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+setTimeout
+value @ main.2faaeed8.js:1
+Ee @ 9561.4bf2dc71.js:2
+n @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+Ee @ 9561.4bf2dc71.js:2
+n @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+value @ main.2faaeed8.js:1
+F @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+ic @ 9561.4bf2dc71.js:2
+Gc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+pc @ 9561.4bf2dc71.js:2
+el @ 9561.4bf2dc71.js:2
+render @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+49209 @ main.2faaeed8.js:1
+n @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+n.O @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+10:53:28.033 log.ts:179 [debug 10:53:28 ] 寻找taskDiv 01-讲解手册说明（中）
+10:53:28.033 log.ts:179 [debug 10:53:28 ] 构建任务 1: 01-讲解手册说明（中） 类型: video
+10:53:28.033 factory.ts:33 创建课程任务: video
+10:53:28.033 log.ts:179 [debug 10:53:28 ] zsglVideo开始初始化任务 {hasLearned: '0', fileName: '01-讲解手册说明（中）', cwType: 'video', jobIndex: 1, courseId: 'N003284', …}
+10:53:28.034 log.ts:179 [debug 10:53:28 ] 任务 1 初始化完成
+10:53:28.034 log.ts:179 [debug 10:53:28 ] 构建任务 2: 01-讲解手册说明（下） 类型: video
+10:53:28.034 factory.ts:33 创建课程任务: video
+10:53:28.034 log.ts:179 [debug 10:53:28 ] zsglVideo开始初始化任务 {hasLearned: '0', fileName: '01-讲解手册说明（下）', cwType: 'video', jobIndex: 2, courseId: 'N003284', …}
+10:53:28.034 log.ts:179 [debug 10:53:28 ] 任务 2 初始化完成
+10:53:28.034 log.ts:179 [debug 10:53:28 ] 构建任务 3: 02-讲解景点示范（上） 类型: video
+10:53:28.034 factory.ts:33 创建课程任务: video
+10:53:28.034 log.ts:179 [debug 10:53:28 ] zsglVideo开始初始化任务 {hasLearned: '0', fileName: '02-讲解景点示范（上）', cwType: 'video', jobIndex: 3, courseId: 'N003284', …}
+10:53:28.034 log.ts:179 [debug 10:53:28 ] 任务 3 初始化完成
+10:53:28.034 log.ts:179 [debug 10:53:28 ] 构建任务 4: 02-讲解景点范例（下） 类型: video
+10:53:28.034 factory.ts:33 创建课程任务: video
+10:53:28.034 log.ts:179 [debug 10:53:28 ] zsglVideo开始初始化任务 {hasLearned: '0', fileName: '02-讲解景点范例（下）', cwType: 'video', jobIndex: 4, courseId: 'N003284', …}
+10:53:28.034 log.ts:179 [debug 10:53:28 ] 任务 4 初始化完成
+10:53:28.035 log.ts:197  [warn 10:53:28 ] runMoocTask reload true ZsglCourse {event: {…}, taskList: Array(4), courseDetailData: Array(4), timerManager: TimerManager, taskIndex: 0, …}
+Warn @ log.ts:197
+eval @ mooc.ts:69
+eval @ event.ts:30
+callEvent @ event.ts:29
+eval @ course.ts:294
+fulfilled @ course.ts:5
+Promise.then
+step @ course.ts:7
+eval @ course.ts:8
+__awaiter @ course.ts:4
+eval @ course.ts:281
+setInterval
+setInterval @ utils.ts:203
+eval @ course.ts:281
+eval @ course.ts:8
+__awaiter @ course.ts:4
+processCourseData @ course.ts:278
+eval @ course.ts:263
+setInterval
+setInterval @ utils.ts:203
+eval @ course.ts:258
+eval @ course.ts:8
+__awaiter @ course.ts:4
+OperateCard @ course.ts:252
+eval @ course.ts:68
+eval @ course.ts:8
+__awaiter @ course.ts:4
+eval @ course.ts:61
+10:53:28.035 log.ts:179 [debug 10:53:28 ] runTask 开始执行任务: false
+10:53:28.035 log.ts:179 [debug 10:53:28 ] runTask 开始执行任务:
+10:53:28.035 log.ts:179 [debug 10:53:28 ] zsglVideo开始执行任务 <span class=​"jss204">​01-讲解手册说明（中）​</span>​
+10:53:28.035 log.ts:179 [debug 10:53:28 ] 播放器初始化配置 {mute: true, multiple: 1}
+10:53:28.036 log.ts:179 [debug 10:53:28 ] [播放尝试] 第 1 次 {src: '', currentSrc: '', readyState: 0, hasSource: false}
+10:53:28.040 8222.6209a852.chunk.js:1 2222
+10:53:28.041 3653.da24d793.chunk.js:2  VIDEOJS: WARN: Player "#course-video" is already initialised. Options will not be applied.
+(匿名) @ 3653.da24d793.chunk.js:2
+a.warn @ 3653.da24d793.chunk.js:2
+Ps @ 3653.da24d793.chunk.js:2
+e.handleInitCourse @ 8222.6209a852.chunk.js:1
+e.initCourse @ 8222.6209a852.chunk.js:1
+(匿名) @ 8222.6209a852.chunk.js:1
+ka @ 9561.4bf2dc71.js:2
+xa @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+Xo @ 9561.4bf2dc71.js:2
+$o @ 9561.4bf2dc71.js:2
+se @ 9561.4bf2dc71.js:2
+Tn @ 9561.4bf2dc71.js:2
+eval @ video.ts:42
+eval @ video.ts:8
+__awaiter @ video.ts:4
+eval @ video.ts:27
+Start @ video.ts:27
+eval @ mooc.ts:133
+fulfilled @ mooc.ts:5
+Promise.then
+step @ mooc.ts:7
+eval @ mooc.ts:8
+__awaiter @ mooc.ts:4
+runTask @ mooc.ts:119
+eval @ mooc.ts:71
+eval @ event.ts:30
+callEvent @ event.ts:29
+eval @ course.ts:294
+fulfilled @ course.ts:5
+Promise.then
+step @ course.ts:7
+eval @ course.ts:8
+__awaiter @ course.ts:4
+eval @ course.ts:281
+setInterval
+setInterval @ utils.ts:203
+eval @ course.ts:281
+eval @ course.ts:8
+__awaiter @ course.ts:4
+processCourseData @ course.ts:278
+eval @ course.ts:263
+setInterval
+setInterval @ utils.ts:203
+eval @ course.ts:258
+eval @ course.ts:8
+__awaiter @ course.ts:4
+OperateCard @ course.ts:252
+eval @ course.ts:68
+eval @ course.ts:8
+__awaiter @ course.ts:4
+eval @ course.ts:61
+10:53:28.043 log.ts:179 [debug 10:53:28 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1708929383193&courseId=N003284&bizType=0&bizId=&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:28.043 log.ts:179 [debug 10:53:28 ] 拦截到HTTP请求: /learn/app/clientapi/course/uploadCourseLearnStatus.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:28.044 log.ts:179 [debug 10:53:28 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:28.044 log.ts:179 [debug 10:53:28 ] 拦截到HTTP请求: /learn/app/clientapi/course/preview.do?coursewareId=1708929383193&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:28.046 utils.ts:137 unknown volumechange事件触发 Event {isTrusted: true, type: 'volumechange', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:28.050 (索引):1  Uncaught (in promise) t {message: undefined}
+Promise.then
+e.initCourse @ 8222.6209a852.chunk.js:1
+(匿名) @ 8222.6209a852.chunk.js:1
+ka @ 9561.4bf2dc71.js:2
+xa @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+Xo @ 9561.4bf2dc71.js:2
+$o @ 9561.4bf2dc71.js:2
+ic @ 9561.4bf2dc71.js:2
+enqueueSetState @ 9561.4bf2dc71.js:2
+b.setState @ 9561.4bf2dc71.js:2
+(匿名) @ 808.d56623c9.chunk.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+value @ 808.d56623c9.chunk.js:1
+F @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+Xo @ 9561.4bf2dc71.js:2
+$o @ 9561.4bf2dc71.js:2
+fc @ 9561.4bf2dc71.js:2
+We @ 9561.4bf2dc71.js:2
+Ue @ 9561.4bf2dc71.js:2
+He @ 9561.4bf2dc71.js:2
+e.reportChanged @ 9561.4bf2dc71.js:2
+t.setNewValue @ 9561.4bf2dc71.js:2
+e.write @ 9561.4bf2dc71.js:2
+set @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+Ee @ 9561.4bf2dc71.js:2
+n @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+setTimeout
+value @ main.2faaeed8.js:1
+Ee @ 9561.4bf2dc71.js:2
+n @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+Ee @ 9561.4bf2dc71.js:2
+n @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+value @ main.2faaeed8.js:1
+F @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+ic @ 9561.4bf2dc71.js:2
+Gc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+pc @ 9561.4bf2dc71.js:2
+el @ 9561.4bf2dc71.js:2
+render @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+49209 @ main.2faaeed8.js:1
+n @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+n.O @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+10:53:28.050 (索引):1  Uncaught (in promise) t {message: undefined}
+Promise.then
+e.initCourse @ 8222.6209a852.chunk.js:1
+(匿名) @ 8222.6209a852.chunk.js:1
+ka @ 9561.4bf2dc71.js:2
+xa @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+Xo @ 9561.4bf2dc71.js:2
+$o @ 9561.4bf2dc71.js:2
+ic @ 9561.4bf2dc71.js:2
+enqueueSetState @ 9561.4bf2dc71.js:2
+b.setState @ 9561.4bf2dc71.js:2
+(匿名) @ 808.d56623c9.chunk.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+value @ 808.d56623c9.chunk.js:1
+F @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+Xo @ 9561.4bf2dc71.js:2
+$o @ 9561.4bf2dc71.js:2
+fc @ 9561.4bf2dc71.js:2
+We @ 9561.4bf2dc71.js:2
+Ue @ 9561.4bf2dc71.js:2
+He @ 9561.4bf2dc71.js:2
+e.reportChanged @ 9561.4bf2dc71.js:2
+t.setNewValue @ 9561.4bf2dc71.js:2
+e.write @ 9561.4bf2dc71.js:2
+set @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+Ee @ 9561.4bf2dc71.js:2
+n @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+setTimeout
+value @ main.2faaeed8.js:1
+Ee @ 9561.4bf2dc71.js:2
+n @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+Ee @ 9561.4bf2dc71.js:2
+n @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+value @ main.2faaeed8.js:1
+F @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+ic @ 9561.4bf2dc71.js:2
+Gc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+pc @ 9561.4bf2dc71.js:2
+el @ 9561.4bf2dc71.js:2
+render @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+u @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+Promise.then
+r @ 9561.4bf2dc71.js:2
+s @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+49209 @ main.2faaeed8.js:1
+n @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+n.O @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+(匿名) @ main.2faaeed8.js:1
+10:53:28.466 log.ts:179 [debug 10:53:28 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/clientapi/course/drm/m3u8/getPlaylist.do?sourceId=1708929383193&znTid=C904842BA93446A289B5B2448AF4BFD0&wsSecret=d4fbb798d619830061515d6483a97261&wsTime=69b52207&wsVersion=3&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:28.548 log.ts:179 [debug 10:53:28 ] 0 播放时间
+10:53:28.548 log.ts:179 [debug 10:53:28 ] [播放速率] 设置播放速率为 1x
+10:53:28.765 log.ts:179 [debug 10:53:28 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/clientapi/course/drm/m3u8/getPlayParams.do?os=999&os=99&sourceId=1708929383193&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:28.768 log.ts:179 [debug 10:53:28 ] [视频事件] Video playing, applying settings...
+10:53:28.775 log.ts:179 [debug 10:53:28 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:28.777 log.ts:179 [debug 10:53:28 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1708929383193&courseId=N003284&bizType=0&bizId=&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:28.869 log.ts:179 [debug 10:53:28 ] [播放速率] 设置播放速率为 1x
+10:53:28.869 log.ts:179 [debug 10:53:28 ] [静音设置] 设置静音状态为 true
+10:53:28.938 log.ts:179 [debug 10:53:28 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:28.969 log.ts:179 [debug 10:53:28 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/E61361FAD9D744F1AAF3C71873375176/1708929383193_s_0.ts
+10:53:29.037 log.ts:179 [debug 10:53:29 ] [播放尝试] 第 2 次 {src: 'blob:https://zsgl.lzlj.com/78c0604d-7248-4460-929b-bb74f5917293', currentSrc: 'blob:https://zsgl.lzlj.com/78c0604d-7248-4460-929b-bb74f5917293', readyState: 0, hasSource: true}
+10:53:29.037 log.ts:179 [debug 10:53:29 ] [播放速率] 设置播放速率为 1x
+10:53:29.037 log.ts:179 [debug 10:53:29 ] [点击播放] 找到播放按钮，点击播放 <button class=​"vjs-big-play-button" type=​"button" title=​"Play Video" aria-disabled=​"false">​…​</button>​
+10:53:29.040 log.ts:179 [debug 10:53:29 ] [静音设置] 设置静音状态为 true
+10:53:29.040 log.ts:179 [debug 10:53:29 ] [播放速率] 设置播放速率为 1x
+10:53:29.040 utils.ts:137 unknown volumechange事件触发 Event {isTrusted: true, type: 'volumechange', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:29.548 utils.ts:137 unknown resize事件触发 Event {isTrusted: true, type: 'resize', target: video#course-video_html5_api.vjs-tech, currentTarget: Window, eventPhase: 1, …}
+10:53:29.549 log.ts:179 [debug 10:53:29 ] [播放速率] 设置播放速率为 1x
+10:53:29.549 log.ts:179 [debug 10:53:29 ] [点击播放] 找到播放按钮，点击播放 <button class=​"vjs-big-play-button" type=​"button" title=​"Play Video" aria-disabled=​"false">​…​</button>​
+10:53:29.551 log.ts:179 [debug 10:53:29 ] [静音设置] 设置静音状态为 true
+10:53:29.551 log.ts:179 [debug 10:53:29 ] [播放速率] 设置播放速率为 1x
+10:53:29.556 log.ts:179 [debug 10:53:29 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/E61361FAD9D744F1AAF3C71873375176/1708929383193_s_1.ts
+10:53:29.578 log.ts:179 [debug 10:53:29 ] [播放速率] 设置播放速率为 1x
+10:53:29.578 log.ts:179 [debug 10:53:29 ] [点击播放] 找到播放按钮，点击播放 <button class=​"vjs-big-play-button" type=​"button" title=​"Play Video" aria-disabled=​"false">​…​</button>​
+10:53:29.579 log.ts:179 [debug 10:53:29 ] [静音设置] 设置静音状态为 true
+10:53:29.579 log.ts:179 [debug 10:53:29 ] [播放速率] 设置播放速率为 1x
+10:53:29.580 utils.ts:137 unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:29.838 8222.6209a852.chunk.js:1 commonFull true
+10:53:29.838 8222.6209a852.chunk.js:1 window.outerWidth 1920
+10:53:29.838 8222.6209a852.chunk.js:1 screen.availWidth 1920
+10:53:29.838 8222.6209a852.chunk.js:1 windowF11Full false
+10:53:29.838 8222.6209a852.chunk.js:1 isFullScreen true
+10:53:30.034 log.ts:179 [debug 10:53:30 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/E61361FAD9D744F1AAF3C71873375176/1708929383193_s_14.ts
+10:53:30.496 log.ts:179 [debug 10:53:30 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/E61361FAD9D744F1AAF3C71873375176/1708929383193_s_15.ts
+10:53:30.509 utils.ts:137 unknown seeked事件触发 Event {isTrusted: true, type: 'seeked', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:30.841 log.ts:179 [debug 10:53:30 ] 拦截到HTTP请求: /learn/app/clientapi/course/progress/reportLearnProgress.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:30.956 log.ts:179 [debug 10:53:30 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/E61361FAD9D744F1AAF3C71873375176/1708929383193_s_16.ts
+10:53:31.075 8222.6209a852.chunk.js:1 report success
+10:53:31.402 log.ts:179 [debug 10:53:31 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/E61361FAD9D744F1AAF3C71873375176/1708929383193_s_17.ts
+10:53:39.732 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 1094, screenY: 613, clientX: 1090, clientY: 533, …}
+10:53:39.732 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1094, screenY: 613, clientX: 1090, clientY: 533, …}
+10:53:39.732 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1094, screenY: 613, clientX: 1090, clientY: 533, …}
+10:53:39.745 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 1084, screenY: 617, clientX: 1080, clientY: 537, …}
+10:53:39.762 log.ts:179 [debug 10:53:39 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/E61361FAD9D744F1AAF3C71873375176/1708929383193_s_18.ts
+10:53:40.572 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 886, screenY: 645, clientX: 882, clientY: 565, …}
+10:53:40.572 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 886, screenY: 645, clientX: 882, clientY: 565, …}
+10:53:40.784 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 771, screenY: 670, clientX: 767, clientY: 590, …}
+10:53:40.784 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 771, screenY: 670, clientX: 767, clientY: 590, …}
+10:53:41.084 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 776, screenY: 671, clientX: 772, clientY: 591, …}
+10:53:41.097 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 782, screenY: 669, clientX: 778, clientY: 589, …}
+10:53:41.098 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 782, screenY: 669, clientX: 778, clientY: 589, …}
+10:53:41.279 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 779, screenY: 667, clientX: 775, clientY: 587, …}
+10:53:41.279 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 779, screenY: 667, clientX: 775, clientY: 587, …}
+10:53:41.294 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 775, screenY: 667, clientX: 771, clientY: 587, …}
+10:53:41.294 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 775, screenY: 667, clientX: 771, clientY: 587, …}
+10:53:41.350 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 765, screenY: 667, clientX: 761, clientY: 587, …}
+10:53:41.350 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 765, screenY: 667, clientX: 761, clientY: 587, …}
+10:53:41.605 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 756, screenY: 667, clientX: 752, clientY: 587, …}
+10:53:42.129 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 757, screenY: 669, clientX: 753, clientY: 589, …}
+10:53:42.129 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 757, screenY: 669, clientX: 753, clientY: 589, …}
+10:53:42.269 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 762, screenY: 684, clientX: 758, clientY: 604, …}
+10:53:42.269 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 762, screenY: 684, clientX: 758, clientY: 604, …}
+10:53:42.269 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 762, screenY: 684, clientX: 758, clientY: 604, …}
+10:53:42.270 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 762, screenY: 684, clientX: 758, clientY: 604, …}
+10:53:42.270 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 762, screenY: 684, clientX: 758, clientY: 604, …}
+10:53:42.270 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 762, screenY: 684, clientX: 758, clientY: 604, …}
+10:53:42.428 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 764, screenY: 683, clientX: 760, clientY: 603, …}
+10:53:42.428 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 764, screenY: 683, clientX: 760, clientY: 603, …}
+10:53:42.461 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 766, screenY: 678, clientX: 762, clientY: 598, …}
+10:53:42.461 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 766, screenY: 678, clientX: 762, clientY: 598, …}
+10:53:42.646 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 765, screenY: 671, clientX: 761, clientY: 591, …}
+10:53:42.646 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 765, screenY: 671, clientX: 761, clientY: 591, …}
+10:53:42.758 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 756, screenY: 671, clientX: 752, clientY: 591, …}
+10:53:43.011 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 757, screenY: 669, clientX: 753, clientY: 589, …}
+10:53:43.011 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 757, screenY: 669, clientX: 753, clientY: 589, …}
+10:53:43.078 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 756, screenY: 669, clientX: 752, clientY: 589, …}
+10:53:43.816 log.ts:179 [debug 10:53:43 ] [视频事件] Video paused, attempting to resume...
+10:53:43.823 log.ts:179 [debug 10:53:43 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:43.831 utils.ts:137 unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:43.831 utils.ts:137 unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:43.869 log.ts:179 [debug 10:53:43 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/E61361FAD9D744F1AAF3C71873375176/1708929383193_s_36.ts
+10:53:43.912 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 751, screenY: 670, clientX: 747, clientY: 590, …}
+10:53:43.918 log.ts:179 [debug 10:53:43 ] [点击播放] 找到播放按钮，点击播放 button.vjs-big-play-button
+10:53:43.918 log.ts:179 [debug 10:53:43 ] [静音设置] 设置静音状态为 true
+10:53:43.918 log.ts:179 [debug 10:53:43 ] [播放速率] 设置播放速率为 1x
+10:53:43.918 log.ts:179 [debug 10:53:43 ] [视频事件] Video playing, applying settings...
+10:53:43.920 log.ts:179 [debug 10:53:43 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:43.921 log.ts:179 [debug 10:53:43 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1708929383193&courseId=N003284&bizType=0&bizId=&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:44.019 log.ts:179 [debug 10:53:44 ] [播放速率] 设置播放速率为 1x
+10:53:44.020 log.ts:179 [debug 10:53:44 ] [静音设置] 设置静音状态为 true
+10:53:44.050 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 759, screenY: 676, clientX: 755, clientY: 596, …}
+10:53:44.051 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 759, screenY: 676, clientX: 755, clientY: 596, …}
+10:53:44.051 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 759, screenY: 676, clientX: 755, clientY: 596, …}
+10:53:44.071 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 766, screenY: 678, clientX: 762, clientY: 598, …}
+10:53:44.071 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 766, screenY: 678, clientX: 762, clientY: 598, …}
+10:53:44.082 utils.ts:137 unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:44.089 log.ts:179 [debug 10:53:44 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:44.119 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 824, screenY: 678, clientX: 820, clientY: 598, …}
+10:53:44.119 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 824, screenY: 678, clientX: 820, clientY: 598, …}
+10:53:44.133 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 852, screenY: 678, clientX: 848, clientY: 598, …}
+10:53:44.134 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 852, screenY: 678, clientX: 848, clientY: 598, …}
+10:53:44.134 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 852, screenY: 678, clientX: 848, clientY: 598, …}
+10:53:44.146 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 891, screenY: 679, clientX: 887, clientY: 599, …}
+10:53:44.147 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 891, screenY: 679, clientX: 887, clientY: 599, …}
+10:53:44.147 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 891, screenY: 679, clientX: 887, clientY: 599, …}
+10:53:44.147 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 891, screenY: 679, clientX: 887, clientY: 599, …}
+10:53:44.147 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 891, screenY: 679, clientX: 887, clientY: 599, …}
+10:53:44.147 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 891, screenY: 679, clientX: 887, clientY: 599, …}
+10:53:44.182 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 996, screenY: 684, clientX: 992, clientY: 604, …}
+10:53:44.183 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 996, screenY: 684, clientX: 992, clientY: 604, …}
+10:53:44.183 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 996, screenY: 684, clientX: 992, clientY: 604, …}
+10:53:44.225 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.225 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.225 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.225 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.225 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.225 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.225 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.225 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.225 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.225 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.226 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.226 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.226 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.226 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1085, screenY: 685, clientX: 1081, clientY: 605, …}
+10:53:44.233 utils.ts:137 unknown mouseout事件触发 MouseEvent {isTrusted: true, screenX: 1095, screenY: 684, clientX: 1091, clientY: 604, …}
+10:53:44.233 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1095, screenY: 684, clientX: 1091, clientY: 604, …}
+10:53:44.233 utils.ts:137 unknown mouseleave事件触发 MouseEvent {isTrusted: true, screenX: 1095, screenY: 684, clientX: 1091, clientY: 604, …}
+10:53:44.819 log.ts:179 [debug 10:53:44 ] 拦截到HTTP请求: /learn/app/clientapi/course/progress/reportLearnProgress.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:44.879 log.ts:179 [debug 10:53:44 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/E61361FAD9D744F1AAF3C71873375176/1708929383193_s_35.ts
+10:53:44.963 utils.ts:137 unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:44.974 utils.ts:137 unknown seeked事件触发 Event {isTrusted: true, type: 'seeked', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:45.067 8222.6209a852.chunk.js:1 report success
+10:53:48.282 log.ts:179 [debug 10:53:48 ] [视频事件] Video paused, attempting to resume...
+10:53:48.287 log.ts:179 [debug 10:53:48 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:48.289 8222.6209a852.chunk.js:1 1111
+10:53:48.290 log.ts:179 [debug 10:53:48 ] 拦截到HTTP请求: /learn/app/clientapi/course/uploadLearnFlag.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:48.291 log.ts:179 [debug 10:53:48 ] [视频完成通知] 已设置: zsgl_video_complete_N003284_1 {status: 'finished', courseId: 'N003284', taskId: 1, timestamp: 1773456828291}
+10:53:48.298 8222.6209a852.chunk.js:1 2222
+10:53:48.298 3653.da24d793.chunk.js:2  VIDEOJS: WARN: Player "#course-video" is already initialised. Options will not be applied.
+(匿名) @ 3653.da24d793.chunk.js:2
+a.warn @ 3653.da24d793.chunk.js:2
+Ps @ 3653.da24d793.chunk.js:2
+e.handleInitCourse @ 8222.6209a852.chunk.js:1
+e.initCourse @ 8222.6209a852.chunk.js:1
+(匿名) @ 8222.6209a852.chunk.js:1
+ka @ 9561.4bf2dc71.js:2
+xa @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+Xo @ 9561.4bf2dc71.js:2
+$o @ 9561.4bf2dc71.js:2
+ic @ 9561.4bf2dc71.js:2
+enqueueSetState @ 9561.4bf2dc71.js:2
+b.setState @ 9561.4bf2dc71.js:2
+e.handleSelectCourse @ 808.d56623c9.chunk.js:1
+e.autoPlayNext @ 808.d56623c9.chunk.js:1
+(匿名) @ 8222.6209a852.chunk.js:1
+setTimeout
+e.handleEnd @ 8222.6209a852.chunk.js:1
+m @ 9561.4bf2dc71.js:2
+w @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+E @ 9561.4bf2dc71.js:2
+C @ 9561.4bf2dc71.js:2
+S @ 9561.4bf2dc71.js:2
+D @ 9561.4bf2dc71.js:2
+kn @ 9561.4bf2dc71.js:2
+le @ 9561.4bf2dc71.js:2
+Dn @ 9561.4bf2dc71.js:2
+zn @ 9561.4bf2dc71.js:2
+An @ 9561.4bf2dc71.js:2
+10:53:48.302 log.ts:179 [debug 10:53:48 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1708931262768&courseId=N003284&bizType=0&bizId=&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:48.303 log.ts:179 [debug 10:53:48 ] 拦截到HTTP请求: /learn/app/clientapi/course/uploadCourseLearnStatus.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:48.304 log.ts:179 [debug 10:53:48 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:48.304 log.ts:179 [debug 10:53:48 ] 拦截到HTTP请求: /learn/app/clientapi/course/preview.do?coursewareId=1708931262768&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:48.389 log.ts:179 [debug 10:53:48 ] [点击播放] 找到播放按钮，点击播放 button.vjs-big-play-button
+10:53:48.391 log.ts:179 [debug 10:53:48 ] [静音设置] 设置静音状态为 true
+10:53:48.391 log.ts:179 [debug 10:53:48 ] [播放速率] 设置播放速率为 1x
+10:53:48.391 utils.ts:137 unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:48.392 log.ts:179 [debug 10:53:48 ] [视频事件] Video playing, applying settings...
+10:53:48.397 log.ts:179 [debug 10:53:48 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:48.399 log.ts:179 [debug 10:53:48 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1708931262768&courseId=N003284&bizType=0&bizId=&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:48.409 (索引):1  Uncaught (in promise) t {message: undefined}
+Promise.then
+e.initCourse @ 8222.6209a852.chunk.js:1
+(匿名) @ 8222.6209a852.chunk.js:1
+ka @ 9561.4bf2dc71.js:2
+xa @ 9561.4bf2dc71.js:2
+Ec @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+kc @ 9561.4bf2dc71.js:2
+dc @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+t.unstable_runWithPriority @ 9561.4bf2dc71.js:2
+qo @ 9561.4bf2dc71.js:2
+Xo @ 9561.4bf2dc71.js:2
+$o @ 9561.4bf2dc71.js:2
+ic @ 9561.4bf2dc71.js:2
+enqueueSetState @ 9561.4bf2dc71.js:2
+b.setState @ 9561.4bf2dc71.js:2
+e.handleSelectCourse @ 808.d56623c9.chunk.js:1
+e.autoPlayNext @ 808.d56623c9.chunk.js:1
+(匿名) @ 8222.6209a852.chunk.js:1
+setTimeout
+e.handleEnd @ 8222.6209a852.chunk.js:1
+m @ 9561.4bf2dc71.js:2
+w @ 9561.4bf2dc71.js:2
+(匿名) @ 9561.4bf2dc71.js:2
+E @ 9561.4bf2dc71.js:2
+C @ 9561.4bf2dc71.js:2
+S @ 9561.4bf2dc71.js:2
+D @ 9561.4bf2dc71.js:2
+kn @ 9561.4bf2dc71.js:2
+le @ 9561.4bf2dc71.js:2
+Dn @ 9561.4bf2dc71.js:2
+zn @ 9561.4bf2dc71.js:2
+An @ 9561.4bf2dc71.js:2
+10:53:48.412 utils.ts:137 unknown seeked事件触发 Event {isTrusted: true, type: 'seeked', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:48.503 log.ts:179 [debug 10:53:48 ] [播放速率] 设置播放速率为 1x
+10:53:48.503 log.ts:179 [debug 10:53:48 ] [静音设置] 设置静音状态为 true
+10:53:48.537 log.ts:179 [debug 10:53:48 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/clientapi/course/drm/m3u8/getPlaylist.do?sourceId=1708931262768&znTid=C904842BA93446A289B5B2448AF4BFD0&wsSecret=d4fbb798d619830061515d6483a97261&wsTime=69b52207&wsVersion=3&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:48.699 log.ts:179 [debug 10:53:48 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:48.853 log.ts:179 [debug 10:53:48 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/clientapi/course/drm/m3u8/getPlayParams.do?os=999&os=99&sourceId=1708931262768&sid=DDFFB4A8903046B2B2A2C20195472FFA
+10:53:48.854 log.ts:179 [debug 10:53:48 ] [视频事件] Video playing, applying settings...
+10:53:48.860 log.ts:179 [debug 10:53:48 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1708931262768&courseId=N003284&bizType=0&bizId=&sid=DDFFB4A8903046B2B2A2C20195472FFA&os=99
+10:53:48.957 log.ts:179 [debug 10:53:48 ] [播放速率] 设置播放速率为 1x
+10:53:48.957 log.ts:179 [debug 10:53:48 ] [静音设置] 设置静音状态为 true
+10:53:49.099 log.ts:179 [debug 10:53:49 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/64E2A5EF14734EC2944F695BAF52F225/1708931262768_s_0.ts
+10:53:50.402 utils.ts:137 unknown resize事件触发 Event {isTrusted: true, type: 'resize', target: video#course-video_html5_api.vjs-tech, currentTarget: Window, eventPhase: 1, …}
+10:53:50.405 log.ts:179 [debug 10:53:50 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/64E2A5EF14734EC2944F695BAF52F225/1708931262768_s_1.ts
+10:53:50.422 utils.ts:137 unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:50.438 utils.ts:137 unknown seeked事件触发 Event {isTrusted: true, type: 'seeked', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+10:53:51.526 dailyPoints.ts:610  Uncaught (in promise) TypeError: Cannot read properties of null (reading 'success')
+    at ZsglDailyPoints.eval (dailyPoints.ts:610:31)
+    at Generator.next (<anonymous>)
+    at eval (dailyPoints.ts:8:71)
+    at new Promise (<anonymous>)
+    at __awaiter (dailyPoints.ts:4:12)
+    at ZsglDailyPoints.handleVideoTaskComplete (dailyPoints.ts:600:16)
+    at eval (dailyPoints.ts:587:34)
+eval @ dailyPoints.ts:610
+eval @ dailyPoints.ts:8
+__awaiter @ dailyPoints.ts:4
+handleVideoTaskComplete @ dailyPoints.ts:600
+eval @ dailyPoints.ts:587
+setInterval
+setInterval @ utils.ts:203
+setupVideoCompleteListener @ dailyPoints.ts:579
+eval @ dailyPoints.ts:550
+eval @ dailyPoints.ts:8
+__awaiter @ dailyPoints.ts:4
+eval @ dailyPoints.ts:546
+Init @ dailyPoints.ts:546
+ZsglDailyPoints @ dailyPoints.ts:53
+eval @ dailyPointsPanel.ts:25
+10:53:51.837 log.ts:179 [debug 10:53:51 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/64E2A5EF14734EC2944F695BAF52F225/1708931262768_s_2.ts
+10:53:53.199 log.ts:179 [debug 10:53:53 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/64E2A5EF14734EC2944F695BAF52F225/1708931262768_s_3.ts
+10:54:00.553 log.ts:179 [debug 10:54:0 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/64E2A5EF14734EC2944F695BAF52F225/1708931262768_s_4.ts
+10:54:10.564 log.ts:179 [debug 10:54:10 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/64E2A5EF14734EC2944F695BAF52F225/1708931262768_s_5.ts
+10:54:15.210 utils.ts:137 unknown blur事件触发 Event {isTrusted: true, type: 'blur', target: Window, currentTarget: Window, eventPhase: 2, …}
+10:54:21.655 log.ts:179 [debug 10:54:21 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/transCode/2024/02/26/64E2A5EF14734EC2944F695BAF52F225/1708931262768_s_6.ts

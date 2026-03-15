@@ -218,19 +218,12 @@ export class SystemConfig {
                 value: true,
               },
                {
-                 title: "是否自动考试",
-                 description: "开启后会自动考试",
-                 type: "checkbox",
-                 key: "exam_auto",
-                 value: false,
-               },
-               {
                  title: "跳过选修",
                  description: "开启后自动挂机时会跳过选修课程",
                  type: "checkbox",
                  key: "skip_elective",
                  value: false,
-               },
+              },
                {
                  title: "视频静音",
                  description: "播放视频时自动开启静音",

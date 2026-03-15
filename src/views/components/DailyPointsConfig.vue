@@ -20,6 +20,7 @@ interface DailyPointsConfig {
   learningLimit: number
   contributionLimit: number
   interactionLimit: number
+  taskDelay: number
 }
 
 const emit = defineEmits<{
@@ -30,13 +31,15 @@ const knowledgeLink = ref('')
 const learningLimit = ref(100)
 const contributionLimit = ref(300)
 const interactionLimit = ref(100)
+const taskDelay = ref(8)
 
 const handleStart = () => {
   emit('start', {
     knowledgeLink: knowledgeLink.value,
     learningLimit: learningLimit.value,
     contributionLimit: contributionLimit.value,
-    interactionLimit: interactionLimit.value
+    interactionLimit: interactionLimit.value,
+    taskDelay: taskDelay.value
   })
 }
 </script>
@@ -100,6 +103,20 @@ const handleStart = () => {
         />
         <Label class="text-sm text-muted-foreground">分</Label>
       </div>
+      
+      <div class="flex items-center gap-2">
+        <Label for="task-delay" class="min-w-24 text-sm">任务延迟:</Label>
+        <Input
+          id="task-delay"
+          v-model.number="taskDelay"
+          type="number"
+          class="flex-1 h-8 text-sm"
+          min="0"
+          placeholder="默认 8"
+        />
+        <Label class="text-sm text-muted-foreground">秒</Label>
+      </div>
+      <p class="text-xs text-gray-500 -mt-2 ml-28">实际延迟 = 配置值 ± 5秒，最小为 0，为 0 则不等待</p>
       
       <Button 
         class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-2 rounded-md transition-all duration-200 shadow-md hover:shadow-lg" 

@@ -6,6 +6,7 @@ export interface PointsProgressData {
   learningLimit: number;
   contributionLimit: number;
   interactionLimit: number;
+  taskDelay: number;
 }
 
 export class DailyPointsFloatingPanel {

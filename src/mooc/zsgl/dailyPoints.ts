@@ -10,6 +10,7 @@ import { Application } from "@App/internal/application";
 import { TimerManager, ApiResponse } from "./utils/utils";
 import { NewChromeServerMessage } from "@App/internal/utils/message";
 import { CourseItem, CourseListResponse } from "./types";
+import { info } from "console";
 
 /**
  * 积分类型枚举
@@ -39,6 +40,7 @@ export interface DailyPointsState {
   interaction: PointsStatus; // 互动积分状态
   lastUpdate: number; // 最后更新时间
   isRunning: boolean; // 是否正在运行
+  taskDelay: number; // 任务延迟时间（毫秒）
 }
 
 /**
@@ -137,6 +139,7 @@ export class ZsglDailyPoints extends Task {
       },
       lastUpdate: Date.now(),
       isRunning: false,
+      taskDelay: 8000,
     };
   }
 
@@ -193,7 +196,9 @@ export class ZsglDailyPoints extends Task {
       } else if (message.type === "REFRESH_POINTS") {
         this.handleRefreshPoints();
       } else if (message.type === "CONFIRM_START_TASK") {
-        Application.App.log.Debug("收到确认开始任务消息",message.data?.learningLimit,message.data?.contributionLimit,message.data?.interactionLimit);
+        Application.App.log.Debug("收到确认开始任务消息", message.data?.learningLimit, message.data?.contributionLimit, message.data?.interactionLimit);
+        // Application.App.config.SetConfig("auto", "true");
+        // Application.App.config.auto = true;//set函数不起效果,需要添加注意事项请确保自动挂机是开启状态
         if (message.data?.knowledgeLink) {
           this.knowledgePageUrl = message.data.knowledgeLink;
         }
@@ -208,6 +213,10 @@ export class ZsglDailyPoints extends Task {
         if (message.data?.interactionLimit) {
           this.pointsState.interaction.target = message.data.interactionLimit;
           Application.App.log.Info(`设置互动积分目标: ${message.data.interactionLimit}`);
+        }
+        if (message.data?.taskDelay !== undefined) {
+          this.pointsState.taskDelay = message.data.taskDelay * 1000;
+          Application.App.log.Info(`设置任务延迟: ${message.data.taskDelay}秒 (${this.pointsState.taskDelay}毫秒)`);
         }
         // 保存用户设置的积分上限
         this.savePointsState();
@@ -779,9 +788,12 @@ export class ZsglDailyPoints extends Task {
     }
 
     Application.App.log.Info('[积分检查] 开始检查积分是否达到上限');
-    
-    const pointsResult = await this.fetchPointsDetail();
-    if (!pointsResult.success || !pointsResult.data) {
+    let pointsResult = null;
+    if (this.sid) {
+      pointsResult = await this.fetchPointsDetail();
+    }
+
+    if (!pointsResult || !pointsResult.success || !pointsResult.data) {
       Application.App.log.Warn('[积分检查] 获取积分详情失败');
       return;
     }
@@ -1134,7 +1146,7 @@ export class ZsglDailyPoints extends Task {
           `知识阅读成功，第${this.callCount}次调用，累积积分: ${this.accumulatedPoints}/${this.pointsGap}`,
         );
 
-        if (this.callCount % 10 === 0) {
+        if (this.callCount % 5 === 0) {
           const pointsResult = await this.fetchPointsDetail();
           if (pointsResult.success) {
             this.updatePointsStateFromApi(pointsResult.data);
@@ -1154,9 +1166,10 @@ export class ZsglDailyPoints extends Task {
       } else {
         Application.App.log.Warn(`知识阅读失败: ${result.error}`);
       }
-
-      const delay = Math.floor(Math.random() * 15000) + 1000;
-      await this.sleep(delay);
+      const delay = this.getRandomDelay();
+      if (delay > 0) {
+        await this.sleep(delay);
+      }
     }
 
     if (this.isTaskStopped) {
@@ -1172,6 +1185,16 @@ export class ZsglDailyPoints extends Task {
 
   protected sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  private getRandomDelay(): number {
+    const baseDelay = this.pointsState.taskDelay;
+    if (baseDelay === 0) {
+      return 0;//为0直接跳过执行等待
+    }
+    const randomOffset = Math.random() * 10000 - 5000;
+    const actualDelay = baseDelay + randomOffset;
+    return Math.max(0, Math.floor(actualDelay));
   }
 
   protected checkPointsChanged(newData: PointsDetailItem[]): boolean {
@@ -1232,7 +1255,7 @@ export class ZsglDailyPoints extends Task {
           `知识分享成功，第${this.callCount}次调用，累积积分: ${this.accumulatedPoints}/${this.pointsGap}`,
         );
 
-        if (this.callCount % 2 === 0) {
+        if (this.callCount % 5 === 0) {
           const pointsResult = await this.fetchPointsDetail();
           if (pointsResult.success) {
             this.updatePointsStateFromApi(pointsResult.data);
@@ -1252,8 +1275,10 @@ export class ZsglDailyPoints extends Task {
         Application.App.log.Warn(`知识分享失败: ${result.error}`);
       }
 
-      const delay = Math.floor(Math.random() * 15000) + 1000;
-      await this.sleep(delay);
+      const delay = this.getRandomDelay();
+      if (delay > 0) {
+        await this.sleep(delay);
+      }
     }
 
     if (this.isTaskStopped) {
