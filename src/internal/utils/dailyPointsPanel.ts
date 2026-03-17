@@ -375,9 +375,9 @@ export class DailyPointsFloatingPanel {
             return;
           }
 
-          this.progressData.learning.target = data.learningLimit || 100;
-          this.progressData.contribution.target = data.contributionLimit || 300;
-          this.progressData.interaction.target = data.interactionLimit || 100;
+          this.progressData.learning.target = data.learningLimit !== undefined ? data.learningLimit : 100;
+          this.progressData.contribution.target = data.contributionLimit !== undefined ? data.contributionLimit : 300;
+          this.progressData.interaction.target = data.interactionLimit !== undefined ? data.interactionLimit : 100;
 
           this.showConfirmationDialog(() => {
             this.isRunning = true;
@@ -517,6 +517,8 @@ export class DailyPointsFloatingPanel {
         <div class="confirmation-notice">
           <p>⚠️ 注意事项：</p>
           <ul>
+            <li><strong>知识链接要求：</strong>需填写非个人空间主创或辅创的知识空间文章链接</li>
+            <li><strong>风险提示：</strong>本功能通过调用知识分享和知识阅读API实现积分获取，属于利用系统漏洞，请在了解风险后谨慎使用</li>
             <li>任务执行期间请勿关闭页面</li>
             <li>可随时点击"结束任务"停止</li>
             <li>积分数据仅供参考，以实际为准</li>
@@ -524,7 +526,7 @@ export class DailyPointsFloatingPanel {
         </div>
         <label class="confirmation-checkbox">
           <input type="checkbox" id="agree-terms" />
-          <span>我已了解任务内容，同意开始执行</span>
+          <span>我已了解任务内容及风险，同意开始执行</span>
         </label>
       </div>
     </div>

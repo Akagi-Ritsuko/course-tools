@@ -142,66 +142,97 @@ class popup implements Launcher {
                   }
 
                   console.log("[每日积分] popup: 当前标签页", currentTab);
+                  console.log("[每日积分] popup: 当前URL", currentTab.url);
 
-                  chrome.tabs.onUpdated.addListener(function listener(
-                    tabId,
-                    info,
-                  ) {
-                    if (tabId === currentTab.id && info.status === "complete") {
-                      console.log("[每日积分] popup: 标签页跳转完成");
-                      chrome.tabs.onUpdated.removeListener(listener);
+                  const currentUrl = currentTab.url || "";
+                  const isSameUrl = currentUrl === targetUrl || 
+                                    currentUrl.includes(targetUrl.replace(/^https?:\/\//, '')) ||
+                                    targetUrl.includes(currentUrl.replace(/^https?:\/\//, ''));
 
-                      const sendMessageWithRetry = (
-                        tabId: number,
-                        message: any,
-                        retries: number = 5,
-                        delay: number = 2000,
-                      ) => {
-                        console.log(
-                          `[每日积分] popup: 尝试发送消息 (剩余重试次数: ${retries})`,
+                  const sendMessageWithRetry = (
+                    tabId: number,
+                    message: any,
+                    retries: number = 5,
+                    delay: number = 2000,
+                  ) => {
+                    console.log(
+                      `[每日积分] popup: 尝试发送消息 (剩余重试次数: ${retries})`,
+                    );
+
+                    chrome.tabs.sendMessage(tabId, message, (response) => {
+                      if (chrome.runtime.lastError) {
+                        console.warn(
+                          "[每日积分] popup: 发送消息失败",
+                          chrome.runtime.lastError.message,
                         );
 
-                        chrome.tabs.sendMessage(tabId, message, (response) => {
-                          if (chrome.runtime.lastError) {
-                            console.warn(
-                              "[每日积分] popup: 发送消息失败",
-                              chrome.runtime.lastError.message,
+                        if (retries > 0) {
+                          console.log(
+                            `[每日积分] popup: ${delay}ms 后重试...`,
+                          );
+                          setTimeout(() => {
+                            sendMessageWithRetry(
+                              tabId,
+                              message,
+                              retries - 1,
+                              delay,
                             );
+                          }, delay);
+                        } else {
+                          console.error(
+                            "[每日积分] popup: 重试次数用尽，消息发送失败",
+                          );
+                        }
+                      } else {
+                        console.log("[每日积分] popup: 收到响应", response);
+                      }
+                    });
+                  };
 
-                            if (retries > 0) {
-                              console.log(
-                                `[每日积分] popup: ${delay}ms 后重试...`,
-                              );
-                              setTimeout(() => {
-                                sendMessageWithRetry(
-                                  tabId,
-                                  message,
-                                  retries - 1,
-                                  delay,
-                                );
-                              }, delay);
-                            } else {
-                              console.error(
-                                "[每日积分] popup: 重试次数用尽，消息发送失败",
-                              );
-                            }
-                          } else {
-                            console.log("[每日积分] popup: 收到响应", response);
-                          }
-                        });
+                  if (isSameUrl) {
+                    console.log("[每日积分] popup: 当前已在目标页面，刷新页面");
+                    chrome.tabs.reload(currentTab.id, {}, () => {
+                      const listener = function listenerFn(
+                        tabId: number,
+                        info: chrome.tabs.TabChangeInfo,
+                      ) {
+                        if (tabId === currentTab.id && info.status === "complete") {
+                          console.log("[每日积分] popup: 页面刷新完成");
+                          chrome.tabs.onUpdated.removeListener(listenerFn);
+                          
+                          setTimeout(() => {
+                            sendMessageWithRetry(currentTab.id!, {
+                              type: "START_DAILY_POINTS",
+                              data: config,
+                            });
+                          }, 2000);
+                        }
                       };
+                      chrome.tabs.onUpdated.addListener(listener);
+                    });
+                  } else {
+                    console.log("[每日积分] popup: 需要跳转到目标页面");
+                    
+                    const listener = function listenerFn(
+                      tabId: number,
+                      info: chrome.tabs.TabChangeInfo,
+                    ) {
+                      if (tabId === currentTab.id && info.status === "complete") {
+                        console.log("[每日积分] popup: 标签页跳转完成");
+                        chrome.tabs.onUpdated.removeListener(listenerFn);
 
-                      setTimeout(() => {
-                        sendMessageWithRetry(currentTab.id!, {
-                          type: "START_DAILY_POINTS",
-                          data: config,
-                        });
-                      }, 2000);
-                    }
-                  });
-
-                  chrome.tabs.update(currentTab.id, { url: targetUrl });
-                  console.log("[每日积分] popup: 开始跳转到目标页面");
+                        setTimeout(() => {
+                          sendMessageWithRetry(currentTab.id!, {
+                            type: "START_DAILY_POINTS",
+                            data: config,
+                          });
+                        }, 2000);
+                      }
+                    };
+                    chrome.tabs.onUpdated.addListener(listener);
+                    chrome.tabs.update(currentTab.id, { url: targetUrl });
+                    console.log("[每日积分] popup: 开始跳转到目标页面");
+                  }
                 },
               );
             };

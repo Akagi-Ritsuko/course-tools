@@ -95,6 +95,8 @@ export class ZsglDailyPoints extends Task {
   protected currentTaskType: PointsTaskType | null = null;
   protected taskQueue: PointsTaskType[] = [];
   protected isTaskStopped: boolean = false;
+  protected isSwitching: boolean = false;
+  protected needSwitchTask: boolean = false;
   protected callCount: number = 0;
   protected pageId: string = "";
   protected sid: string = "";
@@ -109,6 +111,10 @@ export class ZsglDailyPoints extends Task {
     sortType: number;
     totalPage: number;
   } = { curPage: 1, numPerPage: 30, sortType: 2, totalPage: 0 };
+  
+  private messageListener: ((event: MessageEvent) => void) | null = null;
+  private videoStorageListener: ((e: StorageEvent) => void) | null = null;
+  private abortController: AbortController | null = null;
 
   constructor() {
     super();
@@ -176,17 +182,39 @@ export class ZsglDailyPoints extends Task {
     Application.App.log.Debug("停止每日积分任务");
     this.isTaskStopped = true;
     this.pointsState.isRunning = false;
+    this.isSwitching = false;
+    
     this.timerManager.clearAll();
+    
+    if (this.abortController) {
+      this.abortController.abort();
+      this.abortController = null;
+    }
+    
+    if (this.messageListener) {
+      window.removeEventListener("message", this.messageListener);
+      this.messageListener = null;
+    }
+    
+    if (this.videoStorageListener) {
+      window.removeEventListener("storage", this.videoStorageListener);
+      this.videoStorageListener = null;
+    }
+    
     this.savePointsState();
 
     window.postMessage({ type: "TASK_STOPPED" }, "*");
 
-    Application.App.log.Info("每日积分任务已停止");
-    Application.App.log.Debug("每日积分任务已停止");
+    Application.App.log.Info("每日积分任务已停止，所有监听器已移除");
+    Application.App.log.Debug("每日积分任务已停止，所有监听器已移除");
   }
 
   protected setupMessageListener(): void {
-    window.addEventListener("message", (event) => {
+    if (this.messageListener) {
+      window.removeEventListener("message", this.messageListener);
+    }
+    
+    this.messageListener = (event: MessageEvent) => {
       if (event.source !== window) return;
 
       const message = event.data;
@@ -197,20 +225,18 @@ export class ZsglDailyPoints extends Task {
         this.handleRefreshPoints();
       } else if (message.type === "CONFIRM_START_TASK") {
         Application.App.log.Debug("收到确认开始任务消息", message.data?.learningLimit, message.data?.contributionLimit, message.data?.interactionLimit);
-        // Application.App.config.SetConfig("auto", "true");
-        // Application.App.config.auto = true;//set函数不起效果,需要添加注意事项请确保自动挂机是开启状态
         if (message.data?.knowledgeLink) {
           this.knowledgePageUrl = message.data.knowledgeLink;
         }
-        if (message.data?.learningLimit) {
+        if (message.data?.learningLimit !== undefined) {
           this.pointsState.learning.target = message.data.learningLimit;
-          Application.App.log.Info(`设置学习积分上限目标: ${message.data.learningLimit}`);
+          Application.App.log.Info(`设置学习积分目标: ${message.data.learningLimit}`);
         }
-        if (message.data?.contributionLimit) {
+        if (message.data?.contributionLimit !== undefined) {
           this.pointsState.contribution.target = message.data.contributionLimit;
           Application.App.log.Info(`设置贡献积分目标: ${message.data.contributionLimit}`);
         }
-        if (message.data?.interactionLimit) {
+        if (message.data?.interactionLimit !== undefined) {
           this.pointsState.interaction.target = message.data.interactionLimit;
           Application.App.log.Info(`设置互动积分目标: ${message.data.interactionLimit}`);
         }
@@ -218,11 +244,12 @@ export class ZsglDailyPoints extends Task {
           this.pointsState.taskDelay = message.data.taskDelay * 1000;
           Application.App.log.Info(`设置任务延迟: ${message.data.taskDelay}秒 (${this.pointsState.taskDelay}毫秒)`);
         }
-        // 保存用户设置的积分上限
         this.savePointsState();
         this.executeTaskAfterConfirm();
       }
-    });
+    };
+    
+    window.addEventListener("message", this.messageListener);
   }
 
   private readonly DAILY_POINTS_TASK_PREFIX = "zsgl_daily_task_";
@@ -429,8 +456,19 @@ export class ZsglDailyPoints extends Task {
     headers?: Record<string, string>,
     timeout: number = DEFAULT_TIMEOUT,
   ): Promise<ApiResponse<T>> {
+    if (this.isTaskStopped) {
+      return {
+        success: false,
+        data: null,
+        error: "任务已停止",
+        status: 0,
+      };
+    }
+    
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
+    
+    this.abortController = controller;
 
     try {
       let requestUrl = url;
@@ -638,14 +676,15 @@ export class ZsglDailyPoints extends Task {
 
     this.savePointsState();
 
-    if (!this.checkPointsChanged(data.body) && isNotRefresh) {
+    if (!this.checkPointsChanged(data.body) && isNotRefresh&& this.pointsState.taskDelay > 0) {
       this.noChangeCount++;
+      
       Application.App.log.Warn(
         `积分无变化，连续无变化次数: ${this.noChangeCount}/2`,
       );
       if (this.noChangeCount >= 2) {
-        Application.App.log.Info("积分连续两次无变化，尝试切换到下一个任务");
-        this.switchToNextTask();
+        Application.App.log.Info("积分连续两次无变化，需要切换任务");
+        this.needSwitchTask = true;
         return;
       }
     } else {
@@ -657,31 +696,45 @@ export class ZsglDailyPoints extends Task {
 
   /** 切换到下一个任务 */
   protected async switchToNextTask(): Promise<void> {
-    const nextTask = this.getNextTask();
-    if (nextTask) {
-      Application.App.log.Info(`切换到下一个任务: ${nextTask}`);
-      this.noChangeCount = 0;
-      this.currentTaskType = nextTask;
-      switch (nextTask) {
-        case "course":
-          await this.executeCourseTask();
-          break;
-        case "knowledgeRead":
-          await this.executeKnowledgeReadTask();
-          break;
-        case "knowledgeShare":
-          await this.executeKnowledgeShareTask();
-          break;
+    if (this.isSwitching) {
+      Application.App.log.Warn("[任务切换] 正在切换中，跳过重复调用");
+      return;
+    }
+    this.isSwitching = true;
+    this.needSwitchTask = false;
+    
+    try {
+      const nextTask = this.getNextTask();
+      if (nextTask) {
+        Application.App.log.Info(`切换到下一个任务: ${nextTask}`);
+        this.noChangeCount = 0;
+        this.currentTaskType = nextTask;
+        switch (nextTask) {
+          case "course":
+            await this.executeCourseTask();
+            break;
+          case "knowledgeRead":
+            await this.executeKnowledgeReadTask();
+            break;
+          case "knowledgeShare":
+            await this.executeKnowledgeShareTask();
+            break;
+        }
+      } else {
+        Application.App.log.Info("没有下一个任务，自动停止任务");
+        this.stopTask();
       }
-    } else {
-      Application.App.log.Info("没有下一个任务，自动停止任务");
-      this.stopTask();
+    } finally {
+      this.isSwitching = false;
     }
   }
 
   protected calculatePointsGap(type: PointsType): number {
     const status = this.pointsState[type];
-    const target = status.target || status.limit;
+    const target = status.target !== undefined ? status.target : status.limit;
+    if (target === 0) {
+      return 0;
+    }
     const gap = target - status.current;
     return Math.max(0, gap);
   }
@@ -700,10 +753,12 @@ export class ZsglDailyPoints extends Task {
   }
 
   protected isPointsFull(type: PointsType): boolean {
-    return (
-      this.pointsState[type].current >=
-      (this.pointsState[type].target || this.pointsState[type].limit)
-    );
+    const status = this.pointsState[type];
+    const target = status.target !== undefined ? status.target : status.limit;
+    if (target === 0) {
+      return true;
+    }
+    return status.current >= target;
   }
 
   protected isAllPointsFull(): boolean {
@@ -745,7 +800,13 @@ export class ZsglDailyPoints extends Task {
 
   /** 设置视频完成监听 */
   private setupVideoCompleteListener(): void {
-    window.addEventListener('storage', (e: StorageEvent) => {
+    if (this.videoStorageListener) {
+      window.removeEventListener('storage', this.videoStorageListener);
+    }
+    
+    this.videoStorageListener = (e: StorageEvent) => {
+      if (this.isTaskStopped) return;
+      
       if (e.key && e.key.startsWith('zsgl_video_complete_') && e.newValue) {
         try {
           const videoStatus = JSON.parse(e.newValue);
@@ -759,9 +820,13 @@ export class ZsglDailyPoints extends Task {
           Application.App.log.Warn(`[视频完成监听] 解析视频状态失败: ${err}`);
         }
       }
-    });
+    };
+    
+    window.addEventListener('storage', this.videoStorageListener);
 
     this.timerManager.setInterval('checkVideoComplete', () => {
+      if (this.isTaskStopped) return;
+      
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key && key.startsWith('zsgl_video_complete_')) {
@@ -1133,7 +1198,7 @@ export class ZsglDailyPoints extends Task {
 
     this.isTaskStopped = false;
 
-    while (!this.isTaskStopped && this.accumulatedPoints < this.pointsGap) {
+    while (!this.isTaskStopped && this.accumulatedPoints < this.pointsGap && !this.needSwitchTask) {
       const result = await this.fetchKnowledgeRead();
 
       if (result.success) {
@@ -1155,10 +1220,9 @@ export class ZsglDailyPoints extends Task {
             Application.App.log.Info(`重新计算分差: ${this.pointsGap}`);
             Application.App.log.Debug(`重新计算分差: ${this.pointsGap}`);
 
-            if (this.pointsGap <= 0) {
-              Application.App.log.Info("贡献积分已达目标，停止知识阅读任务");
-              Application.App.log.Debug("贡献积分已达目标，停止知识阅读任务");
-              // this.switchToNextTask();
+            if (this.pointsGap <= 0 || this.needSwitchTask) {
+              Application.App.log.Info("贡献积分已达目标或需要切换任务，停止知识阅读任务");
+              Application.App.log.Debug("贡献积分已达目标或需要切换任务，停止知识阅读任务");
               break;
             }
           }
@@ -1175,10 +1239,13 @@ export class ZsglDailyPoints extends Task {
     if (this.isTaskStopped) {
       Application.App.log.Info("知识阅读任务已被停止");
       Application.App.log.Debug("知识阅读任务已被停止");
+    } else if (this.needSwitchTask) {
+      Application.App.log.Info("检测到需要切换任务，知识阅读任务提前结束");
+      Application.App.log.Debug("检测到需要切换任务，知识阅读任务提前结束");
+      await this.switchToNextTask();
     } else {
       Application.App.log.Info("贡献积分已达目标，知识阅读任务完成");
       Application.App.log.Debug("贡献积分已达目标，知识阅读任务完成");
-      // 执行下一个任务
       await this.switchToNextTask();
     }
   }
@@ -1242,7 +1309,7 @@ export class ZsglDailyPoints extends Task {
 
     this.isTaskStopped = false;
 
-    while (!this.isTaskStopped && this.accumulatedPoints < this.pointsGap) {
+    while (!this.isTaskStopped && this.accumulatedPoints < this.pointsGap && !this.needSwitchTask) {
       const result = await this.fetchKnowledgeShare();
 
       if (result.success) {
@@ -1263,10 +1330,9 @@ export class ZsglDailyPoints extends Task {
             this.accumulatedPoints = 0;
             Application.App.log.Info(`重新计算分差: ${this.pointsGap}`);
 
-            if (this.pointsGap <= 0) {
-              Application.App.log.Info("互动积分已达目标，停止知识分享任务");
-              Application.App.log.Debug("互动积分已达目标，停止知识分享任务");
-              // this.switchToNextTask();
+            if (this.pointsGap <= 0 || this.needSwitchTask) {
+              Application.App.log.Info("互动积分已达目标或需要切换任务，停止知识分享任务");
+              Application.App.log.Debug("互动积分已达目标或需要切换任务，停止知识分享任务");
               break;
             }
           }
@@ -1284,10 +1350,13 @@ export class ZsglDailyPoints extends Task {
     if (this.isTaskStopped) {
       Application.App.log.Info("知识分享任务已被停止");
       Application.App.log.Debug("知识分享任务已被停止");
+    } else if (this.needSwitchTask) {
+      Application.App.log.Info("检测到需要切换任务，知识分享任务提前结束");
+      Application.App.log.Debug("检测到需要切换任务，知识分享任务提前结束");
+      await this.switchToNextTask();
     } else {
       Application.App.log.Info("互动积分已达目标，知识分享任务完成");
       Application.App.log.Debug("互动积分已达目标，知识分享任务完成");
-      // 执行下一个任务
       await this.switchToNextTask();
     }
   }
