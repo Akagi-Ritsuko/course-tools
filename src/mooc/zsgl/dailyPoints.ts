@@ -351,24 +351,7 @@ export class ZsglDailyPoints extends Task {
     this.isTaskStopped = false;
     this.savePointsState();
 
-    const nextTask = this.getNextTask();
-    if (nextTask) {
-      Application.App.log.Info(`开始执行任务：${nextTask}`);
-      Application.App.log.Debug(`开始执行任务：${nextTask}`);
-      this.currentTaskType = nextTask;
-
-      switch (nextTask) {
-        case "course":
-          await this.executeCourseTask();
-          break;
-        case "knowledgeRead":
-          await this.executeKnowledgeReadTask();
-          break;
-        case "knowledgeShare":
-          await this.executeKnowledgeShareTask();
-          break;
-      }
-    }
+    await this.switchToNextTask();
   }
 
   protected extractPageIdFromUrl(): void {
@@ -704,11 +687,18 @@ export class ZsglDailyPoints extends Task {
     this.needSwitchTask = false;
     
     try {
-      const nextTask = this.getNextTask();
-      if (nextTask) {
+      while (!this.isTaskStopped) {
+        const nextTask = this.getNextTask();
+        if (!nextTask) {
+          Application.App.log.Info("没有下一个任务，自动停止任务");
+          this.stopTask();
+          break;
+        }
+        
         Application.App.log.Info(`切换到下一个任务: ${nextTask}`);
         this.noChangeCount = 0;
         this.currentTaskType = nextTask;
+        
         switch (nextTask) {
           case "course":
             await this.executeCourseTask();
@@ -720,9 +710,10 @@ export class ZsglDailyPoints extends Task {
             await this.executeKnowledgeShareTask();
             break;
         }
-      } else {
-        Application.App.log.Info("没有下一个任务，自动停止任务");
-        this.stopTask();
+        
+        if (this.isTaskStopped) {
+          break;
+        }
       }
     } finally {
       this.isSwitching = false;
@@ -903,26 +894,10 @@ export class ZsglDailyPoints extends Task {
       }
 
       this.pointsState.isRunning = true;
+      this.isTaskStopped = false;
       this.savePointsState();
 
-      const nextTask = this.getNextTask();
-      if (nextTask) {
-        Application.App.log.Info(`开始执行任务：${nextTask}`);
-        Application.App.log.Debug(`开始执行任务：${nextTask}`);
-        this.currentTaskType = nextTask;
-
-        switch (nextTask) {
-          case "course":
-            await this.executeCourseTask();
-            break;
-          case "knowledgeRead":
-            await this.executeKnowledgeReadTask();
-            break;
-          case "knowledgeShare":
-            await this.executeKnowledgeShareTask();
-            break;
-        }
-      }
+      await this.switchToNextTask();
 
       resolve();
     });
@@ -1242,11 +1217,9 @@ export class ZsglDailyPoints extends Task {
     } else if (this.needSwitchTask) {
       Application.App.log.Info("检测到需要切换任务，知识阅读任务提前结束");
       Application.App.log.Debug("检测到需要切换任务，知识阅读任务提前结束");
-      await this.switchToNextTask();
     } else {
       Application.App.log.Info("贡献积分已达目标，知识阅读任务完成");
       Application.App.log.Debug("贡献积分已达目标，知识阅读任务完成");
-      await this.switchToNextTask();
     }
   }
 
@@ -1353,11 +1326,9 @@ export class ZsglDailyPoints extends Task {
     } else if (this.needSwitchTask) {
       Application.App.log.Info("检测到需要切换任务，知识分享任务提前结束");
       Application.App.log.Debug("检测到需要切换任务，知识分享任务提前结束");
-      await this.switchToNextTask();
     } else {
       Application.App.log.Info("互动积分已达目标，知识分享任务完成");
       Application.App.log.Debug("互动积分已达目标，知识分享任务完成");
-      await this.switchToNextTask();
     }
   }
 

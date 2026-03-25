@@ -322,6 +322,253 @@ window.postMessage({
 }, "*");
 ```
 
+#### 6.5 任务切换时出现"正在切换中，跳过重复调用"导致无法切换到course任务
+
+**问题描述：**
+`knowledgeRead` 和 `knowledgeShare` 任务完成后，切换到 `course` 任务时打印 `[任务切换] 正在切换中，跳过重复调用`，导致任务无法继续执行。
+
+**复现步骤：**
+1. 打开扩展popup页面，配置知识链接
+2. 点击"开始"按钮启动每日积分任务
+3. 观察 `knowledgeShare` 任务完成后，控制台打印 `[任务切换] 正在切换中，跳过重复调用`
+4. 任务停止，无法切换到 `knowledgeRead` 和 `course` 任务
+
+**错误日志：**
+```
+21:05:10.372 [debug] 贡献积分已达目标，知识阅读任务完成
+21:05:10.373 [warn] [任务切换] 正在切换中，跳过重复调用
+```
+
+**问题根源分析：**
+
+这是一个典型的 **async/await 递归调用死锁问题**。
+
+**原始代码结构：**
+```typescript
+// switchToNextTask() - 任务切换控制器
+protected async switchToNextTask(): Promise<void> {
+  if (this.isSwitching) {
+    Application.App.log.Warn("[任务切换] 正在切换中，跳过重复调用");
+    return;  // 问题：这里会跳过所有嵌套调用
+  }
+  this.isSwitching = true;
+  
+  try {
+    const nextTask = this.getNextTask();
+    if (nextTask) {
+      switch (nextTask) {
+        case "knowledgeRead":
+          await this.executeKnowledgeReadTask();  // 执行任务
+          break;
+        // ...
+      }
+    }
+  } finally {
+    this.isSwitching = false;
+  }
+}
+
+// executeKnowledgeReadTask() - 任务执行方法
+protected async executeKnowledgeReadTask(): Promise<void> {
+  // ... 执行知识阅读任务 ...
+  
+  // 任务完成后，主动调用切换方法
+  if (this.needSwitchTask) {
+    await this.switchToNextTask();  // 问题：此时外层 isSwitching 仍为 true！
+  } else {
+    await this.switchToNextTask();  // 同样的问题
+  }
+}
+```
+
+**调用链时序图：**
+```
+时间线 →
+
+switchToNextTask() 调用
+    │
+    ├─ isSwitching = true
+    │
+    ├─ getNextTask() → "knowledgeShare"
+    │
+    ├─ await executeKnowledgeShareTask()
+    │       │
+    │       ├─ ... 执行任务 ...
+    │       │
+    │       └─ await switchToNextTask()  ← 此时 isSwitching 仍为 true！
+    │               │
+    │               └─ if (isSwitching) return;  ← 被跳过！
+    │
+    ├─ finally { isSwitching = false }
+    │
+    └─ 方法结束，但后续任务未执行
+```
+
+**为什么会发生这个问题？**
+
+| 原因 | 说明 |
+|------|------|
+| **设计缺陷** | 任务执行方法（`executeKnowledgeReadTask`）不应该主动调用切换方法，这违反了单一职责原则 |
+| **async/await 特性** | `await` 会暂停当前函数执行，但不会释放函数内的变量状态，`isSwitching` 在整个 `switchToNextTask()` 执行期间都保持 `true` |
+| **递归调用** | 外层 `switchToNextTask()` 还在 `await` 中，内层又调用了 `switchToNextTask()`，形成递归 |
+| **锁机制过于简单** | 简单的布尔锁无法处理嵌套调用场景 |
+
+**修复方案：**
+
+核心思路：**将递归调用改为循环调用**
+
+1. `switchToNextTask()` 改为 `while` 循环模式，在一个调用中完成所有任务切换
+2. 移除任务执行方法末尾的 `switchToNextTask()` 调用
+3. `executeTaskAfterConfirm()` 和 `Start()` 方法统一调用 `switchToNextTask()`
+
+**修复后代码：**
+
+```typescript
+// switchToNextTask() - 改为循环模式
+protected async switchToNextTask(): Promise<void> {
+  if (this.isSwitching) {
+    Application.App.log.Warn("[任务切换] 正在切换中，跳过重复调用");
+    return;
+  }
+  this.isSwitching = true;
+  this.needSwitchTask = false;
+  
+  try {
+    // 关键修改：使用 while 循环，而不是递归调用
+    while (!this.isTaskStopped) {
+      const nextTask = this.getNextTask();
+      if (!nextTask) {
+        Application.App.log.Info("没有下一个任务，自动停止任务");
+        this.stopTask();
+        break;
+      }
+      
+      Application.App.log.Info(`切换到下一个任务: ${nextTask}`);
+      this.noChangeCount = 0;
+      this.currentTaskType = nextTask;
+      
+      switch (nextTask) {
+        case "course":
+          await this.executeCourseTask();
+          break;
+        case "knowledgeRead":
+          await this.executeKnowledgeReadTask();
+          break;
+        case "knowledgeShare":
+          await this.executeKnowledgeShareTask();
+          break;
+      }
+      
+      if (this.isTaskStopped) {
+        break;
+      }
+      // 循环继续，自动执行下一个任务
+    }
+  } finally {
+    this.isSwitching = false;
+  }
+}
+
+// executeKnowledgeReadTask() - 移除末尾的 switchToNextTask() 调用
+protected async executeKnowledgeReadTask(): Promise<void> {
+  // ... 执行知识阅读任务 ...
+  
+  // 只记录日志，不调用切换方法
+  if (this.isTaskStopped) {
+    Application.App.log.Info("知识阅读任务已被停止");
+  } else if (this.needSwitchTask) {
+    Application.App.log.Info("检测到需要切换任务，知识阅读任务提前结束");
+  } else {
+    Application.App.log.Info("贡献积分已达目标，知识阅读任务完成");
+  }
+  // 不再调用 switchToNextTask()，由外层循环自动处理
+}
+
+// executeTaskAfterConfirm() - 统一入口
+protected async executeTaskAfterConfirm(): Promise<void> {
+  // ... 初始化逻辑 ...
+  
+  this.pointsState.isRunning = true;
+  this.isTaskStopped = false;
+  this.savePointsState();
+
+  // 统一调用 switchToNextTask()
+  await this.switchToNextTask();
+}
+
+// Start() - 统一入口
+public Start(): Promise<any> {
+  return new Promise<void>(async (resolve) => {
+    // ... 初始化逻辑 ...
+    
+    this.pointsState.isRunning = true;
+    this.isTaskStopped = false;
+    this.savePointsState();
+
+    // 统一调用 switchToNextTask()
+    await this.switchToNextTask();
+    
+    resolve();
+  });
+}
+```
+
+**修复后的执行流程：**
+
+```
+时间线 →
+
+switchToNextTask() 调用
+    │
+    ├─ isSwitching = true
+    │
+    ├─ while (!isTaskStopped):
+    │       │
+    │       ├─ getNextTask() → "knowledgeShare"
+    │       ├─ await executeKnowledgeShareTask()
+    │       │       └─ 任务完成，方法返回
+    │       │
+    │       ├─ getNextTask() → "knowledgeRead"  ← 循环继续
+    │       ├─ await executeKnowledgeReadTask()
+    │       │       └─ 任务完成，方法返回
+    │       │
+    │       ├─ getNextTask() → "course"  ← 循环继续
+    │       ├─ await executeCourseTask()
+    │       │       └─ 任务完成，方法返回
+    │       │
+    │       └─ getNextTask() → null
+    │               └─ stopTask(), break
+    │
+    ├─ finally { isSwitching = false }
+    │
+    └─ 方法结束，所有任务按顺序完成
+```
+
+**经验教训：**
+
+| 教训 | 说明 |
+|------|------|
+| **避免 async 方法内的递归调用** | async 方法内的 `await` 会保持状态，递归调用容易造成死锁 |
+| **单一职责原则** | 任务执行方法只负责执行任务，不应该决定"下一步做什么" |
+| **使用循环代替递归** | 对于需要连续执行多个任务的场景，循环比递归更可靠 |
+| **锁机制要考虑嵌套场景** | 简单的布尔锁无法处理嵌套调用，应从设计上避免嵌套 |
+
+**预防措施：**
+
+1. **代码审查检查点**
+   - 检查 async 方法内部是否有递归调用同一方法
+   - 检查任务执行方法是否调用了控制器方法
+
+2. **设计原则**
+   - 控制器方法负责流程控制
+   - 执行方法只负责具体任务
+   - 状态管理使用单一入口
+
+3. **测试用例**
+   - 测试多任务顺序执行场景
+   - 测试任务中途切换场景
+   - 测试任务异常终止场景
+
 ---
 
 ## 每日积分系统技术说明
