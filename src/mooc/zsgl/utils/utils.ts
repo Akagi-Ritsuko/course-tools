@@ -25,9 +25,22 @@ const httpHooks: Map<
 > = new Map();
 
 /**
+ * 存储所有修改响应的钩子
+ */
+const modifyHooks: Map<
+  string,
+  Array<{ modifier: (response: any) => any; context: any }>
+> = new Map();
+
+/**
  * 保存原始的XMLHttpRequest.prototype.open
  */
 const originalOpen = XMLHttpRequest.prototype.open;
+
+/**
+ * 保存原始的 responseText getter
+ */
+let originalResponseTextGetter: (() => string) | null = null;
 
 /**
  * 初始化HTTP钩子（只执行一次）
@@ -40,6 +53,8 @@ function initializeHooks() {
 
   XMLHttpRequest.prototype.open = function(method: string, url: string) {
     Application.App.log.Debug("拦截到HTTP请求:", url);
+
+    const xhr = this;
 
     httpHooks.forEach((hooks, urlMatch) => {
       if (url.includes(urlMatch)) {
@@ -57,6 +72,46 @@ function initializeHooks() {
               });
             } catch (e) {
               Application.App.log.Error("数据解析失败", e);
+            }
+          }
+        });
+      }
+    });
+
+    modifyHooks.forEach((modifiers, urlMatch) => {
+      if (url.includes(urlMatch)) {
+        Application.App.log.Debug("匹配到修改钩子:", urlMatch);
+
+        this.addEventListener("readystatechange", function() {
+          if (this.readyState === 4 && this.status === 200) {
+            try {
+              let response = this.responseText.startsWith("{")
+                ? JSON.parse(this.responseText)
+                : this.responseText;
+
+              modifiers.forEach((modifier) => {
+                response = modifier.modifier.call(modifier.context, response);
+              });
+
+              const modifiedText = JSON.stringify(response);
+
+              Object.defineProperty(xhr, "responseText", {
+                get: function() {
+                  return modifiedText;
+                },
+                configurable: true,
+              });
+
+              Object.defineProperty(xhr, "response", {
+                get: function() {
+                  return modifiedText;
+                },
+                configurable: true,
+              });
+
+              Application.App.log.Debug("响应已被修改:", urlMatch);
+            } catch (e) {
+              Application.App.log.Error("修改响应失败", e);
             }
           }
         });
@@ -86,6 +141,36 @@ export async function hookHttpRequest(
 
   httpHooks.get(urlMatch)!.push({ callback, context });
   Application.App.log.Debug("注册HTTP钩子:", urlMatch);
+}
+
+/**
+ * 拦截并修改HTTP响应
+ * @param urlMatch URL匹配字符串
+ * @param modifier 修改函数，接收原始响应，返回修改后的响应
+ * @param context 上下文对象
+ * @example
+ * // 禁用切换屏幕检测
+ * hookAndModifyHttpResponse("queryCourseDetail.do", (response) => {
+ *   if (response.body) {
+ *     response.body.isOpenSwitchScreen = 0;
+ *     response.body.isOpenScreenShot = 0;
+ *   }
+ *   return response;
+ * }, this);
+ */
+export async function hookAndModifyHttpResponse(
+  urlMatch: string,
+  modifier: (response: any) => any,
+  context: any,
+): Promise<void> {
+  initializeHooks();
+
+  if (!modifyHooks.has(urlMatch)) {
+    modifyHooks.set(urlMatch, []);
+  }
+
+  modifyHooks.get(urlMatch)!.push({ modifier, context });
+  Application.App.log.Debug("注册响应修改钩子:", urlMatch);
 }
 // 修正语法错误并添加类型声明
 export interface StorageHandler {
@@ -140,7 +225,7 @@ export function CssBtn(btn: HTMLButtonElement): HTMLButtonElement {
  */
 export function createEventPreventHandler(): EventPreventHandler {
   return function(this: any, e: Event) {
-    console.log(`${this?.name || "unknown"} ${e.type}事件触发`, e);
+    // console.log(`${this?.name || "unknown"} ${e.type}事件触发`, e);
     e.stopImmediatePropagation();
     e.stopPropagation();
   };

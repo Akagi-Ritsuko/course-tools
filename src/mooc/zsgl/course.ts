@@ -2,8 +2,8 @@
  * @Author: guotao
  * @Date: 2025-09-27 02:32:51
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-14 02:51:03
- * @FilePath: \course-tools1\src\mooc\zsgl\course.ts
+ * @LastEditTime: 2026-05-18 14:10:34
+ * @FilePath: \course-tools\src\mooc\zsgl\course.ts
  * @Description: zsgl 课程任务管理
  *
  * Copyright (c) 2025 by lzlj, All Rights Reserved.
@@ -85,75 +85,81 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
             }
         });
     }
-
+    public courseTaskCompleteFc() {
+        this.callEvent("courseTaskComplete");
+        this.notifyStudyMapCourseComplete();
+    }
     /** 钩子获取课程详情请求 */
     protected hookCourseDetailRequests(): void {
         Application.App.log.Debug("设置HTTP钩子，监听:", ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_COURSE_DETAIL);
         
-        const originalOpen = XMLHttpRequest.prototype.open;
         const self = this;
+        
+        hookHttpRequest(
+          ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_COURSE_DETAIL,
+          (response: any, context: any, url: string) => {
+            Application.App.log.Info("匹配到课程详情请求:", url);
 
-        XMLHttpRequest.prototype.open = function (method: string, url: string) {
-            Application.App.log.Debug("拦截到HTTP请求:", url);
-            
-            if (url.includes(ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_COURSE_DETAIL)) {
-                Application.App.log.Info("匹配到课程详情请求:", url);
-                
-                this.addEventListener('readystatechange', function () {
-                    if (this.readyState === 4 && this.status === 200) {
-                        try {
-                            Application.App.log.Debug("课程详情请求响应:", this.responseText.substring(0, 500));
-                            
-                            const response = this.responseText.startsWith("{")
-                                ? JSON.parse(this.responseText)
-                                : this.responseText;
-                            
-                            const responseData = response?.body;
-                            const courseFileArr = responseData?.courseFileArr;
-                            const courseId = responseData?.courseId;
-                            
-                            // 保存当前课程ID
-                            if (courseId) {
-                                self.currentCourseId = courseId;
-                            }
-                            
-                            if (courseFileArr && courseFileArr.length > 0) {
-                                const allCompleted = courseFileArr.every((item: any) => item.hasLearned === "1");
-                                
-                                if (allCompleted) {
-                                    Application.App.log.Info("课程已完成，所有任务都已学习");
-                                    self.callEvent("courseTaskComplete");
-                                } else {
-                                    self.courseDetailData = courseFileArr
-                                        .map((item: any, index: number): CourseDetailItem => {
-                                            return {
-                                                hasLearned: item.hasLearned,
-                                                fileName: item.fileName,
-                                                cwType: item.cwType,
-                                                jobIndex: index,
-                                                courseId,
-                                                playTime: item.playTime,
-                                                learnedDuration: item.learnedDuration,
-                                            };
-                                        })
-                                        .filter((item: CourseDetailItem) => {
-                                            return item.hasLearned === "0";
-                                        });
-                                    Application.App.log.Info("课程详情数据已获取，共", self.courseDetailData.length, "个未完成任务");
-                                    Application.App.log.Debug("课程详情数据", self.courseDetailData);
-                                }
-                            } else {
-                                Application.App.log.Info("课程数据为空");
-                                self.callEvent("courseTaskComplete");
-                            }
-                        } catch (e) {
-                            Application.App.log.Error("数据解析失败", e);
-                        }
-                    }
-                });
+            try {
+              Application.App.log.Debug(
+                "课程详情请求响应:",
+                JSON.stringify(response).substring(0, 500),
+              );
+
+              const responseData = response?.body;
+              const courseFileArr = responseData?.courseFileArr;
+              const courseId = responseData?.courseId;
+
+              if (courseId) {
+                self.currentCourseId = courseId;
+              }
+
+              if (courseFileArr && courseFileArr.length > 0) {
+                const allCompleted = courseFileArr.every(
+                  (item: any) => item.hasLearned === "1",
+                );
+
+                if (allCompleted) {
+                  Application.App.log.Info("课程已完成，所有任务都已学习");
+                  self.callEvent("courseTaskComplete");
+                } else {
+                  self.courseDetailData = courseFileArr
+                    .map(
+                      (item: any, index: number): CourseDetailItem => {
+                        return {
+                          hasLearned: item.hasLearned,
+                          fileName: item.fileName,
+                          cwType: item.cwType,
+                          jobIndex: index,
+                          courseId,
+                          playTime: item.playTime,
+                          learnedDuration: item.learnedDuration,
+                        };
+                      },
+                    )
+                    .filter((item: CourseDetailItem) => {
+                      return item.hasLearned === "0";
+                    });
+                  Application.App.log.Info(
+                    "课程详情数据已获取，共",
+                    self.courseDetailData.length,
+                    "个未完成任务",
+                  );
+                  Application.App.log.Debug(
+                    "课程详情数据",
+                    self.courseDetailData,
+                  );
+                }
+              } else {
+                Application.App.log.Info("课程数据为空");
+                self.callEvent("courseTaskComplete");
+              }
+            } catch (e) {
+              Application.App.log.Error("数据解析失败", e);
             }
-            return originalOpen.apply(this, arguments as any);
-        };
+          },
+          this,
+        );
     }
 
     public Stop(): Promise<any> {
@@ -174,17 +180,30 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
             if (key?.startsWith(prefix)) {
               try {
                 const value = JSON.parse(localStorage.getItem(key) || "{}");
-                if (value.status === "started" && value.expire > now) {
-                  const taskStatus: TaskStatus = {
-                    status: "finished",
-                    expire: value.expire,
-                  };
-                  localStorage.setItem(key, JSON.stringify(taskStatus));
-                  Application.App.log.Info(
-                    "课程完成，已更新 localStorage",
-                    key,
-                  );
-                  return;
+                // if (value.status === "started" && value.expire > now) {
+                //   const taskStatus: TaskStatus = {
+                //     status: "finished",
+                //     expire: value.expire,
+                //   };
+                //   localStorage.setItem(key, JSON.stringify(taskStatus));
+                //   Application.App.log.Info(
+                //     "课程超时，已更新 localStorage",
+                //     key,
+                //   );
+                //   return;
+                //   }
+                  if (key === `${ZSGL_CONSTANTS.STORAGE_PREFIX}${this.currentCourseId}`) {
+                      const taskStatus: TaskStatus = {
+                        status: "finished",
+                        expire: value.expire,
+                    };
+                    localStorage.setItem(key, JSON.stringify(taskStatus));
+                    Application.App.log.Info(
+                        "课程完成，已更新 localStorage",
+                        key,
+                      );
+                      window.close();
+                      return;
                 }
               } catch (e) {
                 Application.App.log.Warn("解析 localStorage 失败", key);
@@ -257,11 +276,12 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
 
     public Next(): Promise<Task> {
         return new Promise((resolve) => {
-            if (this.taskList.length >= this.taskIndex) {
+            Application.App.log.Debug("Next 课程任务索引:", this.taskIndex, this.taskList.length);
+            if (this.taskList.length > this.taskIndex) {
                 resolve(this.taskList[this.taskIndex]);
                 return this.taskIndex++;
             } else {
-                this.callEvent("courseTaskComplete");
+                this.courseTaskCompleteFc();
             }
         });
     }
@@ -288,7 +308,7 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
                 } else if (waitCount > 20) {
                     this.timerManager.clearInterval("waitForData");
                     Application.App.log.Error("等待课程数据超时");
-                    this.callEvent("courseTaskComplete");
+                    this.courseTaskCompleteFc()
                 }
             }, 1000);
             return;
@@ -306,7 +326,7 @@ export class ZsglCourse extends EventListener<MoocEvent> implements MoocTaskSet 
             attemptCount++;
             if (attemptCount > ZSGL_CONSTANTS.MAX_ATTEMPT_COUNT) {
                 this.timerManager.clearInterval("checkTaskDiv");
-                this.callEvent("courseTaskComplete");
+                this.courseTaskCompleteFc()
                 return;
             }
 

@@ -162,7 +162,7 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
                                 if (self.questionList.length !== 0) {
                                     resolve();
                                 }
-                                Application.App.log.Debug("解密后的响应数据", self.questionList);
+                                Application.App.log.Debug("解密后的响应数据", JSON.stringify(self.questionList));
                             } catch (e) {
                                 Application.App.log.Error("解析题目数据失败", e);
                                 reject(e);

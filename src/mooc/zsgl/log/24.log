@@ -1,0 +1,184 @@
+VM386:3 [每日积分] panel: 构造函数被调用OperateCard
+VM386:3 [每日积分] panel: init方法被调用
+VM386:3 [debug 11:22:14 ] Start document state: loading
+VM386:3 create mooc
+VM386:3 [info 11:22:14 ] 当前平台：zsgl
+VM386:3 mooc start d {event: {…}, taskList: Array(0), courseDetailData: Array(0), timerManager: e.TimerManager, taskIndex: 0, …}
+VM386:3 [debug 11:22:14 ] 初始化course课程任务
+VM386:3 [debug 11:22:14 ] 当前页面URL: https://zsgl.lzlj.com/znWeb/znPortal/#/home/courseDetail/N008011
+VM386:3 [debug 11:22:14 ] 当前页面hash: #/home/courseDetail/N008011
+VM386:3 [debug 11:22:14 ] 设置HTTP钩子，监听: queryCourseDetail.do
+webim.min.js:1 navigator.userAgent=mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/148.0.0.0 safari/537.36 edg/148.0.0.0
+webim.min.js:1 BROWSER_INFO: type=chrome, ver=148.0.0.0
+VM386:3 [debug 11:22:15 ] 拦截到HTTP请求: /znWeb/znPortal/lang/zh.json
+main.f7f112ee.js:1 0530-1
+main.f7f112ee.js:1 showSearch true
+VM386:3 [debug 11:22:15 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryHomeChannelModule.do?pageId=SY0010092&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+VM386:3 [debug 11:22:15 ] 拦截到HTTP请求: /learn/app/clientapi/home/getPcGlobalManagement.do?pageId=SY0010092&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+VM386:3 [debug 11:22:15 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+main.f7f112ee.js:1 showSearch true
+VM386:3 [debug 11:22:15 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/userPermissions.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+VM386:3 [debug 11:22:15 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryHomeGlobalInfo.do?pageId=SY0010092&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+VM386:3 [debug 11:22:15 ] 拦截到HTTP请求: /learn/app/clientapi/message/getMessageListType.do?sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+VM386:3 [每日积分] panel: window.onload 触发
+VM386:3 [每日积分] panel: 初始化消息监听
+VM386:3 [debug 11:22:16 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1779074536084, isRunning: false, …}
+VM386:3 [debug 11:22:16 ] document.addEventListener(load)
+VM386:3 [debug 11:22:16 ] OperateCard 课程详情数据长度: 0
+VM386:3 mooc初始化完成 d {event: {…}, taskList: Array(0), courseDetailData: Array(0), timerManager: e.TimerManager, taskIndex: 0, …}
+VM386:3 Next(){return new Promise(t=>{if(o.Application.App.log.Debug("Next 课程任务索引:",this.taskIndex,this.taskList.length),this.taskList.length>=this.taskIndex)return t(this.taskList[this.taskIndex]),this.task… 'mooc.Next'
+VM386:3 [debug 11:22:16 ] runMoocTask 开始执行任务:
+VM386:3 [debug 11:22:16 ] 拦截到HTTP请求: /learn/app/clientapi/misc/queryVasOperation2NativeList.do?sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+main.f7f112ee.js:1 --------------- Mon May 18 2026 11:22:16 GMT+0800 (中国标准时间)
+VM386:3 [debug 11:22:16 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryUserHomeList.do?time=1779074536174&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+main.f7f112ee.js:1 showSearch true
+main.f7f112ee.js:1 undefined 'appId-------'
+VM386:3 [debug 11:22:16 ] 拦截到HTTP请求: /learn/app/newPersonDetail.do?sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+VM386:3 [debug 11:22:16 ] 拦截到HTTP请求: /learn-login/queryUserInfoBound.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+VM386:3 [debug 11:22:16 ] 拦截到HTTP请求: /learn/app/clientapi/knowledgecloud/home/getPermissionStatus.do?sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+main.f7f112ee.js:1 showSearch true
+main.f7f112ee.js:1 showSearch true
+main.f7f112ee.js:1 showSearch true
+VM386:3 [debug 11:22:16 ] 拦截到HTTP请求: /learn/app/clientapi/course/queryCourseDetail.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+VM386:3 [debug 11:22:16 ] 拦截到HTTP请求: /learn/app/clientapi/course/relatedResources.do?courseId=N008011&type=2&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+VM386:3 [debug 11:22:16 ] 拦截到HTTP请求: /learn/app/clientapi/course/queryCourseBaseInfo.do?courseId=N008011&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+VM386:3 [debug 11:22:16 ] 拦截到HTTP请求: /learn/app/clientapi/user/personDetail.do?searchedUserId=51A0C28038F643F59B89D714776508D3&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+VM386:3 [debug 11:22:16 ] 课程详情请求响应: {"code":0,"body":{"activtiyPrice":0,"advertArr":[],"author":"","averageScore":"4.9","bowseNumber":"5809","canComment":"1","canDownload":"0","canFF":"0","canRate":"1","chapters":[],"classifyList":[{"courseId":"","fullName":"兴趣课堂>健康养生","fullPath":"9|5|9|||9|6|4","id":"964","name":"健康养生","pageId":"","parentId":"959","type":"COURSE_AREA"}],"clockInInterval":0,"clockInNum":0,"commission":0,"completionReportInterval":5,"courseFileArr":[{"chapterExamScore":null,"chapterExamTime":null,"chapterPaperId":"
+VM386:3 [debug 11:22:16 ] 课程详情数据 [{…}]无属性
+VM386:3 [debug 11:22:16 ] 拦截到HTTP请求: /learn/app/clientapi/user/isOpenHumanSocietyVas.do?sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+VM386:3 [debug 11:22:17 ] 等待课程数据... 1
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/selectResourceRule.do?resourceId=N008011&resourceType=0&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+8222.6209a852.chunk.js:1 2222
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: /learn/app/clientapi/course/commenthead.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: /learn/app/clientapi/course/comment.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1777015913574&courseId=N008011&bizType=0&bizId=&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: /learn/app/clientapi/course/uploadCourseLearnStatus.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: /learn/app/clientapi/course/preview.do?coursewareId=1777015913574&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: /learn/app/clientapi/misc/queryVasOperation2NativeList.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/clientapi/course/drm/m3u8/getPlaylist.do?sourceId=1777015913574&znTid=0BA28FE460D843BEB9ACED7ECB814ACC&wsSecret=2862e495c669b0d6f350edeb03c93431&wsTime=6a0ada48&wsVersion=3&sid=EC31D5D244D84F30ABBF2A3330EA4561
+VM386:3 [debug 11:22:17 ] 寻找taskDiv 职业病危害及防治宣传片—生命边缘（下）.mp4
+VM386:3 [debug 11:22:17 ] 构建任务 1: 职业病危害及防治宣传片—生命边缘（下）.mp4 类型: video
+VM386:3 创建课程任务: video
+VM386:3 [debug 11:22:17 ] zsglVideo开始初始化任务 {hasLearned: '0', fileName: '职业病危害及防治宣传片—生命边缘（下）.mp4', cwType: 'video', jobIndex: 0, courseId: 'N008011', …}
+VM386:3 [debug 11:22:17 ] 任务 1 初始化完成
+VM386:3 [debug 11:22:17 ] runTask 开始执行任务: false
+VM386:3 [debug 11:22:17 ] runTask 开始执行任务:
+VM386:3 [debug 11:22:17 ] Next 课程任务索引: 0 1
+VM386:3 [debug 11:22:17 ] zsglVideo开始执行任务 <span class=​"jss204">​职业病危害及防治宣传片—生命边缘（下）.mp4​</span>​
+VM386:3 [debug 11:22:17 ] 播放器初始化配置 {mute: true, multiple: 2}
+VM386:3 [debug 11:22:17 ] [播放尝试] 第 1 次 {src: 'blob:https://zsgl.lzlj.com/05ce5d62-0ece-4314-b01e-1985e091ea18', currentSrc: 'blob:https://zsgl.lzlj.com/05ce5d62-0ece-4314-b01e-1985e091ea18', readyState: 0, hasSource: true}
+VM386:3 [debug 11:22:17 ] [播放速率] 设置播放速率为 2x
+VM386:3 [debug 11:22:17 ] [点击播放] 找到播放按钮，点击播放 <button class=​"vjs-big-play-button" type=​"button" title=​"Play Video" aria-disabled=​"false">​…​</button>​
+VM386:3 [debug 11:22:17 ] [静音设置] 设置静音状态为 true
+VM386:3 [debug 11:22:17 ] [播放速率] 设置播放速率为 2x
+VM386:3 unknown volumechange事件触发 Event {isTrusted: true, type: 'volumechange', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+VM386:3 unknown ratechange事件触发 Event {isTrusted: true, type: 'ratechange', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+VM386:3 unknown volumechange事件触发 Event {isTrusted: true, type: 'volumechange', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/clientapi/course/drm/m3u8/getPlayParams.do?os=999&os=99&sourceId=1777015913574&sid=EC31D5D244D84F30ABBF2A3330EA4561
+VM386:3 [debug 11:22:17 ] [视频事件] Video playing, applying settings...
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1777015913574&courseId=N008011&bizType=0&bizId=&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+VM386:3 [debug 11:22:17 ] [播放速率] 设置播放速率为 2x
+VM386:3 [debug 11:22:17 ] [静音设置] 设置静音状态为 true
+VM386:3 [debug 11:22:17 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_0.ts
+VM386:3 [debug 11:22:18 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+VM386:3 [debug 11:22:18 ] 0 播放时间
+VM386:3 [debug 11:22:18 ] [播放速率] 设置播放速率为 2x
+VM386:3 unknown resize事件触发 Event {isTrusted: true, type: 'resize', target: video#course-video_html5_api.vjs-tech, currentTarget: Window, eventPhase: 1, …}
+VM386:3 [debug 11:22:18 ] [播放速率] 设置播放速率为 2x
+VM386:3 [debug 11:22:18 ] [点击播放] 找到播放按钮，点击播放 <button class=​"vjs-big-play-button" type=​"button" title=​"Play Video" aria-disabled=​"false">​…​</button>​
+VM386:3 [debug 11:22:18 ] [静音设置] 设置静音状态为 true
+VM386:3 [debug 11:22:18 ] [播放速率] 设置播放速率为 2x
+VM386:3 [debug 11:22:18 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_1.ts
+VM386:3 [debug 11:22:18 ] [播放速率] 设置播放速率为 2x
+VM386:3 [debug 11:22:18 ] [点击播放] 找到播放按钮，点击播放 <button class=​"vjs-big-play-button" type=​"button" title=​"Play Video" aria-disabled=​"false">​…​</button>​
+VM386:3 [debug 11:22:18 ] [静音设置] 设置静音状态为 true
+VM386:3 [debug 11:22:18 ] [播放速率] 设置播放速率为 2x
+VM386:3 unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+VM386:3 [debug 11:22:18 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_32.ts
+VM386:3 [debug 11:22:18 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_33.ts
+VM386:3 unknown seeked事件触发 Event {isTrusted: true, type: 'seeked', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+VM386:3 [debug 11:22:18 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_34.ts
+VM386:3 [debug 11:22:18 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_35.ts
+8222.6209a852.chunk.js:1 commonFull true
+8222.6209a852.chunk.js:1 window.outerWidth 1920
+8222.6209a852.chunk.js:1 screen.availWidth 1920
+8222.6209a852.chunk.js:1 windowF11Full false
+8222.6209a852.chunk.js:1 isFullScreen true
+VM386:3 [debug 11:22:20 ] 拦截到HTTP请求: /learn/app/clientapi/course/progress/reportLearnProgress.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+8222.6209a852.chunk.js:1 report success
+VM386:3 [debug 11:22:21 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_36.ts
+ [debug 11:22:26 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_37.ts
+ unknown blur事件触发 Event {isTrusted: true, type: 'blur', target: Window, currentTarget: Window, eventPhase: 2, …}
+ [debug 11:22:31 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_38.ts
+ [debug 11:22:36 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_39.ts
+ [debug 11:22:42 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_40.ts
+ [debug 11:22:46 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_41.ts
+ [debug 11:22:53 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_42.ts
+ unknown visibilitychange事件触发 Event {isTrusted: true, type: 'visibilitychange', target: document, currentTarget: Window, eventPhase: 1, …}
+ [debug 11:22:55 ] [视频事件] Video paused, attempting to resume...
+ [debug 11:22:55 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ [debug 11:22:56 ] [点击播放] 找到播放按钮，点击播放 
+ [debug 11:22:56 ] [静音设置] 设置静音状态为 true
+ [debug 11:22:56 ] [播放速率] 设置播放速率为 2x
+ [debug 11:22:56 ] [视频事件] Video playing, applying settings...
+ [debug 11:22:56 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ [debug 11:22:56 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1777015913574&courseId=N008011&bizType=0&bizId=&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+ unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+ [debug 11:22:56 ] [视频事件] Video paused, attempting to resume...
+ [debug 11:22:56 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ unknown seeked事件触发 Event {isTrusted: true, type: 'seeked', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+ [debug 11:22:57 ] [播放速率] 设置播放速率为 2x
+ [debug 11:22:57 ] [静音设置] 设置静音状态为 true
+ [debug 11:22:57 ] [点击播放] 找到播放按钮，点击播放 
+ [debug 11:22:57 ] [静音设置] 设置静音状态为 true
+ [debug 11:22:57 ] [播放速率] 设置播放速率为 2x
+ [debug 11:22:57 ] [视频事件] Video playing, applying settings...
+ [debug 11:22:57 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1777015913574&courseId=N008011&bizType=0&bizId=&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+ unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+ [debug 11:22:57 ] [视频事件] Video paused, attempting to resume...
+ [debug 11:22:57 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ unknown seeked事件触发 Event {isTrusted: true, type: 'seeked', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+ [debug 11:22:58 ] [播放速率] 设置播放速率为 2x
+ [debug 11:22:58 ] [静音设置] 设置静音状态为 true
+ [debug 11:22:58 ] [点击播放] 找到播放按钮，点击播放 
+ [debug 11:22:58 ] [静音设置] 设置静音状态为 true
+ [debug 11:22:58 ] [播放速率] 设置播放速率为 2x
+ [debug 11:22:58 ] [视频事件] Video playing, applying settings...
+ [debug 11:22:58 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ [debug 11:22:58 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1777015913574&courseId=N008011&bizType=0&bizId=&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+ [debug 11:22:58 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+ [debug 11:22:58 ] [视频事件] Video paused, attempting to resume...
+ [debug 11:22:58 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ unknown seeked事件触发 Event {isTrusted: true, type: 'seeked', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+ [debug 11:22:59 ] [播放速率] 设置播放速率为 2x
+ [debug 11:22:59 ] [静音设置] 设置静音状态为 true
+ [debug 11:22:59 ] [点击播放] 找到播放按钮，点击播放 
+ [debug 11:22:59 ] [静音设置] 设置静音状态为 true
+ [debug 11:22:59 ] [播放速率] 设置播放速率为 2x
+ [debug 11:22:59 ] [视频事件] Video playing, applying settings...
+ [debug 11:22:59 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ [debug 11:22:59 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1777015913574&courseId=N008011&bizType=0&bizId=&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+ [debug 11:22:59 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+ [debug 11:22:59 ] [视频事件] Video paused, attempting to resume...
+ [debug 11:22:59 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ unknown seeked事件触发 Event {isTrusted: true, type: 'seeked', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+ unknown visibilitychange事件触发 Event {isTrusted: true, type: 'visibilitychange', target: document, currentTarget: Window, eventPhase: 1, …}
+ [debug 11:23:0 ] [视频事件] Video playing, applying settings...
+ [debug 11:23:0 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ [debug 11:23:0 ] 拦截到HTTP请求: /learn/app/clientapi/course/play/queryStatus.do?courseWareId=1777015913574&courseId=N008011&bizType=0&bizId=&sid=EC31D5D244D84F30ABBF2A3330EA4561&os=99
+ [debug 11:23:0 ] [播放速率] 设置播放速率为 2x
+ [debug 11:23:0 ] [静音设置] 设置静音状态为 true
+ [debug 11:23:0 ] [播放速率] 设置播放速率为 2x
+ [debug 11:23:0 ] [静音设置] 设置静音状态为 true
+ [debug 11:23:0 ] 拦截到HTTP请求: /learn/app/clientapi/course/bigdata/courseLearnTime.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ unknown seeking事件触发 Event {isTrusted: true, type: 'seeking', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+ unknown seeked事件触发 Event {isTrusted: true, type: 'seeked', target: video#course-video_html5_api.vjs-tech, currentTarget: video#course-video_html5_api.vjs-tech, eventPhase: 2, …}
+ [debug 11:23:0 ] 拦截到HTTP请求: /learn/app/clientapi/course/progress/reportLearnProgress.do?os=99&sid=EC31D5D244D84F30ABBF2A3330EA4561
+ report success
+ [debug 11:23:2 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_43.ts
+ [debug 11:23:6 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_44.ts
+ [debug 11:23:10 ] 拦截到HTTP请求: https://zsglcdn.lzlj.com/learn/app/filehub/0001/formal/course/2026/04/24/5E651E9DA06F4256A48A498D0CE9E022/1777015913574_s_45.ts
