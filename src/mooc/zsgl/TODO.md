@@ -526,4 +526,10 @@ document.addEventListener('visibilitychange', (e) => {
 | 日期         | 更新内容   |
 | ---------- | ------ |
 | 2025-03-09 | 创建问题清单 |
+| 2025-03-15 | 完成考试 API 请求构造工具函数（exam-utils.ts） |
+|            | - 实现 getSid() 函数：从内存或 Cookie 获取 sid |
+|            | - 实现 generateHeaderMap() 函数：生成签名 headerMap |
+|            | - 实现 sendExamApiRequest() 函数：发送考试 API 请求 |
+|            | - 添加 queryQuestionAnswer、submitQuestionAnswer、queryNewExamPaper 等封装函数 |
+|            | - 创建测试文件 exam-utils-test.ts 用于验证功能 |
 

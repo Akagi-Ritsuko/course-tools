@@ -34,11 +34,14 @@ export interface CourseDetailItem {
 }
 
 export interface QuestionInfo {
+    questionId: string;
     questionText: string;
+    questionType: "S" | "M" | "T"; // S: 单选, M: 多选, T: 判断题
     sectionRespList: QuestionSection[];
 }
 
 export interface QuestionSection {
+    sectionId: string;
     sectionText: string;
     isCorrect: string;
 }

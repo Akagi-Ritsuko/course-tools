@@ -47,6 +47,7 @@ export const ZSGL_CONSTANTS = {
         QUERY_QUESTION_DETAIL: 'queryQuestionDetail.do',
         QUERY_STUDYMAP_GATE: 'queryStudymapGate.do',
         QUERY_STUDYMAP_GATE_TASK: 'queryStudymapGateTask.do',
+        QUERY_NEW_EXAM_PAPER: 'queryNewExamPaper.do',
     },
     
     URL_PATTERNS: {
