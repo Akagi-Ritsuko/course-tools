@@ -9,7 +9,7 @@
  * Copyright (c) 2025 by lzlj, All Rights Reserved.
  */
 import { QuestionInfo, QuestionSection } from "../types";
-import { submitQuestionAnswer, queryQuestionAnswer, ExamApiResponse } from "./exam-utils";
+import { submitQuestionAnswer, queryQuestionAnswer } from "./exam-utils";
 import { Application } from "@App/internal/application";
 
 /**
@@ -75,6 +75,10 @@ export class MultipleChoiceAnswerStrategy {
 
   /**
    * 批量答题主函数
+   *
+   * 说明：queryQuestionAnswer 返回的 isCorrect 是“整题答案是否完全正确”，
+   * 而不是单个选项是否正确。因此无法通过“提交单个选项”来判断该选项对错，
+   * 只能枚举所有非空选项组合并提交，直到某个组合的 isCorrect === "Y"。
    * @param questions 多选题列表
    * @returns Promise<MultipleChoiceState[]> 答题状态列表
    */
@@ -95,369 +99,122 @@ export class MultipleChoiceAnswerStrategy {
       finalAnswer: []
     }));
 
-    Application.App.log.Info(`开始批量处理 ${questions.length} 道多选题`);
+    Application.App.log.Info(`开始破解 ${questions.length} 道多选题`);
 
-    // 第一阶段：逐选项测试
-    await this.testIndividualOptions(states);
+    // 逐题枚举组合破解
+    for (let index = 0; index < states.length; index++) {
+      const state = states[index];
+      this.reportProgress(
+        "testing",
+        index,
+        states.length,
+        undefined,
+        `正在破解第 ${index + 1}/${states.length} 道多选题`
+      );
+      await this.crackSingleQuestion(state);
+    }
 
-    // 第二阶段：组合验证
-    await this.verifyCombinations(states);
-
-    // 返回最终结果
+    this.reportProgress("completed", states.length, states.length, undefined, "多选题破解完成");
     return states;
   }
 
   /**
-   * 第一阶段：逐个测试每个选项
-   * @param states 答题状态列表
-   */
-  private async testIndividualOptions(states: MultipleChoiceState[]): Promise<void> {
-    const totalQuestions = states.length;
-    const optionsCount = 4; // A/B/C/D 四个选项
-
-    this.reportProgress("testing", 0, totalQuestions, undefined, "开始逐选项测试");
-
-    // 按选项索引批量测试（A/B/C/D）
-    for (let optionIndex = 0; optionIndex < optionsCount; optionIndex++) {
-      const optionLetter = String.fromCharCode(65 + optionIndex); // A, B, C, D
-
-      Application.App.log.Debug(`测试选项 ${optionLetter} (索引 ${optionIndex})`);
-
-      // 为所有未完成的题目准备当前要测试的选项
-      const batchAnswers = this.prepareBatchAnswers(states, optionIndex);
-
-      if (batchAnswers.length === 0) {
-        Application.App.log.Debug(`选项 ${optionLetter} 没有需要测试的题目`);
-        continue;
-      }
-
-      this.reportProgress(
-        "testing",
-        0,
-        totalQuestions,
-        optionLetter,
-        `正在测试选项 ${optionLetter}，共 ${batchAnswers.length} 道题目`
-      );
-
-      try {
-        // 批量提交
-        await submitQuestionAnswer(batchAnswers);
-        Application.App.log.Debug(`选项 ${optionLetter} 批量提交成功`);
-
-        // 等待一小段时间确保服务器处理完成
-        await this.delay(300);
-
-        // 查询结果
-        const results = await queryQuestionAnswer(this.examId, this.attemptId);
-
-        if (results.code === "0" && results.body) {
-          // 分析结果
-          this.analyzeResults(states, results.body, optionIndex);
-          Application.App.log.Debug(`选项 ${optionLetter} 结果分析完成`);
-        } else {
-          Application.App.log.Error(`查询选项 ${optionLetter} 结果失败:`, results.message);
-        }
-      } catch (error) {
-        Application.App.log.Error(`测试选项 ${optionLetter} 时发生错误:`, error);
-      }
-    }
-
-    this.reportProgress("testing", totalQuestions, totalQuestions, undefined, "逐选项测试完成");
-  }
-
-  /**
-   * 准备批量答案数据
-   * @param states 答题状态列表
-   * @param optionIndex 选项索引
-   * @returns 批量答案数据
-   */
-  private prepareBatchAnswers(states: MultipleChoiceState[], optionIndex: number): any[] {
-    const batchAnswers: any[] = [];
-
-    for (const state of states) {
-      // 跳过已完成的题目
-      if (state.isCompleted) {
-        continue;
-      }
-
-      // 确保有足够的选项
-      if (!state.allOptions[optionIndex]) {
-        continue;
-      }
-
-      const option = state.allOptions[optionIndex];
-
-      // 构建答案数据
-      const answerData = {
-        attemptId: this.attemptId,
-        examId: this.examId,
-        testNo: this.testNo,
-        answerList: [option.sectionId],
-        questionId: state.questionId,
-        questionNodesAnswer: [],
-        images: []
-      };
-
-      batchAnswers.push(answerData);
-    }
-
-    return batchAnswers;
-  }
-
-  /**
-   * 分析查询结果
-   * @param states 答题状态列表
-   * @param results 查询结果
-   * @param optionIndex 选项索引
-   */
-  private analyzeResults(
-    states: MultipleChoiceState[],
-    results: any[],
-    optionIndex: number
-  ): void {
-    for (const state of states) {
-      // 跳过已完成的题目
-      if (state.isCompleted) {
-        continue;
-      }
-
-      // 确保有足够的选项
-      if (!state.allOptions[optionIndex]) {
-        continue;
-      }
-
-      const option = state.allOptions[optionIndex];
-
-      // 查找对应题目的结果
-      const result = results.find((r: any) => r.questionId === state.questionId);
-
-      if (!result) {
-        Application.App.log.Warn(`未找到题目 ${state.questionId} 的结果`);
-        continue;
-      }
-
-      // 判断选项是否正确
-      if (result.isCorrect === "Y") {
-        // 该选项是正确答案之一
-        state.correctOptions.push(option.sectionId);
-        Application.App.log.Debug(
-          `题目 ${state.questionId} 选项 ${option.sectionText} 是正确答案`
-        );
-      } else {
-        // 该选项是错误选项
-        state.wrongOptions.push(option.sectionId);
-        Application.App.log.Debug(
-          `题目 ${state.questionId} 选项 ${option.sectionText} 是错误选项`
-        );
-      }
-    }
-  }
-
-  /**
-   * 第二阶段：组合验证
-   * @param states 答题状态列表
-   */
-  private async verifyCombinations(states: MultipleChoiceState[]): Promise<void> {
-    const totalQuestions = states.length;
-    let processedCount = 0;
-
-    this.reportProgress("verifying", 0, totalQuestions, undefined, "开始组合验证");
-
-    for (const state of states) {
-      // 跳过已完成的题目
-      if (state.isCompleted) {
-        processedCount++;
-        continue;
-      }
-
-      // 如果只有一个正确选项，可能是单选题或只有一个正确选项的多选题
-      if (state.correctOptions.length === 1) {
-        // 直接提交验证
-        await this.verifySingleOption(state);
-        processedCount++;
-        continue;
-      }
-
-      // 如果有多个正确选项，需要验证组合
-      if (state.correctOptions.length > 1) {
-        await this.verifyMultipleOptions(state);
-      } else {
-        // 如果没有正确选项，记录警告
-        Application.App.log.Warn(`题目 ${state.questionId} 未找到任何正确选项`);
-      }
-
-      processedCount++;
-      this.reportProgress(
-        "verifying",
-        processedCount,
-        totalQuestions,
-        undefined,
-        `正在验证题目 ${processedCount}/${totalQuestions}`
-      );
-    }
-
-    this.reportProgress("completed", totalQuestions, totalQuestions, undefined, "组合验证完成");
-  }
-
-  /**
-   * 验证单个选项
+   * 破解单个多选题：枚举所有非空选项组合，找到 isCorrect === "Y" 的组合
    * @param state 答题状态
    */
-  private async verifySingleOption(state: MultipleChoiceState): Promise<void> {
+  private async crackSingleQuestion(state: MultipleChoiceState): Promise<void> {
+    const options = state.allOptions;
+    if (options.length === 0) {
+      Application.App.log.Warn(`题目 ${state.questionId} 没有选项，无法破解`);
+      return;
+    }
+
+    // 题目已答对则直接跳过
     try {
-      const answerData = {
-        attemptId: this.attemptId,
-        examId: this.examId,
-        testNo: this.testNo,
-        answerList: state.correctOptions,
-        questionId: state.questionId,
-        questionNodesAnswer: [],
-        images: []
-      };
-
-      // 提交答案
-      await submitQuestionAnswer([answerData]);
-      await this.delay(300);
-
-      // 查询结果
-      const results = await queryQuestionAnswer(this.examId, this.attemptId);
-      const result = results.body?.find((r: any) => r.questionId === state.questionId);
-
-      if (result && result.isCorrect === "Y") {
+      const initial = await queryQuestionAnswer(this.examId, this.attemptId);
+      const initialResult = initial.body?.find((r: any) => r.questionId === state.questionId);
+      if (initialResult && initialResult.isCorrect === "Y") {
         state.isCompleted = true;
-        state.finalAnswer = [...state.correctOptions];
-        Application.App.log.Info(
-          `题目 ${state.questionId} 答题完成，正确答案: ${state.correctOptions.join(", ")}`
-        );
-      } else {
-        // 如果单个选项不正确，可能需要寻找其他选项组合
-        Application.App.log.Warn(
-          `题目 ${state.questionId} 单个选项验证失败，可能需要更多选项组合`
-        );
+        state.finalAnswer = initialResult.answerList || [];
+        state.correctOptions = [...state.finalAnswer];
+        Application.App.log.Info(`题目 ${state.questionId} 已答对，跳过`);
+        return;
       }
-    } catch (error) {
-      Application.App.log.Error(`验证题目 ${state.questionId} 单个选项时发生错误:`, error);
+    } catch (e) {
+      Application.App.log.Warn(`题目 ${state.questionId} 初次查询失败，继续枚举:`, e);
     }
-  }
 
-  /**
-   * 验证多个选项组合
-   * @param state 答题状态
-   */
-  private async verifyMultipleOptions(state: MultipleChoiceState): Promise<void> {
-    try {
+    // 按组合大小从 1 到 n 递增枚举，先试小组合（多数答案组合较小，更快命中）
+    const combos = this.generateCombos(options);
+
+    for (const combo of combos) {
       const answerData = {
         attemptId: this.attemptId,
         examId: this.examId,
         testNo: this.testNo,
-        answerList: state.correctOptions,
-        questionId: state.questionId,
-        questionNodesAnswer: [],
-        images: []
-      };
-
-      // 提交所有已确定的正确选项
-      await submitQuestionAnswer([answerData]);
-      await this.delay(300);
-
-      // 查询结果
-      const results = await queryQuestionAnswer(this.examId, this.attemptId);
-      const result = results.body?.find((r: any) => r.questionId === state.questionId);
-
-      if (result && result.isCorrect === "Y") {
-        // 组合正确，题目完成
-        state.isCompleted = true;
-        state.finalAnswer = [...state.correctOptions];
-        Application.App.log.Info(
-          `题目 ${state.questionId} 答题完成，正确答案: ${state.correctOptions.join(", ")}`
-        );
-      } else {
-        // 组合不完整，可能还需要测试未确定的选项
-        Application.App.log.Debug(
-          `题目 ${state.questionId} 组合验证失败，当前正确选项: ${state.correctOptions.join(", ")}`
-        );
-
-        // 需要测试剩余未确定的选项（不在正确和错误列表中的选项）
-        const untestedOptions = state.allOptions.filter(
-          opt =>
-            !state.correctOptions.includes(opt.sectionId) &&
-            !state.wrongOptions.includes(opt.sectionId)
-        );
-
-        if (untestedOptions.length > 0) {
-          Application.App.log.Debug(
-            `题目 ${state.questionId} 还有 ${untestedOptions.length} 个未测试选项，继续测试`
-          );
-          await this.testUntestedOptions(state, untestedOptions);
-        } else {
-          // 所有选项都已测试但组合仍然不正确，记录警告
-          Application.App.log.Warn(
-            `题目 ${state.questionId} 所有选项已测试但组合仍然不正确`
-          );
-        }
-      }
-    } catch (error) {
-      Application.App.log.Error(`验证题目 ${state.questionId} 多选项组合时发生错误:`, error);
-    }
-  }
-
-  /**
-   * 测试未测试的选项
-   * @param state 答题状态
-   * @param untestedOptions 未测试的选项列表
-   */
-  private async testUntestedOptions(
-    state: MultipleChoiceState,
-    untestedOptions: QuestionSection[]
-  ): Promise<void> {
-    Application.App.log.Debug(
-      `题目 ${state.questionId} 开始测试 ${untestedOptions.length} 个未测试选项`
-    );
-
-    for (const option of untestedOptions) {
-      // 单独测试该选项
-      const answerData = {
-        attemptId: this.attemptId,
-        examId: this.examId,
-        testNo: this.testNo,
-        answerList: [option.sectionId],
+        answerList: combo,
         questionId: state.questionId,
         questionNodesAnswer: [],
         images: []
       };
 
       try {
-        await submitQuestionAnswer([answerData]);
+        const submitResult = await submitQuestionAnswer([answerData]);
+        if (submitResult.code !== "0" && submitResult.code !== 0) {
+          Application.App.log.Error(`提交题目 ${state.questionId} 失败: ${submitResult.message}`);
+          continue;
+        }
+
+        // 等待服务器处理完成
         await this.delay(300);
 
         const results = await queryQuestionAnswer(this.examId, this.attemptId);
         const result = results.body?.find((r: any) => r.questionId === state.questionId);
 
         if (result && result.isCorrect === "Y") {
-          // 该选项也是正确选项
-          state.correctOptions.push(option.sectionId);
-          Application.App.log.Debug(
-            `题目 ${state.questionId} 发现新的正确选项: ${option.sectionText}`
+          state.isCompleted = true;
+          state.finalAnswer = [...combo];
+          state.correctOptions = [...combo];
+          Application.App.log.Info(
+            `题目 ${state.questionId} 破解成功，正确答案: ${combo.join(", ")}`
           );
-        } else {
-          // 该选项是错误选项
-          state.wrongOptions.push(option.sectionId);
-          Application.App.log.Debug(
-            `题目 ${state.questionId} 选项 ${option.sectionText} 确认为错误选项`
-          );
+          return;
         }
       } catch (error) {
-        Application.App.log.Error(
-          `测试题目 ${state.questionId} 选项 ${option.sectionText} 时发生错误:`,
-          error
-        );
+        Application.App.log.Error(`破解题目 ${state.questionId} 组合时发生错误:`, error);
       }
     }
 
-    // 再次验证组合
-    if (state.correctOptions.length > 0) {
-      await this.verifyMultipleOptions(state);
+    Application.App.log.Warn(`题目 ${state.questionId} 未找到任何正确选项组合`);
+  }
+
+  /**
+   * 生成所有非空选项组合，按组合大小升序排列
+   * @param options 选项列表
+   * @returns 组合列表（每个组合是选项ID数组）
+   */
+  private generateCombos(options: QuestionSection[]): string[][] {
+    const n = options.length;
+    const ids = options.map(o => o.sectionId);
+    const combos: string[][] = [];
+
+    for (let size = 1; size <= n; size++) {
+      const indexes: number[] = [];
+      const dfs = (start: number): void => {
+        if (indexes.length === size) {
+          combos.push(indexes.map(i => ids[i]));
+          return;
+        }
+        for (let i = start; i < n; i++) {
+          indexes.push(i);
+          dfs(i + 1);
+          indexes.pop();
+        }
+      };
+      dfs(0);
     }
+
+    return combos;
   }
 
   /**

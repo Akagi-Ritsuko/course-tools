@@ -15,6 +15,7 @@ import {
   HttpResponse,
   EventPreventHandler,
 } from "../types";
+import { setMemorySid } from "./exam-utils";
 
 /**
  * 存储所有HTTP请求钩子的Map
@@ -53,6 +54,12 @@ function initializeHooks() {
 
   XMLHttpRequest.prototype.open = function(method: string, url: string) {
     Application.App.log.Debug("拦截到HTTP请求:", url);
+
+    // 页面请求的URL都携带sid，在此捕获供考试API使用
+    const sidMatch = /(?:\?|&)sid=([^&]+)/.exec(String(url));
+    if (sidMatch && sidMatch[1]) {
+      setMemorySid(sidMatch[1]);
+    }
 
     const xhr = this;
 
@@ -139,8 +146,35 @@ export async function hookHttpRequest(
     httpHooks.set(urlMatch, []);
   }
 
-  httpHooks.get(urlMatch)!.push({ callback, context });
+  const hooks = httpHooks.get(urlMatch)!;
+  // 同一 urlMatch + context 只注册一次,防止重复 Init 时回调扇出
+  if (hooks.some((hook) => hook.context === context)) {
+    Application.App.log.Debug("HTTP钩子已注册,跳过重复注册:", urlMatch);
+    return;
+  }
+
+  hooks.push({ callback, context });
   Application.App.log.Debug("注册HTTP钩子:", urlMatch);
+}
+
+/**
+ * 移除HTTP请求钩子
+ * @param urlMatch URL匹配字符串
+ * @param context 注册时传入的上下文对象
+ */
+export function removeHttpRequestHook(urlMatch: string, context: any): void {
+  const hooks = httpHooks.get(urlMatch);
+  if (!hooks) {
+    return;
+  }
+
+  const filtered = hooks.filter((hook) => hook.context !== context);
+  if (filtered.length > 0) {
+    httpHooks.set(urlMatch, filtered);
+  } else {
+    httpHooks.delete(urlMatch);
+  }
+  Application.App.log.Debug("移除HTTP钩子:", urlMatch);
 }
 
 /**
@@ -234,10 +268,11 @@ export function createEventPreventHandler(): EventPreventHandler {
 /**
  * 设置事件阻止，防止页面检测
  * @param target 目标对象
+ * @returns 清理函数,调用后移除所有已注册的阻止监听器
  */
 export function setupEventPrevention(
   target: Window | Document | HTMLElement,
-): void {
+): () => void {
   const handler = createEventPreventHandler();
   const events = [
     "blur",
@@ -260,24 +295,32 @@ export function setupEventPrevention(
   events.forEach((event) => {
     target.addEventListener(event, handler, true);
   });
+
+  return () => {
+    events.forEach((event) => {
+      target.removeEventListener(event, handler, true);
+    });
+  };
 }
 
 /**
  * 设置视频事件阻止
  * @param video 视频元素
+ * @returns 清理函数,调用后移除所有已注册的阻止监听器
  */
-export function setupVideoEventPrevention(video: HTMLVideoElement): void {
+export function setupVideoEventPrevention(video: HTMLVideoElement): () => void {
   const handler = createEventPreventHandler();
-  const videoEvents = [
-    "seeked",
-    "seeking",
-    "ratechange",
-    "volumechange",
-  ];
+  const videoEvents = ["seeked", "seeking", "ratechange", "volumechange"];
 
   videoEvents.forEach((event) => {
     video.addEventListener(event, handler, true);
   });
+
+  return () => {
+    videoEvents.forEach((event) => {
+      video.removeEventListener(event, handler, true);
+    });
+  };
 }
 
 /**

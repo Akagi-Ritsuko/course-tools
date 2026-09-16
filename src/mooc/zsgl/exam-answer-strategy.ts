@@ -88,8 +88,8 @@ export class SingleChoiceAnswerStrategy {
     this.answerStates.clear();
 
     for (const question of questions) {
-      // 只处理单选题
-      if (question.questionType === "S") {
+      // 处理单选题和判断题
+      if (question.questionType === "S" || question.questionType === "T") {
         const state: AnswerState = {
           questionId: question.questionId,
           questionText: question.questionText,
@@ -197,6 +197,9 @@ export class SingleChoiceAnswerStrategy {
         Application.App.log.Error(`提交答案失败: ${submitResult.message}`);
         break;
       }
+
+      // 等待服务器处理完成
+      await this.delay(300);
 
       // 3. 查询结果
       Application.App.log.Debug("查询答案结果");
@@ -347,5 +350,13 @@ export class SingleChoiceAnswerStrategy {
   public clear(): void {
     this.answerStates.clear();
     this.totalApiCalls = 0;
+  }
+
+  /**
+   * 延迟函数
+   * @param ms 毫秒数
+   */
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }

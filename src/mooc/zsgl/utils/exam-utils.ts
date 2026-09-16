@@ -8,7 +8,7 @@
  *
  * Copyright (c) 2025 by lzlj, All Rights Reserved.
  */
-import md5 from "md5";
+import { MD5 } from "crypto-js";
 import { Application } from "@App/internal/application";
 
 /**
@@ -141,7 +141,7 @@ function generateNonce(): string {
   const timestamp = Date.now().toString();
   const random = Math.random().toString(36).substring(2, 15);
   const nonceStr = timestamp + random;
-  return md5(nonceStr);
+  return MD5(nonceStr).toString();
 }
 
 /**
@@ -256,7 +256,7 @@ export function generateHeaderMap(
   const signStr = buildSignString(url, params, requestBody, contentType);
 
   // MD5 加密签名
-  const sign = md5(signStr);
+  const sign = MD5(signStr).toString();
 
   // 构建 headerMap 对象
   const headerMap = {

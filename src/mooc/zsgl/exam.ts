@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-09
  * @LastEditors: guotao
- * @LastEditTime: 2026-06-30 18:14:59
+ * @LastEditTime: 2026-09-16 16:41:52
  * @FilePath: \course-tools\src\mooc\zsgl\exam.ts
  * @Description: zsgl 考试模块
  *
@@ -64,6 +64,8 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
   protected multipleChoiceStrategy: MultipleChoiceAnswerStrategy | null = null;
   /** 多选题答题结果 */
   protected multipleChoiceResults: MultipleChoiceState[] = [];
+  /** 新考试试卷钩子的Promise，Init时提前注册 */
+  protected examPaperHookPromise: Promise<void> | null = null;
 
   /**
    * 初始化考试
@@ -71,6 +73,8 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
    */
   public Init(): Promise<any> {
     return new Promise<void>(async (resolve) => {
+      // 页面一开始就监听 queryNewExamPaper 请求，避免错过页面加载初期发出的请求
+      this.examPaperHookPromise = this.hookQueryNewExamPaper();
       this.setupReturnButton();
       await this.hookQuestionDetailRequests();
       await this.OperateCard();
@@ -161,11 +165,28 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
           .map((section: QuestionSection) => section.sectionText);
 
         if (correctAnswers.length) {
-          Application.App.log.Info(`题目:${question.questionText}`);
-          Application.App.log.Info(`正确答案集`, correctAnswers.join(" | "));
+          Application.App.log.Info(
+            `题目:${this.stripHtml(question.questionText)}`,
+          );
+          Application.App.log.Info(
+            `正确答案集`,
+            correctAnswers.map((text) => this.stripHtml(text)).join(" | "),
+          );
         }
       }
     }, 1000);
+  }
+
+  /**
+   * 去除字符串中的HTML标签，避免通知条渲染时打断颜色样式
+   * @param html 含HTML的文本
+   * @returns 纯文本
+   */
+  private stripHtml(html: string): string {
+    return (html || "")
+      .replace(/<[^>]*>/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
   }
 
   /**
@@ -213,8 +234,8 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
                       q.sectionRespList &&
                       q.sectionRespList.some((s) => s.isCorrect === "Y"),
                   );
-
-                  if (!hasCorrectAnswer) {
+                  
+                  if (!hasCorrectAnswe) {
                     // 启动自动答题
                     Application.App.log.Info(
                       "未检测到正确答案，启动自动答题流程",
@@ -306,42 +327,60 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
         ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_NEW_EXAM_PAPER,
         (response, self) => {
           Application.App.log.Debug("queryNewExamPaper原始响应数据", response);
-          if (response) {
-            const decrypted = self.decryptData(response);
-            if (decrypted) {
-              try {
-                const parsedData = JSON.parse(decrypted);
-                const body = parsedData.body;
-                if (body) {
-                  self.examId = body.examId || "";
-                  self.attemptId = body.attemptId || "";
-                  self.testNo = body.testNo || "";
-                  self.questionIdList = body.questionIdList || [];
-
-                  Application.App.log.Debug(
-                    "queryNewExamPaper解密后的响应数据",
-                    {
-                      examId: self.examId,
-                      attemptId: self.attemptId,
-                      testNo: self.testNo,
-                      questionIdList: self.questionIdList,
-                    },
-                  );
-
-                  if (
-                    self.examId &&
-                    self.attemptId &&
-                    self.testNo &&
-                    self.questionIdList.length > 0
-                  ) {
-                    resolve();
-                  }
+          if (!response) {
+            return;
+          }
+          try {
+            // 该接口可能返回明文JSON对象，也可能返回AES加密字符串
+            let data: any = response;
+            if (typeof data === "string") {
+              const text = data.trim();
+              if (text.startsWith("{")) {
+                data = JSON.parse(text);
+              } else {
+                const decrypted = self.decryptData(text);
+                if (!decrypted) {
+                  return;
                 }
-              } catch (e) {
-                Application.App.log.Error("解析queryNewExamPaper数据失败", e);
-                reject(e);
+                data = JSON.parse(decrypted);
               }
             }
+
+            let body = data?.body;
+            if (typeof body === "string") {
+              body = JSON.parse(body);
+            }
+
+            if (body) {
+              self.examId = body.examId || "";
+              self.attemptId = body.attemptId || "";
+              self.testNo = body.testNo || "";
+              self.questionIdList = body.questionIdList || [];
+
+              Application.App.log.Debug("queryNewExamPaper解析结果", {
+                examId: self.examId,
+                attemptId: self.attemptId,
+                testNo: self.testNo,
+                questionIdList: self.questionIdList,
+              });
+
+              if (
+                self.examId &&
+                self.attemptId &&
+                self.testNo &&
+                self.questionIdList.length > 0
+              ) {
+                resolve();
+              } else {
+                Application.App.log.Warn(
+                  "queryNewExamPaper响应字段不完整，无法继续",
+                  body,
+                );
+              }
+            }
+          } catch (e) {
+            Application.App.log.Error("解析queryNewExamPaper数据失败", e);
+            reject(e);
           }
         },
         this,
@@ -440,7 +479,11 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
     // 检查是否需要获取考试参数
     if (!this.examId || !this.attemptId || !this.testNo) {
       Application.App.log.Info("正在获取考试参数...");
-      await this.hookQueryNewExamPaper();
+      // 复用 Init 时提前注册的钩子Promise，避免重复注册导致永远等待
+      if (!this.examPaperHookPromise) {
+        this.examPaperHookPromise = this.hookQueryNewExamPaper();
+      }
+      await this.examPaperHookPromise;
     }
 
     // 分类题目
@@ -464,7 +507,17 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
       Application.App.log.Info("开始处理单选题...");
 
       try {
-        const result = await this.crackSingleChoiceQuestions();
+        // 初始化单选/判断题答题策略并执行批量破解
+        this.singleChoiceStrategy.init(
+          this.examId,
+          this.attemptId,
+          this.testNo
+        );
+        const result = await this.singleChoiceStrategy.crackSingleChoiceBatch(
+          singleChoiceQuestions
+        );
+        // 将确认的答案回写到 questionList
+        this.updateQuestionListWithSingleChoiceAnswers();
         const singleEndTime = Date.now();
         const singleTime = singleEndTime - singleStartTime;
 
@@ -500,6 +553,9 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
     const totalEndTime = Date.now();
     const totalTime = totalEndTime - startTime;
     Application.App.log.Info(`自动答题全部完成，总耗时 ${totalTime}ms`);
+
+    // 自动答题完成后刷新展示当前页题目的题目与答案
+    await this.answerMessage(this.questionList);
   }
 
   /**
@@ -561,6 +617,29 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
           }
         }
       }
+    }
+  }
+
+  /**
+   * 更新题目列表中的单选题/判断题答案
+   */
+  private updateQuestionListWithSingleChoiceAnswers(): void {
+    const confirmedAnswers = this.singleChoiceStrategy.getConfirmedAnswers();
+
+    for (const [questionId, answerId] of confirmedAnswers) {
+      const question = this.questionList.find(
+        q => q.questionId === questionId
+      );
+      if (!question) {
+        continue;
+      }
+      for (const section of question.sectionRespList) {
+        section.isCorrect =
+          section.sectionId === answerId ? "Y" : "N";
+      }
+      Application.App.log.Info(
+        `更新单选题 ${questionId} 的正确答案: ${answerId}`
+      );
     }
   }
 
