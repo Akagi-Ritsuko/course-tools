@@ -130,19 +130,26 @@ export class MoocLauncher implements Launcher {
         Application.App.log.Debug("runTask 开始执行任务:");
         let task = await moocTask.Next();
         while (task != null) {
-            if (task.Done()) {
-                task = await moocTask.Next();
-                continue;
-            }
-            if (Application.App.config.auto&&task.Type() !== "exam") {
-                await task.Start();
-            }
-            if (task.Type() == "exam") {
-                await task.Start();
-            }
-            this.nowTask = task;
-            break;
-        }
+                               if (task.Done()) {
+                                 task = await moocTask.Next();
+                                 continue;
+                               }
+                               // 切换任务前停止上一个任务,释放其定时器与监听器,防止资源累积
+                               if (this.nowTask && this.nowTask !== task) {
+                                 await this.nowTask.Stop();
+                               }
+                               if (
+                                 Application.App.config.auto &&
+                                 task.Type() !== "exam"
+                               ) {
+                                 await task.Start();
+                               }
+                               if (task.Type() == "exam") {
+                                 await task.Start();
+                               }
+                               this.nowTask = task;
+                               break;
+                             }
         this.once = false
     }
 }

@@ -19,55 +19,84 @@ import { ZSGL_CONSTANTS } from "./constants";
  * ZsglTask 抽象任务基类
  */
 export abstract class ZsglTask extends Task {
-    /** 任务索引 */
-    public jobIndex: number;
-    /** 任务信息 */
-    public taskinfo: TaskInfo;
-    /** 上下文 */
-    protected context: any;
-    /** 是否完成 */
-    public done: boolean;
+         /** 任务索引 */
+         public jobIndex: number;
+         /** 任务信息 */
+         public taskinfo: TaskInfo;
+         /** 上下文 */
+         protected context: any;
+         /** 是否完成 */
+         public done: boolean;
+         /** 托管监听器的清理函数列表,Stop 时统一移除 */
+         protected cleanupFns: Array<() => void> = [];
 
-    public constructor(context: any, taskinfo: TaskInfo) {
-        super();
-        this.taskinfo = taskinfo;
-        this.context = context;
-        
-        if (!this.taskinfo?.hasLearned) {
-            // exam 没有hasLearned字段
-            this.done = false;
-            return;
-        }
-        
-        this.done = this.taskinfo.hasLearned !== '0';
-    }
+         public constructor(context: any, taskinfo: TaskInfo) {
+           super();
+           this.taskinfo = taskinfo;
+           this.context = context;
 
-    protected callEvent(event: TaskEvent, ...args: any): void {
-        if (event === "taskComplete") {
-            this.done = true;
-        }
-        super.callEvent(event, ...args);
-    }
+           if (!this.taskinfo?.hasLearned) {
+             // exam 没有hasLearned字段
+             this.done = false;
+             return;
+           }
 
-    public Init(): Promise<any> {
-        return Promise.resolve(true);
-    }
+           this.done = this.taskinfo.hasLearned !== "0";
+         }
 
-    public abstract Start(): Promise<any>;
+         protected callEvent(event: TaskEvent, ...args: any): void {
+           if (event === "taskComplete") {
+             this.done = true;
+           }
+           super.callEvent(event, ...args);
+         }
 
-    public Submit(): Promise<void> {
-        return Promise.resolve();
-    }
+         /**
+          * 添加托管事件监听器,注册信息会记录到 cleanupFns,Stop 时统一移除
+          */
+         protected addManagedListener(
+           target: EventTarget,
+           type: string,
+           listener: EventListenerOrEventListenerObject,
+           options?: boolean | AddEventListenerOptions,
+         ): void {
+           target.addEventListener(type, listener, options);
+           this.cleanupFns.push(() => {
+             target.removeEventListener(type, listener, options);
+           });
+         }
 
-    /** 停止任务 */
-    public Stop(): Promise<void> {
-        return Promise.resolve();
-    }
+         /** 执行并清空所有托管监听器的清理函数 */
+         protected runCleanup(): void {
+           this.cleanupFns.forEach((fn) => {
+             try {
+               fn();
+             } catch (e) {
+               Application.App.log.Warn("清理监听器失败", e);
+             }
+           });
+           this.cleanupFns = [];
+         }
 
-    public Done(): boolean {
-        return this.done;
-    }
-}
+         public Init(): Promise<any> {
+           return Promise.resolve(true);
+         }
+
+         public abstract Start(): Promise<any>;
+
+         public Submit(): Promise<void> {
+           return Promise.resolve();
+         }
+
+         /** 停止任务 */
+         public Stop(): Promise<void> {
+           return Promise.resolve();
+         }
+
+         public Done(): boolean {
+           return this.done;
+         }
+       }
 
 /**
  * ZsglTaskControlBar 任务控制栏类

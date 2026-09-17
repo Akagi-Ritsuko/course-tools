@@ -12,6 +12,10 @@ export const ZSGL_CONSTANTS = {
     VIDEO_SEARCH_INTERVAL_MS: 1000,
     VIDEO_PLAY_RESUME_INTERVAL_MS: 5000,
     PLAYER_INIT_DELAY_MS: 500,
+    /** 自动恢复播放的最大重试次数,超过后停止重试(黑屏/无源保护) */
+    MAX_PLAY_RETRY: 10,
+    /** scorm Start 等待开始按钮点击的超时时间 */
+    START_TIMEOUT_MS: 30000,
     TASK_EXPIRE_MS: 1000 * 60 * 60 * 10,
     
     SELECTORS: {

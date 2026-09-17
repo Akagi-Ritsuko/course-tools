@@ -1,0 +1,67 @@
+dailyPointsPanel.ts:16 [每日积分] panel: 构造函数被调用
+dailyPointsPanel.ts:20 [每日积分] panel: init方法被调用
+log.ts:179 [debug 14:21:6 ] Start document state: loading
+mooc.ts:8 create mooc
+log.ts:188 [info 14:21:6 ] 当前平台：zsgl-examDetail
+mooc.ts:39 mooc start ZsglExam {event: {…}, questionList: Array(0), taskList: Array(0), taskIndex: 0, timerManager: TimerManager, …}
+log.ts:179 [debug 14:21:6 ] 注册HTTP钩子: queryNewExamPaper.do
+log.ts:179 [debug 14:21:6 ] 注册HTTP钩子: queryQuestionDetail.do
+log.ts:179 [debug 14:21:6 ] 拦截到HTTP请求: https://appmonjs.pingan.com.cn/upload/cfg?aid=1691
+webim.min.js:1 navigator.userAgent=mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/153.0.0.0 safari/537.36 edg/153.0.0.0
+webim.min.js:1 BROWSER_INFO: type=chrome, ver=153.0.0.0
+log.ts:179 [debug 14:21:7 ] 拦截到HTTP请求: /znWeb/znPortal/lang/zh.json
+main.d5640b70.js:1 0530-1
+main.d5640b70.js:1 showSearch true
+log.ts:179 [debug 14:21:7 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryHomeChannelModule.do?pageId=SY0010092&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:7 ] 拦截到HTTP请求: /learn/app/clientapi/home/getPcGlobalManagement.do?pageId=SY0010092&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:7 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=0746C6CFEA1E40CE819B12B2126ABBC4
+main.d5640b70.js:1 showSearch true
+log.ts:179 [debug 14:21:7 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/userPermissions.do?os=99&sid=0746C6CFEA1E40CE819B12B2126ABBC4
+log.ts:179 [debug 14:21:7 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryHomeGlobalInfo.do?pageId=SY0010092&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:7 ] 拦截到HTTP请求: /learn/app/clientapi/message/getMessageListType.do?sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+main.d5640b70.js:1 com.mlearning.paznluzhoulaojiao appId-------
+log.ts:179 [debug 14:21:7 ] 拦截到HTTP请求: /learn/app/newPersonDetail.do?sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:7 ] 拦截到HTTP请求: /learn-login/queryUserInfoBound.do?os=99&sid=0746C6CFEA1E40CE819B12B2126ABBC4
+log.ts:179 [debug 14:21:7 ] 拦截到HTTP请求: /learn/app/clientapi/knowledgecloud/home/getPermissionStatus.do?sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+dailyPointsPanel.ts:22 [每日积分] panel: window.onload 触发
+dailyPointsPanel.ts:318 [每日积分] panel: 初始化消息监听
+log.ts:179 [debug 14:21:7 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1789539667952, isRunning: false, …}
+log.ts:179 [debug 14:21:8 ] 拦截到HTTP请求: /learn/app/clientapi/misc/queryVasOperation2NativeList.do?sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+main.d5640b70.js:1 --------------- Wed Sep 16 2026 14:21:08 GMT+0800 (中国标准时间)
+log.ts:179 [debug 14:21:8 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryUserHomeList.do?time=1789539668158&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+main.d5640b70.js:1 showSearch true
+main.d5640b70.js:1 com.mlearning.paznluzhoulaojiao appId-------
+log.ts:179 [debug 14:21:8 ] 拦截到HTTP请求: /learn/app/newPersonDetail.do?sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:8 ] 拦截到HTTP请求: /learn-login/queryUserInfoBound.do?os=99&sid=0746C6CFEA1E40CE819B12B2126ABBC4
+log.ts:179 [debug 14:21:8 ] 拦截到HTTP请求: /learn/app/clientapi/knowledgecloud/home/getPermissionStatus.do?sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+main.d5640b70.js:1 showSearch true
+log.ts:179 [debug 14:21:8 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/getNewExamBreakInfo.do?testId=1302283&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:8 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/getNewExamDetails.do?testId=1302283&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:9 ] 拦截到HTTP请求: /learn/app/clientapi/user/isOpenHumanSocietyVas.do?sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:9 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/selectResourceRule.do?resourceId=1302283&resourceType=30&trainingItemId=&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:9 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/getNewExamDetails.do?testId=1302283&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:9 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=0746C6CFEA1E40CE819B12B2126ABBC4
+log.ts:179 [debug 14:21:10 ] 找到返回按钮 span.MuiButton-label
+log.ts:179 [debug 14:21:10 ] 拦截到HTTP请求: /learn/app/clientapi/user/isOpenHumanSocietyVas.do?sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:10 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/selectResourceRule.do?resourceId=1302283&resourceType=30&trainingItemId=&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:11 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/getNewExamBreakInfo.do?testId=1302283&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:11 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/getNewExamDetails.do?testId=1302283&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:12 ] 拦截到HTTP请求: /learn/app/clientapi/user/isOpenHumanSocietyVas.do?sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:12 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/selectResourceRule.do?resourceId=1302283&resourceType=30&trainingItemId=&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:12 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/queryNewExamPaper.do?os=99&sid=0746C6CFEA1E40CE819B12B2126ABBC4
+log.ts:179 [debug 14:21:12 ] 匹配到钩子: queryNewExamPaper.do
+log.ts:179 [debug 14:21:17 ] queryNewExamPaper原始响应数据 {body: {…}, code: '0', file: null, message: '成功', user: null}
+log.ts:179 [debug 14:21:17 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/check/queryTrainingCheckByEmp.do?resourceId=1302283&resourceType=30&trainingItemId=&checkItemEndTag=1&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:17 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/queryQuestionDetail.do?os=99&sid=0746C6CFEA1E40CE819B12B2126ABBC4
+log.ts:179 [debug 14:21:17 ] 匹配到钩子: queryQuestionDetail.do
+log.ts:179 [debug 14:21:17 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/queryNewExamRemainTime.do?examId=1302283&attemptId=E025B0E3A1DD49068D0A1015C7250FBF&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:21:18 ] 原始响应数据 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
+log.ts:179 [debug 14:21:18 ] 解密后的响应数据 [{"questionId":"8179109","questionText":"<p>下列选项中关于北纬28°酿酒龙脉说法正确的有（     ）。</p>","questionType":"M","sectionRespList":[{"sectionId":"30267660","sectionText":"<p>北纬28°穿过的四川盆地，四面环山，来自太平洋的冷空气和西伯利亚的暖气流在这里汇聚</p>","isCorrect":"N"},{"sectionId":"30267661","sectionText":"<p>位于长江与岷江交汇的泸州，黄泥自带黏性，保湿性好，适合微生物栖息</p>","isCorrect":"N"},{"sectionId":"30267662","sectionText":"<p>种植于该地区的川南糯红高粱，是酿酒的绝佳用粮</p>","isCorrect":"Y"},{"sectionId":"30267663","sectionText":"<p>长江、沱江、赤水河、永宁河、濑溪河都流经这里，水系发达，且流经这里的江河大多源于西部雪山,水源优质</p>","isCorrect":"Y"}]}]
+log.ts:179 [debug 14:21:18 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/getMaxUploadSize.do?os=99&sid=0746C6CFEA1E40CE819B12B2126ABBC4
+log.ts:179 [debug 14:21:47 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/check/queryTrainingCheckByEmp.do?resourceId=1302283&resourceType=30&trainingItemId=&checkItemEndTag=1&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:22:17 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/check/queryTrainingCheckByEmp.do?resourceId=1302283&resourceType=30&trainingItemId=&checkItemEndTag=1&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:22:47 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/check/queryTrainingCheckByEmp.do?resourceId=1302283&resourceType=30&trainingItemId=&checkItemEndTag=1&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:23:17 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/check/queryTrainingCheckByEmp.do?resourceId=1302283&resourceType=30&trainingItemId=&checkItemEndTag=1&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:23:48 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/check/queryTrainingCheckByEmp.do?resourceId=1302283&resourceType=30&trainingItemId=&checkItemEndTag=1&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:24:18 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/check/queryTrainingCheckByEmp.do?resourceId=1302283&resourceType=30&trainingItemId=&checkItemEndTag=1&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99
+log.ts:179 [debug 14:24:48 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/check/queryTrainingCheckByEmp.do?resourceId=1302283&resourceType=30&trainingItemId=&checkItemEndTag=1&sid=0746C6CFEA1E40CE819B12B2126ABBC4&os=99

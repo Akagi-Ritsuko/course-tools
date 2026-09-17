@@ -323,6 +323,47 @@ export function setupVideoEventPrevention(video: HTMLVideoElement): () => void {
   };
 }
 
+/** 可见性伪装是否已安装(每页只需安装一次) */
+let visibilitySpoofInstalled = false;
+
+/**
+ * 伪装页面可见性,绕过后台播放检测
+ *
+ * 站点通过读取 document.hidden / document.visibilityState / document.hasFocus
+ * 判断前台状态并暂停视频。事件拦截(setupEventPrevention)只能阻止事件传播,
+ * 无法拦截属性读取,因此需要属性欺骗。本项目 mooc.js 注入主世界执行,
+ * 此处的 defineProperty 对站点代码直接生效。
+ */
+export function setupVisibilitySpoof(): void {
+  if (visibilitySpoofInstalled) {
+    return;
+  }
+  visibilitySpoofInstalled = true;
+
+  try {
+    Object.defineProperty(document, "hidden", {
+      get: () => false,
+      configurable: true,
+    });
+    Object.defineProperty(document, "visibilityState", {
+      get: () => "visible",
+      configurable: true,
+    });
+    Object.defineProperty(document, "webkitHidden", {
+      get: () => false,
+      configurable: true,
+    });
+    Object.defineProperty(document, "webkitVisibilityState", {
+      get: () => "visible",
+      configurable: true,
+    });
+    document.hasFocus = () => true;
+    Application.App.log.Info("[可见性伪装] 已启用,页面切后台将继续播放");
+  } catch (e) {
+    Application.App.log.Warn("[可见性伪装] 安装失败:", e);
+  }
+}
+
 /**
  * 定时器管理器，统一管理所有定时器
  */
