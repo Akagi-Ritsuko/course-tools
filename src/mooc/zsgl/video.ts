@@ -43,7 +43,9 @@ export class ZsglVideo extends ZsglTask {
          /** 自动恢复监听器是否已注册 */
          private autoResumeListenersAdded: boolean = false;
          /** 暂停事件时间戳(暂停风暴检测用) */
-         private pauseTimestamps: number[] = [];
+    private pauseTimestamps: number[] = [];
+    /** 上次点击播放按钮的时间(限流用) */
+    private lastPlayClickTime: number = 0;
 
          public Start(): Promise<any> {
            return new Promise<void>(async (resolve, reject) => {
@@ -288,6 +290,17 @@ export class ZsglVideo extends ZsglTask {
                return;
              }
            }
+
+           // 限流:loadedmetadata/canplay/轮询多事件源会叠加触发,
+           // 密集点击会让 DRM 播放器反复启停(重复拉流/许可证),CPU 与内存飙升
+           const now = Date.now();
+           if (
+             now - this.lastPlayClickTime <
+             ZSGL_CONSTANTS.PLAY_CLICK_MIN_INTERVAL_MS
+           ) {
+             return;
+           }
+           this.lastPlayClickTime = now;
 
            const vjsPlayBtn = document.querySelector(
              ".vjs-big-play-button",

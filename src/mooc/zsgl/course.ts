@@ -98,7 +98,7 @@ export class ZsglCourse extends EventListener<MoocEvent>
 
       this.hookCourseDetailRequests();
 
-      // 任务卡只操作一次,避免 load 与 readyState 双路径重复执行
+      // 任务卡只操作一次,避免 load 与立即执行双路径重复触发
       const operateCardOnce = () => {
         if (this.cardOperated) {
           first && resolve(undefined);
@@ -107,13 +107,8 @@ export class ZsglCourse extends EventListener<MoocEvent>
         }
         this.cardOperated = true;
 
-        let prev: HTMLElement;
-        const container =
-          document.querySelector(ZSGL_CONSTANTS.SELECTORS.WATERMARK_FRAME) ||
-          document.body;
-        prev = document.createElement("div");
-        container.prepend(prev);
-        // const bar = new ZsglCourseControlBar(prev);
+        // 注意:不要往 #watermarkFrame / body 里 prepend 节点——
+        // 站点水印组件(getIsWatermark)会因外来节点抛 removeChild TypeError
         this.OperateCard();
         first && resolve(undefined);
         first = false;
