@@ -16,11 +16,13 @@ import { Task } from "@App/internal/app/task";
 import { EventListener } from "@App/internal/utils/event";
 import {
   hookHttpRequest,
+  hookAndModifyHttpResponse,
   removeHttpRequestHook,
   CssBtn,
   TimerManager,
   findElementByText,
   setupVisibilitySpoof,
+  setupSwitchScreenNeutralizer,
 } from "./utils/utils";
 import { createBtn, protocolPrompt } from "@App/internal/utils/utils";
 import { CourseDetailItem, TaskInfo, TaskStatus } from "./types";
@@ -48,6 +50,8 @@ export class ZsglCourse extends EventListener<MoocEvent>
   private listenersRegistered: boolean = false;
   /** 任务卡是否已操作过(防止 load 与立即执行双路径重复触发) */
   private cardOperated: boolean = false;
+  /** 切屏检测改写钩子是否已注册(幂等) */
+  private switchScreenHooked: boolean = false;
 
   public Init(): Promise<any> {
     return new Promise(async (resolve) => {
@@ -63,6 +67,26 @@ export class ZsglCourse extends EventListener<MoocEvent>
 
         // 伪装页面可见性,后台标签页/最小化时视频继续播放
         setupVisibilitySpoof();
+
+        // 改写课程详情响应:关闭切屏/截图检测开关(站点据此以属性赋值安装 window.onblur 检测)
+        if (!this.switchScreenHooked) {
+          this.switchScreenHooked = true;
+          hookAndModifyHttpResponse(
+            ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_COURSE_DETAIL,
+            (response) => {
+              if (response?.body) {
+                response.body.isOpenSwitchScreen = 0;
+                response.body.isOpenScreenShot = 0;
+              }
+              return response;
+            },
+            this,
+          );
+        }
+
+        // 兜底:拦截站点对 window.onblur/onfocus/onresize 的属性赋值,
+        // 防止切窗弹窗、强制暂停与超限终止任务
+        setupSwitchScreenNeutralizer();
 
         this.addEventListener("courseTaskComplete", () => {
           this.notifyStudyMapCourseComplete();

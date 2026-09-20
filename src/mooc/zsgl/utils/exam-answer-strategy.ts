@@ -185,6 +185,27 @@ export class MultipleChoiceAnswerStrategy {
       }
     }
 
+    // 所有组合均未命中：清空服务器端残留的答案（最后一次提交的组合会被保留），
+    // 避免全选组合等错误答案被误判为用户的作答
+    try {
+      await submitQuestionAnswer([
+        {
+          attemptId: this.attemptId,
+          examId: this.examId,
+          testNo: this.testNo,
+          answerList: [],
+          questionId: state.questionId,
+          questionNodesAnswer: [],
+          images: [],
+        },
+      ]);
+    } catch (e) {
+      Application.App.log.Warn(
+        `清空题目 ${state.questionId} 残留答案失败:`,
+        e,
+      );
+    }
+
     Application.App.log.Warn(`题目 ${state.questionId} 未找到任何正确选项组合`);
   }
 

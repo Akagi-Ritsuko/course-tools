@@ -14,6 +14,10 @@ export const ZSGL_CONSTANTS = {
     PLAYER_INIT_DELAY_MS: 500,
     /** 自动恢复播放的最大重试次数,超过后停止重试(黑屏/无源保护) */
     MAX_PLAY_RETRY: 10,
+    /** 暂停风暴熔断:窗口时间内暂停次数达到该值后停止自动恢复(切窗死循环/限制弹窗保护) */
+    PAUSE_STORM_MAX_COUNT: 8,
+    /** 暂停风暴熔断的统计窗口(ms) */
+    PAUSE_STORM_WINDOW_MS: 60000,
     /** scorm Start 等待开始按钮点击的超时时间 */
     START_TIMEOUT_MS: 30000,
     TASK_EXPIRE_MS: 1000 * 60 * 60 * 10,

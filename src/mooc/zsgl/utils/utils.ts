@@ -326,6 +326,40 @@ export function setupVideoEventPrevention(video: HTMLVideoElement): () => void {
 /** 可见性伪装是否已安装(每页只需安装一次) */
 let visibilitySpoofInstalled = false;
 
+/** 切屏赋值拦截是否已安装(每页只需安装一次) */
+let switchScreenNeutralized = false;
+
+/**
+ * 拦截站点对 window.onblur/onfocus/onresize 的属性赋值
+ *
+ * 站点播放页在 queryCourseDetail 返回 isOpenSwitchScreen=1 时,通过
+ * `window.onblur = fn` 属性赋值安装切窗检测(事件阻止与 visibility 伪装均拦不住),
+ * 切窗/最小化后强制暂停并弹窗,超限后直接终止任务。
+ * 将 setter 置为 no-op 后,站点的检测处理器永远安装不上。
+ */
+export function setupSwitchScreenNeutralizer(): void {
+  if (switchScreenNeutralized) {
+    return;
+  }
+  switchScreenNeutralized = true;
+
+  try {
+    for (const prop of ["onblur", "onfocus", "onresize"] as const) {
+      Object.defineProperty(window, prop, {
+        configurable: true,
+        get: () => null,
+        set: () =>
+          Application.App.log.Debug(`[切屏防御] 已拦截 window.${prop} 赋值`),
+      });
+    }
+    Application.App.log.Info(
+      "[切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效",
+    );
+  } catch (e) {
+    Application.App.log.Warn("[切屏防御] 安装失败:", e);
+  }
+}
+
 /**
  * 伪装页面可见性,绕过后台播放检测
  *

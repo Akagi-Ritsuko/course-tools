@@ -110,7 +110,7 @@ export class MoocLauncher implements Launcher {
         );
         moocTask.addEventListener("examTaskComplete", () => {
           Application.App.log.Debug("examTaskComplete 当前考试任务完成了");
-          window.close();
+          // window.close();
         });
         moocTask.addEventListener("error", (msg: string) => {
             Application.App.log.Fatal(msg);

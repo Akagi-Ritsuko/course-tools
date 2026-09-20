@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-12 17:19:39
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-13 14:59:24
+ * @LastEditTime: 2026-09-20 15:11:18
  * @FilePath: \course-tools\src\mooc\zsgl\scorm.ts
  * @Description: zsgl SCORM/音频任务模块
  *
@@ -53,6 +53,8 @@ export class ZsglAudio extends ZsglTask {
          private autoResumeActive: boolean = false;
          /** 自动恢复监听器是否已注册 */
          private autoResumeListenersAdded: boolean = false;
+         /** 暂停事件时间戳(暂停风暴检测用) */
+         private pauseTimestamps: number[] = [];
 
          public async Start(): Promise<any> {
            await new Promise<void>(async (resolve, reject) => {
@@ -578,6 +580,26 @@ export class ZsglAudio extends ZsglTask {
                this.video,
                "pause",
                () => {
+                 // 已熔断(暂停风暴)后不再自动恢复
+                 if (this.playAborted) {
+                   return;
+                 }
+                 // 暂停风暴检测:窗口内暂停次数超限(切窗死循环/限制弹窗)则熔断
+                 const now = Date.now();
+                 this.pauseTimestamps.push(now);
+                 this.pauseTimestamps = this.pauseTimestamps.filter(
+                   (t) => now - t <= ZSGL_CONSTANTS.PAUSE_STORM_WINDOW_MS,
+                 );
+                 if (
+                   this.pauseTimestamps.length >=
+                   ZSGL_CONSTANTS.PAUSE_STORM_MAX_COUNT
+                 ) {
+                   this.abortAutoResume();
+                   Application.App.log.Error(
+                     "[自动恢复] 60秒内暂停超过8次（切窗/限制弹窗），已停止自动恢复，请通过 __toolLogExport() 导出日志",
+                   );
+                   return;
+                 }
                  Application.App.log.Debug(
                    "[视频事件] Video paused, attempting to resume...",
                  );

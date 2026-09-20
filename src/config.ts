@@ -240,13 +240,29 @@ export class SystemConfig {
                  value: "1",
                },
                {
-                 title: "跳转间隔",
-                 description: "视频完成后等待时间（单位：分钟）",
-                 type: "text",
-                 key: "interval",
-                 unit: "分",
-                 value: "1",
-               },
+                title: "跳转间隔",
+                description: "视频完成后等待时间（单位：分钟）",
+                type: "text",
+                key: "interval",
+                unit: "分",
+                value: "1",
+              },
+              {
+                title: "考试答案导出",
+                description:
+                  "考试完成后自动将题目与答案导出为Markdown文件（保存到浏览器默认下载目录）",
+                type: "checkbox",
+                key: "answer_export_enabled",
+                value: true,
+              },
+              {
+                title: "日志转存",
+                description:
+                  "将运行日志定期写入浏览器本地存储，页面崩溃后重新打开课程页会自动导出日志文件；关闭后不写入任何日志",
+                type: "checkbox",
+                key: "log_persist_enabled",
+                value: true,
+              },
              ],
            },
          };

@@ -14,80 +14,296 @@ export interface Logger {
     Fatal(...args: any): Logger;
 }
 
-// 开发者工具f12处打印日志
-export class ConsoleLog implements Logger {
-    protected getNowTime(): string {
-        let time = new Date();
-        return time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
-    }
+/** 日志落地 localStorage key 前缀 */
+const LOG_STORAGE_PREFIX = "zsgl_log_";
+/** 环形缓冲上限(行数),超出丢弃最旧日志 */
+const LOG_BUFFER_MAX_LINES = 2000;
+/** 定时落地间隔(ms),崩溃时最多丢失该时间窗口内的日志 */
+const LOG_FLUSH_INTERVAL_MS = 5000;
 
-    public Debug(...args: any): Logger {
-        Application.App.debug && console.info("[debug", this.getNowTime(), "]", ...args);
-        return this;
-    }
-
-    public Info(...args: any): Logger {
-        Application.App.debug && console.info("[info", this.getNowTime(), "]", ...args);
-        return this;
-    }
-
-    public Warn(...args: any): Logger {
-        console.warn("[warn", this.getNowTime(), "]", ...args);
-        return this;
-    }
-
-    public Error(...args: any): Logger {
-        console.error("[error", this.getNowTime(), "]", ...args);
-        return this;
-    }
-
-    public Fatal(...args: any): Logger {
-        console.error("[fatal", this.getNowTime(), "]", ...args);
-        return this;
+/** 安全序列化,失败时退化为 String() */
+function safeStringify(value: any): string {
+    if (value === null || value === undefined) return String(value);
+    if (typeof value !== "object") return String(value);
+    try {
+        return JSON.stringify(value);
+    } catch (e) {
+        try {
+            return String(value);
+        } catch (e2) {
+            return "[unserializable]";
+        }
     }
 }
 
+function formatClock(): string {
+    const time = new Date();
+    return time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+}
+
+function formatFileTimestamp(): string {
+    return new Date().toISOString().replace(/[:T]/g, "-").substring(0, 19);
+}
+
+/** 下载文本文件(保存到浏览器默认下载目录) */
+function downloadTextFile(filename: string, content: string): void {
+    try {
+        const blob = new Blob(["\ufeff" + content], {
+            type: "text/plain;charset=utf-8",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (e) {
+        /* 下载失败不影响主流程 */
+    }
+}
+
+/** 日志转存开关的配置键(配置页"知识管理"分组) */
+const LOG_PERSIST_KEY = "log_persist_enabled";
+
+/**
+ * 读取日志转存开关(默认开启)
+ * 应用尚未就绪时视为开启,保证配置加载前行为与默认一致
+ */
+function isPersistEnabled(): boolean {
+    try {
+        const app = (Application as any).App;
+        if (!app || !app.config) return true;
+        const enabled = String(app.config.GetConfig(LOG_PERSIST_KEY, "true"));
+        return enabled.toLowerCase() !== "false";
+    } catch (e) {
+        return true;
+    }
+}
+
+/**
+ * 日志记录器:内存环形缓冲 + localStorage 定时落地
+ * 页面崩溃/被杀后遗留的缓冲,下次启动可自动导出(pagehide 已正常转存的除外)
+ * 写入行为受配置 log_persist_enabled 控制,关闭时不产生任何本地存储写入
+ */
+class LogRecorder {
+    private lines: string[] = [];
+    /** 遗留缓冲是否已检查过(延迟到配置就绪后执行一次) */
+    private orphanChecked: boolean = false;
+
+    constructor(private storageKey: string) {
+        // 延迟检查遗留缓冲:确保 Application/config 已就绪,能正确读到开关配置
+        setTimeout(() => this.recoverOrphanedBuffer(), 3000);
+        setInterval(() => {
+            if (this.orphanChecked) this.flush();
+        }, LOG_FLUSH_INTERVAL_MS);
+        window.addEventListener("pagehide", () => this.onPageHide());
+    }
+
+    /** 追加一条日志(环形缓冲,超限丢最旧);转存关闭时不记录 */
+    public record(level: string, args: any[]): void {
+        if (!isPersistEnabled()) return;
+        try {
+            const text = args.map(safeStringify).join(" ");
+            this.lines.push(`[${level} ${formatClock()}] ${text}`);
+            if (this.lines.length > LOG_BUFFER_MAX_LINES) {
+                this.lines.splice(0, this.lines.length - LOG_BUFFER_MAX_LINES);
+            }
+        } catch (e) {
+            /* 记录失败不影响主流程 */
+        }
+    }
+
+    /** 定时落地到 localStorage;转存关闭时不写入 */
+    private flush(): void {
+        if (!isPersistEnabled()) return;
+        if (this.lines.length === 0) return;
+        try {
+            localStorage.setItem(this.storageKey, this.lines.join("\n"));
+        } catch (e) {
+            /* 配额超限等异常忽略 */
+        }
+    }
+
+    /** 正常退出(含页面跳转):转存到 _last 并清空缓冲,标记本次为正常结束;转存关闭时不写入 */
+    private onPageHide(): void {
+        if (!isPersistEnabled()) return;
+        this.flush();
+        try {
+            const data = this.lines.join("\n");
+            localStorage.setItem(this.storageKey + "_last", data);
+            localStorage.setItem(this.storageKey, "");
+        } catch (e) {
+            /* 忽略 */
+        }
+    }
+
+    /** 启动时发现遗留缓冲=上次异常退出(崩溃/冻结):转存开启时在 zsgl 站点自动导出 */
+    private recoverOrphanedBuffer(): void {
+        this.orphanChecked = true;
+        try {
+            if (!isPersistEnabled()) return;
+            const orphaned = localStorage.getItem(this.storageKey);
+            if (!orphaned) return;
+            if (window.location.host.includes("zsgl")) {
+                const last = localStorage.getItem(this.storageKey + "_last") || "";
+                downloadTextFile(
+                    `工具日志_上次崩溃_${formatFileTimestamp()}.log`,
+                    orphaned + "\n" + last,
+                );
+                localStorage.removeItem(this.storageKey);
+                localStorage.removeItem(this.storageKey + "_last");
+            }
+        } catch (e) {
+            /* 忽略 */
+        }
+    }
+}
+
+const recorderCache: Map<string, LogRecorder> = new Map();
+
+function recordAll(level: string, args: any[]): void {
+    recorderCache.forEach((recorder) => recorder.record(level, args));
+}
+
+/** 全局异常捕获:写入缓冲便于崩溃后定位(浏览器默认仍会打印,此处只记录不阻断) */
+let globalCaptureInstalled = false;
+function installGlobalErrorCapture(): void {
+    if (globalCaptureInstalled) return;
+    globalCaptureInstalled = true;
+    try {
+        window.addEventListener("error", (e) => {
+            recordAll(
+                "error",
+                [`Uncaught: ${e.message} @ ${e.filename}:${e.lineno}:${e.colno}`],
+            );
+        });
+        window.addEventListener("unhandledrejection", (e) => {
+            const reason = (e as PromiseRejectionEvent).reason;
+            recordAll("error", [`UnhandledRejection: ${safeStringify(reason)}`]);
+        });
+    } catch (e) {
+        /* 忽略 */
+    }
+}
+
+/** 手动导出全部落地日志(控制台执行 __toolLogExport()) */
+let exportInstalled = false;
+function installExportFunction(): void {
+    if (exportInstalled) return;
+    exportInstalled = true;
+    try {
+        const w = window as any;
+        w.__toolLogExport = () => {
+            const parts: string[] = [];
+            try {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith(LOG_STORAGE_PREFIX)) {
+                        parts.push(
+                            `===== ${key} =====\n${localStorage.getItem(key) || ""}`,
+                        );
+                    }
+                }
+            } catch (e) {
+                /* 忽略 */
+            }
+            downloadTextFile(
+                `工具日志_${formatFileTimestamp()}.log`,
+                parts.join("\n---\n") || "无日志",
+            );
+        };
+    } catch (e) {
+        /* 忽略 */
+    }
+}
+
+/**
+ * 获取/创建记录器
+ * 仅顶层窗口落地(iframe 世界与未传 key 的场景返回 null,只输出控制台)
+ */
+function getRecorder(storageKey: string | null): LogRecorder | null {
+    if (!storageKey) return null;
+    try {
+        if (window.top !== window) return null;
+    } catch (e) {
+        return null;
+    }
+    let recorder = recorderCache.get(storageKey);
+    if (!recorder) {
+        recorder = new LogRecorder(storageKey);
+        recorderCache.set(storageKey, recorder);
+        installGlobalErrorCapture();
+        installExportFunction();
+    }
+    return recorder;
+}
+
+// 开发者工具f12处打印日志
+export class ConsoleLog implements Logger {
+  /** 日志落地记录器(null 表示不落地) */
+  private recorder: LogRecorder | null;
+
+  constructor(storageKey: string | null = null) {
+    this.recorder = getRecorder(storageKey);
+  }
+
+  protected getNowTime(): string {
+    let time = new Date();
+    return time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+  }
+
+  public Debug(...args: any): Logger {
+    // record 不受 debug 开关门控,崩溃诊断需要 debug 级日志
+    this.recorder?.record("debug", args);
+    Application.App.debug &&
+      console.info("[debug", this.getNowTime(), "]", ...args);
+    return this;
+  }
+
+  public Info(...args: any): Logger {
+    this.recorder?.record("info", args);
+    Application.App.debug &&
+      console.info("[info", this.getNowTime(), "]", ...args);
+    return this;
+  }
+
+  public Warn(...args: any): Logger {
+    this.recorder?.record("warn", args);
+    console.warn("[warn", this.getNowTime(), "]", ...args);
+    return this;
+  }
+
+  public Error(...args: any): Logger {
+    this.recorder?.record("error", args);
+    console.error("[error", this.getNowTime(), "]", ...args);
+    return this;
+  }
+
+  public Fatal(...args: any): Logger {
+    this.recorder?.record("fatal", args);
+    console.error("[fatal", this.getNowTime(), "]", ...args);
+    return this;
+  }
+}
+
 export class PageLog implements Logger {
-    protected el: HTMLElement;
-    protected div: HTMLElement;
-    protected is_notify: boolean;
+  protected el: HTMLElement;
+  protected div: HTMLElement;
+  protected is_notify: boolean;
+  /** 日志落地记录器(null 表示不落地) */
+  private recorder: LogRecorder | null;
 
-    protected getNowTime(): string {
-        let time = new Date();
-        return time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
-    }
-
-    first(text: string, color: string, background: string) {
-        let new_log = document.createElement("div");
-        new_log.innerHTML =
-            `
-                <div class="log" style="border-color: ` +
-            background +
-            `; background-color: ` +
-            background +
-            `;">
-                    <p><span style="color:` +
-            color +
-            `;">` +
-            text +
-            `</span></p>
-                </div>
-            `;
-        //插入第一个元素前
-        var first = document
-            .getElementsByClassName("tools-notice-content")[0]
-            .getElementsByTagName("div");
-        document.querySelector(".tools-notice-content").insertBefore(new_log, first[0]);
-    }
-
-    constructor() {
-        this.el = undefined;
-        window.addEventListener("load", () => {
-            this.div = document.createElement("div");
-            // 主要布局
-            this.div.innerHTML = `
-            <div class="head" id="tools-head"> 
-               <span>小工具通知条</span> 
+  constructor(storageKey: string | null = null) {
+    this.el = undefined;
+    this.recorder = getRecorder(storageKey);
+    window.addEventListener("load", () => {
+      this.div = document.createElement("div");
+      // 主要布局
+      this.div.innerHTML = `
+            <div class="head" id="tools-head">
+               <span>小工具通知条</span>
                <label class="switch" style="width:90px">
                   <input class="checkbox-input" id="checkbox" type="checkbox" checked="checked">
                   <label class="checkbox" for="checkbox"></label>
@@ -100,167 +316,202 @@ export class PageLog implements Logger {
             </div>
             `;
 
-            this.div.className = "tools-logger-panel";
-            document.body.appendChild(this.div);
-            this.el = this.div.querySelector(".tools-notice-content");
-            (<HTMLButtonElement>this.div.querySelector(".close")).onclick = () => {
-                this.el = undefined;
-                this.div.remove();
-            };
-            let checkbox = <HTMLInputElement>this.div.querySelector("#checkbox");
-            checkbox.checked = (Application.App.config.GetConfig("is_notify") || "true") == "true";
-            this.is_notify = checkbox.checked;
-            if (!checkbox.checked) {
-                checkbox.removeAttribute("checked");
-            }
-            let self = this;
-            checkbox.addEventListener("change", function () {
-                self.is_notify = this.checked;
-                Application.App.config.SetConfig("is_notify", this.checked.toString());
-            });
-            // setTimeout(() => {
-            //     Application.CheckUpdate((isnew, data) => {
-            //         if (data == undefined) {
-            //             this.Info("检查更新失败.");
-            //             return;
-            //         }
-            //         let html = "";
-            //         if (isnew) {
-            //             html += "<span>[有新版本]</span>";
-            //         }
-            //         // html += data.injection;
-            //         this.Info(html);
-            //     });
-            // }, 1000);
+      this.div.className = "tools-logger-panel";
+      document.body.appendChild(this.div);
+      this.el = this.div.querySelector(".tools-notice-content");
+      (<HTMLButtonElement>this.div.querySelector(".close")).onclick = () => {
+        this.el = undefined;
+        this.div.remove();
+      };
+      let checkbox = <HTMLInputElement>this.div.querySelector("#checkbox");
+      checkbox.checked =
+        (Application.App.config.GetConfig("is_notify") || "true") == "true";
+      this.is_notify = checkbox.checked;
+      if (!checkbox.checked) {
+        checkbox.removeAttribute("checked");
+      }
+      let self = this;
+      checkbox.addEventListener("change", function() {
+        self.is_notify = this.checked;
+        Application.App.config.SetConfig("is_notify", this.checked.toString());
+      });
 
-            //支持拖拽移动
-            function getProperty(ele: HTMLElement, prop: any) {
-                return parseInt(window.getComputedStyle(ele)[prop]);
-            }
+      //支持拖拽移动
+      function getProperty(ele: HTMLElement, prop: any) {
+        return parseInt(window.getComputedStyle(ele)[prop]);
+      }
 
-            const windowWidth = window.innerWidth;
-            const windowHeight = window.innerHeight;
-            const containerWidth = getProperty(this.div, "width");
-            const containerHeight = getProperty(this.div, "height");
-            let x = parseInt(Application.App.config.GetConfig("notify_tools_x", "60px").replace('px', ''));
-            if (x < 0) {
-                x = 0;
-            }
-            if (x >= windowWidth - containerWidth)
-                x = windowWidth - containerWidth;
-            this.div.style.left = x + "px";
-            let y = parseInt(Application.App.config.GetConfig("notify_tools_y", "40px").replace('px', ''));
-            if (y < 0) {
-                y = 0;
-            }
-            if (y >= windowHeight - containerHeight)
-                y = windowHeight - containerHeight;
-            this.div.style.top = y + "px";
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      const containerWidth = getProperty(this.div, "width");
+      const containerHeight = getProperty(this.div, "height");
+      let x = parseInt(
+        Application.App.config
+          .GetConfig("notify_tools_x", "60px")
+          .replace("px", ""),
+      );
+      if (x < 0) {
+        x = 0;
+      }
+      if (x >= windowWidth - containerWidth) x = windowWidth - containerWidth;
+      this.div.style.left = x + "px";
+      let y = parseInt(
+        Application.App.config
+          .GetConfig("notify_tools_y", "40px")
+          .replace("px", ""),
+      );
+      if (y < 0) {
+        y = 0;
+      }
+      if (y >= windowHeight - containerHeight)
+        y = windowHeight - containerHeight;
+      this.div.style.top = y + "px";
 
-            let head = <HTMLElement>this.div.querySelector("#tools-head");
-            head.onmousedown = (downEvent) => {
-                let relaX = downEvent.clientX - this.div.offsetLeft;
-                let relaY = downEvent.clientY - this.div.offsetTop;
+      let head = <HTMLElement>this.div.querySelector("#tools-head");
+      head.onmousedown = (downEvent) => {
+        let relaX = downEvent.clientX - this.div.offsetLeft;
+        let relaY = downEvent.clientY - this.div.offsetTop;
 
-                const windowWidth = window.innerWidth;
-                const windowHeight = window.innerHeight;
-                const containerWidth = getProperty(this.div, "width");
-                const containerHeight = getProperty(this.div, "height");
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        const containerWidth = getProperty(this.div, "width");
+        const containerHeight = getProperty(this.div, "height");
 
-                document.onmousemove = (moveEvent) => {
-                    let targetX = moveEvent.clientX - relaX;
-                    let targetY = moveEvent.clientY - relaY;
+        document.onmousemove = (moveEvent) => {
+          let targetX = moveEvent.clientX - relaX;
+          let targetY = moveEvent.clientY - relaY;
 
-                    if (targetX <= 0) targetX = 0;
-                    if (targetY <= 0) targetY = 0;
-                    if (targetX >= windowWidth - containerWidth)
-                        targetX = windowWidth - containerWidth;
-                    if (targetY >= windowHeight - containerHeight)
-                        targetY = windowHeight - containerHeight;
+          if (targetX <= 0) targetX = 0;
+          if (targetY <= 0) targetY = 0;
+          if (targetX >= windowWidth - containerWidth)
+            targetX = windowWidth - containerWidth;
+          if (targetY >= windowHeight - containerHeight)
+            targetY = windowHeight - containerHeight;
 
-                    this.div.style.left = targetX + "px";
-                    this.div.style.top = targetY + "px";
-                };
-                document.onmouseup = () => {
-                    document.onmouseup = null;
-                    document.onmousemove = null;
-                    Application.App.config.SetConfig("notify_tools_x", this.div.style.left);
-                    Application.App.config.SetConfig("notify_tools_y", this.div.style.top);
-                };
-            };
-        });
+          this.div.style.left = targetX + "px";
+          this.div.style.top = targetY + "px";
+        };
+        document.onmouseup = () => {
+          document.onmouseup = null;
+          document.onmousemove = null;
+          Application.App.config.SetConfig(
+            "notify_tools_x",
+            this.div.style.left,
+          );
+          Application.App.config.SetConfig(
+            "notify_tools_y",
+            this.div.style.top,
+          );
+        };
+      };
+    });
+  }
+
+  protected getNowTime(): string {
+    let time = new Date();
+    return time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+  }
+
+  first(text: string, color: string, background: string) {
+    let new_log = document.createElement("div");
+    new_log.innerHTML =
+      `
+                <div class="log" style="border-color: ` +
+      background +
+      `; background-color: ` +
+      background +
+      `;">
+                    <p><span style="color:` +
+      color +
+      `;">` +
+      text +
+      `</span></p>
+                </div>
+            `;
+    //插入第一个元素前
+    var first = document
+      .getElementsByClassName("tools-notice-content")[0]
+      .getElementsByTagName("div");
+    document
+      .querySelector(".tools-notice-content")
+      .insertBefore(new_log, first[0]);
+  }
+
+  protected toStr(...args: any): string {
+    let text = "";
+    for (let i = 0; i < args.length; i++) {
+      if (typeof args[i] == "object") {
+        text += args[i].toString() + "\n";
+      } else {
+        text += args[i] + "\n";
+      }
     }
+    return text.substring(0, text.length - 1);
+  }
 
-    protected toStr(...args: any): string {
-        let text = "";
-        for (let i = 0; i < args.length; i++) {
-            if (typeof args[i] == "object") {
-                text += args[i].toString() + "\n";
-            } else {
-                text += args[i] + "\n";
-            }
-        }
-        return text.substring(0, text.length - 1);
-    }
+  public Debug(...args: any): Logger {
+    this.recorder?.record("debug", args);
+    console.info("[debug", this.getNowTime(), "]", ...args);
+    return this;
+  }
 
-    public Debug(...args: any): Logger {
-        console.info("[debug", this.getNowTime(), "]", ...args);
-        return this;
+  public Info(...args: any): Logger {
+    this.recorder?.record("info", args);
+    let text = this.toStr(...args);
+    if (this.el) {
+      this.first(text, "#409EFF", "rgba(121, 187, 255, 0.2)");
+    } else {
+      console.info("[info", this.getNowTime(), "]", ...args);
     }
+    return this;
+  }
 
-    public Info(...args: any): Logger {
-        let text = this.toStr(...args);
-        if (this.el) {
-            this.first(text, "#409EFF", "rgba(121, 187, 255, 0.2)");
-        } else {
-            console.info("[info", this.getNowTime(), "]", ...args);
-        }
-        return this;
+  public Warn(...args: any): Logger {
+    this.recorder?.record("warn", args);
+    let text = this.toStr(...args);
+    if (this.el) {
+      this.first(text, "#5C3C00", "rgba(250, 236, 216, 0.4)");
     }
+    console.warn("[warn", this.getNowTime(), "]", ...args);
+    if (document.hidden && localStorage["is_notify"] == "true") {
+      Noifications({
+        title: "网课小工具",
+        text: text + "\n3秒后自动关闭",
+        timeout: 3000,
+      });
+    }
+    return this;
+  }
 
-    public Warn(...args: any): Logger {
-        let text = this.toStr(...args);
-        if (this.el) {
-            this.first(text, "#5C3C00", "rgba(250, 236, 216, 0.4)");
-        }
-        console.warn("[warn", this.getNowTime(), "]", ...args);
-        if (document.hidden && localStorage["is_notify"] == "true") {
-            Noifications({
-                title: "网课小工具",
-                text: text + "\n3秒后自动关闭",
-                timeout: 3000,
-            });
-        }
-        return this;
+  public Error(...args: any): Logger {
+    this.recorder?.record("error", args);
+    let text = this.toStr(...args);
+    if (this.el) {
+      this.first(text, "#FFF0F0", "rgba(253, 226, 226, 0.5)");
     }
+    console.error("[error", this.getNowTime(), "]", ...args);
+    if (localStorage["is_notify"] == "true") {
+      Noifications({
+        title: "网课小工具",
+        text: text,
+      });
+    }
+    return this;
+  }
 
-    public Error(...args: any): Logger {
-        let text = this.toStr(...args);
-        if (this.el) {
-            this.first(text, "#FFF0F0", "rgba(253, 226, 226, 0.5)");
-        }
-        console.error("[error", this.getNowTime(), "]", ...args);
-        if (localStorage["is_notify"] == "true") {
-            Noifications({
-                title: "网课小工具",
-                text: text,
-            });
-        }
-        return this;
+  public Fatal(...args: any): Logger {
+    this.recorder?.record("fatal", args);
+    let text = this.toStr(...args);
+    if (this.el) {
+      this.first(text, "#ff0000", "rgba(253, 226, 226, 0.5)");
     }
-
-    public Fatal(...args: any): Logger {
-        let text = this.toStr(...args);
-        if (this.el) {
-            this.first(text, "#ff0000", "rgba(253, 226, 226, 0.5)");
-        }
-        console.error("[fatal", this.getNowTime(), "]", ...args);
-        Noifications({
-            title: "网课小工具",
-            text: text,
-        });
-        return this;
-    }
+    console.error("[fatal", this.getNowTime(), "]", ...args);
+    Noifications({
+      title: "网课小工具",
+      text: text,
+    });
+    return this;
+  }
 }
 
 export class EmptyLog implements Logger {
