@@ -69,10 +69,20 @@
 ## 四、待完成项(按优先级)
 
 ### P1 — CPU 100% 整浏览器冻死(核心未解)
-- **已知**:JS 堆稳定(48~78MB,视频起播瞬时 123MB 后 GC 回落)→ **非 JS 内存泄漏,是 CPU 型**;用户常开 3+ 个 zsgl 标签页(多 tabId 证据),访问过 homePage(每日积分页)/resource 页;冻结时整个浏览器无响应
-- **怀疑方向**(未证实):① 站点 DRM 播放器 4x 解码本身;② 多标签叠加(keepAliveAudio 使后台标签页不受 Chrome 节流,全速解码+跑站点定时器);③ 每日积分自动化(dailyPoints.ts,用户自有代码,未审查);④ 站点其它脚本
-- **下一步**:用户重载扩展 + 单标签复现;日志转存保持**开启**;冻结后取 main 世界缓冲,看冻结前最后 5 秒的行为(请求洪流/播放事件循环/未知异常)。若主世界缓冲异常小或缺"已启用"启动行,先查主世界记录器
-- **可选缓解**:跨标签互斥(localStorage 锁,同一时刻只允许一个标签页活跃播放);审查 dailyPoints.ts 是否有高频循环
+> **2026-09-21 复现记录(AI 实机排查,单标签,解压缩扩展重载后)**:
+> - **复现 3/3 次**:打开/刷新 `#/home/courseDetail/N008085` 后 **~70 秒内**整机冻死(视频自动播放开始后);强杀重启刷新**立即再崩**(与用户"首次打开会崩"吻合)。多标签并非必要条件。
+> - **崩溃前日志已提取**(自动下载被 Edge"多个自动下载"限制拦截,改从 Edge LocalStorage LevelDB 旁路提取,见本地 `.trae/log-extract/log_1~12.txt`,tabId=mua1vrv35q06lm):
+>   - 0:48:24 页面加载 → 工具初始化/拦截/切屏中立化全部正常 → 0:48:26 视频任务启动(**multiple:1、mute:true**;`waitForVideoSourceAndPlay` 在 **readyState=0 仅 blob src 挂上**时即判定 hasSource 并点击播放)→ "[视频事件] Video playing"
+>   - **0:48:27 起扩展完全静默**:无暂停风暴、无播放点击循环、无请求洪流、无 error;mem 采样 52.2→54.0MB 稳定(至 0:49:34 最后一次落地)
+>   - 时序:浏览器 UI 进程先失响应(UIA ~0:48:49 已超时),渲染进程主世界 JS 存活至 0:49:34 —— **排除扩展 JS 死循环与 JS 内存泄漏,指向 GPU/DRM 解码与合成进程 hang**
+> - **嫌疑排序**:① DRM(m3u8/EME)解码+GPU 合成(冷启动 GPU 进程状态差异或 MSE/EME 初始化被抢跑点击扰动,可解释"重启后同视频正常");② readyState=0 抢跑点击的时序诱因(修复成本低,建议先改:readyState≥1 才 clickPlayButton);③ 站点自身脚本(无证据)
+> - **附带发现(重要)**:
+>   1. **恢复导出缺陷**:两个世界同时 downloadTextFile 触发 Edge"多个自动下载"拦截,**下载失败仍无条件删除 localStorage 键**(recoverOrphanedBuffer 尾部 removeItem)→ 前两次会话崩溃日志已永久丢失。建议:合并为单文件导出/错峰导出/延迟删除(归 T-002)
+>   2. **站点反调试 debugger-checker**:页面脚本(3646 chunk)内嵌 `debugger;`,**DevTools 打开期间页面 JS 被暂停**;关闭 DevTools 瞬间页面被导航到 `about:blank?a=1&b={"isOpen":true,"checkerName":"debugger-checker"}`。**zsgl 页面调试一律不可开 DevTools**,崩溃取证只依赖 LogRecorder(控制台 `__toolLogExport()` 也不可用)
+>   3. 下载被拦时的替代取证:强杀 Edge 后从 `%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\Local Storage\leveldb\*.log` 以 **ASCII/UTF-8** 搜 `zsgl_log_`(键为 ASCII,值为 UTF-16LE)提取
+- **已知**:JS 堆稳定(48~78MB,视频起播瞬时 123MB 后 GC 回落)→ **非 JS 内存泄漏,是 CPU 型**;用户常开 3+ 个 zsgl 标签页(多 tabId 证据),访问过 homePage(每日积分页)/resource 页;冻结时整个浏览器无响应。**9-21 复现:单标签即崩,多标签非必要条件**
+- **怀疑方向**(9-21 更新):① 站点 DRM 播放器/GPU 解码合成(**日志支持,首选**);② readyState=0 抢跑点击扰动 MSE/EME 初始化(待 A 修复验证);③ 多标签叠加(已排除必要性);④ 每日积分自动化(dailyPoints.ts,静默期无活动,基本排除);⑤ 站点其它脚本
+- **下一步**:① `waitForVideoSourceAndPlay` 改 readyState≥1 再点播放 → 回归;② 冻结前**提前打开**任务管理器置顶,冻结时抓 GPU 进程 vs 渲染进程 CPU 份额(本次任务管理器也被拖死,拿不到份额);③ 对比开关"硬件加速"复现;④ 可选缓解:跨标签互斥(localStorage 锁)
 
 ### P2 — 修复项实机回归
 - 切窗弹窗/暂停死循环是否消失(切屏防御日志应出现"已拦截 window.onblur 赋值")
