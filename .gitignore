@@ -19,3 +19,4 @@ certificate
 *.tar.gz
 *.map
 src/mooc/zsgl/log/*.log
+.trae/log-extract/
