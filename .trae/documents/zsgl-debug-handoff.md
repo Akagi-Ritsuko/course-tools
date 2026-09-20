@@ -81,6 +81,13 @@
 > - **CPU 采样结论(后台 3s 采样,.trae/log-extract/cpu-sample.csv)**:冻结期高 CPU 在 **browser 主进程(23412,~180-192%)与伴生无 --type 进程(5680,~200%)**,GPU 进程仅 ~25%,**渲染进程全程安静**;风暴自 ≥01:13:47(早于采样启动)持续至 01:17:10(≥3.5min)后**自行缓解**(5680 退出,主进程回落 ~7%,浏览器恢复响应并完成日志下载)。
 > - **根因改写(重要)**:非 GPU/DRM 解码、非渲染进程 JS——**browser 主进程(浏览器 UI/调度进程)CPU 风暴**。与渲染侧日志静默+堆稳定完全吻合:主进程忙→IPC/UI 线程饿死→用户体感"整机冻死";风暴不恢复时=用户强杀场景;"重启后同视频正常"=风暴窗口已过。DRM 起播时序可能只是巧合诱因。
 > - **下一步**:①主进程风暴定位需 IPC 追踪(风暴期 Edge 内置任务管理器 Shift+Esc 看哪个子进程最忙/ETW tracing);②排除篡改猴共存注入变量(本轮未禁用);③排查主进程消息风暴源(storage.onChanged 广播/通知服务/postMessage);④跨标签互斥暂缓(与根因无关)
+> - **隔离实验与线程级结论(2026-09-21 01:22~01:44,采样 csv B/A 两份)**:
+>   - **实验 B(--disable-extensions,仅站点,视频正常播放 4min)**:133 行采样**无任何进程 >40%** → 站点/DRM 单独运行干净
+>   - **实验 A(仅启用解压缩扩展,篡改猴已禁用)**:风暴复现(01:33:20 起)——⚠️ 勘误:采样脚本正则漏匹配新版 `--type=renderer`(无 -process 后缀),此前"双 browser"实为**主进程(~180%)+课程页渲染进程(~200-212%)**
+>   - **杀 renderer 实验**:风暴中 taskkill 仅杀课程页 renderer(46720)→ 主进程仍 103% 一段时间后缓解 → renderer 非唯一燃烧点,主进程有独立负载(疑为处理 renderer IPC 洪流的连带)
+>   - **风暴会话日志(tabId=mua3hfm504kg52,.trae/log-extract/storm_*.txt)**:cs 世界 mem 行 **1:33:19→1:35:49 每 5s 不断**(JS 事件循环全程存活),行为日志完全静默 → **renderer 的 ~200% 不是 JS 执行**,指向媒体/合成/IPC 等非 JS 线程
+>   - **根因画像(当前)**:工具的起播操作(点击任务卡→视频容器/DRM 重建→currentTime 重置/倍速/静音切换)诱发课程页 renderer **非 JS 线程异常**+主进程连带;无扩展时同一页面播放无此现象;风暴可自行缓解(数分钟)也可致死锁(用户强杀场景)
+>   - **下一步(收窄后)**:①chrome://tracing(渲染进程 media/compositor/viz 类目)抓风暴期线程;②缓解实验:起播动作最小化(不重置 currentTime/不设倍速静音/不模拟点击,靠站点自动续播)逐项开关对比;③确认 CDM/Widevine 进程形态
 > - **附带发现(重要)**:
 >   1. **恢复导出缺陷**:两个世界同时 downloadTextFile 触发 Edge"多个自动下载"拦截,**下载失败仍无条件删除 localStorage 键**(recoverOrphanedBuffer 尾部 removeItem)→ 前两次会话崩溃日志已永久丢失。建议:合并为单文件导出/错峰导出/延迟删除(归 T-002)
 >   2. **站点反调试 debugger-checker**:页面脚本(3646 chunk)内嵌 `debugger;`,**DevTools 打开期间页面 JS 被暂停**;关闭 DevTools 瞬间页面被导航到 `about:blank?a=1&b={"isOpen":true,"checkerName":"debugger-checker"}`。**zsgl 页面调试一律不可开 DevTools**,崩溃取证只依赖 LogRecorder(控制台 `__toolLogExport()` 也不可用)
