@@ -8,7 +8,7 @@
 |---|---|---|---|---|---|
 | T-001 | 考试答案获取与导出：分批累积（mergeQuestionBatch）、串行破解链、集齐自动导出、交卷兜底导出；待实机回归（35 题分 4 批场景） | doing | P1 | TODO#1 + handoff §2.1 | 03-详细设计 §9 |
 | T-002 | 崩溃日志系统（LogRecorder）实机回归：切窗/暂停修复后日志捕获正常；日志转存开关关闭后两个世界零写入、零下载（命名空间键读取刚修，未实测） | doing | P1 | handoff §2.2 + §四P2 | 04-数据库设计 §3 |
-| T-003 | 学习地图任务完成后返回流程端到端验证：学习地图 → 任务 → 关闭任务页（mooc.ts window.close）→ 回学习地图 → 自动下一任务 | doing | P0 | TODO#5 | 03-详细设计 §8 |
+| T-003 | 学习地图任务完成后返回流程端到端验证：学习地图 → 任务 → 任务页写 finished 信号并 window.close()（course.ts notifyStudyMapCourseComplete）→ 回学习地图（storage → reload）→ 自动下一任务 | doing | P0 | TODO#5 | 03-详细设计 §8 |
 | T-004 | P1 核心排查：视频起播时 CPU 100% 整浏览器冻死（非 JS 内存泄漏；怀疑 DRM 解码 / 多标签叠加 / dailyPoints 高频循环）；下一步单标签复现 + main 世界缓冲分析；可选缓解：跨标签 localStorage 互斥 | todo | P0 | handoff §四P1 | 03-详细设计 §5/§10 |
 | T-005 | P2 修复项实机回归：切窗弹窗与暂停死循环消失（应出现"已拦截 window.onblur 赋值"日志）；getIsWatermark 报错随 watermarkFrame prepend 移除而消失 | todo | P2 | handoff §四P2 | 03-详细设计 §1.3/§3.1 |
 | T-006 | SCORM 子类型支持：`document` 文档任务（自动标记已读） | todo | P1 | TODO#2 | 03-详细设计 §4.2 |
@@ -34,4 +34,4 @@
 |---|---|---|
 | T-901 | 初始化协作文档体系（ai-collab/changelog/tasks），整理任务清单并补录近期变更 | done |
 | T-902 | 创建 docs/zsgl/README.md 文档索引与代码地图，更新 ai-collab 阅读顺序指向 | done |
-| T-903 | docs/zsgl/cn/ 各文档与代码一致性核对修订（03/04/05/07） | doing |
+| T-903 | docs/zsgl/cn/ 各文档与代码一致性核对修订（03/04/05/07） | done |
