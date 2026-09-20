@@ -162,6 +162,11 @@ class LogRecorder {
     return `${this.storageKey}_last`;
   }
 
+  /** 归档键:孤儿缓冲导出后归档于此(防止下载被拦截导致日志永久丢失) */
+  private get archKey(): string {
+    return LOG_STORAGE_PREFIX + "arch";
+  }
+
   /** 追加一行并执行环形缓冲裁剪 */
   private pushLine(line: string): void {
     this.lines.push(line);
@@ -228,42 +233,80 @@ class LogRecorder {
 
   /**
    * 启动时检查遗留缓冲:心跳过期的标签页=已崩溃/被杀,
-   * zsgl 站点自动导出其缓冲;心跳新鲜的是其他存活标签页,不能抢占
+   * 合并全部世界(main/cs)的孤儿缓冲为**单个文件**导出(两个世界同时各导一份会触发
+   * Edge"多个自动下载"拦截);导出后先归档再清理——下载即使被拦截,归档仍保留现场
+   * (可由 __toolLogExport 或 LocalStorage LevelDB 取回),不再出现"删键致日志永久丢失"
    */
   private recoverOrphanedBuffer(): void {
     this.orphanChecked = true;
     try {
       if (!isPersistEnabled()) return;
+      // 导出锁:两世界只有先到者执行,锁 15s 内视为有效(异常残留会被下次覆盖)
+      const lockKey = LOG_STORAGE_PREFIX + "export_lock";
+      const now = Date.now();
+      if (Number(localStorage.getItem(lockKey) || 0) > now - 15000) return;
+      localStorage.setItem(lockKey, String(now));
       const orphans: string[] = [];
-      const staleKeys: string[] = [];
-      const keyPrefix = this.storageKey + "_";
+      const lastSections: string[] = [];
+      const removeKeys: string[] = [];
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (!key || !key.startsWith(keyPrefix)) continue;
-        if (key === this.lastKey) continue;
-        if (key.startsWith(this.storageKey + "_hb_")) continue;
-        const tabId = key.substring(keyPrefix.length);
-        const hb = Number(
-          localStorage.getItem(this.storageKey + "_hb_" + tabId) || 0,
-        );
-        if (hb && Date.now() - hb <= LOG_HEARTBEAT_STALE_MS) {
+        if (!key || !key.startsWith(LOG_STORAGE_PREFIX)) continue;
+        if (key === lockKey || key === this.archKey) continue;
+        if (key.includes("_hb_") || key.includes("_arch_")) continue;
+        if (key.endsWith("_last")) {
+          lastSections.push(
+            `===== ${key} =====\n${localStorage.getItem(key) || ""}`,
+          );
           continue;
         }
+        // 解析 <world>_<tabId>,心跳未过期的是其他存活标签页,不能抢占
+        const rest = key.substring(LOG_STORAGE_PREFIX.length);
+        const sep = rest.indexOf("_");
+        if (sep <= 0) continue;
+        const world = rest.substring(0, sep);
+        const tabId = rest.substring(sep + 1);
+        const hb = Number(
+          localStorage.getItem(`${LOG_STORAGE_PREFIX}${world}_hb_${tabId}`) ||
+            0,
+        );
+        if (hb && Date.now() - hb <= LOG_HEARTBEAT_STALE_MS) continue;
         orphans.push(`===== ${key} =====\n${localStorage.getItem(key) || ""}`);
-        staleKeys.push(key, this.storageKey + "_hb_" + tabId);
+        removeKeys.push(key, `${LOG_STORAGE_PREFIX}${world}_hb_${tabId}`);
       }
       if (orphans.length === 0) return;
       if (window.location.host.includes("zsgl")) {
         downloadTextFile(
           `工具日志_上次崩溃_${formatFileTimestamp()}.log`,
-          orphans.join("\n") +
-            "\n" +
-            (localStorage.getItem(this.lastKey) || ""),
+          orphans.join("\n") + "\n" + lastSections.join("\n"),
         );
       }
-      staleKeys.forEach((k) => localStorage.removeItem(k));
+      this.archiveOrphans(orphans);
+      removeKeys.forEach((k) => localStorage.removeItem(k));
     } catch (e) {
       /* 忽略 */
+    }
+  }
+
+  /** 归档孤儿缓冲段,总容量超限丢弃最旧段(防止下载被拦截导致日志永久丢失) */
+  private archiveOrphans(sections: string[]): void {
+    try {
+      const ARCH_MAX = 400000;
+      let arch = localStorage.getItem(this.archKey) || "";
+      sections.forEach((s) => {
+        arch += s + "\n";
+      });
+      while (arch.length > ARCH_MAX) {
+        const cut = arch.indexOf("=====", 10);
+        if (cut < 0) {
+          arch = arch.substring(arch.length - ARCH_MAX);
+          break;
+        }
+        arch = arch.substring(cut);
+      }
+      localStorage.setItem(this.archKey, arch);
+    } catch (e) {
+      /* 配额超限等异常忽略 */
     }
   }
 }

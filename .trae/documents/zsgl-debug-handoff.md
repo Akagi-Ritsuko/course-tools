@@ -77,7 +77,10 @@
 >   - 时序:浏览器 UI 进程先失响应(UIA ~0:48:49 已超时),渲染进程主世界 JS 存活至 0:49:34 —— **排除扩展 JS 死循环与 JS 内存泄漏,指向 GPU/DRM 解码与合成进程 hang**
 > - **嫌疑排序**:① DRM(m3u8/EME)解码+GPU 合成(冷启动 GPU 进程状态差异或 MSE/EME 初始化被抢跑点击扰动,可解释"重启后同视频正常");② readyState=0 抢跑点击的时序诱因(修复成本低,建议先改:readyState≥1 才 clickPlayButton);③ 站点自身脚本(无证据)
 > - **修复回归(2026-09-21 01:06,tabId=mua2iml0f0oqxk,日志 .trae/log-extract/fix_1~8.txt)**:已实施 readyState≥1 门控(video.ts/scorm.ts 的 waitForVideoSourceAndPlay + hasVideoSource),日志确认不再抢跑(播放尝试 readyState:0/hasSource:false)。**回归未通过**:本次崩溃提前到加载后 ~5s——readyState 始终 0、视频从未真正解码播放,站点 play 事件已触发,hls 刚请求第一个分片(1764857593165_s_0.ts)即死。两次会话共同点收窄至 **DRM 流初始化链路(getPlaylist→getPlayParams→分片拉取/EME)**,崩溃窗口有波动(68s→5s)。注:本次会话加载时恢复导出尝试了旧键下载(被 Edge 拦),为额外变量,暂无法排除其影响。
-> - **嫌疑排序(回归后更新)**:① DRM/EME 初始化与媒体管线(首选,与"是否真正解码播放"无关);② readyState 抢跑(已修,非根因);③ 恢复导出下载尝试与崩溃的耦合(待排除:先修 T-002 导出缺陷再回归);④ 站点自身脚本
+> - **修复回归 2(2026-09-21 01:13~01:18,含 T-002 导出修复)**:log.ts 恢复导出改为**单飞合并**(export_lock 15s 互斥,扫描全部世界孤儿键,单文件下载)+**归档替代删键**(zsgl_log_arch,400KB 滚动)。结果:**崩溃日志首次成功落地 Downloads**(工具日志_上次崩溃_2026-09-21-01-13-47.log,合并 main+cs,中文正常,已存 .trae/log-extract/)——"下载被拦+删键丢日志"缺陷闭环。
+> - **CPU 采样结论(后台 3s 采样,.trae/log-extract/cpu-sample.csv)**:冻结期高 CPU 在 **browser 主进程(23412,~180-192%)与伴生无 --type 进程(5680,~200%)**,GPU 进程仅 ~25%,**渲染进程全程安静**;风暴自 ≥01:13:47(早于采样启动)持续至 01:17:10(≥3.5min)后**自行缓解**(5680 退出,主进程回落 ~7%,浏览器恢复响应并完成日志下载)。
+> - **根因改写(重要)**:非 GPU/DRM 解码、非渲染进程 JS——**browser 主进程(浏览器 UI/调度进程)CPU 风暴**。与渲染侧日志静默+堆稳定完全吻合:主进程忙→IPC/UI 线程饿死→用户体感"整机冻死";风暴不恢复时=用户强杀场景;"重启后同视频正常"=风暴窗口已过。DRM 起播时序可能只是巧合诱因。
+> - **下一步**:①主进程风暴定位需 IPC 追踪(风暴期 Edge 内置任务管理器 Shift+Esc 看哪个子进程最忙/ETW tracing);②排除篡改猴共存注入变量(本轮未禁用);③排查主进程消息风暴源(storage.onChanged 广播/通知服务/postMessage);④跨标签互斥暂缓(与根因无关)
 > - **附带发现(重要)**:
 >   1. **恢复导出缺陷**:两个世界同时 downloadTextFile 触发 Edge"多个自动下载"拦截,**下载失败仍无条件删除 localStorage 键**(recoverOrphanedBuffer 尾部 removeItem)→ 前两次会话崩溃日志已永久丢失。建议:合并为单文件导出/错峰导出/延迟删除(归 T-002)
 >   2. **站点反调试 debugger-checker**:页面脚本(3646 chunk)内嵌 `debugger;`,**DevTools 打开期间页面 JS 被暂停**;关闭 DevTools 瞬间页面被导航到 `about:blank?a=1&b={"isOpen":true,"checkerName":"debugger-checker"}`。**zsgl 页面调试一律不可开 DevTools**,崩溃取证只依赖 LogRecorder(控制台 `__toolLogExport()` 也不可用)

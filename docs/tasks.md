@@ -7,9 +7,9 @@
 | 编号 | 任务 | 状态 | 优先级 | 来源 | 关联文档 |
 |---|---|---|---|---|---|
 | T-001 | 考试答案获取与导出：分批累积（mergeQuestionBatch）、串行破解链、集齐自动导出、交卷兜底导出；待实机回归（35 题分 4 批场景） | doing | P1 | TODO#1 + handoff §2.1 | 03-详细设计 §9 |
-| T-002 | 崩溃日志系统（LogRecorder）实机回归：切窗/暂停修复后日志捕获正常；日志转存开关关闭后两个世界零写入、零下载（命名空间键读取刚修，未实测）。⚠️ 2026-09-21 实机发现缺陷：recoverOrphanedBuffer 导出（下载）被 Edge"多个自动下载"限制拦截时**仍无条件删除** localStorage 键 → 崩溃日志永久丢失（前两次会话日志因此丢失）；建议改为合并单文件导出或延迟删除 | doing | P1 | handoff §2.2 + §四P2 | 04-数据库设计 §3 |
+| T-002 | 崩溃日志系统（LogRecorder）：~~恢复导出"下载失败仍删键"致日志丢失~~ **已修复并实机验证**（2026-09-21）：单飞合并导出（export_lock 互斥，全世界孤儿键单文件下载）+ 归档替代删键（zsgl_log_arch 400KB 滚动）；实机下载首次成功落地 Downloads | done | P1 | handoff §2.2 + §四P2 | 04-数据库设计 §3 |
 | T-003 | 学习地图任务完成后返回流程端到端验证：学习地图 → 任务 → 任务页写 finished 信号并 window.close()（course.ts notifyStudyMapCourseComplete）→ 回学习地图（storage → reload）→ 自动下一任务 | doing | P0 | TODO#5 | 03-详细设计 §8 |
-| T-004 | P1 核心排查：视频起播时 CPU 100% 整浏览器冻死。2026-09-21 已实机复现 4 次（单标签即崩）；readyState≥1 门控修复已实施（video.ts/scorm.ts）但**回归未通过**：崩溃提前至加载后 ~5s，视频从未真正解码播放，死在 DRM 流初始化链路（getPlaylist→getPlayParams→hls 分片拉取）——嫌疑聚焦 DRM/EME 媒体管线；详见 handoff §四 P1 复现记录。下一步：①修 T-002 导出缺陷排除耦合后回归 ②提前开任务管理器抓 GPU/渲染进程 CPU 份额 ③硬件加速开关对比 | doing | P0 | handoff §四P1 | 03-详细设计 §5/§10 |
+| T-004 | P1 核心排查：视频起播时 CPU 100% 整浏览器冻死。**根因已改写（2026-09-21 CPU 采样实锤）**：browser 主进程 CPU 风暴（主进程 ~180-192% + 伴生进程 ~200%，GPU 仅 ~25%、渲染进程安静），持续 ≥3.5min 后自行缓解；"整机冻死"=主进程忙死致 UI/IPC 饿死，强杀=风暴不恢复情形。与 GPU/DRM 解码、渲染 JS 无关（渲染日志静默+堆稳定）。详见 handoff §四 P1。下一步：①风暴期 Shift+Esc 看子进程消息占用/IPC tracing ②排除篡改猴共存 ③排查 storage.onChanged/通知/postMessage 风暴源 | doing | P0 | handoff §四P1 | 03-详细设计 §5/§10 |
 | T-005 | P2 修复项实机回归：切窗弹窗与暂停死循环消失（应出现"已拦截 window.onblur 赋值"日志）；getIsWatermark 报错随 watermarkFrame prepend 移除而消失 | todo | P2 | handoff §四P2 | 03-详细设计 §1.3/§3.1 |
 | T-006 | SCORM 子类型支持：`document` 文档任务（自动标记已读） | todo | P1 | TODO#2 | 03-详细设计 §4.2 |
 | T-007 | SCORM 子类型支持：`audio` 音频任务（自动播放） | todo | P1 | TODO#2 | 03-详细设计 §4.2 |
