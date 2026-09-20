@@ -14,3 +14,4 @@
 | 2026-09-20 | 补录：移除 OperateCard 向 #watermarkFrame/body prepend 空 div 的代码（疑似站点水印组件报错触发源） | src/mooc/zsgl/course.ts | T-005（补录） |
 | 2026-09-20 | 补录：新增配置项"考试答案导出（answer_export_enabled）""日志转存（log_persist_enabled）"，均默认开启 | src/config.ts | T-001/T-002（补录） |
 | 2026-09-20 | 补录：mooc.ts / start.ts 传入日志落地 key（主世界 PageLog / 内容脚本 ConsoleLog 分区） | src/mooc.ts、src/start.ts | T-002（补录） |
+| 2026-09-20 | 创建 docs/zsgl/README.md：01~07 文档导航、src/mooc/zsgl/ 全量代码地图、关键开发须知（摘自 handoff §三）；ai-collab 阅读顺序指向同步更新 | docs/zsgl/README.md、docs/ai-collab.md | T-902 |

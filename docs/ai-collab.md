@@ -9,7 +9,7 @@
 接手 zsgl 相关工作时按以下顺序阅读，5 分钟内建立全貌：
 
 1. [README.md](../README.md) —— 项目定位（cxmooc-tools 多平台网课工具）
-2. [zsgl/README.md](zsgl/README.md) —— zsgl 模块文档索引与代码地图（待建，见 tasks.md）
+2. [zsgl/README.md](zsgl/README.md) —— zsgl 模块文档索引与代码地图
 3. [zsgl/cn/01-需求规格.md](zsgl/cn/01-需求规格.md) ~ [zsgl/cn/07-部署手册与用户手册.md](zsgl/cn/07-部署手册与用户手册.md) —— 需求 / 概要设计 / 详细设计 / 存储 / API / 测试 / 部署（按需）
 4. [tasks.md](tasks.md) —— 当前任务与进度（第一入口）
 5. [changelog.md](changelog.md) —— 近期变更脉络
