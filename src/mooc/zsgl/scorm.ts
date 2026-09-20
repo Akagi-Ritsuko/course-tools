@@ -206,12 +206,10 @@ export class ZsglAudio extends ZsglTask {
            const tryPlay = () => {
              attemptCount++;
 
-             // 检查视频是否有源
-             const hasSource =
-               this.video.src ||
-               this.video.currentSrc ||
-               this.video.querySelector("source")?.src ||
-               this.video.readyState >= 1;
+             // 仅当元数据就绪(readyState>=1 HAVE_METADATA)才允许起播;
+            // blob src 刚挂上但 readyState=0 时抢跑点击会扰动 DRM(MSE/EME)初始化时序,
+            // 与视频起播整机 CPU 100% 冻死相关(见 .trae/documents/zsgl-debug-handoff.md P1 复现记录)
+            const hasSource = this.video.readyState >= 1;
 
              Application.App.log.Debug(`[播放尝试] 第 ${attemptCount} 次`, {
                src: this.video.src,
@@ -335,15 +333,10 @@ export class ZsglAudio extends ZsglTask {
            this.playAborted = false;
          }
 
-         /** 检查视频是否已有可用源 */
-         private hasVideoSource(): boolean {
-           return !!(
-             this.video.src ||
-             this.video.currentSrc ||
-             this.video.querySelector("source")?.src ||
-             this.video.readyState >= 1
-           );
-         }
+         /** 检查视频是否已有可用源(元数据就绪才算,避免抢跑点击,见 waitForVideoSourceAndPlay 注释) */
+        private hasVideoSource(): boolean {
+          return this.video.readyState >= 1;
+        }
 
          /** 处理播放失败,超过上限后放弃自动恢复,避免黑屏死循环耗尽资源 */
          private handlePlayFailure(e: any): void {

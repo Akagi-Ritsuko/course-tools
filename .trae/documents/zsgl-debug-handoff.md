@@ -76,6 +76,8 @@
 >   - **0:48:27 起扩展完全静默**:无暂停风暴、无播放点击循环、无请求洪流、无 error;mem 采样 52.2→54.0MB 稳定(至 0:49:34 最后一次落地)
 >   - 时序:浏览器 UI 进程先失响应(UIA ~0:48:49 已超时),渲染进程主世界 JS 存活至 0:49:34 —— **排除扩展 JS 死循环与 JS 内存泄漏,指向 GPU/DRM 解码与合成进程 hang**
 > - **嫌疑排序**:① DRM(m3u8/EME)解码+GPU 合成(冷启动 GPU 进程状态差异或 MSE/EME 初始化被抢跑点击扰动,可解释"重启后同视频正常");② readyState=0 抢跑点击的时序诱因(修复成本低,建议先改:readyState≥1 才 clickPlayButton);③ 站点自身脚本(无证据)
+> - **修复回归(2026-09-21 01:06,tabId=mua2iml0f0oqxk,日志 .trae/log-extract/fix_1~8.txt)**:已实施 readyState≥1 门控(video.ts/scorm.ts 的 waitForVideoSourceAndPlay + hasVideoSource),日志确认不再抢跑(播放尝试 readyState:0/hasSource:false)。**回归未通过**:本次崩溃提前到加载后 ~5s——readyState 始终 0、视频从未真正解码播放,站点 play 事件已触发,hls 刚请求第一个分片(1764857593165_s_0.ts)即死。两次会话共同点收窄至 **DRM 流初始化链路(getPlaylist→getPlayParams→分片拉取/EME)**,崩溃窗口有波动(68s→5s)。注:本次会话加载时恢复导出尝试了旧键下载(被 Edge 拦),为额外变量,暂无法排除其影响。
+> - **嫌疑排序(回归后更新)**:① DRM/EME 初始化与媒体管线(首选,与"是否真正解码播放"无关);② readyState 抢跑(已修,非根因);③ 恢复导出下载尝试与崩溃的耦合(待排除:先修 T-002 导出缺陷再回归);④ 站点自身脚本
 > - **附带发现(重要)**:
 >   1. **恢复导出缺陷**:两个世界同时 downloadTextFile 触发 Edge"多个自动下载"拦截,**下载失败仍无条件删除 localStorage 键**(recoverOrphanedBuffer 尾部 removeItem)→ 前两次会话崩溃日志已永久丢失。建议:合并为单文件导出/错峰导出/延迟删除(归 T-002)
 >   2. **站点反调试 debugger-checker**:页面脚本(3646 chunk)内嵌 `debugger;`,**DevTools 打开期间页面 JS 被暂停**;关闭 DevTools 瞬间页面被导航到 `about:blank?a=1&b={"isOpen":true,"checkerName":"debugger-checker"}`。**zsgl 页面调试一律不可开 DevTools**,崩溃取证只依赖 LogRecorder(控制台 `__toolLogExport()` 也不可用)
