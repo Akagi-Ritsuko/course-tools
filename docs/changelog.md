@@ -16,3 +16,4 @@
 | 2026-09-20 | 补录：mooc.ts / start.ts 传入日志落地 key（主世界 PageLog / 内容脚本 ConsoleLog 分区） | src/mooc.ts、src/start.ts | T-002（补录） |
 | 2026-09-20 | 创建 docs/zsgl/README.md：01~07 文档导航、src/mooc/zsgl/ 全量代码地图、关键开发须知（摘自 handoff §三）；ai-collab 阅读顺序指向同步更新 | docs/zsgl/README.md、docs/ai-collab.md | T-902 |
 | 2026-09-20 | 文档与代码一致性核对修订（核对点①考试分批累积/熔断限流 ②存储键 ③B3 契约 ④配置项）：03-详细设计补 §1.3 切屏中立化/可见性伪装、§3.1 切窗开关改写与水印 div 移除、§5.3 熔断与点击限流、§9 分批累积重写并新增 §9.6 答案导出、§12 新常量；04-数据库设计补 sessionStorage 介质、2 个新配置键、LogRecorder 日志键、心跳判死、考试策略域新结构；05-API文档 B3 补日志键归属说明；07-部署手册 §4 补 2 个新配置项；四份文档各自变更日志留痕（版本 1.26.920.1）；核对结论：§8 学习地图返回逻辑与代码一致（window.close 实际位于 course.ts 非 mooc.ts，已修正 T-003 表述） | docs/zsgl/cn/03、04、05、07、docs/tasks.md | T-903、T-003 |
+| 2026-09-20 | 应用户要求，所有文档作者统一改为"gt"（7 份 zsgl 文档的元数据与变更日志行、daily-points-technical-doc.md） | docs/zsgl/cn/01~07、docs/daily-points-technical-doc.md | — |
