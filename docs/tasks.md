@@ -9,7 +9,7 @@
 | T-001 | 考试答案获取与导出：分批累积（mergeQuestionBatch）、串行破解链、集齐自动导出、交卷兜底导出；待实机回归（35 题分 4 批场景） | doing | P1 | TODO#1 + handoff §2.1 | 03-详细设计 §9 |
 | T-002 | 崩溃日志系统（LogRecorder）：~~恢复导出"下载失败仍删键"致日志丢失~~ **已修复并实机验证**（2026-09-21）：单飞合并导出（export_lock 互斥，全世界孤儿键单文件下载）+ 归档替代删键（zsgl_log_arch 400KB 滚动）；实机下载首次成功落地 Downloads | done | P1 | handoff §2.2 + §四P2 | 04-数据库设计 §3 |
 | T-003 | 学习地图任务完成后返回流程端到端验证：学习地图 → 任务 → 任务页写 finished 信号并 window.close()（course.ts notifyStudyMapCourseComplete）→ 回学习地图（storage → reload）→ 自动下一任务 | doing | P0 | TODO#5 | 03-详细设计 §8 |
-| T-004 | P1 核心排查：视频起播时 CPU 100% 整浏览器冻死。**隔离实验完成（2026-09-21）**：无扩展+站点播放 4min 干净（实验 B）；仅启用本扩展必现风暴（实验 A）——**风暴=课程页渲染进程非 JS 线程 ~200%（媒体/合成方向，JS 事件循环全程存活）+ 主进程 ~180% 连带**，杀 renderer 后主进程余波后缓解，风暴可自行恢复也可致死锁（用户强杀场景）。工具起播操作（点击任务卡/DRM 重建/currentTime 重置）为诱发点；采样与日志证据见 .trae/log-extract/（csv A/B、storm_*.txt）。下一步：chrome://tracing 渲染线程定位 + 起播动作最小化逐项对比 | doing | P0 | handoff §四P1 | 03-详细设计 §5/§10 |
+| T-004 | P1 核心排查：视频起播时 CPU 100% 整浏览器冻死。**诱因已锁定（2026-09-21 缓解实验阶梯）**：实验 B（无扩展+播放 4min）干净 → E0（扩展注入+auto=false 不起播 3.5min）干净 → **M1（auto=true，工具只模拟点击任务卡、对播放器零干预）风暴复现**（N008086，renderer 93→132% 持续 >5.5min 未缓解，主进程/GPU 正常）——诱因=**taskDiv.click() 模拟点击触发站点播放器/DRM 容器重建**，与播放器干预动作无关。M2 待做：去掉模拟点击改纯旁观（ended 监听推进）验证。证据 .trae/log-extract/{cpu-sample-E0,M1*} | doing | P0 | handoff §四P1 | 03-详细设计 §5/§10 |
 | T-005 | P2 修复项实机回归：切窗弹窗与暂停死循环消失（应出现"已拦截 window.onblur 赋值"日志）；getIsWatermark 报错随 watermarkFrame prepend 移除而消失 | todo | P2 | handoff §四P2 | 03-详细设计 §1.3/§3.1 |
 | T-006 | SCORM 子类型支持：`document` 文档任务（自动标记已读） | todo | P1 | TODO#2 | 03-详细设计 §4.2 |
 | T-007 | SCORM 子类型支持：`audio` 音频任务（自动播放） | todo | P1 | TODO#2 | 03-详细设计 §4.2 |

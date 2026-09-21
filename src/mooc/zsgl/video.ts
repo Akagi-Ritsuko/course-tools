@@ -55,12 +55,13 @@ export class ZsglVideo extends ZsglTask {
              this.cleanupFns.push(setupEventPrevention(window));
              this.cleanupFns.push(setupEventPrevention(document));
              this.cleanupFns.push(setupVideoEventPrevention(this.video));
-             this.startKeepAlive();
 
-             // 创建具名函数以便在触发后移除监听器
+             // M1 缓解实验(.trae/documents/zsgl-debug-handoff.md P1):
+             // 仅模拟点击任务卡打开播放器弹层,随后零干预——
+             // 不设倍速/静音、不重置 currentTime、不点击播放、
+             // 不启动自动恢复轮询与保活音频,用于隔离"起播干预动作"是否为风暴诱因
              const handleTaskDivClick = () => {
-               this.initPlayer();
-               this.setupVideoAutoResume();
+               Application.App.log.Info("[M1实验] 已打开播放器弹层, 本次运行不对播放器做任何干预");
                // 事件触发后移除监听器
                this.taskDiv.removeEventListener(
                  "click",

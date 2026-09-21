@@ -88,6 +88,9 @@
 >   - **风暴会话日志(tabId=mua3hfm504kg52,.trae/log-extract/storm_*.txt)**:cs 世界 mem 行 **1:33:19→1:35:49 每 5s 不断**(JS 事件循环全程存活),行为日志完全静默 → **renderer 的 ~200% 不是 JS 执行**,指向媒体/合成/IPC 等非 JS 线程
 >   - **根因画像(当前)**:工具的起播操作(点击任务卡→视频容器/DRM 重建→currentTime 重置/倍速/静音切换)诱发课程页 renderer **非 JS 线程异常**+主进程连带;无扩展时同一页面播放无此现象;风暴可自行缓解(数分钟)也可致死锁(用户强杀场景)
 >   - **下一步(收窄后)**:①chrome://tracing(渲染进程 media/compositor/viz 类目)抓风暴期线程;②缓解实验:起播动作最小化(不重置 currentTime/不设倍速静音/不模拟点击,靠站点自动续播)逐项开关对比;③确认 CDM/Widevine 进程形态
+> - **M1 缓解实验(2026-09-21 21:52~21:56,N008086,仅解压缩扩展,M1 代码:Start 只 taskDiv.click() 打开播放器弹层,零播放器干预——无 initPlayer/倍速/静音/currentTime/点击播放/auto-resume/keepAlive)**:**风暴仍复现**——renderer(课程页)从 +40s 起 93→132% 持续 >5.5min 未缓解(68 行 >100%),主进程本轮仅 ~10%,GPU <15%。auto=false 对照(E0,N008084 注入但不起播,3.5min)干净(峰值仅加载瞬间 52.6%)
+> - **诱因锁定**:taskDiv.click() 模拟点击任务卡 → 站点响应合成点击打开播放器/重建 DRM 容器 → renderer 非 JS 线程异常(与播放器干预动作无关,M1 已剔除);E0 证明注入层(钩子/OperateCard/buildTasks)无关
+> - **M2 待做**:Start 不调用 taskDiv.click()(工具纯旁观:仅挂 ended 监听,靠用户手动/站点自动打开播放器)→ 若干净则最终修复=去掉模拟点击,改为"检测播放器已打开才启动监控"或提供半自动模式;另可试 dispatchEvent 真实事件序列对比
 > - **附带发现(重要)**:
 >   1. **恢复导出缺陷**:两个世界同时 downloadTextFile 触发 Edge"多个自动下载"拦截,**下载失败仍无条件删除 localStorage 键**(recoverOrphanedBuffer 尾部 removeItem)→ 前两次会话崩溃日志已永久丢失。建议:合并为单文件导出/错峰导出/延迟删除(归 T-002)
 >   2. **站点反调试 debugger-checker**:页面脚本(3646 chunk)内嵌 `debugger;`,**DevTools 打开期间页面 JS 被暂停**;关闭 DevTools 瞬间页面被导航到 `about:blank?a=1&b={"isOpen":true,"checkerName":"debugger-checker"}`。**zsgl 页面调试一律不可开 DevTools**,崩溃取证只依赖 LogRecorder(控制台 `__toolLogExport()` 也不可用)
