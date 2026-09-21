@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-09-28 14:35:39
  * @LastEditors: guotao
- * @LastEditTime: 2026-09-21 23:08:11
+ * @LastEditTime: 2026-09-22 00:43:04
  * @FilePath: \course-tools\src\mooc\zsgl\video.ts
  * @Description: zsgl 视频任务模块
  *
@@ -52,20 +52,30 @@ export class ZsglVideo extends ZsglTask {
              Application.App.log.Debug("zsglVideo开始执行任务", this.taskDiv);
              this.setupVideoEndHandler(); // ended → 完成检测与推进
 
-             // 半自动 v3:播放后应用倍速/静音(不在 Start 时提前干预,避免破坏播放器初始化),
-             // 并持续对抗平台倍速重置;保活与事件拦截待最小可用集验证后评估
+             // 半自动 v4:修复"站点自动续播先于监听挂载"的竞态——
+             // 挂监听后立即同步一次当前状态(仅当视频已在播放),并监听 play/playing
+             // (缓冲恢复/seek 后亦触发)持续应用倍速/静音
+             const applyPlaybackSettings = (reason: string) => {
+               const mute = Application.App.config.video_mute;
+               const rate = Application.App.config.video_multiple;
+               this.video.volume = mute ? 0 : 1;
+               this.video.playbackRate = rate;
+               Application.App.log.Info(
+                 `[任务进行中] (${reason}) 应用播放设置: 静音=${mute} 倍速=${rate}x`,
+               );
+             };
+             if (!this.video.paused) {
+               applyPlaybackSettings("挂载时视频已在播放,立即同步");
+             }
              this.addManagedListener(
                this.video,
                "play",
-               () => {
-                 const mute = Application.App.config.video_mute;
-                 const rate = Application.App.config.video_multiple;
-                 this.video.volume = mute ? 0 : 1;
-                 this.video.playbackRate = rate;
-                 Application.App.log.Info(
-                   `[半自动] 视频播放中: 静音=${mute} 倍速=${rate}x`,
-                 );
-               },
+               () => applyPlaybackSettings("play"),
+             );
+             this.addManagedListener(
+               this.video,
+               "playing",
+               () => applyPlaybackSettings("playing"),
              );
              this.addManagedListener(
                this.video,
@@ -78,7 +88,7 @@ export class ZsglVideo extends ZsglTask {
                },
              );
              Application.App.log.Info(
-               "[半自动] 请手动点击任务卡打开播放器,视频结束后将自动切换下一任务",
+               "[任务进行中] 请手动点击任务卡打开播放器,视频结束后将自动切换下一任务",
              );
              resolve();
            });

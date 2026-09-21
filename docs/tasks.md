@@ -21,6 +21,7 @@
 | T-013 | 考试错题记录按钮调研：getNewExamDetails，showErrorType=1，ishidenerrquestion=N | todo | P3 | TODO#7 | 05-API文档 A4/A5 |
 | T-014 | 视频长时间转圈问题（0630 记录；与 T-004 播放点击限流、T-005 回归相关） | todo | P3 | TODO#8 | 03-详细设计 §5 |
 | T-015 | 工程化：webpack 加 fork-ts-checker 或 CI 跑 `tsc --noEmit`（先清理/白名单 ~60 个基线错误）；`src/mooc/zsgl/log/` 反编译产物与日志样本 gitignore 或移出仓库 | todo | P3 | handoff §四P3 | — |
+| T-016 | 三节课自动挂机（sanjieke-auto-study）：zsgl"混合"课程「立即学习」跳转 lzlj.b.sanjieke.cn 三方页面的自动挂机（xgplayer 起播/倍速/防暂停）+ 课后题自动答题（questions 接口自带 answer）+ 完成判定与学习地图串联闭环；里程碑 M1 文档已落地，M2~M6 待开发 | doing | P1 | .trae/specs/sanjieke-auto-study | .trae/specs/sanjieke-auto-study/spec.md |
 
 ## 备注
 
