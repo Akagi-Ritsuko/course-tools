@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-09-28 14:35:39
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-13 15:03:40
+ * @LastEditTime: 2026-09-21 23:08:11
  * @FilePath: \course-tools\src\mooc\zsgl\video.ts
  * @Description: zsgl 视频任务模块
  *
@@ -50,32 +50,36 @@ export class ZsglVideo extends ZsglTask {
          public Start(): Promise<any> {
            return new Promise<void>(async (resolve, reject) => {
              Application.App.log.Debug("zsglVideo开始执行任务", this.taskDiv);
-             this.setupVideoEndHandler(); // 设置视频结束处理函数
-             // 处理页面的事件监听函数的检测(托管,Stop 时统一移除)
-             this.cleanupFns.push(setupEventPrevention(window));
-             this.cleanupFns.push(setupEventPrevention(document));
-             this.cleanupFns.push(setupVideoEventPrevention(this.video));
-             this.startKeepAlive();
+             this.setupVideoEndHandler(); // ended → 完成检测与推进
 
-             // 创建具名函数以便在触发后移除监听器
-             const handleTaskDivClick = () => {
-               this.initPlayer();
-               this.setupVideoAutoResume();
-               // 事件触发后移除监听器
-               this.taskDiv.removeEventListener(
-                 "click",
-                 handleTaskDivClick,
-                 true,
-               );
-             };
-
+             // 半自动 v3:播放后应用倍速/静音(不在 Start 时提前干预,避免破坏播放器初始化),
+             // 并持续对抗平台倍速重置;保活与事件拦截待最小可用集验证后评估
              this.addManagedListener(
-               this.taskDiv,
-               "click",
-               handleTaskDivClick,
-               true,
+               this.video,
+               "play",
+               () => {
+                 const mute = Application.App.config.video_mute;
+                 const rate = Application.App.config.video_multiple;
+                 this.video.volume = mute ? 0 : 1;
+                 this.video.playbackRate = rate;
+                 Application.App.log.Info(
+                   `[半自动] 视频播放中: 静音=${mute} 倍速=${rate}x`,
+                 );
+               },
              );
-             this.taskDiv.click();
+             this.addManagedListener(
+               this.video,
+               "ratechange",
+               () => {
+                 const rate = Application.App.config.video_multiple;
+                 if (this.video.playbackRate !== rate) {
+                   this.video.playbackRate = rate;
+                 }
+               },
+             );
+             Application.App.log.Info(
+               "[半自动] 请手动点击任务卡打开播放器,视频结束后将自动切换下一任务",
+             );
              resolve();
            });
          }
@@ -234,12 +238,27 @@ export class ZsglVideo extends ZsglTask {
              }
 
              if (attemptCount >= maxAttempts) {
-               Application.App.log.Error("[播放尝试] 等待视频源超时");
-               return;
-             }
+              Application.App.log.Error("[播放尝试] 等待视频源超时");
+              return;
+            }
 
-             // 继续等待(纳入 TimerManager,Stop 时可取消)
-             this.timerManager.setTimeout("waitForSource", tryPlay, 1000);
+            // M3 兜底(2026-09-21):部分 DRM 播放器需先 play() 才拉流加载元数据,
+            // blob 源已挂载但 readyState 迟迟为 0 时,8s 后主动尝试起播,
+            // 避免"等元数据才播放/等播放才出元数据"死锁
+            if (
+              attemptCount >= 8 &&
+              (this.video.src || this.video.currentSrc)
+            ) {
+              Application.App.log.Info(
+                "[播放尝试] blob 源已挂载但元数据未就绪,主动尝试起播",
+              );
+              if (Application.App.config.auto) {
+                this.clickPlayButton();
+              }
+            }
+
+            // 继续等待(纳入 TimerManager,Stop 时可取消)
+            this.timerManager.setTimeout("waitForSource", tryPlay, 1000);
            };
 
            // 立即尝试一次

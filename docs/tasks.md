@@ -9,7 +9,7 @@
 | T-001 | 考试答案获取与导出：分批累积（mergeQuestionBatch）、串行破解链、集齐自动导出、交卷兜底导出；待实机回归（35 题分 4 批场景） | doing | P1 | TODO#1 + handoff §2.1 | 03-详细设计 §9 |
 | T-002 | 崩溃日志系统（LogRecorder）：~~恢复导出"下载失败仍删键"致日志丢失~~ **已修复并实机验证**（2026-09-21）：单飞合并导出（export_lock 互斥，全世界孤儿键单文件下载）+ 归档替代删键（zsgl_log_arch 400KB 滚动）；实机下载首次成功落地 Downloads | done | P1 | handoff §2.2 + §四P2 | 04-数据库设计 §3 |
 | T-003 | 学习地图任务完成后返回流程端到端验证：学习地图 → 任务 → 任务页写 finished 信号并 window.close()（course.ts notifyStudyMapCourseComplete）→ 回学习地图（storage → reload）→ 自动下一任务 | doing | P0 | TODO#5 | 03-详细设计 §8 |
-| T-004 | P1 核心排查：视频起播时 CPU 100% 整浏览器冻死。**双诱因实验闭环（2026-09-21）**：① 响应体改写（isOpenSwitchScreen→0）→ 播放走软解（M1b 风暴 vs M1d 硬解，同真实点击）——**已修复**（保持不改写，切窗防御由 neutralizer 兜底，M1d 实测 renderer 5~14%/GPU 硬解）；② **合成点击任务卡 → renderer 非 JS 线程风暴**（最终回归：不改写+完整挂机仍复现 ~200%；M1d 无合成点击干净）——待修，方案 A 半自动模式（去模拟点击，监听 play/ended 接管）/ B 配置开关默认关 / C 完整事件序列试验。证据 .trae/log-extract/{cpu-sample-M1d,FINAL} | doing | P0 | handoff §四P1 | 03-详细设计 §5/§10 |
+| T-004 | P1 核心排查：视频起播时 CPU 100% 整浏览器冻死。**已完成（2026-09-21，双诱因+半自动方案落地）**：①响应体改写→软解（已注释修复）②合成点击→renderer 风暴（video 改半自动规避，scorm 保留自动）；v3 实测播放/倍速/静音正常、主进程无风暴；已知残留=renderer 128~142% 软解（疑似 play 中写 playbackRate 触发，v4 待验证）；完整报告见 .trae/documents/zsgl-video-storm-root-cause-report.md | done | P0 | handoff §四P1 | 03-详细设计 §5/§10 |
 | T-005 | P2 修复项实机回归：切窗弹窗与暂停死循环消失（应出现"已拦截 window.onblur 赋值"日志）；getIsWatermark 报错随 watermarkFrame prepend 移除而消失 | todo | P2 | handoff §四P2 | 03-详细设计 §1.3/§3.1 |
 | T-006 | SCORM 子类型支持：`document` 文档任务（自动标记已读） | todo | P1 | TODO#2 | 03-详细设计 §4.2 |
 | T-007 | SCORM 子类型支持：`audio` 音频任务（自动播放） | todo | P1 | TODO#2 | 03-详细设计 §4.2 |
