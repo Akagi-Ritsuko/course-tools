@@ -97,6 +97,14 @@
 >   - **根因画像(最终)**:**扩展注入导致"从卡片打开的 DRM 播放器"走软件解码**(renderer 烧一个核/GPU 闲置/画面正常播放——与用户"看着正常"吻合);无扩展时同一操作走硬解。用户日常"整机冻死"=软解 renderer+主进程连带的升级形态(多标签叠加更甚)
 >   - **头号嫌疑**:course.ts 的 hookAndModifyHttpResponse 改写 queryCourseDetail.do 响应体(isOpenSwitchScreen/isOpenScreenShot→0)——改写后的响应可能使站点播放器初始化走不同配置
 >   - **M1d 待做**:注释响应体改写(course.ts,切窗防御由 setupSwitchScreenNeutralizer 兜底)→ 重载扩展 + auto=false + 用户手动播放 → 若回到硬解(renderer ~26%/GPU ~45%)则改写=诱因实锤,需设计替代防御方案
+> - **M1d 结果+最终回归(2026-09-21 22:33~22:41,采样 cpu-sample-M1d/FINAL)**:
+>   - **M1d(不改写+auto=false+用户真实点击播放)**:renderer 稳态 **5~14%,全程 0 行 >40%**,GPU 13~52%(硬解恢复)→ **改写=软解诱因实锤**(与 M1b 同真实点击、唯一差异即改写)
+>   - **最终回归(不改写+auto=true 完整挂机)**:**风暴仍复现**(22:40:49 起 renderer ~200%+主进程 ~180%,+40s 经典窗口)→ 与 M1 对照推出**第二独立诱因:taskDiv.click() 合成点击任务卡**(FINAL 无改写仍风暴;M1d 无合成点击干净)
+> - **双诱因结论(实验矩阵自洽)**:
+>   1. **响应体改写 → 播放走软解**(改写+播放=风暴,不改写+播放=硬解)——已修复(保持不改写,切窗防御由 neutralizer 兜底)
+>   2. **合成点击任务卡 → renderer 非 JS 线程风暴**(不改写+合成点击=风暴,不改写+真实点击=硬解)——待修,涉及挂机模式变化
+> - **修复方向(诱因 2,需产品决策)**:A. 半自动模式——去掉 taskDiv.click(),工具监听视频 play/ended 事件,用户手动点开播放器后自动接管完成检测与推进(不自动播的视频需手动点一次);B. 配置开关"自动打开任务卡"默认关;C. 研究 dispatchEvent 完整事件序列(pointerdown/up/click)是否规避站点异常分支
+> - **当前代码状态**:响应体改写已注释(M1d 开关);video.ts Start 已恢复正常挂机逻辑(含合成点击+readyState≥1 门控)——即诱因 2 仍在,重载扩展+开挂机仍会触发风暴
 > - **附带发现(重要)**:
 >   1. **恢复导出缺陷**:两个世界同时 downloadTextFile 触发 Edge"多个自动下载"拦截,**下载失败仍无条件删除 localStorage 键**(recoverOrphanedBuffer 尾部 removeItem)→ 前两次会话崩溃日志已永久丢失。建议:合并为单文件导出/错峰导出/延迟删除(归 T-002)
 >   2. **站点反调试 debugger-checker**:页面脚本(3646 chunk)内嵌 `debugger;`,**DevTools 打开期间页面 JS 被暂停**;关闭 DevTools 瞬间页面被导航到 `about:blank?a=1&b={"isOpen":true,"checkerName":"debugger-checker"}`。**zsgl 页面调试一律不可开 DevTools**,崩溃取证只依赖 LogRecorder(控制台 `__toolLogExport()` 也不可用)
