@@ -91,6 +91,12 @@
 > - **M1 缓解实验(2026-09-21 21:52~21:56,N008086,仅解压缩扩展,M1 代码:Start 只 taskDiv.click() 打开播放器弹层,零播放器干预——无 initPlayer/倍速/静音/currentTime/点击播放/auto-resume/keepAlive)**:**风暴仍复现**——renderer(课程页)从 +40s 起 93→132% 持续 >5.5min 未缓解(68 行 >100%),主进程本轮仅 ~10%,GPU <15%。auto=false 对照(E0,N008084 注入但不起播,3.5min)干净(峰值仅加载瞬间 52.6%)
 > - **诱因锁定**:taskDiv.click() 模拟点击任务卡 → 站点响应合成点击打开播放器/重建 DRM 容器 → renderer 非 JS 线程异常(与播放器干预动作无关,M1 已剔除);E0 证明注入层(钩子/OperateCard/buildTasks)无关
 > - **M2 待做**:Start 不调用 taskDiv.click()(工具纯旁观:仅挂 ended 监听,靠用户手动/站点自动打开播放器)→ 若干净则最终修复=去掉模拟点击,改为"检测播放器已打开才启动监控"或提供半自动模式;另可试 dispatchEvent 真实事件序列对比
+> - **M1b/M1c 对照(2026-09-21 22:19~22:25,真实鼠标点击)**:
+>   - **M1b(扩展开+auto=false,用户真实点击任务卡播放)**:renderer **100~137% 持续**,GPU 仅 ~10% —— 合成点击假设排除,**真实点击同样复现**
+>   - **M1c(--disable-extensions,用户真实点击任务卡播放)**:renderer 稳态 8~26%(峰值 61% 仅起播瞬间),**GPU 峰值 40~45%(硬解特征)**,无风暴
+>   - **根因画像(最终)**:**扩展注入导致"从卡片打开的 DRM 播放器"走软件解码**(renderer 烧一个核/GPU 闲置/画面正常播放——与用户"看着正常"吻合);无扩展时同一操作走硬解。用户日常"整机冻死"=软解 renderer+主进程连带的升级形态(多标签叠加更甚)
+>   - **头号嫌疑**:course.ts 的 hookAndModifyHttpResponse 改写 queryCourseDetail.do 响应体(isOpenSwitchScreen/isOpenScreenShot→0)——改写后的响应可能使站点播放器初始化走不同配置
+>   - **M1d 待做**:注释响应体改写(course.ts,切窗防御由 setupSwitchScreenNeutralizer 兜底)→ 重载扩展 + auto=false + 用户手动播放 → 若回到硬解(renderer ~26%/GPU ~45%)则改写=诱因实锤,需设计替代防御方案
 > - **附带发现(重要)**:
 >   1. **恢复导出缺陷**:两个世界同时 downloadTextFile 触发 Edge"多个自动下载"拦截,**下载失败仍无条件删除 localStorage 键**(recoverOrphanedBuffer 尾部 removeItem)→ 前两次会话崩溃日志已永久丢失。建议:合并为单文件导出/错峰导出/延迟删除(归 T-002)
 >   2. **站点反调试 debugger-checker**:页面脚本(3646 chunk)内嵌 `debugger;`,**DevTools 打开期间页面 JS 被暂停**;关闭 DevTools 瞬间页面被导航到 `about:blank?a=1&b={"isOpen":true,"checkerName":"debugger-checker"}`。**zsgl 页面调试一律不可开 DevTools**,崩溃取证只依赖 LogRecorder(控制台 `__toolLogExport()` 也不可用)
