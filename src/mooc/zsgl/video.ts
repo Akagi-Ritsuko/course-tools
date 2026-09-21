@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-09-28 14:35:39
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-13 15:03:40
+ * @LastEditTime: 2026-09-22 00:43:04
  * @FilePath: \course-tools\src\mooc\zsgl\video.ts
  * @Description: zsgl 视频任务模块
  *
@@ -50,33 +50,46 @@ export class ZsglVideo extends ZsglTask {
          public Start(): Promise<any> {
            return new Promise<void>(async (resolve, reject) => {
              Application.App.log.Debug("zsglVideo开始执行任务", this.taskDiv);
-             this.setupVideoEndHandler(); // 设置视频结束处理函数
-             // 处理页面的事件监听函数的检测(托管,Stop 时统一移除)
-             this.cleanupFns.push(setupEventPrevention(window));
-             this.cleanupFns.push(setupEventPrevention(document));
-             this.cleanupFns.push(setupVideoEventPrevention(this.video));
+             this.setupVideoEndHandler(); // ended → 完成检测与推进
 
-             // M1 缓解实验(.trae/documents/zsgl-debug-handoff.md P1):
-             // 仅模拟点击任务卡打开播放器弹层,随后零干预——
-             // 不设倍速/静音、不重置 currentTime、不点击播放、
-             // 不启动自动恢复轮询与保活音频,用于隔离"起播干预动作"是否为风暴诱因
-             const handleTaskDivClick = () => {
-               Application.App.log.Info("[M1实验] 已打开播放器弹层, 本次运行不对播放器做任何干预");
-               // 事件触发后移除监听器
-               this.taskDiv.removeEventListener(
-                 "click",
-                 handleTaskDivClick,
-                 true,
+             // 半自动 v4:修复"站点自动续播先于监听挂载"的竞态——
+             // 挂监听后立即同步一次当前状态(仅当视频已在播放),并监听 play/playing
+             // (缓冲恢复/seek 后亦触发)持续应用倍速/静音
+             const applyPlaybackSettings = (reason: string) => {
+               const mute = Application.App.config.video_mute;
+               const rate = Application.App.config.video_multiple;
+               this.video.volume = mute ? 0 : 1;
+               this.video.playbackRate = rate;
+               Application.App.log.Info(
+                 `[任务进行中] (${reason}) 应用播放设置: 静音=${mute} 倍速=${rate}x`,
                );
              };
-
+             if (!this.video.paused) {
+               applyPlaybackSettings("挂载时视频已在播放,立即同步");
+             }
              this.addManagedListener(
-               this.taskDiv,
-               "click",
-               handleTaskDivClick,
-               true,
+               this.video,
+               "play",
+               () => applyPlaybackSettings("play"),
              );
-             this.taskDiv.click();
+             this.addManagedListener(
+               this.video,
+               "playing",
+               () => applyPlaybackSettings("playing"),
+             );
+             this.addManagedListener(
+               this.video,
+               "ratechange",
+               () => {
+                 const rate = Application.App.config.video_multiple;
+                 if (this.video.playbackRate !== rate) {
+                   this.video.playbackRate = rate;
+                 }
+               },
+             );
+             Application.App.log.Info(
+               "[任务进行中] 请手动点击任务卡打开播放器,视频结束后将自动切换下一任务",
+             );
              resolve();
            });
          }
@@ -235,12 +248,27 @@ export class ZsglVideo extends ZsglTask {
              }
 
              if (attemptCount >= maxAttempts) {
-               Application.App.log.Error("[播放尝试] 等待视频源超时");
-               return;
-             }
+              Application.App.log.Error("[播放尝试] 等待视频源超时");
+              return;
+            }
 
-             // 继续等待(纳入 TimerManager,Stop 时可取消)
-             this.timerManager.setTimeout("waitForSource", tryPlay, 1000);
+            // M3 兜底(2026-09-21):部分 DRM 播放器需先 play() 才拉流加载元数据,
+            // blob 源已挂载但 readyState 迟迟为 0 时,8s 后主动尝试起播,
+            // 避免"等元数据才播放/等播放才出元数据"死锁
+            if (
+              attemptCount >= 8 &&
+              (this.video.src || this.video.currentSrc)
+            ) {
+              Application.App.log.Info(
+                "[播放尝试] blob 源已挂载但元数据未就绪,主动尝试起播",
+              );
+              if (Application.App.config.auto) {
+                this.clickPlayButton();
+              }
+            }
+
+            // 继续等待(纳入 TimerManager,Stop 时可取消)
+            this.timerManager.setTimeout("waitForSource", tryPlay, 1000);
            };
 
            // 立即尝试一次

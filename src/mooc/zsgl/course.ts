@@ -69,15 +69,15 @@ export class ZsglCourse extends EventListener<MoocEvent>
         setupVisibilitySpoof();
 
         // 改写课程详情响应:关闭切屏/截图检测开关(站点据此以属性赋值安装 window.onblur 检测)
+        // ⚠️ M1d 实验开关(见 .trae/documents/zsgl-debug-handoff.md P1):响应体改写疑似
+        // 诱发卡片路径打开的 DRM 播放器软解(renderer ~130%/GPU 闲置),本轮注释改写以验证;
+        // 切窗防御仍由 setupSwitchScreenNeutralizer() 属性赋值中和兜底
         if (!this.switchScreenHooked) {
           this.switchScreenHooked = true;
           hookAndModifyHttpResponse(
             ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_COURSE_DETAIL,
             (response) => {
-              if (response?.body) {
-                response.body.isOpenSwitchScreen = 0;
-                response.body.isOpenScreenShot = 0;
-              }
+              // M1d: 不改写 isOpenSwitchScreen/isOpenScreenShot,原样放行
               return response;
             },
             this,

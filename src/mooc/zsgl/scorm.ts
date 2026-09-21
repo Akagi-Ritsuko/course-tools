@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-12 17:19:39
  * @LastEditors: guotao
- * @LastEditTime: 2026-09-20 15:11:18
+ * @LastEditTime: 2026-09-21 22:43:48
  * @FilePath: \course-tools\src\mooc\zsgl\scorm.ts
  * @Description: zsgl SCORM/音频任务模块
  *
@@ -229,12 +229,27 @@ export class ZsglAudio extends ZsglTask {
              }
 
              if (attemptCount >= maxAttempts) {
-               Application.App.log.Error("[播放尝试] 等待视频源超时");
-               return;
-             }
+              Application.App.log.Error("[播放尝试] 等待视频源超时");
+              return;
+            }
 
-             // 继续等待(纳入 TimerManager,Stop 时可取消)
-             this.timerManager.setTimeout("waitForSource", tryPlay, 1000);
+            // M3 兜底(2026-09-21):部分 DRM 播放器需先 play() 才拉流加载元数据,
+            // blob 源已挂载但 readyState 迟迟为 0 时,8s 后主动尝试起播,
+            // 避免"等元数据才播放/等播放才出元数据"死锁
+            if (
+              attemptCount >= 8 &&
+              (this.video.src || this.video.currentSrc)
+            ) {
+              Application.App.log.Info(
+                "[播放尝试] blob 源已挂载但元数据未就绪,主动尝试起播",
+              );
+              if (Application.App.config.auto) {
+                this.clickPlayButton();
+              }
+            }
+
+            // 继续等待(纳入 TimerManager,Stop 时可取消)
+            this.timerManager.setTimeout("waitForSource", tryPlay, 1000);
            };
 
            // 立即尝试一次
