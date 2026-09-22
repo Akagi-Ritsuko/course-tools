@@ -12,6 +12,7 @@ import { Application } from "@App/internal/application";
 import { MoocEvent, MoocTaskSet } from "@App/internal/app/mooc";
 import { Task } from "@App/internal/app/task";
 import { EventListener } from "@App/internal/utils/event";
+import { SANJIEKE_COURSE_COMPLETE_TYPE } from "@App/internal/utils/message";
 import {
   hookHttpRequest,
   removeHttpRequestHook,
@@ -35,6 +36,8 @@ import {
 /** 课时同页重试次数上限(超过后停止导航,防止无限重载风暴) */
 const LESSON_RETRY_MAX = 3;
 const LESSON_RETRY_PREFIX = "sanjieke_lesson_retry_";
+/** 毕业通知发出后延迟关页(ms),保证 opener 直推与扩展中转消息发出后再销毁页面 */
+const COMPLETE_NOTIFY_CLOSE_DELAY_MS = 500;
 
 export class SanjiekeStudy extends EventListener<MoocEvent>
   implements MoocTaskSet {
@@ -416,7 +419,7 @@ export class SanjiekeStudy extends EventListener<MoocEvent>
   }
 
   /**
-   * 课程完成闭环:写完成标记 → 清理课时标记 → 关页(脚本打开的窗口可关闭)
+   * 课程完成闭环:写完成标记 → 清理课时标记 → 通知 zsgl 课程页 → 延迟关页
    */
   private courseComplete(): void {
     if (this.completedHandled) {
@@ -436,18 +439,46 @@ export class SanjiekeStudy extends EventListener<MoocEvent>
       Application.App.log.Warn("[三节课] 写完成标记失败", e);
     }
 
-    // 完成即关页(页面由「立即学习」脚本打开时可脚本关闭;
-    // 若关闭失败不影响 zsgl 侧轮询闭环)
-    window.close();
-    this.timerManager.setTimeout(
-      "closeFallback",
-      () => {
-        Application.App.log.Warn(
-          "[三节课] 页面自动关闭失败(可能非脚本打开),请手动关闭;不影响整体闭环",
+    // 通知 zsgl 课程页(跨源无法共用 localStorage):
+    // A 路 opener 直推 + B 路扩展中转(内容脚本 → background → zsgl 内容脚本),
+    // 通知先行、延迟关页,防页面销毁早于消息发出
+    this.notifyOpenerComplete();
+    this.notifyRelayComplete();
+    window.setTimeout(() => window.close(), COMPLETE_NOTIFY_CLOSE_DELAY_MS);
+    window.setTimeout(() => {
+      Application.App.log.Warn(
+        "[三节课] 页面自动关闭失败(可能非脚本打开),请手动关闭;不影响整体闭环",
+      );
+    }, COMPLETE_NOTIFY_CLOSE_DELAY_MS + 1000);
+  }
+
+  /** A 路:直推打开本页的 zsgl 课程页(opener 存在时);失败仅告警,不阻断 B 路 */
+  private notifyOpenerComplete(): void {
+    try {
+      const opener = window.opener as Window | null;
+      if (opener && !opener.closed) {
+        opener.postMessage(
+          { type: SANJIEKE_COURSE_COMPLETE_TYPE, courseId: this.courseId },
+          "*",
         );
-      },
-      1000,
-    );
+        Application.App.log.Info("[三节课] 已通过 opener 直推毕业通知");
+      }
+    } catch (e) {
+      Application.App.log.Warn("[三节课] opener 直推失败,依赖扩展中转兜底", e);
+    }
+  }
+
+  /** B 路:经内容脚本桥接(cxmooc-tools)→ background 中转到 zsgl 课程页 */
+  private notifyRelayComplete(): void {
+    try {
+      Application.App.Client.Send({
+        type: SANJIEKE_COURSE_COMPLETE_TYPE,
+        details: { courseId: this.courseId },
+      });
+      Application.App.log.Info("[三节课] 已发出扩展中转毕业通知");
+    } catch (e) {
+      Application.App.log.Warn("[三节课] 扩展中转通知失败", e);
+    }
   }
 
   public Stop(): Promise<any> {

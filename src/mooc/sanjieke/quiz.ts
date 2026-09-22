@@ -63,10 +63,10 @@ function extractQuestions(
 export function cacheSanjiekeQuestions(courseId: string, response: any): void {
   const questions = extractQuestions(response);
   if (!questions) {
-    Application.App.log.Warn(
-      "[三节课课后题] questions 响应结构无法识别,跳过缓存,响应预览:",
-      JSON.stringify(response)?.substring(0, 300),
-    );
+    // Application.App.log.Warn(
+    //   "[三节课课后题] questions 响应结构无法识别,跳过缓存,响应预览:",
+    //   JSON.stringify(response)?.substring(0, 300),
+    // );
     return;
   }
   questionCache.set(courseId, questions);

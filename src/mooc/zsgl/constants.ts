@@ -23,9 +23,9 @@ export const ZSGL_CONSTANTS = {
     /** scorm Start 等待开始按钮点击的超时时间 */
     START_TIMEOUT_MS: 30000,
     TASK_EXPIRE_MS: 1000 * 60 * 60 * 10,
-    /** 三方/混合课程轮询 queryCourseDetail 完成状态的间隔(ms) */
-    THIRD_PARTY_POLL_INTERVAL_MS: 30000,
-    
+    /** 页面保活 Web Lock 名称:持锁页面进入浏览器内存节省程序冻结豁免名单(shared 模式,多页面可同名共存) */
+    KEEPALIVE_LOCK_NAME: 'zsgl_keepalive',
+
     SELECTORS: {
         WATERMARK_FRAME: '#watermarkFrame',
         COURSE_VIDEO: 'video#course-video_html5_api',

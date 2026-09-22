@@ -1,0 +1,47 @@
+# Tasks
+
+- [x] Task 1: 消息类型常量与通道层（message.ts / start.ts / background.ts）
+  - [x] SubTask 1.1: `src/internal/utils/message.ts` 导出 `SANJIEKE_COURSE_COMPLETE_TYPE = "sanjieke_course_complete"`（附注释说明用途与共用方）
+  - [x] SubTask 1.2: `src/start.ts` Accept（cxmooc-tools 桥）新增 case：收到页面消息 → `chrome.runtime.sendMessage({type, courseId})`（回调吞 lastError）
+  - [x] SubTask 1.3: `src/start.ts` `chrome.runtime.onMessage` 监听新增 case：收到 runtime 消息 → `window.postMessage({type, courseId}, "*")` 转入页面上下文（确认与 Accept 桥过滤条件不构成回环：桥只处理带 `tag:"cxmooc-tools"` 且 `source:"client"` 的消息）
+  - [x] SubTask 1.4: `src/background.ts` 新增 `chrome.runtime.onMessage` 监听：`type` 匹配时优先 `chrome.tabs.sendMessage(sender.tab.openerTabId)`；无 openerTabId 时 `chrome.tabs.query({url:"*://zsgl.lzlj.com/*"})` 广播；转发回调吞 lastError；同步 `sendResponse({success:true})`（中转日志用 Warn 级，规避 ConsoleLog.Info 在 production 的 debug 门控）
+- [x] Task 2: 三节课侧毕业推送（sanjieke/study.ts）
+  - [x] SubTask 2.1: 新增常量 `COMPLETE_NOTIFY_CLOSE_DELAY_MS = 500`（模块级，附注释）
+  - [x] SubTask 2.2: `courseComplete()` 中 `window.close()` 改为：先发通知（2.3/2.4）→ 延迟 500ms 关页 → 再 1s 后仍存活则告警"请手动关闭"（保留原语义：关页失败不影响 zsgl 侧闭环）
+  - [x] SubTask 2.3: 新增 `notifyOpenerComplete()`：opener 存在且未关闭时 `postMessage({type: SANJIEKE_COURSE_COMPLETE_TYPE, courseId}, "*")`，try/catch 告警不阻断
+  - [x] SubTask 2.4: 新增 `notifyRelayComplete()`：`Application.App.Client.Send({type, details:{courseId}})`（页面上下文 Frontend 环境 → cxmooc-tools 桥），try/catch 告警
+- [x] Task 3: zsgl 侧接收闭环与轮询移除（zsgl/course.ts + zsgl/constants.ts）
+  - [x] SubTask 3.1: 新增字段 `sanjiekeCompleteHandled = false`；Init 的 listenersRegistered 块内注册 `window.addEventListener("message", ...)` 监听（Stop 无需移除：整页生命周期）
+  - [x] SubTask 3.2: 新增处理方法：过滤 `type` → 幂等去重（`sanjiekeCompleteHandled`）→ 校验 `thirdPartyFlowStarted`（未启动则告警忽略）→ 置位 → 日志 → `courseTaskCompleteFc()`；不做任何服务端请求
+  - [x] SubTask 3.3: 移除轮询：`thirdPartyPoll` 定时器注册、`pollThirdPartyCourseStatus()` 方法、`courseDetailRequestUrl` 字段与 hook 中的捕获块、`sendApiRequest` 导入、`THIRD_PARTY_POLL_INTERVAL_MS` 常量（zsgl/constants.ts）
+  - [x] SubTask 3.4: 修订相关注释（类头/`startThirdPartyFlow`/`processCourseData`/hook 内），完成语义改为"三节课毕业推送驱动，推送即闭环"
+- [x] Task 4: 构建与类型检查验证
+  - [x] SubTask 4.1: `npm run build`（webpack production）成功
+  - [x] SubTask 4.2: `npx tsc --noEmit` 对比基线无新增错误（基线：sanjieke/task.ts TS2551 为既有问题；本次改动 6 文件零错误）
+- [x] Task 5: 文档留痕（docs/ai-collab.md 约定，缺一不可）
+  - [x] SubTask 5.1: `docs/changelog.md` 追加一行（2026-09-22 | 三方课程完成判定去轮询改推送 | 6 个代码文件 | T-017）
+  - [x] SubTask 5.2: `docs/tasks.md` 新增 T-017（状态 doing——代码完成、实机验证待用户执行）
+  - [x] SubTask 5.3: `docs/zsgl/cn/03-详细设计.md` 新增 §3.5 三方/混合课程分支与三节课毕业推送 + §12 补关页延迟常量 + 文档变更日志留痕（1.26.922.1）；05/07/08 经 grep 确认无轮询描述残留，无需同步
+  - [x] SubTask 5.4: 创建 `docs/adr/ADR-001-sanjieke-complete-push.md`（status: accepted；含背景、决策、4 个备选方案拒绝理由、影响与取舍）
+- [x] Task 6: 页面保活（追加需求：防浏览器冻结致推送延迟）
+  - [x] SubTask 6.1: `zsgl/constants.ts` 新增 `KEEPALIVE_LOCK_NAME: "zsgl_keepalive"`
+  - [x] SubTask 6.2: `src/mooc/zsgl/utils/utils.ts` 新增 `setupPageKeepAlive()`：`navigator.locks` shared 模式持锁（永不 resolve，页面销毁自动释放）；不支持时 Debug 日志静默跳过；try/catch 兜底
+  - [x] SubTask 6.3: `course.ts` `startThirdPartyFlow()` 开头调用 `setupPageKeepAlive()`
+  - [x] SubTask 6.4: `studyMap.ts` `Init()` 调用 `setupPageKeepAlive()`
+- [x] Task 7: 文档更新（追加需求）
+  - [x] SubTask 7.1: `docs/zsgl/cn/08-用户指导.md` 新增「五、浏览器标签页保持活动设置（推荐）」章节：背景说明 + 扩展已内置保活声明 + Edge 路径（edge://settings/system → 节省资源和内存 → 从不让这些网站进入睡眠状态，添加 zsgl.lzlj.com 与 lzlj.b.sanjieke.cn）+ Chrome 路径（chrome://settings/performance → 内存节省程序 → 始终保持活动状态的网站）+ 注明可选双保险；文档变更日志留痕
+  - [x] SubTask 7.2: `docs/zsgl/cn/03-详细设计.md` §3.5 补保活机制描述 + §12 补 KEEPALIVE_LOCK_NAME 常量 + 变更日志留痕（1.26.922.2）
+  - [x] SubTask 7.3: `docs/changelog.md` 追加保活与用户指导变更行
+  - [x] SubTask 7.4: `docs/tasks.md` T-017 描述补充保活与设置指引
+- [x] Task 8: 回归验证
+  - [x] SubTask 8.1: `npm run build` 成功（webpack compiled successfully）
+  - [x] SubTask 8.2: `npx tsc --noEmit` 对比基线无新增错误（输出全为 course163/exam/popup/sanjieke-task 等基线既有错误，本次改动 4 文件零错误）
+
+# Task Dependencies
+- [Task 2] 依赖 [Task 1]（引用消息类型常量）
+- [Task 3] 依赖 [Task 1]
+- [Task 4] 依赖 [Task 1, Task 2, Task 3]
+- [Task 5] 依赖 [Task 3]（文档内容以最终代码形态为准）；其中 5.1/5.2 依赖 [Task 4]（验证通过后留痕）
+- [Task 6] 无前置依赖（可独立实施）
+- [Task 7] 依赖 [Task 6]（文档以代码为准）
+- [Task 8] 依赖 [Task 6]

@@ -12,6 +12,12 @@ export interface Server {
     Accept(callback: serverRecvCallback): void
 }
 
+/**
+ * 三节课毕业完成通知消息类型
+ * sanjieke 页 → zsgl 课程页闭环专用,study/course/start/background 四处共用单一常量源
+ */
+export const SANJIEKE_COURSE_COMPLETE_TYPE = "sanjieke_course_complete"
+
 export function NewExtensionServerMessage(port: string): extensionServerMessage {
     return new extensionServerMessage(port)
 }

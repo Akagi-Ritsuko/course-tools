@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-09-27 02:32:51
  * @LastEditors: guotao
- * @LastEditTime: 2026-09-22 16:04:21
+ * @LastEditTime: 2026-09-22 21:23:26
  * @FilePath: \course-tools\src\mooc\zsgl\course.ts
  * @Description: zsgl 课程任务管理
  *
@@ -23,9 +23,10 @@ import {
   findElementByText,
   setupVisibilitySpoof,
   setupSwitchScreenNeutralizer,
-  sendApiRequest,
+  setupPageKeepAlive,
 } from "./utils/utils";
 import { createBtn, protocolPrompt } from "@App/internal/utils/utils";
+import { SANJIEKE_COURSE_COMPLETE_TYPE } from "@App/internal/utils/message";
 import { CourseDetailItem, TaskInfo, TaskStatus } from "./types";
 import { ZSGL_CONSTANTS } from "./constants";
 
@@ -57,8 +58,8 @@ export class ZsglCourse extends EventListener<MoocEvent>
   private isThirdPartyCourse: boolean = false;
   /** 三方课程自动化流程是否已启动(幂等,防重复点击「立即学习」) */
   private thirdPartyFlowStarted: boolean = false;
-  /** 首次 queryCourseDetail 请求 URL(三方课程轮询复用,免感知具体路径) */
-  private courseDetailRequestUrl: string = "";
+  /** 三节课毕业推送是否已处理(A 路 opener 直推与 B 路后台中转可能先后到达) */
+  private sanjiekeCompleteHandled: boolean = false;
 
   public Init(): Promise<any> {
     return new Promise(async (resolve) => {
@@ -99,6 +100,9 @@ export class ZsglCourse extends EventListener<MoocEvent>
           this.notifyStudyMapCourseComplete();
         });
 
+        // 三节课毕业推送监听(A 路 opener 直推与 B 路后台中转共用同一接收口)
+        window.addEventListener("message", this.onWindowMessage);
+
         // 设置页面关闭监听
         this.setupCloseCourseListener();
       }
@@ -137,6 +141,37 @@ export class ZsglCourse extends EventListener<MoocEvent>
     // 通知逻辑由 Init 中注册的 courseTaskComplete 监听器触发,避免重复执行
     this.callEvent("courseTaskComplete");
   }
+
+  /** 页面消息监听:仅识别三节课毕业推送,其余消息放行 */
+  private onWindowMessage = (event: MessageEvent): void => {
+    const data = event.data;
+    if (!data || data.type !== SANJIEKE_COURSE_COMPLETE_TYPE) {
+      return;
+    }
+    this.onSanjiekeCourseComplete();
+  };
+
+  /**
+   * 三节课毕业推送处理:A 路(opener 直推)与 B 路(后台中转)可能先后到达,幂等去重;
+   * 信任推送直接闭环,不做服务端二次校验(原轮询重放请求缺 courseId 请求体与
+   * headerMap 签名,服务端返回"后台处理错误",已整体移除,见 ADR-001)
+   */
+  private onSanjiekeCourseComplete(): void {
+    if (this.sanjiekeCompleteHandled) {
+      return;
+    }
+    if (!this.thirdPartyFlowStarted) {
+      Application.App.log.Warn(
+        "[三方课程] 收到三节课毕业通知但三方流程未启动,忽略",
+      );
+      return;
+    }
+    this.sanjiekeCompleteHandled = true;
+    Application.App.log.Info(
+      "[三方课程] 收到三节课毕业通知,直接走课程完成闭环",
+    );
+    this.courseTaskCompleteFc();
+  }
   /** 钩子获取课程详情请求 */
   protected hookCourseDetailRequests(): void {
     Application.App.log.Debug(
@@ -160,11 +195,6 @@ export class ZsglCourse extends EventListener<MoocEvent>
           const responseData = response?.body;
           const courseFileArr = responseData?.courseFileArr;
           const courseId = responseData?.courseId;
-
-          // 记录首次请求 URL,供三方课程轮询复用(同源 fetch,无需感知具体路径)
-          if (url && !self.courseDetailRequestUrl) {
-            self.courseDetailRequestUrl = url;
-          }
 
           // 识别三方/混合课程:任务中含 URL 类型(课程内容由三节课页承载)
           if (
@@ -407,7 +437,7 @@ export class ZsglCourse extends EventListener<MoocEvent>
 
   /** 处理课程数据 */
   private async processCourseData(): Promise<void> {
-    // 三方/混合课程分支:自动点「立即学习」打开三节课页 + 轮询服务端完成状态,
+    // 三方/混合课程分支:自动点「立即学习」打开三节课页 + 监听三节课毕业推送,
     // 不构建本页任务(URL 类型任务由三节课学习页承载)
     if (this.isThirdPartyCourse && Application.App.config.auto) {
       this.startThirdPartyFlow();
@@ -443,10 +473,10 @@ export class ZsglCourse extends EventListener<MoocEvent>
 
   /**
    * 三方/混合课程自动化流程:
-   * 1. 轮询查找「立即学习」按钮并自动点击(仅一次),打开三节课学习页;
-   * 2. 定时轮询 queryCourseDetail(服务端状态为准),全部 hasLearned=1 时
-   *    走现有 courseTaskComplete 闭环(通知学习地图 + 关页)
-   * 不依赖跨域 localStorage:三节课与 zsgl 不同源,以 zsgl 服务端状态为准
+   * 自动点击「立即学习」打开三节课学习页(仅一次);
+   * 完成判定由三节课毕业推送驱动(A 路 opener 直推 + B 路后台中转,见 ADR-001),
+   * 收到推送即走 courseTaskComplete 闭环(通知学习地图 + 关页);
+   * 本页无媒体播放纯等推送,启动即持 Web Lock 保活防后台冻结
    */
   private startThirdPartyFlow(): void {
     if (this.thirdPartyFlowStarted) {
@@ -454,8 +484,11 @@ export class ZsglCourse extends EventListener<MoocEvent>
     }
     this.thirdPartyFlowStarted = true;
     Application.App.log.Info(
-      "[三方课程] 启动自动化:自动点击「立即学习」+ 轮询课程完成状态",
+      "[三方课程] 启动自动化:自动点击「立即学习」,完成判定由毕业推送驱动",
     );
+
+    // 页面保活:防后台挂机超阈值被浏览器冻结,致推送延迟送达
+    setupPageKeepAlive();
 
     // 1. 轮询查找「立即学习」按钮(MUI Button 由 React 渲染,需等待挂载)
     let findAttempts = 0;
@@ -492,48 +525,6 @@ export class ZsglCourse extends EventListener<MoocEvent>
       },
       ZSGL_CONSTANTS.CHECK_INTERVAL_MS,
     );
-
-    // 2. 定时轮询服务端完成状态(默认30s;三方课程页面停留即可维持时长上报)
-    this.timerManager.setInterval(
-      "thirdPartyPoll",
-      () => {
-        this.pollThirdPartyCourseStatus();
-      },
-      ZSGL_CONSTANTS.THIRD_PARTY_POLL_INTERVAL_MS,
-    );
-  }
-
-  /** 轮询三方课程完成状态:全部 hasLearned=1 时走现有 courseTaskComplete 闭环 */
-  private async pollThirdPartyCourseStatus(): Promise<void> {
-    if (!this.courseDetailRequestUrl) {
-      return;
-    }
-    try {
-      const res = await sendApiRequest<any>(
-        "GET",
-        this.courseDetailRequestUrl,
-      );
-      const arr = res?.data?.body?.courseFileArr;
-      if (!Array.isArray(arr) || arr.length === 0) {
-        return;
-      }
-      const learnedCount = arr.filter(
-        (item: any) => String(item.hasLearned) === "1",
-      ).length;
-      if (learnedCount >= arr.length) {
-        this.timerManager.clearInterval("thirdPartyPoll");
-        Application.App.log.Info(
-          "[三方课程] 服务端判定全部任务已学习,走课程完成闭环",
-        );
-        this.courseTaskCompleteFc();
-      } else {
-        Application.App.log.Debug(
-          `[三方课程] 轮询: ${learnedCount}/${arr.length} 已完成`,
-        );
-      }
-    } catch (e) {
-      Application.App.log.Warn("[三方课程] 轮询 queryCourseDetail 失败", e);
-    }
   }
 
   /** 构建任务列表 */

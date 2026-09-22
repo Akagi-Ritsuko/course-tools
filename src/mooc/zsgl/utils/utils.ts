@@ -399,6 +399,36 @@ export function setupVisibilitySpoof(): void {
 }
 
 /**
+ * 页面保活:通过 Web Locks API 持有共享锁,使页面进入浏览器
+ * 内存节省程序(Memory Saver/睡眠标签页)的冻结豁免名单。
+ * 用于无媒体播放、纯等待通知的页面(三方课程课程页/学习地图页),
+ * 防止后台挂机超过阈值后被冻结导致推送通知延迟送达。
+ * 锁随页面关闭/导航自动释放;回调永不 resolve,持锁至页面销毁。
+ * navigator.locks 不可用(旧环境/非安全上下文)时静默跳过,
+ * 冻结风险退化为"解冻后闭环延迟",通知不丢失。
+ */
+export function setupPageKeepAlive(): void {
+  try {
+    if (!navigator.locks) {
+      Application.App.log.Debug("[保活] navigator.locks 不可用,跳过保活");
+      return;
+    }
+    navigator.locks
+      .request(ZSGL_CONSTANTS.KEEPALIVE_LOCK_NAME, { mode: "shared" }, () =>
+        new Promise(() => {
+          /* 永不 resolve:持锁至页面销毁,浏览器自动回收 */
+        }),
+      )
+      .catch((e) => {
+        Application.App.log.Warn("[保活] 保活锁请求被拒绝:", e);
+      });
+    Application.App.log.Info("[保活] 已持有 Web Lock,页面免于后台冻结");
+  } catch (e) {
+    Application.App.log.Warn("[保活] 保活安装失败:", e);
+  }
+}
+
+/**
  * 定时器管理器，统一管理所有定时器
  */
 export class TimerManager {

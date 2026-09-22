@@ -1,4 +1,8 @@
-import { Client, NewChromeServerMessage } from "@App/internal/utils/message";
+import {
+  Client,
+  NewChromeServerMessage,
+  SANJIEKE_COURSE_COMPLETE_TYPE,
+} from "@App/internal/utils/message";
 import {
   get,
   HttpUtils,
@@ -44,6 +48,17 @@ class start implements Launcher {
           });
           break;
         }
+        case SANJIEKE_COURSE_COMPLETE_TYPE: {
+          // 三节课毕业通知:经后台中转回 zsgl 课程页(opener 直推失效时的兜底通路)
+          chrome.runtime.sendMessage(
+            {
+              type: SANJIEKE_COURSE_COMPLETE_TYPE,
+              courseId: data.details?.courseId,
+            },
+            () => void chrome.runtime.lastError,
+          );
+          break;
+        }
       }
     });
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -77,6 +92,17 @@ class start implements Launcher {
         );
         window.postMessage(
           { type: "UPDATE_PROGRESS", data: request.data },
+          "*",
+        );
+        sendResponse({ success: true });
+      }
+      if (request.type === SANJIEKE_COURSE_COMPLETE_TYPE) {
+        // 后台中转回的三节课毕业通知:转入页面上下文,由 zsgl 课程页监听闭环
+        window.postMessage(
+          {
+            type: SANJIEKE_COURSE_COMPLETE_TYPE,
+            courseId: request.courseId,
+          },
           "*",
         );
         sendResponse({ success: true });

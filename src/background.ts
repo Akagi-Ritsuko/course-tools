@@ -1,4 +1,7 @@
-import {NewExtensionServerMessage} from "./internal/utils/message";
+import {
+  NewExtensionServerMessage,
+  SANJIEKE_COURSE_COMPLETE_TYPE,
+} from "./internal/utils/message";
 import {HttpUtils, get, dealHotVersion} from "./internal/utils/utils";
 import {Application, Backend, Launcher} from "./internal/application";
 import {ConsoleLog} from "./internal/utils/log";
@@ -41,6 +44,35 @@ class background implements Launcher {
         setInterval(() => {
             this.update();
         }, 60 * 60 * 1000);
+        // 三节课毕业通知中转:sanjieke 内容脚本 → 此处 → opener 标签页
+        // (无 openerTabId 时广播 zsgl 标签页兜底);用 Warn 级保证 production 后台可见
+        chrome.runtime.onMessage.addListener((msg: any, sender, sendResponse) => {
+            if (msg?.type !== SANJIEKE_COURSE_COMPLETE_TYPE) {
+                return;
+            }
+            const payload = {
+                type: SANJIEKE_COURSE_COMPLETE_TYPE,
+                courseId: msg.courseId,
+            };
+            const forward = (tabId: number) => {
+                chrome.tabs.sendMessage(tabId, payload, () => void chrome.runtime.lastError);
+            };
+            const openerTabId = sender.tab && sender.tab.openerTabId;
+            if (openerTabId) {
+                Application.App.log.Warn(
+                    "[三方课程] 收到三节课毕业通知,中转至 opener 标签页 " + openerTabId,
+                );
+                forward(openerTabId);
+            } else {
+                Application.App.log.Warn(
+                    "[三方课程] 收到三节课毕业通知,无 opener,广播 zsgl 标签页",
+                );
+                chrome.tabs.query({ url: "*://zsgl.lzlj.com/*" }, (tabs) => {
+                    (tabs || []).forEach((t) => t.id && forward(t.id));
+                });
+            }
+            sendResponse({ success: true });
+        });
         this.injectedScript();
         this.event();
         this.menu();

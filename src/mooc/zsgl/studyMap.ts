@@ -10,7 +10,7 @@
  */
 import { Task, TaskType } from "@App/internal/app/task";
 import { Application } from "@App/internal/application";
-import { CssBtn, hookHttpRequest, TimerManager, createStorageHandler, findElementByText } from "./utils/utils";
+import { CssBtn, hookHttpRequest, TimerManager, createStorageHandler, findElementByText, setupPageKeepAlive } from "./utils/utils";
 import { createBtn, protocolPrompt } from "@App/internal/utils/utils";
 import { NewChromeServerMessage } from "@App/internal/utils/message";
 import { StudyMapData, GateTaskData, TaskStatus } from "./types";
@@ -31,6 +31,10 @@ export class ZsglStudyMap extends Task {
     public Init(): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             try {
+                // 页面保活:学习地图页无媒体播放、纯等任务完成通知,
+                // 持 Web Lock 防后台挂机被浏览器冻结致通知延迟
+                setupPageKeepAlive();
+
                 // 先注册所有HTTP请求钩子
                 await this.hookStudymapGateRequests();
                 await this.hookStudymapGateTaskRequests();
