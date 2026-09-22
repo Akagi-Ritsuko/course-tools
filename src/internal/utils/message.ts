@@ -69,9 +69,6 @@ class extensionClientMessage extends msg implements Client {
             super(param as string);
             this.connect();
         } else {
-            // 修复 TS17009:派生构造函数中必须先调用 super 才能访问 this
-            // (原 else 分支在运行时会抛 ReferenceError,属不可达死分支)
-            super("");
             this.conn = param as chrome.runtime.Port;
         }
         this.recv();

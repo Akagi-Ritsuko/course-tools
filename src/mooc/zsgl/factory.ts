@@ -43,12 +43,8 @@ export class TaskFactory {
                 return new ZsglKnowledge(document, taskinfo);
             case "document":
             case "audio":
-                Application.App.log.Debug(`暂不支持的课程类型: ${taskinfo.cwType}`);
-                return null;
             case "URL":
-                // 三方课程任务由课程详情页三方分支统一调度(自动点「立即学习」+ 轮询服务端状态),
-                // 任务本身由三节课学习页承载,此处不创建本地任务
-                Application.App.log.Info("三方课程任务(URL)由课程详情页三方分支调度");
+                Application.App.log.Debug(`暂不支持的课程类型: ${taskinfo.cwType}`);
                 return null;
             default:
                 return null;

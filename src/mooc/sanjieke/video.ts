@@ -279,15 +279,13 @@ export class SanjiekeVideo extends SanjiekeTaskBase {
 
   /** 起播:先静音绕过自动播放策略,点击 .xgplayer-play,兜底 video.play() */
   private startPlayback(): void {
-    // 重播场景(用户实测):视频此前看过但时长可能不够,播放器处于 ended/is-replay 状态。
-    // 此时不能直接判完成,必须重新完整播放,由重播结束后的 ended 事件驱动完成判定
-    const root = document.querySelector(
-      SANJIEKE_CONSTANTS.SELECTORS.VIDEO_CONTAINER,
-    ) as HTMLElement;
-    if (this.video.ended || root?.classList.contains("xgplayer-is-replay")) {
-      Application.App.log.Info(
-        "[三节课视频] 检测到重播状态(此前已看但时长可能不足),重新完整播放",
-      );
+    // 若页面恢复时视频已自然结束,直接完成
+    if (this.video.ended) {
+      Application.App.log.Info("[三节课视频] 视频已是结束状态,直接完成");
+      this.markLessonDone();
+      this.done = true;
+      this.callEvent("complete");
+      return;
     }
     // 播放中(如页面恢复时已自动起播)不点击:.xgplayer-play 是切换按钮,
     // 播放中再点会变成暂停,与自动恢复形成"暂停风暴"
