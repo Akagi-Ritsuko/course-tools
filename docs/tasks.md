@@ -21,7 +21,7 @@
 | T-013 | 考试错题记录按钮调研：getNewExamDetails，showErrorType=1，ishidenerrquestion=N | todo | P3 | TODO#7 | 05-API文档 A4/A5 |
 | T-014 | 视频长时间转圈问题（0630 记录；与 T-004 播放点击限流、T-005 回归相关） | todo | P3 | TODO#8 | 03-详细设计 §5 |
 | T-015 | 工程化：webpack 加 fork-ts-checker 或 CI 跑 `tsc --noEmit`（先清理/白名单 ~60 个基线错误）；`src/mooc/zsgl/log/` 反编译产物与日志样本 gitignore 或移出仓库 | todo | P3 | handoff §四P3 | — |
-| T-016 | 三节课自动挂机（sanjieke-auto-study）：zsgl"混合"课程「立即学习」跳转 lzlj.b.sanjieke.cn 三方页面的自动挂机（xgplayer 起播/倍速/防暂停）+ 课后题自动答题（questions 接口自带 answer）+ 完成判定与学习地图串联闭环；里程碑 M1 文档已落地，M2~M6 待开发；2026-09-22 迭代 2（M7）完成代码：视频完成改 setContentFinished 平台信号确认制 + ended 未确认重播（3 次熔断）+ 课后题 completedFlag/「继续挑战」精确推进 + 课时切换改 interval 配置，实测待做 | doing | P1 | .trae/specs/sanjieke-auto-study | .trae/specs/sanjieke-auto-study/spec.md |
+| T-016 | 三节课自动挂机（sanjieke-auto-study）：zsgl"混合"课程「立即学习」跳转 lzlj.b.sanjieke.cn 三方页面的自动挂机（xgplayer 起播/倍速/防暂停）+ 课后题自动答题（questions 接口自带 answer）+ 完成判定与学习地图串联闭环；里程碑 M1 文档已落地，M2~M6 待开发；2026-09-22 迭代 2（M7）完成代码：视频完成改 setContentFinished 平台信号确认制 + ended 未确认重播（3 次熔断）+ 课后题 completedFlag/「继续挑战」精确推进 + 课时切换改 interval 配置；同日修复 content/tree 解析字段不匹配（nodeId + attribute.isFinish，实机课程 34002056 定位），复测待做 | doing | P1 | .trae/specs/sanjieke-auto-study | .trae/specs/sanjieke-auto-study/spec.md |
 | T-017 | 三方课程完成推送通知（去轮询，ADR-001）：三节课毕业 → A 路 opener 直推 + B 路扩展中转（start/background 双向桥接，openerTabId 优先）→ zsgl course.ts 幂等直达闭环；移除失效轮询（重放请求缺 courseId 请求体与 headerMap 签名，服务端报后台处理错误）；页面保活：setupPageKeepAlive Web Lock 持锁防后台冻结（三方课程课程页 + 学习地图页），08-用户指导 §五 补浏览器"保持活动"设置指引（双保险）；代码完成，build/tsc 通过，实机验证待做 | doing | P1 | .trae/specs/sanjieke-complete-push | docs/adr/ADR-001、docs/zsgl/cn/03 §3.5、docs/zsgl/cn/08 §五 |
 
 ## 备注

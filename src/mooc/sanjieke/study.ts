@@ -539,7 +539,9 @@ function flattenLessons(
       flattenLessons(node.children, out, depth + 1);
       continue;
     }
-    const id = node.id ?? node.lessonId ?? node.contentId;
+    // 实测响应叶子节点 id 字段为 nodeId(2026-09-22 课程 34002056 content/tree 响应),
+    // 其余字段名为其他版本兜底
+    const id = node.id ?? node.nodeId ?? node.lessonId ?? node.contentId;
     if (id === undefined || id === null) {
       continue;
     }
@@ -554,6 +556,17 @@ function flattenLessons(
 
 /** 弹性判定节点完成状态(多字段兼容,仅认可信字段,不确定时保守返回未完成) */
 function isNodeFinished(node: any): boolean {
+  // 实测响应完成状态在 attribute.isFinish(0/1 数字,2026-09-22 课程 34002056),
+  // 章节节点 attribute 为 null
+  const attr = node.attribute;
+  if (attr && typeof attr === "object") {
+    if (typeof attr.isFinish === "number") {
+      return attr.isFinish === 1;
+    }
+    if (typeof attr.isFinish === "boolean") {
+      return attr.isFinish;
+    }
+  }
   if (typeof node.isFinished === "boolean") {
     return node.isFinished;
   }

@@ -1,0 +1,614 @@
+22:39:09.504  [每日积分] panel: 构造函数被调用
+22:39:09.505  [每日积分] panel: init方法被调用
+22:39:09.505  [debug 22:39:9 ] Start document state: loading
+22:39:09.505  create mooc
+22:39:09.505  [info 22:39:9 ] 当前平台：sanjieke
+22:39:09.505  mooc start 
+22:39:09.505  [info 22:39:9 ] [三节课] 学习页初始化 courseId=34002056
+22:39:09.505  [info 22:39:9 ] [可见性伪装] 已启用,页面切后台将继续播放
+22:39:09.505  [info 22:39:9 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+22:39:09.505  [debug 22:39:9 ] 注册HTTP钩子: /content/tree
+22:39:09.505  [debug 22:39:9 ] 注册HTTP钩子: /questions
+22:39:09.505  [debug 22:39:9 ] 注册HTTP钩子: video/question
+22:39:09.505  [debug 22:39:9 ] 注册HTTP钩子: cert/graduated
+22:39:09.505  mooc初始化完成 
+22:39:09.505   'mooc.Next'
+22:39:09.505  [debug 22:39:9 ] runMoocTask 开始执行任务:
+22:39:09.525  path /study/:project_id/:course_id/:node_id
+22:39:09.526  [debug 22:39:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/info
+22:39:09.526  [debug 22:39:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/userInfo
+22:39:09.527  [debug 22:39:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/flag_info
+22:39:09.527  [debug 22:39:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/token/refresh
+22:39:09.529  初始
+22:39:09.529  [debug 22:39:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+22:39:09.541  [debug 22:39:9 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:09.541  [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+22:39:09.580  [每日积分] panel: window.onload 触发
+22:39:09.581  [每日积分] panel: 初始化消息监听
+22:39:09.581  [debug 22:39:9 ] 每日积分模式初始化完成 
+22:39:09.718  [debug 22:39:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/stat
+22:39:09.718  [debug 22:39:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/info
+22:39:09.980  [debug 22:39:9 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:09.985  
+22:39:09.987  [debug 22:39:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/tree
+22:39:09.987  [debug 22:39:9 ] 匹配到钩子: /content/tree
+22:39:09.988  [debug 22:39:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/cert/graduated?courseId=34002056
+22:39:09.988  [debug 22:39:9 ] 匹配到钩子: cert/graduated
+22:39:09.988  [debug 22:39:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/questions
+22:39:09.988  [debug 22:39:9 ] 匹配到钩子: /questions
+22:39:09.988  [debug 22:39:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/exam
+22:39:10.425  [debug 22:39:10 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:10.432  [debug 22:39:10 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user/watermark
+22:39:10.439  [debug 22:39:10 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/34476525
+22:39:10.439  [debug 22:39:10 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/section/34476525/like/info
+22:39:10.440  [debug 22:39:10 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/self?courseId=34002056&sectionId=34476525&projectId=0
+22:39:10.440  [debug 22:39:10 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/all?courseId=34002056&sectionId=34476525&projectId=0&page=1&pageSize=20&sortField=hot
+22:39:10.440  [debug 22:39:10 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/appraise/tips
+22:39:11.200  aiQaList
+22:39:11.201  [debug 22:39:11 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/questions_and_answers?sectionId=34476525&videoId=34467357
+22:39:11.201  [debug 22:39:11 ] 匹配到钩子: /questions
+22:39:11.201  [debug 22:39:11 ] 匹配到钩子: video/question
+22:39:11.210  addScrollEvent
+22:39:11.215  [debug 22:39:11 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/ranges?business_id=1507&video_id=34467357&course_id=34002056
+22:39:11.223  [每日积分] panel: 收到页面消息1 
+22:39:11.223  [每日积分] panel: 收到页面消息1 
+22:39:11.223  [每日积分] panel: 收到页面消息1 
+22:39:11.260   GET https://web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/questions_and_answers?sectionId=34476525&videoId=34467357 net::ERR_INTERNET_DISCONNECTED
+22:39:11.260 app.bundle.js?458c82a…:1 Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'status')
+22:39:11.368   GET https://video-knot-go.sanjieke.cn/v1/video/play/ranges?business_id=1507&video_id=34467357&course_id=34002056 net::ERR_INTERNET_DISCONNECTED
+22:39:11.368 app.bundle.js?458c82a…:1 Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'status')
+22:39:11.413  [每日积分] panel: 收到页面消息1 
+22:39:11.556 已导航到     chrome-error://chromewebdata/
+22:39:17.724 已导航到     https://lzlj.b.sanjieke.cn/study/0/34002056/34476524
+22:39:17.756  [每日积分] panel: 构造函数被调用
+22:39:17.756  [每日积分] panel: init方法被调用
+22:39:17.756  [debug 22:39:17 ] Start document state: loading
+22:39:17.756  create mooc
+22:39:17.756  [info 22:39:17 ] 当前平台：sanjieke
+22:39:17.757  mooc start g {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: e.TimerManager, lessons: Array(0), …}
+22:39:17.757  [info 22:39:17 ] [三节课] 学习页初始化 courseId=34002056
+22:39:17.757  [info 22:39:17 ] [可见性伪装] 已启用,页面切后台将继续播放
+22:39:17.757  [info 22:39:17 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+22:39:17.757  [debug 22:39:17 ] 注册HTTP钩子: /content/tree
+22:39:17.758  [debug 22:39:17 ] 注册HTTP钩子: /questions
+22:39:17.758  [debug 22:39:17 ] 注册HTTP钩子: video/question
+22:39:17.758  [debug 22:39:17 ] 注册HTTP钩子: cert/graduated
+22:39:17.758  mooc初始化完成 g {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: e.TimerManager, lessons: Array(0), …}
+22:39:17.758  Next(){return new Promise(t=>{if(o.Application.App.log.Debug("[三节课] Next 任务索引:",this.taskIndex,this.taskList.length),this.taskList.length>this.taskIndex)return t(this.taskList[this.taskIndex]),this.t… 'mooc.Next'
+22:39:17.759  [debug 22:39:17 ] runMoocTask 开始执行任务:
+22:39:17.851  path /study/:project_id/:course_id/:node_id
+22:39:17.855  [debug 22:39:17 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/info
+22:39:17.856  [debug 22:39:17 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/userInfo
+22:39:17.856  [debug 22:39:17 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/flag_info
+22:39:17.856  [debug 22:39:17 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/token/refresh
+22:39:17.860  初始
+22:39:17.861  [debug 22:39:17 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+22:39:17.896  [debug 22:39:17 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:17.896  [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+s @ sensorsdata.min.js:1
+w @ sensorsdata.min.js:1
+qe @ sensorsdata.min.js:1
+initScrollmap @ sensorsdata.min.js:3
+Wt @ sensorsdata.min.js:2
+Vt @ sensorsdata.min.js:2
+qt @ sensorsdata.min.js:2
+cr.init @ sensorsdata.min.js:5
+(匿名) @ sensorsdata.min.js:5
+(匿名) @ sensorsdata.min.js:1
+(匿名) @ sensorsdata.min.js:1
+PendingScript
+sdk_url @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+value @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+e @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+t.default @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+22:39:18.120  [debug 22:39:18 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/stat
+22:39:18.121  [debug 22:39:18 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/info
+22:39:18.144  [每日积分] panel: window.onload 触发
+22:39:18.145  [每日积分] panel: 初始化消息监听
+22:39:18.145  [debug 22:39:18 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1790087958145, isRunning: false, …}
+22:39:18.395  [debug 22:39:18 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:18.404  {history: {…}, location: {…}, match: {…}, staticContext: undefined, store: {…}, …}
+22:39:18.407  [debug 22:39:18 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/tree
+22:39:18.407  [debug 22:39:18 ] 匹配到钩子: /content/tree
+22:39:18.408  [debug 22:39:18 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/cert/graduated?courseId=34002056
+22:39:18.408  [debug 22:39:18 ] 匹配到钩子: cert/graduated
+22:39:18.408  [debug 22:39:18 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/questions
+22:39:18.409  [debug 22:39:18 ] 匹配到钩子: /questions
+22:39:18.409  [debug 22:39:18 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/exam
+22:39:18.839  [debug 22:39:18 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:18.866  [debug 22:39:18 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user/watermark
+22:39:18.879  [debug 22:39:18 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/34476525
+22:39:18.879  [debug 22:39:18 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/section/34476525/like/info
+22:39:18.880  [debug 22:39:18 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/self?courseId=34002056&sectionId=34476525&projectId=0
+22:39:18.881  [debug 22:39:18 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/all?courseId=34002056&sectionId=34476525&projectId=0&page=1&pageSize=20&sortField=hot
+22:39:18.881  [debug 22:39:18 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/appraise/tips
+22:39:19.119  aiQaList
+22:39:19.124  [debug 22:39:19 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/questions_and_answers?sectionId=34476525&videoId=34467357
+22:39:19.124  [debug 22:39:19 ] 匹配到钩子: /questions
+22:39:19.124  [debug 22:39:19 ] 匹配到钩子: video/question
+22:39:19.125  [debug 22:39:19 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/ranges?business_id=1507&video_id=34467357&course_id=34002056
+22:39:19.127  [每日积分] panel: 收到页面消息1 {action: 'article:mounted', vendor: 'sanjieke', params: {…}}
+22:39:19.127  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:19.170  addScrollEvent
+22:39:19.230 [Violation]
+    Forced reflow while executing JavaScript took 59ms
+22:39:19.232  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:19.242  setPlayerConfig
+22:39:19.254  [debug 22:39:19 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/question?videoId=34467357&sectionId=34476525&retryFlag=false
+22:39:19.254  [debug 22:39:19 ] 匹配到钩子: video/question
+22:39:19.266  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:19.278  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:19.346  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:19.400  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:19.869 已导航到     https://lzlj.b.sanjieke.cn/study/0/34002056/34476524
+22:39:19.903 VM88:3 [每日积分] panel: 构造函数被调用
+22:39:19.903 VM88:3 [每日积分] panel: init方法被调用
+22:39:19.903 VM88:3 [debug 22:39:19 ] Start document state: loading
+22:39:19.903 VM88:3 create mooc
+22:39:19.904 VM88:3 [info 22:39:19 ] 当前平台：sanjieke
+22:39:19.904 VM88:3 mooc start g {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: e.TimerManager, lessons: Array(0), …}
+22:39:19.904 VM88:3 [info 22:39:19 ] [三节课] 学习页初始化 courseId=34002056
+22:39:19.904 VM88:3 [info 22:39:19 ] [可见性伪装] 已启用,页面切后台将继续播放
+22:39:19.904 VM88:3 [info 22:39:19 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+22:39:19.904 VM88:3 [debug 22:39:19 ] 注册HTTP钩子: /content/tree
+22:39:19.904 VM88:3 [debug 22:39:19 ] 注册HTTP钩子: /questions
+22:39:19.905 VM88:3 [debug 22:39:19 ] 注册HTTP钩子: video/question
+22:39:19.905 VM88:3 [debug 22:39:19 ] 注册HTTP钩子: cert/graduated
+22:39:19.905 VM88:3 mooc初始化完成 g {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: e.TimerManager, lessons: Array(0), …}
+22:39:19.905 VM88:3 Next(){return new Promise(t=>{if(o.Application.App.log.Debug("[三节课] Next 任务索引:",this.taskIndex,this.taskList.length),this.taskList.length>this.taskIndex)return t(this.taskList[this.taskIndex]),this.t… 'mooc.Next'
+22:39:19.905 VM88:3 [debug 22:39:19 ] runMoocTask 开始执行任务:
+22:39:20.010 app.bundle.js?458c82a8a99fe9ec9ae1:22 path /study/:project_id/:course_id/:node_id
+22:39:20.014 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/info
+22:39:20.015 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/userInfo
+22:39:20.015 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/flag_info
+22:39:20.015 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/token/refresh
+22:39:20.017 app.bundle.js?458c82a8a99fe9ec9ae1:17 初始
+22:39:20.018 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+22:39:20.056 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:20.057 sensorsdata.min.js:1 [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+s @ asset.3jk.top/frontend/js/sensorsdata.min.js:1
+w @ asset.3jk.top/frontend/js/sensorsdata.min.js:1
+qe @ asset.3jk.top/frontend/js/sensorsdata.min.js:1
+initScrollmap @ asset.3jk.top/frontend/js/sensorsdata.min.js:3
+Wt @ asset.3jk.top/frontend/js/sensorsdata.min.js:2
+Vt @ asset.3jk.top/frontend/js/sensorsdata.min.js:2
+qt @ asset.3jk.top/frontend/js/sensorsdata.min.js:2
+cr.init @ asset.3jk.top/frontend/js/sensorsdata.min.js:5
+(匿名) @ asset.3jk.top/frontend/js/sensorsdata.min.js:5
+(匿名) @ asset.3jk.top/frontend/js/sensorsdata.min.js:1
+(匿名) @ asset.3jk.top/frontend/js/sensorsdata.min.js:1
+PendingScript
+sdk_url @ asset.3jk.top/project/learn/assets/js/app.bundle.js?458c82a8a99fe9ec9ae1:22
+value @ asset.3jk.top/project/learn/assets/js/app.bundle.js?458c82a8a99fe9ec9ae1:22
+e @ asset.3jk.top/project/learn/assets/js/app.bundle.js?458c82a8a99fe9ec9ae1:22
+t.default @ asset.3jk.top/project/learn/assets/js/app.bundle.js?458c82a8a99fe9ec9ae1:22
+(匿名) @ asset.3jk.top/project/learn/assets/js/app.bundle.js?458c82a8a99fe9ec9ae1:23
+(匿名) @ asset.3jk.top/project/learn/assets/js/app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ asset.3jk.top/project/learn/assets/js/app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ asset.3jk.top/project/learn/assets/js/app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ asset.3jk.top/project/learn/assets/js/app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ asset.3jk.top/project/learn/assets/js/app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ asset.3jk.top/project/learn/assets/js/app.bundle.js?458c82a8a99fe9ec9ae1:1
+22:39:20.255 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/stat
+22:39:20.256 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/info
+22:39:20.258 VM88:3 [每日积分] panel: window.onload 触发
+22:39:20.259 VM88:3 [每日积分] panel: 初始化消息监听
+22:39:20.260 VM88:3 [debug 22:39:20 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1790087960259, isRunning: false, …}
+22:39:20.517 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:20.524 4.4c341ab71b6afca7650e.chunk.js:1137 {history: {…}, location: {…}, match: {…}, staticContext: undefined, store: {…}, …}
+22:39:20.527 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/tree
+22:39:20.528 VM88:3 [debug 22:39:20 ] 匹配到钩子: /content/tree
+22:39:20.528 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/cert/graduated?courseId=34002056
+22:39:20.529 VM88:3 [debug 22:39:20 ] 匹配到钩子: cert/graduated
+22:39:20.529 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/questions
+22:39:20.530 VM88:3 [debug 22:39:20 ] 匹配到钩子: /questions
+22:39:20.530 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/exam
+22:39:20.956 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:20.971 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user/watermark
+22:39:20.982 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/34476525
+22:39:20.982 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/section/34476525/like/info
+22:39:20.983 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/self?courseId=34002056&sectionId=34476525&projectId=0
+22:39:20.983 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/all?courseId=34002056&sectionId=34476525&projectId=0&page=1&pageSize=20&sortField=hot
+22:39:20.983 VM88:3 [debug 22:39:20 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/appraise/tips
+22:39:21.233 4.4c341ab71b6afca7650e.chunk.js:1137 aiQaList
+22:39:21.234 VM88:3 [debug 22:39:21 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/questions_and_answers?sectionId=34476525&videoId=34467357
+22:39:21.235 VM88:3 [debug 22:39:21 ] 匹配到钩子: /questions
+22:39:21.235 VM88:3 [debug 22:39:21 ] 匹配到钩子: video/question
+22:39:21.235 VM88:3 [debug 22:39:21 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/ranges?business_id=1507&video_id=34467357&course_id=34002056
+22:39:21.237 VM88:3 [每日积分] panel: 收到页面消息1 {action: 'article:mounted', vendor: 'sanjieke', params: {…}}
+22:39:21.237 VM88:3 [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:21.318 4.4c341ab71b6afca7650e.chunk.js:1137 addScrollEvent
+22:39:21.329 VM88:3 [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:21.350 4.4c341ab71b6afca7650e.chunk.js:1137 setPlayerConfig
+22:39:21.368 VM88:3 [debug 22:39:21 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/question?videoId=34467357&sectionId=34476525&retryFlag=false
+22:39:21.368 VM88:3 [debug 22:39:21 ] 匹配到钩子: video/question
+22:39:21.377 VM88:3 [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:21.456 VM88:3 [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:21.501 VM88:3 [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:21.999 已导航到     https://lzlj.b.sanjieke.cn/study/0/34002056/34476524
+22:39:22.038 VM166:3 [每日积分] panel: 构造函数被调用
+22:39:22.038 VM166:3 [每日积分] panel: init方法被调用
+22:39:22.038 VM166:3 [debug 22:39:22 ] Start document state: loading
+22:39:22.038 VM166:3 create mooc
+22:39:22.038 VM166:3 [info 22:39:22 ] 当前平台：sanjieke
+22:39:22.039 VM166:3 mooc start g {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: e.TimerManager, lessons: Array(0), …}
+22:39:22.040 VM166:3 [info 22:39:22 ] [三节课] 学习页初始化 courseId=34002056
+22:39:22.041 VM166:3 [info 22:39:22 ] [可见性伪装] 已启用,页面切后台将继续播放
+22:39:22.042 VM166:3 [info 22:39:22 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+22:39:22.042 VM166:3 [debug 22:39:22 ] 注册HTTP钩子: /content/tree
+22:39:22.042 VM166:3 [debug 22:39:22 ] 注册HTTP钩子: /questions
+22:39:22.042 VM166:3 [debug 22:39:22 ] 注册HTTP钩子: video/question
+22:39:22.042 VM166:3 [debug 22:39:22 ] 注册HTTP钩子: cert/graduated
+22:39:22.043 VM166:3 mooc初始化完成 g {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: e.TimerManager, lessons: Array(0), …}
+22:39:22.043 VM166:3 Next(){return new Promise(t=>{if(o.Application.App.log.Debug("[三节课] Next 任务索引:",this.taskIndex,this.taskList.length),this.taskList.length>this.taskIndex)return t(this.taskList[this.taskIndex]),this.t… 'mooc.Next'
+22:39:22.043 VM166:3 [debug 22:39:22 ] runMoocTask 开始执行任务:
+22:39:22.143 app.bundle.js?458c82a8a99fe9ec9ae1:22 path /study/:project_id/:course_id/:node_id
+22:39:22.147 VM166:3 [debug 22:39:22 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/info
+22:39:22.147 VM166:3 [debug 22:39:22 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/userInfo
+22:39:22.148  [debug 22:39:22 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/flag_info
+22:39:22.148  [debug 22:39:22 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/token/refresh
+22:39:22.150  初始
+22:39:22.150  [debug 22:39:22 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+22:39:22.186  [debug 22:39:22 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:22.187  [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+s @ sensorsdata.min.js:1
+w @ sensorsdata.min.js:1
+qe @ sensorsdata.min.js:1
+initScrollmap @ sensorsdata.min.js:3
+Wt @ sensorsdata.min.js:2
+Vt @ sensorsdata.min.js:2
+qt @ sensorsdata.min.js:2
+cr.init @ sensorsdata.min.js:5
+(匿名) @ sensorsdata.min.js:5
+(匿名) @ sensorsdata.min.js:1
+(匿名) @ sensorsdata.min.js:1
+PendingScript
+sdk_url @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+value @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+e @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+t.default @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+22:39:22.372  [debug 22:39:22 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/stat
+22:39:22.373  [debug 22:39:22 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/info
+22:39:22.375  [每日积分] panel: window.onload 触发
+22:39:22.376  [每日积分] panel: 初始化消息监听
+22:39:22.377  [debug 22:39:22 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1790087962376, isRunning: false, …}
+22:39:22.651  [debug 22:39:22 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:22.662  {history: {…}, location: {…}, match: {…}, staticContext: undefined, store: {…}, …}
+22:39:22.665  [debug 22:39:22 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/tree
+22:39:22.665  [debug 22:39:22 ] 匹配到钩子: /content/tree
+22:39:22.666  [debug 22:39:22 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/cert/graduated?courseId=34002056
+22:39:22.666  [debug 22:39:22 ] 匹配到钩子: cert/graduated
+22:39:22.667  [debug 22:39:22 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/questions
+22:39:22.667  [debug 22:39:22 ] 匹配到钩子: /questions
+22:39:22.668  [debug 22:39:22 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/exam
+22:39:23.128  [debug 22:39:23 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:23.168  [debug 22:39:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user/watermark
+22:39:23.180  [debug 22:39:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/34476525
+22:39:23.181  [debug 22:39:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/section/34476525/like/info
+22:39:23.181  [debug 22:39:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/self?courseId=34002056&sectionId=34476525&projectId=0
+22:39:23.182  [debug 22:39:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/all?courseId=34002056&sectionId=34476525&projectId=0&page=1&pageSize=20&sortField=hot
+22:39:23.182  [debug 22:39:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/appraise/tips
+22:39:23.420  aiQaList
+22:39:23.422  [debug 22:39:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/questions_and_answers?sectionId=34476525&videoId=34467357
+22:39:23.422  [debug 22:39:23 ] 匹配到钩子: /questions
+22:39:23.422  [debug 22:39:23 ] 匹配到钩子: video/question
+22:39:23.423  [debug 22:39:23 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/ranges?business_id=1507&video_id=34467357&course_id=34002056
+22:39:23.424  [每日积分] panel: 收到页面消息1 {action: 'article:mounted', vendor: 'sanjieke', params: {…}}
+22:39:23.425  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:23.531  addScrollEvent
+22:39:23.538  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:23.540  setPlayerConfig
+22:39:23.554  [debug 22:39:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/question?videoId=34467357&sectionId=34476525&retryFlag=false
+22:39:23.554  [debug 22:39:23 ] 匹配到钩子: video/question
+22:39:23.562  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:23.577  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:23.644  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:23.704  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:24.151 已导航到     https://lzlj.b.sanjieke.cn/study/0/34002056/34476524
+22:39:24.187  [每日积分] panel: 构造函数被调用
+22:39:24.187  [每日积分] panel: init方法被调用
+22:39:24.188  [debug 22:39:24 ] Start document state: loading
+22:39:24.188  create mooc
+22:39:24.188  [info 22:39:24 ] 当前平台：sanjieke
+22:39:24.188  mooc start g {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: e.TimerManager, lessons: Array(0), …}
+22:39:24.188  [info 22:39:24 ] [三节课] 学习页初始化 courseId=34002056
+22:39:24.189  [info 22:39:24 ] [可见性伪装] 已启用,页面切后台将继续播放
+22:39:24.189  [info 22:39:24 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+22:39:24.189  [debug 22:39:24 ] 注册HTTP钩子: /content/tree
+22:39:24.189  [debug 22:39:24 ] 注册HTTP钩子: /questions
+22:39:24.189  [debug 22:39:24 ] 注册HTTP钩子: video/question
+22:39:24.189  [debug 22:39:24 ] 注册HTTP钩子: cert/graduated
+22:39:24.189  mooc初始化完成 g {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: e.TimerManager, lessons: Array(0), …}
+22:39:24.189  Next(){return new Promise(t=>{if(o.Application.App.log.Debug("[三节课] Next 任务索引:",this.taskIndex,this.taskList.length),this.taskList.length>this.taskIndex)return t(this.taskList[this.taskIndex]),this.t… 'mooc.Next'
+22:39:24.189  [debug 22:39:24 ] runMoocTask 开始执行任务:
+22:39:24.281  path /study/:project_id/:course_id/:node_id
+22:39:24.286  [debug 22:39:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/info
+22:39:24.287  [debug 22:39:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/userInfo
+22:39:24.288  [debug 22:39:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/flag_info
+22:39:24.288  [debug 22:39:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/token/refresh
+22:39:24.290  初始
+22:39:24.291  [debug 22:39:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+22:39:24.318  [debug 22:39:24 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:24.319  [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+s @ sensorsdata.min.js:1
+w @ sensorsdata.min.js:1
+qe @ sensorsdata.min.js:1
+initScrollmap @ sensorsdata.min.js:3
+Wt @ sensorsdata.min.js:2
+Vt @ sensorsdata.min.js:2
+qt @ sensorsdata.min.js:2
+cr.init @ sensorsdata.min.js:5
+(匿名) @ sensorsdata.min.js:5
+(匿名) @ sensorsdata.min.js:1
+(匿名) @ sensorsdata.min.js:1
+PendingScript
+sdk_url @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+value @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+e @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+t.default @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+22:39:24.504  [debug 22:39:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/stat
+22:39:24.504  [debug 22:39:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/info
+22:39:24.507  [每日积分] panel: window.onload 触发
+22:39:24.508  [每日积分] panel: 初始化消息监听
+22:39:24.508  [debug 22:39:24 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1790087964508, isRunning: false, …}
+22:39:24.787  [debug 22:39:24 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:24.798  {history: {…}, location: {…}, match: {…}, staticContext: undefined, store: {…}, …}
+22:39:24.801  [debug 22:39:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/tree
+22:39:24.801  [debug 22:39:24 ] 匹配到钩子: /content/tree
+22:39:24.802  [debug 22:39:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/cert/graduated?courseId=34002056
+22:39:24.802  [debug 22:39:24 ] 匹配到钩子: cert/graduated
+22:39:24.803  [debug 22:39:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/questions
+22:39:24.803  [debug 22:39:24 ] 匹配到钩子: /questions
+22:39:24.804  [debug 22:39:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/exam
+22:39:25.241  [debug 22:39:25 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:25.265  [debug 22:39:25 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user/watermark
+22:39:25.274  [debug 22:39:25 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/34476525
+22:39:25.275  [debug 22:39:25 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/section/34476525/like/info
+22:39:25.275  [debug 22:39:25 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/self?courseId=34002056&sectionId=34476525&projectId=0
+22:39:25.275  [debug 22:39:25 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/all?courseId=34002056&sectionId=34476525&projectId=0&page=1&pageSize=20&sortField=hot
+22:39:25.276  [debug 22:39:25 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/appraise/tips
+22:39:25.536  aiQaList
+22:39:25.537  [debug 22:39:25 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/questions_and_answers?sectionId=34476525&videoId=34467357
+22:39:25.537  [debug 22:39:25 ] 匹配到钩子: /questions
+22:39:25.537  [debug 22:39:25 ] 匹配到钩子: video/question
+22:39:25.538  [debug 22:39:25 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/ranges?business_id=1507&video_id=34467357&course_id=34002056
+22:39:25.539  [每日积分] panel: 收到页面消息1 {action: 'article:mounted', vendor: 'sanjieke', params: {…}}
+22:39:25.539  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:25.611  addScrollEvent
+22:39:25.626  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:25.656  setPlayerConfig
+22:39:25.669  [debug 22:39:25 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/question?videoId=34467357&sectionId=34476525&retryFlag=false
+22:39:25.670  [debug 22:39:25 ] 匹配到钩子: video/question
+22:39:25.678  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:25.759  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:25.799  [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+22:39:26.324 已导航到     https://lzlj.b.sanjieke.cn/study/0/34002056/34476524
+22:39:26.328 VM318:3 [每日积分] panel: 构造函数被调用
+22:39:26.328 VM318:3 [每日积分] panel: init方法被调用
+22:39:26.328 VM318:3 [debug 22:39:26 ] Start document state: loading
+22:39:26.328 VM318:3 create mooc
+22:39:26.329 VM318:3 [info 22:39:26 ] 当前平台：sanjieke
+22:39:26.329 VM318:3 mooc start g {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: e.TimerManager, lessons: Array(0), …}
+22:39:26.329 VM318:3 [info 22:39:26 ] [三节课] 学习页初始化 courseId=34002056
+22:39:26.329 VM318:3 [info 22:39:26 ] [可见性伪装] 已启用,页面切后台将继续播放
+22:39:26.329 VM318:3 [info 22:39:26 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+22:39:26.330  [debug 22:39:26 ] 注册HTTP钩子: /content/tree
+22:39:26.330  [debug 22:39:26 ] 注册HTTP钩子: /questions
+22:39:26.330  [debug 22:39:26 ] 注册HTTP钩子: video/question
+22:39:26.330  [debug 22:39:26 ] 注册HTTP钩子: cert/graduated
+22:39:26.330  mooc初始化完成 
+22:39:26.330   'mooc.Next'
+22:39:26.330  [debug 22:39:26 ] runMoocTask 开始执行任务:
+22:39:26.447  path /study/:project_id/:course_id/:node_id
+22:39:26.451  [debug 22:39:26 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/info
+22:39:26.452  [debug 22:39:26 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/userInfo
+22:39:26.453  [debug 22:39:26 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/flag_info
+22:39:26.453  [debug 22:39:26 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/token/refresh
+22:39:26.455  初始
+22:39:26.455  [debug 22:39:26 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+22:39:26.489  [debug 22:39:26 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:26.490  [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+22:39:26.695  [debug 22:39:26 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/stat
+22:39:26.695  [debug 22:39:26 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/info
+22:39:26.698  [每日积分] panel: window.onload 触发
+22:39:26.699  [每日积分] panel: 初始化消息监听
+22:39:26.699  [debug 22:39:26 ] 每日积分模式初始化完成 
+22:39:26.973  [debug 22:39:26 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:26.980  
+22:39:26.983  [debug 22:39:26 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/tree
+22:39:26.983  [debug 22:39:26 ] 匹配到钩子: /content/tree
+22:39:26.984  [debug 22:39:26 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/cert/graduated?courseId=34002056
+22:39:26.984  [debug 22:39:26 ] 匹配到钩子: cert/graduated
+22:39:26.984  [debug 22:39:26 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/questions
+22:39:26.984  [debug 22:39:26 ] 匹配到钩子: /questions
+22:39:26.985  [debug 22:39:26 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/exam
+22:39:27.424  [debug 22:39:27 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:27.447  [debug 22:39:27 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user/watermark
+22:39:27.459  [debug 22:39:27 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/34476525
+22:39:27.459  [debug 22:39:27 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/section/34476525/like/info
+22:39:27.460  [debug 22:39:27 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/self?courseId=34002056&sectionId=34476525&projectId=0
+22:39:27.460  [debug 22:39:27 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/all?courseId=34002056&sectionId=34476525&projectId=0&page=1&pageSize=20&sortField=hot
+22:39:27.460  [debug 22:39:27 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/appraise/tips
+22:39:27.723  aiQaList
+22:39:27.728  [debug 22:39:27 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/questions_and_answers?sectionId=34476525&videoId=34467357
+22:39:27.728  [debug 22:39:27 ] 匹配到钩子: /questions
+22:39:27.729  [debug 22:39:27 ] 匹配到钩子: video/question
+22:39:27.731  [debug 22:39:27 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/ranges?business_id=1507&video_id=34467357&course_id=34002056
+22:39:27.734  [每日积分] panel: 收到页面消息1 
+22:39:27.735  [每日积分] panel: 收到页面消息1 
+22:39:27.799  addScrollEvent
+22:39:27.807  [每日积分] panel: 收到页面消息1 
+22:39:27.858  setPlayerConfig
+22:39:27.877  [debug 22:39:27 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/question?videoId=34467357&sectionId=34476525&retryFlag=false
+22:39:27.877  [debug 22:39:27 ] 匹配到钩子: video/question
+22:39:27.885  [每日积分] panel: 收到页面消息1 
+22:39:27.944  [每日积分] panel: 收到页面消息1 
+22:39:28.011  [每日积分] panel: 收到页面消息1 
+22:39:28.437 已导航到     https://lzlj.b.sanjieke.cn/study/0/34002056/34476524
+22:39:28.483  [每日积分] panel: 构造函数被调用
+22:39:28.483  [每日积分] panel: init方法被调用
+22:39:28.483  [debug 22:39:28 ] Start document state: loading
+22:39:28.483  create mooc
+22:39:28.484  [info 22:39:28 ] 当前平台：sanjieke
+22:39:28.484  mooc start 
+22:39:28.484  [info 22:39:28 ] [三节课] 学习页初始化 courseId=34002056
+22:39:28.484  [info 22:39:28 ] [可见性伪装] 已启用,页面切后台将继续播放
+22:39:28.485  [info 22:39:28 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+22:39:28.485  [debug 22:39:28 ] 注册HTTP钩子: /content/tree
+22:39:28.485  [debug 22:39:28 ] 注册HTTP钩子: /questions
+22:39:28.485  [debug 22:39:28 ] 注册HTTP钩子: video/question
+22:39:28.485  [debug 22:39:28 ] 注册HTTP钩子: cert/graduated
+22:39:28.485  mooc初始化完成 
+22:39:28.486   'mooc.Next'
+22:39:28.486  [debug 22:39:28 ] runMoocTask 开始执行任务:
+22:39:28.578  path /study/:project_id/:course_id/:node_id
+22:39:28.582  [debug 22:39:28 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/info
+22:39:28.583  [debug 22:39:28 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/userInfo
+22:39:28.583  [debug 22:39:28 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/flag_info
+22:39:28.584  [debug 22:39:28 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/token/refresh
+22:39:28.586  初始
+22:39:28.586  [debug 22:39:28 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+22:39:28.611  [debug 22:39:28 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:28.612  [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+22:39:28.805  [debug 22:39:28 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/stat
+22:39:28.806  [debug 22:39:28 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/info
+22:39:28.808  [每日积分] panel: window.onload 触发
+22:39:28.809  [每日积分] panel: 初始化消息监听
+22:39:28.809  [debug 22:39:28 ] 每日积分模式初始化完成 
+22:39:29.085  [debug 22:39:29 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:29.096  
+22:39:29.100  [debug 22:39:29 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/tree
+22:39:29.100  [debug 22:39:29 ] 匹配到钩子: /content/tree
+22:39:29.100  [debug 22:39:29 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/cert/graduated?courseId=34002056
+22:39:29.100  [debug 22:39:29 ] 匹配到钩子: cert/graduated
+22:39:29.101  [debug 22:39:29 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/questions
+22:39:29.101  [debug 22:39:29 ] 匹配到钩子: /questions
+22:39:29.101  [debug 22:39:29 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/exam
+22:39:29.550  [debug 22:39:29 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:29.582  [debug 22:39:29 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user/watermark
+22:39:29.591  [debug 22:39:29 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/34476525
+22:39:29.591  [debug 22:39:29 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/section/34476525/like/info
+22:39:29.592  [debug 22:39:29 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/self?courseId=34002056&sectionId=34476525&projectId=0
+22:39:29.592  [debug 22:39:29 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/all?courseId=34002056&sectionId=34476525&projectId=0&page=1&pageSize=20&sortField=hot
+22:39:29.592  [debug 22:39:29 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/appraise/tips
+22:39:29.844  aiQaList
+22:39:29.847  [debug 22:39:29 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/questions_and_answers?sectionId=34476525&videoId=34467357
+22:39:29.847  [debug 22:39:29 ] 匹配到钩子: /questions
+22:39:29.847  [debug 22:39:29 ] 匹配到钩子: video/question
+22:39:29.848  [debug 22:39:29 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/ranges?business_id=1507&video_id=34467357&course_id=34002056
+22:39:29.850  [每日积分] panel: 收到页面消息1 
+22:39:29.852  [每日积分] panel: 收到页面消息1 
+22:39:29.928  addScrollEvent
+22:39:29.940  [每日积分] panel: 收到页面消息1 
+22:39:29.966  setPlayerConfig
+22:39:29.994  [debug 22:39:29 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34002056/video/question?videoId=34467357&sectionId=34476525&retryFlag=false
+22:39:29.994  [debug 22:39:29 ] 匹配到钩子: video/question
+22:39:30.001  [每日积分] panel: 收到页面消息1 
+22:39:30.072  [每日积分] panel: 收到页面消息1 
+22:39:30.122  [每日积分] panel: 收到页面消息1 
+22:39:30.588 已导航到     https://lzlj.b.sanjieke.cn/study/0/34002056/34476524
+22:39:30.630  [每日积分] panel: 构造函数被调用
+22:39:30.630  [每日积分] panel: init方法被调用
+22:39:30.630  [debug 22:39:30 ] Start document state: loading
+22:39:30.630  create mooc
+22:39:30.631  [info 22:39:30 ] 当前平台：sanjieke
+22:39:30.631  mooc start 
+22:39:30.631  [info 22:39:30 ] [三节课] 学习页初始化 courseId=34002056
+22:39:30.631  [info 22:39:30 ] [可见性伪装] 已启用,页面切后台将继续播放
+22:39:30.631  [info 22:39:30 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+22:39:30.632  [debug 22:39:30 ] 注册HTTP钩子: /content/tree
+22:39:30.632  [debug 22:39:30 ] 注册HTTP钩子: /questions
+22:39:30.632  [debug 22:39:30 ] 注册HTTP钩子: video/question
+22:39:30.632  [debug 22:39:30 ] 注册HTTP钩子: cert/graduated
+22:39:30.632  mooc初始化完成 
+22:39:30.632   'mooc.Next'
+22:39:30.633  [debug 22:39:30 ] runMoocTask 开始执行任务:
+22:39:30.725  path /study/:project_id/:course_id/:node_id
+22:39:30.730  [debug 22:39:30 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/info
+22:39:30.731  [debug 22:39:30 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/userInfo
+22:39:30.731  [debug 22:39:30 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/flag_info
+22:39:30.732  [debug 22:39:30 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/token/refresh
+22:39:30.734  初始
+22:39:30.735  [debug 22:39:30 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+22:39:30.773  [debug 22:39:30 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:30.774  [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+22:39:30.991  [debug 22:39:30 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/stat
+22:39:30.991  [debug 22:39:30 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/info
+22:39:30.995  [每日积分] panel: window.onload 触发
+22:39:30.996  [每日积分] panel: 初始化消息监听
+22:39:30.996  [debug 22:39:30 ] 每日积分模式初始化完成 
+22:39:31.273  [debug 22:39:31 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:31.286  
+22:39:31.293  [debug 22:39:31 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/tree
+22:39:31.293  [debug 22:39:31 ] 匹配到钩子: /content/tree
+22:39:31.294  [debug 22:39:31 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/cert/graduated?courseId=34002056
+22:39:31.294  [debug 22:39:31 ] 匹配到钩子: cert/graduated
+22:39:31.295  [debug 22:39:31 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/questions
+22:39:31.295  [debug 22:39:31 ] 匹配到钩子: /questions
+22:39:31.296  [debug 22:39:31 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/exam
+22:39:31.777  [debug 22:39:31 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:31.808  [debug 22:39:31 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user/watermark
+22:39:31.821  [debug 22:39:31 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/content/34476525
+22:39:31.821  [debug 22:39:31 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34002056/section/34476525/like/info
+22:39:31.822  [debug 22:39:31 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/self?courseId=34002056&sectionId=34476525&projectId=0
+22:39:31.822  [debug 22:39:31 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/all?courseId=34002056&sectionId=34476525&projectId=0&page=1&pageSize=20&sortField=hot
+22:39:31.823  [debug 22:39:31 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34002056/appraise/tips
+22:39:32.759 已导航到     https://lzlj.b.sanjieke.cn/study/0/34002056/34476524
+22:39:32.809  [每日积分] panel: 构造函数被调用
+22:39:32.809  [每日积分] panel: init方法被调用
+22:39:32.810  [debug 22:39:32 ] Start document state: loading
+22:39:32.810  create mooc
+22:39:32.810  [info 22:39:32 ] 当前平台：sanjieke
+22:39:32.810  mooc start 
+22:39:32.811  [info 22:39:32 ] [三节课] 学习页初始化 courseId=34002056
+22:39:32.811  [info 22:39:32 ] [可见性伪装] 已启用,页面切后台将继续播放
+22:39:32.811  [info 22:39:32 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+22:39:32.811  [debug 22:39:32 ] 注册HTTP钩子: /content/tree
+22:39:32.811  [debug 22:39:32 ] 注册HTTP钩子: /questions
+22:39:32.811  [debug 22:39:32 ] 注册HTTP钩子: video/question
+22:39:32.812  [debug 22:39:32 ] 注册HTTP钩子: cert/graduated
+22:39:32.812  mooc初始化完成 
+22:39:32.812   'mooc.Next'
+22:39:32.812  [debug 22:39:32 ] runMoocTask 开始执行任务:
+22:39:32.911  path /study/:project_id/:course_id/:node_id
+22:39:32.916  [debug 22:39:32 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/info
+22:39:32.917  [debug 22:39:32 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/userInfo
+22:39:32.917  [debug 22:39:32 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/flag_info
+22:39:32.917  [debug 22:39:32 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/token/refresh
+22:39:32.919  初始
+22:39:32.920  [debug 22:39:32 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+22:39:32.955  [debug 22:39:32 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+22:39:32.956  [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+22:39:33.173  [每日积分] panel: window.onload 触发
+22:39:33.175  [每日积分] panel: 初始化消息监听
+22:39:33.175  [debug 22:39:33 ] 每日积分模式初始化完成 
