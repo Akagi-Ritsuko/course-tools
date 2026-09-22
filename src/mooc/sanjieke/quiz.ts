@@ -90,6 +90,10 @@ export function getSanjiekeQuestions(courseId: string): QuestionInfo[] {
 export class SanjiekeQuiz extends SanjiekeTaskBase {
   public taskinfo: SanjiekeTaskInfo;
   public done: boolean;
+  /** 心跳 Worker:1s tick 驱动答题流程,不受后台标签页定时器节流(intensive throttling 1次/分钟)影响 */
+  private heartbeatWorker: Worker | null = null;
+  /** Worker 心跳等待队列:到期的延时回调(链式结构下通常同时只有 1 个) */
+  private pendingDelays: Array<{ remaining: number; fn: () => void }> = [];
 
   constructor(taskinfo: SanjiekeTaskInfo) {
     super();
@@ -116,6 +120,12 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
           this.taskinfo.lessonId}`,
       );
 
+      // 启动 Worker 心跳:答题发生在视频 ended 之后(页面必然无声),
+      // 后台标签页 5 分钟后定时器被 Chrome intensive throttling 降到 1次/分钟,
+      // setTimeout 链会变得极慢;Worker 的 setInterval 不受页面节流,
+      // postMessage 唤醒主线程执行轮询,节奏与前台一致
+      this.startHeartbeat();
+
       // 入口先查缓存题目(视频期间已由钩子缓存):无题立即完成,
       // 不空等组件超时 —— ended 后无题目则直接进入下一课时
       const cached = getSanjiekeQuestions(this.taskinfo.courseId);
@@ -137,11 +147,8 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
       }
 
       // 轮询等待 ai-quiz 组件出现(课时视频结束后才渲染),超时视为本课时无课后题
-      let attempts = 0;
-      const maxAttempts = Math.floor(
-        SANJIEKE_CONSTANTS.QUIZ_WAIT_TIMEOUT_MS /
-          SANJIEKE_CONSTANTS.CHECK_INTERVAL_MS,
-      );
+      // 超时判定用墙钟(不受节流影响),轮询节奏由 Worker 心跳驱动(1s/tick)
+      const waitStartAt = Date.now();
       const waitQuiz = () => {
         if (this.done) {
           resolve();
@@ -160,7 +167,6 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
           resolve();
           return;
         }
-        attempts++;
         const quizRoot = document.querySelector(
           SANJIEKE_CONSTANTS.SELECTORS.QUIZ_ROOT,
         );
@@ -170,7 +176,7 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
           resolve();
           return;
         }
-        if (attempts >= maxAttempts) {
+        if (Date.now() - waitStartAt >= SANJIEKE_CONSTANTS.QUIZ_WAIT_TIMEOUT_MS) {
           Application.App.log.Info(
             "[三节课课后题] 等待超时,本课时无课后题组件,跳过",
           );
@@ -178,11 +184,7 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
           resolve();
           return;
         }
-        this.timerManager.setTimeout(
-          "waitQuiz",
-          waitQuiz,
-          SANJIEKE_CONSTANTS.CHECK_INTERVAL_MS,
-        );
+        this.workerDelay(waitQuiz, SANJIEKE_CONSTANTS.CHECK_INTERVAL_MS);
       };
       waitQuiz();
     });
@@ -247,8 +249,7 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
         unanswered.length > 0
           ? this.answerCurrentQuestion(unanswered, answeredIds)
           : { clicked: false, question: null as QuestionInfo | null };
-      this.timerManager.setTimeout(
-        "quizNext",
+      this.workerDelay(
         () => {
           // 提交(仅当成功选中答案且按钮可用;开放题/无法定位时直接进入下一轮检测)
           if (answered.clicked) {
@@ -272,8 +273,7 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
               );
             }
           }
-          this.timerManager.setTimeout(
-            "quizNext",
+          this.workerDelay(
             () => {
               // 提交后站点出现「继续挑战」按钮,点击后站点拉取下一题;
               // 无论点击成败都继续既有轮次检测(idle 启发式兜底)
@@ -424,12 +424,94 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
     return false;
   }
 
+  /**
+   * 启动心跳 Worker:内联 Blob Worker 每 1s postMessage 一次 tick,
+   * 主线程 onmessage 消费等待队列。Worker 线程的 setInterval 不受
+   * 页面可见性节流影响,后台与前台节奏一致。
+   * 创建失败(如站点 CSP 限制 blob: worker)时退化为原 setTimeout 链,
+   * 仅受后台节流影响(变慢)不阻塞功能。
+   */
+  private startHeartbeat(): void {
+    if (this.heartbeatWorker) {
+      return;
+    }
+    try {
+      const code =
+        'let t=null;self.onmessage=function(e){' +
+        'if(e.data==="start"&&t===null){t=setInterval(function(){self.postMessage("tick")},1000)}' +
+        'else if(e.data==="stop"){clearInterval(t);t=null;self.close();}};';
+      const blob = new Blob([code], { type: "application/javascript" });
+      const worker = new Worker(URL.createObjectURL(blob));
+      worker.onmessage = () => this.onHeartbeat();
+      worker.postMessage("start");
+      this.heartbeatWorker = worker;
+      // 基类 Stop() 会执行 cleanupFns,兜底终止 Worker
+      this.cleanupFns.push(() => {
+        worker.terminate();
+      });
+      Application.App.log.Info("[三节课课后题] Worker 心跳已启动(抗后台节流)");
+    } catch (e) {
+      this.heartbeatWorker = null;
+      Application.App.log.Warn(
+        "[三节课课后题] Worker 创建失败,退化为定时器驱动(后台答题会变慢)",
+        e,
+      );
+    }
+  }
+
+  /** 停止心跳 Worker 并清空等待队列(任务完成/失败时调用) */
+  private stopHeartbeat(): void {
+    if (this.heartbeatWorker) {
+      this.heartbeatWorker.postMessage("stop");
+      this.heartbeatWorker.terminate();
+      this.heartbeatWorker = null;
+    }
+    this.pendingDelays = [];
+  }
+
+  /**
+   * Worker 心跳驱动的延时:替代 timerManager.setTimeout 驱动答题链,
+   * 精度 1s(答题节奏足够);Worker 不可用时退化为 setTimeout(受后台节流)
+   */
+  private workerDelay(fn: () => void, delayMs: number): void {
+    if (!this.heartbeatWorker) {
+      this.timerManager.setTimeout(
+        `quizFallback_${Math.round(delayMs)}_${this.pendingDelays.length}`,
+        fn,
+        delayMs,
+      );
+      return;
+    }
+    this.pendingDelays.push({
+      remaining: Math.max(1, Math.ceil(delayMs / 1000)),
+      fn,
+    });
+  }
+
+  /** 心跳消费:每 tick 递减等待队列,到期的回调执行(链式结构下通常仅 1 个) */
+  private onHeartbeat(): void {
+    if (this.done) {
+      return;
+    }
+    const stillPending: Array<{ remaining: number; fn: () => void }> = [];
+    for (const item of this.pendingDelays) {
+      item.remaining -= 1;
+      if (item.remaining <= 0) {
+        item.fn();
+      } else {
+        stillPending.push(item);
+      }
+    }
+    this.pendingDelays = stillPending;
+  }
+
   /** 标记完成并推进 */
   private finish(): void {
     if (this.done) {
       return;
     }
     this.done = true;
+    this.stopHeartbeat();
     this.callEvent("complete");
   }
 }
