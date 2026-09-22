@@ -195,7 +195,7 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
     // 连续无新题轮次(提交后站点才会拉取/渲染下一题,每轮重读缓存)
     let idleRounds = 0;
     // 硬性轮次上限(防 DOM 状态异常死循环)
-    const maxRounds = 30;
+    const maxRounds = 12;
     let rounds = 0;
 
     const answerRound = () => {
@@ -331,7 +331,7 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
 
     const optionEls = this.getOptionElements(quizRoot);
     if (optionEls.length === 0) {
-      Application.App.log.Warn("[三节课课后题] 未找到可点击的选项元素");
+      //   Application.App.log.Warn("[三节课课后题] 未找到可点击的选项元素");
       return { clicked: false, question: current };
     }
 
