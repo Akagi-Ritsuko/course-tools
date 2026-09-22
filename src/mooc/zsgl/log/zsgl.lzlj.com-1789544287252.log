@@ -1,0 +1,1240 @@
+dailyPointsPanel.ts:16 [每日积分] panel: 构造函数被调用
+dailyPointsPanel.ts:20 [每日积分] panel: init方法被调用
+log.ts:179 [debug 15:36:55 ] Start document state: loading
+mooc.ts:8 create mooc
+log.ts:188 [info 15:36:55 ] 当前平台：zsgl-examDetail
+mooc.ts:39 mooc start ZsglExam {event: {…}, questionList: Array(0), taskList: Array(0), taskIndex: 0, timerManager: TimerManager, …}
+log.ts:179 [debug 15:36:55 ] 注册HTTP钩子: queryNewExamPaper.do
+log.ts:179 [debug 15:36:55 ] 注册HTTP钩子: queryQuestionDetail.do
+webim.min.js:1 navigator.userAgent=mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/153.0.0.0 safari/537.36 edg/153.0.0.0
+webim.min.js:1 BROWSER_INFO: type=chrome, ver=153.0.0.0
+log.ts:179 [debug 15:36:56 ] 拦截到HTTP请求: /znWeb/znPortal/lang/zh.json
+main.d5640b70.js:1 0530-1
+main.d5640b70.js:1 showSearch true
+log.ts:179 [debug 15:36:56 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryHomeChannelModule.do?pageId=SY0010092&sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:56 ] 拦截到HTTP请求: /learn/app/clientapi/home/getPcGlobalManagement.do?pageId=SY0010092&sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:56 ] 拦截到HTTP请求: /learn/app/getGlobalTimestamp.do?os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+main.d5640b70.js:1 showSearch true
+log.ts:179 [debug 15:36:56 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/userPermissions.do?os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:56 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryHomeGlobalInfo.do?pageId=SY0010092&sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:56 ] 拦截到HTTP请求: /learn/app/clientapi/message/getMessageListType.do?sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+main.d5640b70.js:1 com.mlearning.paznluzhoulaojiao appId-------
+log.ts:179 [debug 15:36:56 ] 拦截到HTTP请求: /learn/app/newPersonDetail.do?sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:56 ] 拦截到HTTP请求: /learn-login/queryUserInfoBound.do?os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:56 ] 拦截到HTTP请求: /learn/app/clientapi/knowledgecloud/home/getPermissionStatus.do?sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+dailyPointsPanel.ts:22 [每日积分] panel: window.onload 触发
+dailyPointsPanel.ts:318 [每日积分] panel: 初始化消息监听
+log.ts:179 [debug 15:36:56 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1789544216906, isRunning: false, …}
+log.ts:179 [debug 15:36:57 ] 拦截到HTTP请求: /learn/app/clientapi/misc/queryVasOperation2NativeList.do?sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+main.d5640b70.js:1 --------------- Wed Sep 16 2026 15:36:57 GMT+0800 (中国标准时间)
+log.ts:179 [debug 15:36:57 ] 拦截到HTTP请求: /learn/app/clientapi/home/pc/queryUserHomeList.do?time=1789544217047&sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+main.d5640b70.js:1 showSearch true
+main.d5640b70.js:1 showSearch true
+main.d5640b70.js:1 com.mlearning.paznluzhoulaojiao appId-------
+log.ts:179 [debug 15:36:57 ] 拦截到HTTP请求: /learn/app/newPersonDetail.do?sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:57 ] 拦截到HTTP请求: /learn-login/queryUserInfoBound.do?os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:57 ] 拦截到HTTP请求: /learn/app/clientapi/knowledgecloud/home/getPermissionStatus.do?sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:57 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/getNewExamBreakInfo.do?testId=1302964&sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:57 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/getNewExamDetails.do?testId=1302964&sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:57 ] 拦截到HTTP请求: /learn/app/clientapi/user/isOpenHumanSocietyVas.do?sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:58 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/selectResourceRule.do?resourceId=1302964&resourceType=30&trainingItemId=&sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:58 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/queryNewExamPaper.do?os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:58 ] 匹配到钩子: queryNewExamPaper.do
+log.ts:179 [debug 15:36:58 ] queryNewExamPaper原始响应数据 {body: {…}, code: '0', file: null, message: '成功', user: null}
+log.ts:179 [debug 15:36:58 ] queryNewExamPaper解析结果 {examId: '1302964', attemptId: '65E901DE935B4342B8597730522B3068', testNo: '30671453', questionIdList: Array(29)}
+log.ts:179 [debug 15:36:58 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/check/queryTrainingCheckByEmp.do?resourceId=1302964&resourceType=30&trainingItemId=&checkItemEndTag=1&sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:58 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/queryQuestionAnswer.do?examId=1302964&attemptId=65E901DE935B4342B8597730522B3068&sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:58 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/queryQuestionDetail.do?os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:58 ] 匹配到钩子: queryQuestionDetail.do
+log.ts:179 [debug 15:36:58 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/queryNewExamRemainTime.do?examId=1302964&attemptId=65E901DE935B4342B8597730522B3068&sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:36:58 ] 原始响应数据 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
+log.ts:212 [error 15:36:58 ] 单选题答题失败 TypeError: this.crackSingleChoiceQuestions is not a function
+    at ZsglExam.eval (exam.ts:391:47)
+    at Generator.next (<anonymous>)
+    at eval (exam.ts:8:71)
+    at new Promise (<anonymous>)
+    at __awaiter (exam.ts:4:12)
+    at ZsglExam.startAutoAnswering (exam.ts:368:16)
+    at Object.eval [as callback] (exam.ts:168:42)
+    at eval (utils.ts:80:38)
+    at Array.forEach (<anonymous>)
+    at XMLHttpRequest.eval (utils.ts:79:35)
+Error @ log.ts:212
+eval @ exam.ts:397
+eval @ exam.ts:8
+__awaiter @ exam.ts:4
+startAutoAnswering @ exam.ts:368
+eval @ exam.ts:168
+eval @ utils.ts:80
+eval @ utils.ts:79
+XMLHttpRequest.send
+(匿名) @ agent.min.js:1
+(匿名) @ 3646.f3b77d6c.js:2
+e.exports @ 3646.f3b77d6c.js:2
+e.exports @ 3646.f3b77d6c.js:2
+Promise.then
+s.request @ 3646.f3b77d6c.js:2
+o.forEach.s.<computed> @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+post @ main.d5640b70.js:1
+queryQuestionDetail @ main.d5640b70.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+ys @ 3646.f3b77d6c.js:2
+Tc @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Sc @ 3646.f3b77d6c.js:2
+dc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Xo @ 3646.f3b77d6c.js:2
+$o @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+Ai @ 3646.f3b77d6c.js:2
+Pt @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+ys @ 3646.f3b77d6c.js:2
+Tc @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Sc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+j @ 3646.f3b77d6c.js:2
+M.port1.onmessage @ 3646.f3b77d6c.js:2
+postMessage
+n @ 3646.f3b77d6c.js:2
+t.unstable_scheduleCallback @ 3646.f3b77d6c.js:2
+Qo @ 3646.f3b77d6c.js:2
+lc @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+Ai @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+ys @ 3646.f3b77d6c.js:2
+Tc @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Sc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+j @ 3646.f3b77d6c.js:2
+M.port1.onmessage @ 3646.f3b77d6c.js:2
+postMessage
+n @ 3646.f3b77d6c.js:2
+t.unstable_scheduleCallback @ 3646.f3b77d6c.js:2
+Qo @ 3646.f3b77d6c.js:2
+lc @ 3646.f3b77d6c.js:2
+zc @ 3646.f3b77d6c.js:2
+Promise.then
+(匿名) @ 3646.f3b77d6c.js:2
+Es @ 3646.f3b77d6c.js:2
+ks @ 3646.f3b77d6c.js:2
+Ec @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+kc @ 3646.f3b77d6c.js:2
+dc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Xo @ 3646.f3b77d6c.js:2
+$o @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+enqueueSetState @ 3646.f3b77d6c.js:2
+b.setState @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+za @ 3646.f3b77d6c.js:2
+$i @ 3646.f3b77d6c.js:2
+Cs @ 3646.f3b77d6c.js:2
+wc @ 3646.f3b77d6c.js:2
+_c @ 3646.f3b77d6c.js:2
+dc @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+Gc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+pc @ 3646.f3b77d6c.js:2
+el @ 3646.f3b77d6c.js:2
+render @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+49209 @ main.d5640b70.js:1
+n @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+n.O @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+log.ts:179 [debug 15:36:58 ] 进度: 开始逐选项测试
+log.ts:179 [debug 15:36:58 ] 测试选项 A (索引 0)
+log.ts:179 [debug 15:36:58 ] 进度: 正在测试选项 A，共 3 道题目
+log.ts:179 [debug 15:36:58 ] 从内存获取 sid: 03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:58 ] 生成 headerMap: {appId: 'com.mlearning.paznluzhoulaojiao', nonce: 'd3d16fa15fbdf1f6e941bd3bc8a45d29', sign: '6161d61036cac951d5afd4364d3a3005', timestamp: 1789544218927, appDevicePlatform: '99'}
+log.ts:179 [debug 15:36:58 ] 发送考试 API 请求: POST /learn/app/clientapi/exam/new/submitQuestionAnswer.do?os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:58 ] 请求配置: {method: 'POST', signal: AbortSignal, credentials: 'include', headers: {…}, body: '[{"attemptId":"65E901DE935B4342B8597730522B3068","…:"8206401","questionNodesAnswer":[],"images":[]}]'}
+log.ts:179 [debug 15:36:58 ] 解密后的响应数据 [{"questionId":"8206415","questionText":"<p>生产经营单位的从业人员是指该单位从事生产经营活动各项工作的所有人员、包括管理人员、技术人员和各岗位的工人，但不包括临时聘用的人员。</p>","questionType":"T","sectionRespList":[{"sectionId":"30355308","sectionText":"正确","isCorrect":"N"},{"sectionId":"30355309","sectionText":"错误","isCorrect":"N"}]},{"questionId":"8206407","questionText":"安全生产责任制度不包括班组人员的安全生产责任。","questionType":"T","sectionRespList":[{"sectionId":"30355289","sectionText":"正确","isCorrect":"N"},{"sectionId":"30355290","sectionText":"错误","isCorrect":"N"}]},{"questionId":"8206404","questionText":"安全生产应急救援体系主要包括（）。","questionType":"M","sectionRespList":[{"sectionId":"30355281","sectionText":"应急救援指挥系统","isCorrect":"N"},{"sectionId":"30355282","sectionText":"应急救援队伍","isCorrect":"N"},{"sectionId":"30355283","sectionText":"应急救援物资保障系统","isCorrect":"N"},{"sectionId":"30355284","sectionText":"应急救援信息系统","isCorrect":"N"}]},{"questionId":"8206390","questionText":"下列哪种灭火器不适用于扑灭电器火灾？（）","questionType":"S","sectionRespList":[{"sectionId":"30355225","sectionText":"二氧化碳灭火器","isCorrect":"N"},{"sectionId":"30355226","sectionText":"干粉灭火器","isCorrect":"N"},{"sectionId":"30355227","sectionText":"泡沫灭火器","isCorrect":"N"},{"sectionId":"30355228","sectionText":"1211 灭火器","isCorrect":"N"}]},{"questionId":"8206410","questionText":"高低温作业、粉尘及有毒有害气体作业、放射性作业等可能造成职业危害的场所应当采用有效的职业病防治技术、工艺、原材料，并为从业人员配备符合规定的个人防护用品。","questionType":"T","sectionRespList":[{"sectionId":"30355295","sectionText":"正确","isCorrect":"N"},{"sectionId":"30355296","sectionText":"错误","isCorrect":"N"}]},{"questionId":"8206411","questionText":"安全生产法规是调整劳动关系，保障劳动者在劳动过程中的安全健康而建立的法律体系。","questionType":"T","sectionRespList":[{"sectionId":"30355297","sectionText":"正确","isCorrect":"N"},{"sectionId":"30355298","sectionText":"错误","isCorrect":"N"}]},{"questionId":"8206403","questionText":"安全生产风险分级管控的基本原则包括（）。","questionType":"M","sectionRespList":[{"sectionId":"30355277","sectionText":"风险越高，管控级别越高","isCorrect":"N"},{"sectionId":"30355278","sectionText":"上一级负责管控的风险，下一级必须同时负责管控","isCorrect":"N"},{"sectionId":"30355279","sectionText":"风险越低，管控级别越高","isCorrect":"N"},{"sectionId":"30355280","sectionText":"下一级负责管控的风险，上一级不必参与","isCorrect":"N"}]},{"questionId":"8206412","questionText":"生产经营单位必须依法参加工伤社会保险，为从业人员交纳保险费。","questionType":"T","sectionRespList":[{"sectionId":"30355299","sectionText":"正确","isCorrect":"N"},{"sectionId":"30355300","sectionText":"错误","isCorrect":"N"}]},{"questionId":"8206405","questionText":"人的不安全行为、物的不安全状态和管理上的缺陷是造成生产安全事故的基本原因。","questionType":"T","sectionRespList":[{"sectionId":"30355285","sectionText":"正确","isCorrect":"N"},{"sectionId":"30355286","sectionText":"错误","isCorrect":"N"}]},{"questionId":"8206401","questionText":"下列属于安全检查表编制依据的有（）。","questionType":"M","sectionRespList":[{"sectionId":"30355269","sectionText":"有关标准、规程、规范及规定","isCorrect":"N"},{"sectionId":"30355270","sectionText":"国内外事故案例及本单位在安全管理及生产中的有关经验","isCorrect":"N"},{"sectionId":"30355271","sectionText":"通过系统分析，确定的危险部位及防范措施","isCorrect":"N"},{"sectionId":"30355272","sectionText":"新知识、新成果、新方法、新技术、新法规和标准","isCorrect":"N"}]}]
+log.ts:179 [debug 15:36:58 ] 拦截到HTTP请求: /learn/app/clientapi/exam/new/getMaxUploadSize.do?os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:59 ] 考试 API 响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+log.ts:179 [debug 15:36:59 ] 选项 A 批量提交成功
+log.ts:179 [debug 15:36:59 ] 从内存获取 sid: 03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:59 ] 生成 headerMap: {appId: 'com.mlearning.paznluzhoulaojiao', nonce: '467b27e7cf30d89837d2370dd62dce8f', sign: '0e463014d217299555af53349469973b', timestamp: 1789544219395, appDevicePlatform: '99'}
+log.ts:179 [debug 15:36:59 ] 发送考试 API 请求: GET /learn/app/clientapi/exam/new/queryQuestionAnswer.do?examId=1302964&attemptId=65E901DE935B4342B8597730522B3068&os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:59 ] 请求配置: {method: 'GET', signal: AbortSignal, credentials: 'include', headers: {…}}
+log.ts:179 [debug 15:36:59 ] 考试 API 响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+log.ts:179 [debug 15:36:59 ] 题目 8206404 选项 应急救援指挥系统 是错误选项
+log.ts:179 [debug 15:36:59 ] 题目 8206403 选项 风险越高，管控级别越高 是错误选项
+log.ts:179 [debug 15:36:59 ] 题目 8206401 选项 有关标准、规程、规范及规定 是错误选项
+log.ts:179 [debug 15:36:59 ] 选项 A 结果分析完成
+log.ts:179 [debug 15:36:59 ] 测试选项 B (索引 1)
+log.ts:179 [debug 15:36:59 ] 进度: 正在测试选项 B，共 3 道题目
+log.ts:179 [debug 15:36:59 ] 从内存获取 sid: 03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:59 ] 生成 headerMap: {appId: 'com.mlearning.paznluzhoulaojiao', nonce: '4bbcb5cb5f009220468623dbb647ac48', sign: 'ac00975de7d61134df8e761d268ec5e9', timestamp: 1789544219531, appDevicePlatform: '99'}
+log.ts:179 [debug 15:36:59 ] 发送考试 API 请求: POST /learn/app/clientapi/exam/new/submitQuestionAnswer.do?os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:59 ] 请求配置: {method: 'POST', signal: AbortSignal, credentials: 'include', headers: {…}, body: '[{"attemptId":"65E901DE935B4342B8597730522B3068","…:"8206401","questionNodesAnswer":[],"images":[]}]'}
+log.ts:179 [debug 15:36:59 ] 考试 API 响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+log.ts:179 [debug 15:36:59 ] 选项 B 批量提交成功
+log.ts:179 [debug 15:36:59 ] 从内存获取 sid: 03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:59 ] 生成 headerMap: {appId: 'com.mlearning.paznluzhoulaojiao', nonce: '59b1b9d2cd4a3b2b94364e398e804ecd', sign: '2ff6e4dc7cbabd5aab22e19b56ffebc5', timestamp: 1789544219999, appDevicePlatform: '99'}
+log.ts:179 [debug 15:36:59 ] 发送考试 API 请求: GET /learn/app/clientapi/exam/new/queryQuestionAnswer.do?examId=1302964&attemptId=65E901DE935B4342B8597730522B3068&os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:36:59 ] 请求配置: {method: 'GET', signal: AbortSignal, credentials: 'include', headers: {…}}
+log.ts:179 [debug 15:37:0 ] 考试 API 响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+log.ts:179 [debug 15:37:0 ] 题目 8206404 选项 应急救援队伍 是错误选项
+log.ts:179 [debug 15:37:0 ] 题目 8206403 选项 上一级负责管控的风险，下一级必须同时负责管控 是错误选项
+log.ts:179 [debug 15:37:0 ] 题目 8206401 选项 国内外事故案例及本单位在安全管理及生产中的有关经验 是错误选项
+log.ts:179 [debug 15:37:0 ] 选项 B 结果分析完成
+log.ts:179 [debug 15:37:0 ] 测试选项 C (索引 2)
+log.ts:179 [debug 15:37:0 ] 进度: 正在测试选项 C，共 3 道题目
+log.ts:179 [debug 15:37:0 ] 从内存获取 sid: 03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:37:0 ] 生成 headerMap: {appId: 'com.mlearning.paznluzhoulaojiao', nonce: '917f70ee76dd4cc59b27a866f33d340d', sign: '340befb60c5122af127dbad724c81434', timestamp: 1789544220142, appDevicePlatform: '99'}
+log.ts:179 [debug 15:37:0 ] 发送考试 API 请求: POST /learn/app/clientapi/exam/new/submitQuestionAnswer.do?os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:37:0 ] 请求配置: {method: 'POST', signal: AbortSignal, credentials: 'include', headers: {…}, body: '[{"attemptId":"65E901DE935B4342B8597730522B3068","…:"8206401","questionNodesAnswer":[],"images":[]}]'}
+log.ts:179 [debug 15:37:0 ] 考试 API 响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+log.ts:179 [debug 15:37:0 ] 选项 C 批量提交成功
+log.ts:179 [debug 15:37:0 ] 从内存获取 sid: 03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:37:0 ] 生成 headerMap: {appId: 'com.mlearning.paznluzhoulaojiao', nonce: '2b59f363d9ca8016237474e7260e30d8', sign: '97a685cf95c132eec1b06e55ef1fa9a9', timestamp: 1789544220621, appDevicePlatform: '99'}
+log.ts:179 [debug 15:37:0 ] 发送考试 API 请求: GET /learn/app/clientapi/exam/new/queryQuestionAnswer.do?examId=1302964&attemptId=65E901DE935B4342B8597730522B3068&os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:37:0 ] 请求配置: {method: 'GET', signal: AbortSignal, credentials: 'include', headers: {…}}
+log.ts:179 [debug 15:37:0 ] 考试 API 响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+log.ts:179 [debug 15:37:0 ] 题目 8206404 选项 应急救援物资保障系统 是错误选项
+log.ts:179 [debug 15:37:0 ] 题目 8206403 选项 风险越低，管控级别越高 是错误选项
+log.ts:179 [debug 15:37:0 ] 题目 8206401 选项 通过系统分析，确定的危险部位及防范措施 是错误选项
+log.ts:179 [debug 15:37:0 ] 选项 C 结果分析完成
+log.ts:179 [debug 15:37:0 ] 测试选项 D (索引 3)
+log.ts:179 [debug 15:37:0 ] 进度: 正在测试选项 D，共 3 道题目
+log.ts:179 [debug 15:37:0 ] 从内存获取 sid: 03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:37:0 ] 生成 headerMap: {appId: 'com.mlearning.paznluzhoulaojiao', nonce: '8a77369a7fded3f73688d4afb643e9bf', sign: '704bc7cae86ed340022ca303eac01794', timestamp: 1789544220822, appDevicePlatform: '99'}
+log.ts:179 [debug 15:37:0 ] 发送考试 API 请求: POST /learn/app/clientapi/exam/new/submitQuestionAnswer.do?os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:37:0 ] 请求配置: {method: 'POST', signal: AbortSignal, credentials: 'include', headers: {…}, body: '[{"attemptId":"65E901DE935B4342B8597730522B3068","…:"8206401","questionNodesAnswer":[],"images":[]}]'}
+log.ts:179 [debug 15:37:1 ] 考试 API 响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+log.ts:179 [debug 15:37:1 ] 选项 D 批量提交成功
+log.ts:179 [debug 15:37:1 ] 从内存获取 sid: 03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:37:1 ] 生成 headerMap: {appId: 'com.mlearning.paznluzhoulaojiao', nonce: '2aaaf071bc59bc860e69722781455fc7', sign: 'f25cc34602f808271e9bceb2c55ee381', timestamp: 1789544221302, appDevicePlatform: '99'}
+log.ts:179 [debug 15:37:1 ] 发送考试 API 请求: GET /learn/app/clientapi/exam/new/queryQuestionAnswer.do?examId=1302964&attemptId=65E901DE935B4342B8597730522B3068&os=99&sid=03E7672FD8BF44C48969CBEFC7458BDA
+log.ts:179 [debug 15:37:1 ] 请求配置: {method: 'GET', signal: AbortSignal, credentials: 'include', headers: {…}}
+log.ts:179 [debug 15:37:1 ] 考试 API 响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+log.ts:179 [debug 15:37:1 ] 题目 8206404 选项 应急救援信息系统 是错误选项
+log.ts:179 [debug 15:37:1 ] 题目 8206403 选项 下一级负责管控的风险，上一级不必参与 是错误选项
+log.ts:179 [debug 15:37:1 ] 题目 8206401 选项 新知识、新成果、新方法、新技术、新法规和标准 是错误选项
+log.ts:179 [debug 15:37:1 ] 选项 D 结果分析完成
+log.ts:179 [debug 15:37:1 ] 进度: 逐选项测试完成
+log.ts:179 [debug 15:37:1 ] 进度: 开始组合验证
+log.ts:197 [warn 15:37:1 ] 题目 8206404 未找到任何正确选项
+Warn @ log.ts:197
+eval @ exam-answer-strategy.ts:203
+eval @ exam-answer-strategy.ts:8
+__awaiter @ exam-answer-strategy.ts:4
+verifyCombinations @ exam-answer-strategy.ts:180
+eval @ exam-answer-strategy.ts:58
+fulfilled @ exam-answer-strategy.ts:5
+Promise.then
+step @ exam-answer-strategy.ts:7
+eval @ exam-answer-strategy.ts:8
+__awaiter @ exam-answer-strategy.ts:4
+crackMultipleChoiceBatch @ exam-answer-strategy.ts:39
+eval @ exam.ts:436
+eval @ exam.ts:8
+__awaiter @ exam.ts:4
+startMultipleChoiceAnswering @ exam.ts:426
+eval @ exam.ts:405
+eval @ exam.ts:8
+__awaiter @ exam.ts:4
+startAutoAnswering @ exam.ts:368
+eval @ exam.ts:168
+eval @ utils.ts:80
+eval @ utils.ts:79
+XMLHttpRequest.send
+(匿名) @ agent.min.js:1
+(匿名) @ 3646.f3b77d6c.js:2
+e.exports @ 3646.f3b77d6c.js:2
+e.exports @ 3646.f3b77d6c.js:2
+Promise.then
+s.request @ 3646.f3b77d6c.js:2
+o.forEach.s.<computed> @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+post @ main.d5640b70.js:1
+queryQuestionDetail @ main.d5640b70.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+ys @ 3646.f3b77d6c.js:2
+Tc @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Sc @ 3646.f3b77d6c.js:2
+dc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Xo @ 3646.f3b77d6c.js:2
+$o @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+Ai @ 3646.f3b77d6c.js:2
+Pt @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+ys @ 3646.f3b77d6c.js:2
+Tc @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Sc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+j @ 3646.f3b77d6c.js:2
+M.port1.onmessage @ 3646.f3b77d6c.js:2
+postMessage
+n @ 3646.f3b77d6c.js:2
+t.unstable_scheduleCallback @ 3646.f3b77d6c.js:2
+Qo @ 3646.f3b77d6c.js:2
+lc @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+Ai @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+ys @ 3646.f3b77d6c.js:2
+Tc @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Sc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+j @ 3646.f3b77d6c.js:2
+M.port1.onmessage @ 3646.f3b77d6c.js:2
+postMessage
+n @ 3646.f3b77d6c.js:2
+t.unstable_scheduleCallback @ 3646.f3b77d6c.js:2
+Qo @ 3646.f3b77d6c.js:2
+lc @ 3646.f3b77d6c.js:2
+zc @ 3646.f3b77d6c.js:2
+Promise.then
+(匿名) @ 3646.f3b77d6c.js:2
+Es @ 3646.f3b77d6c.js:2
+ks @ 3646.f3b77d6c.js:2
+Ec @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+kc @ 3646.f3b77d6c.js:2
+dc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Xo @ 3646.f3b77d6c.js:2
+$o @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+enqueueSetState @ 3646.f3b77d6c.js:2
+b.setState @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+za @ 3646.f3b77d6c.js:2
+$i @ 3646.f3b77d6c.js:2
+Cs @ 3646.f3b77d6c.js:2
+wc @ 3646.f3b77d6c.js:2
+_c @ 3646.f3b77d6c.js:2
+dc @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+Gc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+pc @ 3646.f3b77d6c.js:2
+el @ 3646.f3b77d6c.js:2
+render @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+49209 @ main.d5640b70.js:1
+n @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+n.O @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+log.ts:179 [debug 15:37:1 ] 进度: 正在验证题目 1/3
+log.ts:197 [warn 15:37:1 ] 题目 8206403 未找到任何正确选项
+Warn @ log.ts:197
+eval @ exam-answer-strategy.ts:203
+eval @ exam-answer-strategy.ts:8
+__awaiter @ exam-answer-strategy.ts:4
+verifyCombinations @ exam-answer-strategy.ts:180
+eval @ exam-answer-strategy.ts:58
+fulfilled @ exam-answer-strategy.ts:5
+Promise.then
+step @ exam-answer-strategy.ts:7
+eval @ exam-answer-strategy.ts:8
+__awaiter @ exam-answer-strategy.ts:4
+crackMultipleChoiceBatch @ exam-answer-strategy.ts:39
+eval @ exam.ts:436
+eval @ exam.ts:8
+__awaiter @ exam.ts:4
+startMultipleChoiceAnswering @ exam.ts:426
+eval @ exam.ts:405
+eval @ exam.ts:8
+__awaiter @ exam.ts:4
+startAutoAnswering @ exam.ts:368
+eval @ exam.ts:168
+eval @ utils.ts:80
+eval @ utils.ts:79
+XMLHttpRequest.send
+(匿名) @ agent.min.js:1
+(匿名) @ 3646.f3b77d6c.js:2
+e.exports @ 3646.f3b77d6c.js:2
+e.exports @ 3646.f3b77d6c.js:2
+Promise.then
+s.request @ 3646.f3b77d6c.js:2
+o.forEach.s.<computed> @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+post @ main.d5640b70.js:1
+queryQuestionDetail @ main.d5640b70.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+ys @ 3646.f3b77d6c.js:2
+Tc @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Sc @ 3646.f3b77d6c.js:2
+dc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Xo @ 3646.f3b77d6c.js:2
+$o @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+Ai @ 3646.f3b77d6c.js:2
+Pt @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+ys @ 3646.f3b77d6c.js:2
+Tc @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Sc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+j @ 3646.f3b77d6c.js:2
+M.port1.onmessage @ 3646.f3b77d6c.js:2
+postMessage
+n @ 3646.f3b77d6c.js:2
+t.unstable_scheduleCallback @ 3646.f3b77d6c.js:2
+Qo @ 3646.f3b77d6c.js:2
+lc @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+Ai @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+ys @ 3646.f3b77d6c.js:2
+Tc @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Sc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+j @ 3646.f3b77d6c.js:2
+M.port1.onmessage @ 3646.f3b77d6c.js:2
+postMessage
+n @ 3646.f3b77d6c.js:2
+t.unstable_scheduleCallback @ 3646.f3b77d6c.js:2
+Qo @ 3646.f3b77d6c.js:2
+lc @ 3646.f3b77d6c.js:2
+zc @ 3646.f3b77d6c.js:2
+Promise.then
+(匿名) @ 3646.f3b77d6c.js:2
+Es @ 3646.f3b77d6c.js:2
+ks @ 3646.f3b77d6c.js:2
+Ec @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+kc @ 3646.f3b77d6c.js:2
+dc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Xo @ 3646.f3b77d6c.js:2
+$o @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+enqueueSetState @ 3646.f3b77d6c.js:2
+b.setState @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+za @ 3646.f3b77d6c.js:2
+$i @ 3646.f3b77d6c.js:2
+Cs @ 3646.f3b77d6c.js:2
+wc @ 3646.f3b77d6c.js:2
+_c @ 3646.f3b77d6c.js:2
+dc @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+Gc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+pc @ 3646.f3b77d6c.js:2
+el @ 3646.f3b77d6c.js:2
+render @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+49209 @ main.d5640b70.js:1
+n @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+n.O @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+log.ts:179 [debug 15:37:1 ] 进度: 正在验证题目 2/3
+log.ts:197 [warn 15:37:1 ] 题目 8206401 未找到任何正确选项
+Warn @ log.ts:197
+eval @ exam-answer-strategy.ts:203
+eval @ exam-answer-strategy.ts:8
+__awaiter @ exam-answer-strategy.ts:4
+verifyCombinations @ exam-answer-strategy.ts:180
+eval @ exam-answer-strategy.ts:58
+fulfilled @ exam-answer-strategy.ts:5
+Promise.then
+step @ exam-answer-strategy.ts:7
+eval @ exam-answer-strategy.ts:8
+__awaiter @ exam-answer-strategy.ts:4
+crackMultipleChoiceBatch @ exam-answer-strategy.ts:39
+eval @ exam.ts:436
+eval @ exam.ts:8
+__awaiter @ exam.ts:4
+startMultipleChoiceAnswering @ exam.ts:426
+eval @ exam.ts:405
+eval @ exam.ts:8
+__awaiter @ exam.ts:4
+startAutoAnswering @ exam.ts:368
+eval @ exam.ts:168
+eval @ utils.ts:80
+eval @ utils.ts:79
+XMLHttpRequest.send
+(匿名) @ agent.min.js:1
+(匿名) @ 3646.f3b77d6c.js:2
+e.exports @ 3646.f3b77d6c.js:2
+e.exports @ 3646.f3b77d6c.js:2
+Promise.then
+s.request @ 3646.f3b77d6c.js:2
+o.forEach.s.<computed> @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+post @ main.d5640b70.js:1
+queryQuestionDetail @ main.d5640b70.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+ys @ 3646.f3b77d6c.js:2
+Tc @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Sc @ 3646.f3b77d6c.js:2
+dc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Xo @ 3646.f3b77d6c.js:2
+$o @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+Ai @ 3646.f3b77d6c.js:2
+Pt @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+ys @ 3646.f3b77d6c.js:2
+Tc @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Sc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+j @ 3646.f3b77d6c.js:2
+M.port1.onmessage @ 3646.f3b77d6c.js:2
+postMessage
+n @ 3646.f3b77d6c.js:2
+t.unstable_scheduleCallback @ 3646.f3b77d6c.js:2
+Qo @ 3646.f3b77d6c.js:2
+lc @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+Ai @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 4293.f0b9661b.chunk.js:1
+(匿名) @ 4293.f0b9661b.chunk.js:1
+ys @ 3646.f3b77d6c.js:2
+Tc @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Sc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+j @ 3646.f3b77d6c.js:2
+M.port1.onmessage @ 3646.f3b77d6c.js:2
+postMessage
+n @ 3646.f3b77d6c.js:2
+t.unstable_scheduleCallback @ 3646.f3b77d6c.js:2
+Qo @ 3646.f3b77d6c.js:2
+lc @ 3646.f3b77d6c.js:2
+zc @ 3646.f3b77d6c.js:2
+Promise.then
+(匿名) @ 3646.f3b77d6c.js:2
+Es @ 3646.f3b77d6c.js:2
+ks @ 3646.f3b77d6c.js:2
+Ec @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+kc @ 3646.f3b77d6c.js:2
+dc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+t.unstable_runWithPriority @ 3646.f3b77d6c.js:2
+qo @ 3646.f3b77d6c.js:2
+Xo @ 3646.f3b77d6c.js:2
+$o @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+enqueueSetState @ 3646.f3b77d6c.js:2
+b.setState @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+za @ 3646.f3b77d6c.js:2
+$i @ 3646.f3b77d6c.js:2
+Cs @ 3646.f3b77d6c.js:2
+wc @ 3646.f3b77d6c.js:2
+_c @ 3646.f3b77d6c.js:2
+dc @ 3646.f3b77d6c.js:2
+ic @ 3646.f3b77d6c.js:2
+Gc @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+pc @ 3646.f3b77d6c.js:2
+el @ 3646.f3b77d6c.js:2
+render @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+u @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+Promise.then
+r @ 3646.f3b77d6c.js:2
+s @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+(匿名) @ 3646.f3b77d6c.js:2
+49209 @ main.d5640b70.js:1
+n @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+n.O @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+(匿名) @ main.d5640b70.js:1
+log.ts:179 [debug 15:37:1 ] 进度: 正在验证题目 3/3
+log.ts:179 [debug 15:37:1 ] 进度: 组合验证完成
+log.ts:179 [debug 15:37:1 ] 开始操作任务卡
+log.ts:179 [debug 15:37:1 ] 开始检查按钮 0
+log.ts:179 [debug 15:37:2 ] 开始检查按钮 1
+log.ts:179 [debug 15:37:2 ] 开始检查按钮 2
+log.ts:179 [debug 15:37:3 ] 开始检查按钮 3
+log.ts:179 [debug 15:37:3 ] 开始检查按钮 4
+log.ts:179 [debug 15:37:4 ] 开始检查按钮 5
+log.ts:179 [debug 15:37:4 ] 开始检查按钮 6
+log.ts:179 [debug 15:37:5 ] 开始检查按钮 7
+log.ts:179 [debug 15:37:5 ] 开始检查按钮 8
+log.ts:179 [debug 15:37:6 ] 开始检查按钮 9
+log.ts:179 [debug 15:37:6 ] 任务列表 (10) [ZsglQuestionTask, ZsglQuestionTask, ZsglQuestionTask, ZsglQuestionTask, ZsglQuestionTask, ZsglQuestionTask, ZsglQuestionTask, ZsglQuestionTask, ZsglQuestionTask, ZsglQuestionTask]
+mooc.ts:42 mooc初始化完成 ZsglExam {event: {…}, questionList: Array(10), taskList: Array(10), taskIndex: 0, timerManager: TimerManager, …}
+mooc.ts:43 Next() {
+        return new Promise((resolve) => {
+            if (this.taskList.length > this.taskIndex) {
+                resolve(this.taskList[this.taskIndex]);
+                application_1.Appli… 'mooc.Next'
+log.ts:179 [debug 15:37:6 ] runMoocTask 开始执行任务:
+log.ts:179 [debug 15:37:6 ] 按钮初始化成功 {submit: div#root, next: span.MuiButton-label}
+log.ts:179 [debug 15:37:28 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/check/queryTrainingCheckByEmp.do?resourceId=1302964&resourceType=30&trainingItemId=&checkItemEndTag=1&sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99
+log.ts:179 [debug 15:37:58 ] 拦截到HTTP请求: /learn/app/clientapi/trainingclass/training/item/check/queryTrainingCheckByEmp.do?resourceId=1302964&resourceType=30&trainingItemId=&checkItemEndTag=1&sid=03E7672FD8BF44C48969CBEFC7458BDA&os=99

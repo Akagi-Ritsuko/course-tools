@@ -1,0 +1,550 @@
+04:43:04.136 start.ts:50 [每日积分] start: 收到消息 {type: 'START_DAILY_POINTS', data: {…}}
+04:43:04.136 start.ts:55 [每日积分] start: 转发START_DAILY_POINTS消息到页面 {knowledgeLink: 'https://zsgl.lzlj.com/znWeb/knowledge-cloud/#/knowledgePage/6d424ae30d064ae38560868164bbdec4', learningLimit: 10, contributionLimit: 20, interactionLimit: 100}
+04:43:04.137 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'START_DAILY_POINTS', data: {…}}
+04:43:04.138 dailyPointsPanel.ts:325 [每日积分] panel: 处理START_DAILY_POINTS {knowledgeLink: 'https://zsgl.lzlj.com/znWeb/knowledge-cloud/#/knowledgePage/6d424ae30d064ae38560868164bbdec4', learningLimit: 10, contributionLimit: 20, interactionLimit: 100}
+04:43:04.138 dailyPointsPanel.ts:349 [每日积分] panel: start方法被调用 {knowledgeLink: 'https://zsgl.lzlj.com/znWeb/knowledge-cloud/#/knowledgePage/6d424ae30d064ae38560868164bbdec4', learningLimit: 10, contributionLimit: 20, interactionLimit: 100} isRunning: false
+04:43:05.997 dailyPointsPanel.ts:361 [每日积分] panel: 创建进度悬浮窗
+04:43:06.000 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'CONFIRM_START_TASK', data: {…}}
+04:43:06.000 log.ts:179 [debug 4:43:6 ] 收到确认开始任务消息 10 20 100
+04:43:06.000 log.ts:179 [debug 4:43:6 ] 用户确认开始任务，开始执行
+04:43:06.000 log.ts:179 [debug 4:43:6 ] 从知识页面链接提取pageId: 6d424ae30d064ae38560868164bbdec4
+04:43:06.001 log.ts:179 [debug 4:43:6 ] 从localStorage获取sid: EEE903E776EB4825BE27D2FF7E1E6A95
+04:43:06.001 log.ts:179 [debug 4:43:6 ] 获取积分详情: 2026-03-14 ~ 2026-03-31
+04:43:06.001 log.ts:179 [debug 4:43:6 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=EEE903E776EB4825BE27D2FF7E1E6A95
+04:43:06.226 log.ts:179 [debug 4:43:6 ] API响应成功: {body: Array(4), code: '0', file: null, message: '成功', user: null}
+04:43:06.227 log.ts:179 [debug 4:43:6 ] 积分项: 知识被分享 (knowledge_shared) = 80
+04:43:06.227 log.ts:179 [debug 4:43:6 ] 更新互动积分: 80
+04:43:06.227 log.ts:179 [debug 4:43:6 ] 积分项: 知识被阅读 (knowledge_read_point) = 16
+04:43:06.227 log.ts:179 [debug 4:43:6 ] 更新贡献积分: 16
+04:43:06.227 log.ts:179 [debug 4:43:6 ] 积分项: 知识分享 (knowledge_sharing) = 10
+04:43:06.227 log.ts:179 [debug 4:43:6 ] 更新互动积分: 90
+04:43:06.227 log.ts:179 [debug 4:43:6 ] 积分项: 学习课程 (24E2D4D119E74B76AC349FA12A0B646C) = 8
+04:43:06.227 log.ts:179 [debug 4:43:6 ] 更新学习积分（学习课程）: +8，当前: 8
+04:43:06.227 log.ts:179 [debug 4:43:6 ] 开始执行任务：knowledgeShare
+04:43:06.228 log.ts:179 [debug 4:43:6 ] 提取到pageId: 6d424ae30d064ae38560868164bbdec4, sid: EEE903E776EB4825BE27D2FF7E1E6A95
+04:43:06.228 log.ts:179 [debug 4:43:6 ] 开始知识分享任务（API方式）
+04:43:06.228 log.ts:179 [debug 4:43:6 ] 互动积分分差: 10
+04:43:06.228 log.ts:179 [debug 4:43:6 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:43:06.228 log.ts:179 [debug 4:43:6 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:43:06.230 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+04:43:06.230 dailyPointsPanel.ts:337 [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+04:43:06.461 log.ts:179 [debug 4:43:6 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:43:06.461 log.ts:179 [debug 4:43:6 ] 知识分享成功，第1次调用，累积积分: 0.6/10
+04:43:09.063 log.ts:179 [debug 4:43:9 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:43:09.063 log.ts:179 [debug 4:43:9 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:43:09.294 log.ts:179 [debug 4:43:9 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:43:09.295 log.ts:179 [debug 4:43:9 ] 知识分享成功，第2次调用，累积积分: 1.2/10
+04:43:21.248 log.ts:179 [debug 4:43:21 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:43:21.249 log.ts:179 [debug 4:43:21 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:43:21.476 log.ts:179 [debug 4:43:21 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:43:21.476 log.ts:179 [debug 4:43:21 ] 知识分享成功，第3次调用，累积积分: 1.7999999999999998/10
+04:43:36.824 log.ts:179 [debug 4:43:36 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:43:36.824 log.ts:179 [debug 4:43:36 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:43:37.055 log.ts:179 [debug 4:43:37 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:43:37.056 log.ts:179 [debug 4:43:37 ] 知识分享成功，第4次调用，累积积分: 2.4/10
+04:43:46.754 log.ts:179 [debug 4:43:46 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:43:46.754 log.ts:179 [debug 4:43:46 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:43:46.954 log.ts:179 [debug 4:43:46 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:43:46.954 log.ts:179 [debug 4:43:46 ] 知识分享成功，第5次调用，累积积分: 3/10
+04:44:02.685 log.ts:179 [debug 4:44:2 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:44:02.686 log.ts:179 [debug 4:44:2 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:44:02.917 log.ts:179 [debug 4:44:2 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:44:02.918 log.ts:179 [debug 4:44:2 ] 知识分享成功，第6次调用，累积积分: 3.6/10
+04:44:14.551 log.ts:179 [debug 4:44:14 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:44:14.552 log.ts:179 [debug 4:44:14 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:44:14.785 log.ts:179 [debug 4:44:14 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:44:14.786 log.ts:179 [debug 4:44:14 ] 知识分享成功，第7次调用，累积积分: 4.2/10
+04:44:18.587 log.ts:179 [debug 4:44:18 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:44:18.587 log.ts:179 [debug 4:44:18 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:44:18.787 log.ts:179 [debug 4:44:18 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:44:18.787 log.ts:179 [debug 4:44:18 ] 知识分享成功，第8次调用，累积积分: 4.8/10
+04:44:30.480 log.ts:179 [debug 4:44:30 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:44:30.480 log.ts:179 [debug 4:44:30 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:44:30.631 log.ts:179 [debug 4:44:30 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:44:30.632 log.ts:179 [debug 4:44:30 ] 知识分享成功，第9次调用，累积积分: 5.3999999999999995/10
+04:44:33.476 log.ts:179 [debug 4:44:33 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:44:33.476 log.ts:179 [debug 4:44:33 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:44:33.701 log.ts:179 [debug 4:44:33 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:44:33.701 log.ts:179 [debug 4:44:33 ] 知识分享成功，第10次调用，累积积分: 5.999999999999999/10
+04:44:33.702 log.ts:179 [debug 4:44:33 ] 获取积分详情: 2026-03-14 ~ 2026-03-31
+04:44:33.702 log.ts:179 [debug 4:44:33 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=EEE903E776EB4825BE27D2FF7E1E6A95
+04:44:33.942 log.ts:179 [debug 4:44:33 ] API响应成功: {body: Array(4), code: '0', file: null, message: '成功', user: null}
+04:44:33.942 log.ts:179 [debug 4:44:33 ] 积分项: 知识被分享 (knowledge_shared) = 80
+04:44:33.943 log.ts:179 [debug 4:44:33 ] 更新互动积分: 80
+04:44:33.943 log.ts:179 [debug 4:44:33 ] 积分项: 知识被阅读 (knowledge_read_point) = 16
+04:44:33.943 log.ts:179 [debug 4:44:33 ] 更新贡献积分: 16
+04:44:33.943 log.ts:179 [debug 4:44:33 ] 积分项: 知识分享 (knowledge_sharing) = 10
+04:44:33.944 log.ts:179 [debug 4:44:33 ] 更新互动积分: 90
+04:44:33.944 log.ts:179 [debug 4:44:33 ] 积分项: 学习课程 (24E2D4D119E74B76AC349FA12A0B646C) = 8
+04:44:33.945 log.ts:179 [debug 4:44:33 ] 更新学习积分（学习课程）: +8，当前: 8
+04:44:33.946 log.ts:197  [warn 4:44:33 ] 积分无变化，连续无变化次数: 1/2
+Warn @ log.ts:197
+updatePointsStateFromApi @ dailyPoints.ts:471
+eval @ dailyPoints.ts:964
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+eval @ dailyPoints.ts:8
+__awaiter @ dailyPoints.ts:4
+executeKnowledgeShareTask @ dailyPoints.ts:930
+eval @ dailyPoints.ts:249
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+eval @ dailyPoints.ts:8
+__awaiter @ dailyPoints.ts:4
+executeTaskAfterConfirm @ dailyPoints.ts:217
+eval @ dailyPoints.ts:145
+postMessage
+eval @ dailyPointsPanel.ts:363
+eval @ dailyPointsPanel.ts:446
+04:44:33.949 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+04:44:33.949 dailyPointsPanel.ts:337 [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+04:44:48.985 log.ts:179 [debug 4:44:48 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:44:48.986 log.ts:179 [debug 4:44:48 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:44:49.209 log.ts:179 [debug 4:44:49 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:44:49.210 log.ts:179 [debug 4:44:49 ] 知识分享成功，第11次调用，累积积分: 0.6/10
+04:45:03.802 log.ts:179 [debug 4:45:3 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:45:03.803 log.ts:179 [debug 4:45:3 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:45:04.046 log.ts:179 [debug 4:45:4 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:45:04.047 log.ts:179 [debug 4:45:4 ] 知识分享成功，第12次调用，累积积分: 1.2/10
+04:45:13.909 log.ts:179 [debug 4:45:13 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:45:13.909 log.ts:179 [debug 4:45:13 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:45:14.133 log.ts:179 [debug 4:45:14 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:45:14.134 log.ts:179 [debug 4:45:14 ] 知识分享成功，第13次调用，累积积分: 1.7999999999999998/10
+04:45:22.078 log.ts:179 [debug 4:45:22 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:45:22.078 log.ts:179 [debug 4:45:22 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:45:22.242 log.ts:179 [debug 4:45:22 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:45:22.242 log.ts:179 [debug 4:45:22 ] 知识分享成功，第14次调用，累积积分: 2.4/10
+04:45:36.087 log.ts:179 [debug 4:45:36 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:45:36.087 log.ts:179 [debug 4:45:36 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:45:36.244 log.ts:179 [debug 4:45:36 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:45:36.244 log.ts:179 [debug 4:45:36 ] 知识分享成功，第15次调用，累积积分: 3/10
+04:45:43.399 log.ts:179 [debug 4:45:43 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:45:43.400 log.ts:179 [debug 4:45:43 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:45:43.637 log.ts:179 [debug 4:45:43 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:45:43.637 log.ts:179 [debug 4:45:43 ] 知识分享成功，第16次调用，累积积分: 3.6/10
+04:45:54.322 log.ts:179 [debug 4:45:54 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:45:54.323 log.ts:179 [debug 4:45:54 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:45:54.554 log.ts:179 [debug 4:45:54 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:45:54.555 log.ts:179 [debug 4:45:54 ] 知识分享成功，第17次调用，累积积分: 4.2/10
+04:46:08.628 log.ts:179 [debug 4:46:8 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:46:08.629 log.ts:179 [debug 4:46:8 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:46:08.863 log.ts:179 [debug 4:46:8 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:46:08.864 log.ts:179 [debug 4:46:8 ] 知识分享成功，第18次调用，累积积分: 4.8/10
+04:46:22.469 log.ts:179 [debug 4:46:22 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:46:22.469 log.ts:179 [debug 4:46:22 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:46:22.631 log.ts:179 [debug 4:46:22 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:46:22.632 log.ts:179 [debug 4:46:22 ] 知识分享成功，第19次调用，累积积分: 5.3999999999999995/10
+04:46:38.385 log.ts:179 [debug 4:46:38 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:46:38.385 log.ts:179 [debug 4:46:38 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:46:38.654 log.ts:179 [debug 4:46:38 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:46:38.655 log.ts:179 [debug 4:46:38 ] 知识分享成功，第20次调用，累积积分: 5.999999999999999/10
+04:46:38.655 log.ts:179 [debug 4:46:38 ] 获取积分详情: 2026-03-14 ~ 2026-03-31
+04:46:38.655 log.ts:179 [debug 4:46:38 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=EEE903E776EB4825BE27D2FF7E1E6A95
+04:46:38.914 log.ts:179 [debug 4:46:38 ] API响应成功: {body: Array(4), code: '0', file: null, message: '成功', user: null}
+04:46:38.914 log.ts:179 [debug 4:46:38 ] 积分项: 知识被分享 (knowledge_shared) = 80
+04:46:38.915 log.ts:179 [debug 4:46:38 ] 更新互动积分: 80
+04:46:38.915 log.ts:179 [debug 4:46:38 ] 积分项: 知识被阅读 (knowledge_read_point) = 16
+04:46:38.915 log.ts:179 [debug 4:46:38 ] 更新贡献积分: 16
+04:46:38.915 log.ts:179 [debug 4:46:38 ] 积分项: 知识分享 (knowledge_sharing) = 10
+04:46:38.915 log.ts:179 [debug 4:46:38 ] 更新互动积分: 90
+04:46:38.915 log.ts:179 [debug 4:46:38 ] 积分项: 学习课程 (24E2D4D119E74B76AC349FA12A0B646C) = 8
+04:46:38.915 log.ts:179 [debug 4:46:38 ] 更新学习积分（学习课程）: +8，当前: 8
+04:46:38.915 log.ts:197  [warn 4:46:38 ] 积分无变化，连续无变化次数: 2/2
+Warn @ log.ts:197
+updatePointsStateFromApi @ dailyPoints.ts:471
+eval @ dailyPoints.ts:964
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+04:46:38.915 log.ts:179 [debug 4:46:38 ] 停止每日积分任务
+04:46:38.916 log.ts:179 [debug 4:46:38 ] 每日积分任务已停止
+04:46:38.918 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+04:46:38.918 dailyPointsPanel.ts:337 [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+04:46:38.918 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'TASK_STOPPED'}
+04:46:38.918 dailyPointsPanel.ts:343 [每日积分] panel: 处理TASK_STOPPED
+04:46:45.780 log.ts:179 [debug 4:46:45 ] 知识分享任务已被停止
+04:47:19.451 log.ts:197  [warn 4:47:19 ] 请注意!最小化可能导致视频无法正常播放!允许切换窗口.
+Warn @ log.ts:197
+eval @ mooc.ts:59
+04:52:09.286 已导航到https://zsgl.lzlj.com/znWeb/knowledge-cloud/
+04:52:09.444 dailyPointsPanel.ts:16 [每日积分] panel: 构造函数被调用
+04:52:09.444 dailyPointsPanel.ts:20 [每日积分] panel: init方法被调用
+04:52:09.444 log.ts:179 [debug 4:52:9 ] Start document state: loading
+04:52:09.444 mooc.ts:8 create mooc
+04:52:09.445 mooc.ts:39 mooc start null
+04:52:09.970 main.7bcdfd5f.chunk.js:1 0530-2
+04:52:10.037 dailyPointsPanel.ts:22 [每日积分] panel: window.onload 触发
+04:52:10.038 dailyPointsPanel.ts:318 [每日积分] panel: 初始化消息监听
+04:52:10.039 log.ts:179 [debug 4:52:10 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1773434798915, isRunning: false}
+04:52:10.268 main.7bcdfd5f.chunk.js:1  Uncaught (in promise) r {message: undefined}
+ee @ main.7bcdfd5f.chunk.js:1
+u @ main.7bcdfd5f.chunk.js:1
+Promise.then
+ee @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+Zc @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+qi @ 7.79e3e0dd.chunk.js:1
+Ki @ 7.79e3e0dd.chunk.js:1
+Yc @ 7.79e3e0dd.chunk.js:1
+vo @ 7.79e3e0dd.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+f @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+T @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+Promise.then
+T @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+B @ 7.79e3e0dd.chunk.js:1
+x.port1.onmessage @ 7.79e3e0dd.chunk.js:1
+04:52:10.282 main.7bcdfd5f.chunk.js:1  Uncaught (in promise) r {message: undefined}
+ee @ main.7bcdfd5f.chunk.js:1
+u @ main.7bcdfd5f.chunk.js:1
+Promise.then
+ee @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+Zc @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+qi @ 7.79e3e0dd.chunk.js:1
+Ki @ 7.79e3e0dd.chunk.js:1
+Yc @ 7.79e3e0dd.chunk.js:1
+vo @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+y @ 7.79e3e0dd.chunk.js:1
+E @ 7.79e3e0dd.chunk.js:1
+O @ 7.79e3e0dd.chunk.js:1
+setTimeout
+b @ 7.79e3e0dd.chunk.js:1
+x @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+Zc @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+qi @ 7.79e3e0dd.chunk.js:1
+Ki @ 7.79e3e0dd.chunk.js:1
+Yc @ 7.79e3e0dd.chunk.js:1
+vo @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+replaceState @ 7.79e3e0dd.chunk.js:1
+Le @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+trace @ 7.79e3e0dd.chunk.js:1
+Fe @ 7.79e3e0dd.chunk.js:1
+He @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+r @ 7.79e3e0dd.chunk.js:1
+a @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+setTimeout
+c @ 7.79e3e0dd.chunk.js:1
+e.publish @ 7.79e3e0dd.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+B @ 7.79e3e0dd.chunk.js:1
+x.port1.onmessage @ 7.79e3e0dd.chunk.js:1
+04:52:10.283 main.7bcdfd5f.chunk.js:1  Uncaught (in promise) r {message: undefined}
+ee @ main.7bcdfd5f.chunk.js:1
+u @ main.7bcdfd5f.chunk.js:1
+Promise.then
+ee @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+Zc @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+qi @ 7.79e3e0dd.chunk.js:1
+Ki @ 7.79e3e0dd.chunk.js:1
+Yc @ 7.79e3e0dd.chunk.js:1
+vo @ 7.79e3e0dd.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+f @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+T @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+Promise.then
+T @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+B @ 7.79e3e0dd.chunk.js:1
+x.port1.onmessage @ 7.79e3e0dd.chunk.js:1
+04:52:25.053 start.ts:50 [每日积分] start: 收到消息 {type: 'START_DAILY_POINTS', data: {…}}
+04:52:25.054 start.ts:55 [每日积分] start: 转发START_DAILY_POINTS消息到页面 {knowledgeLink: 'https://zsgl.lzlj.com/znWeb/knowledge-cloud/#/knowledgePage/6d424ae30d064ae38560868164bbdec4', learningLimit: 100, contributionLimit: 300, interactionLimit: 100}
+04:52:25.055 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'START_DAILY_POINTS', data: {…}}
+04:52:25.055 dailyPointsPanel.ts:325 [每日积分] panel: 处理START_DAILY_POINTS {knowledgeLink: 'https://zsgl.lzlj.com/znWeb/knowledge-cloud/#/knowledgePage/6d424ae30d064ae38560868164bbdec4', learningLimit: 100, contributionLimit: 300, interactionLimit: 100}
+04:52:25.056 dailyPointsPanel.ts:349 [每日积分] panel: start方法被调用 {knowledgeLink: 'https://zsgl.lzlj.com/znWeb/knowledge-cloud/#/knowledgePage/6d424ae30d064ae38560868164bbdec4', learningLimit: 100, contributionLimit: 300, interactionLimit: 100} isRunning: false
+04:52:26.473 dailyPointsPanel.ts:361 [每日积分] panel: 创建进度悬浮窗
+04:52:26.476 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'CONFIRM_START_TASK', data: {…}}
+04:52:26.476 log.ts:179 [debug 4:52:26 ] 收到确认开始任务消息 100 300 100
+04:52:26.477 log.ts:179 [debug 4:52:26 ] 用户确认开始任务，开始执行
+04:52:26.477 log.ts:179 [debug 4:52:26 ] 从知识页面链接提取pageId: 6d424ae30d064ae38560868164bbdec4
+04:52:26.477 log.ts:179 [debug 4:52:26 ] 从localStorage获取sid: EEE903E776EB4825BE27D2FF7E1E6A95
+04:52:26.477 log.ts:179 [debug 4:52:26 ] 获取积分详情: 2026-03-14 ~ 2026-03-31
+04:52:26.478 log.ts:179 [debug 4:52:26 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=EEE903E776EB4825BE27D2FF7E1E6A95
+04:52:26.715 log.ts:179 [debug 4:52:26 ] API响应成功: {body: Array(4), code: '0', file: null, message: '成功', user: null}
+04:52:26.716 log.ts:179 [debug 4:52:26 ] 积分项: 知识被分享 (knowledge_shared) = 80
+04:52:26.716 log.ts:179 [debug 4:52:26 ] 更新互动积分: 80
+04:52:26.716 log.ts:179 [debug 4:52:26 ] 积分项: 知识被阅读 (knowledge_read_point) = 16
+04:52:26.716 log.ts:179 [debug 4:52:26 ] 更新贡献积分: 16
+04:52:26.716 log.ts:179 [debug 4:52:26 ] 积分项: 知识分享 (knowledge_sharing) = 10
+04:52:26.716 log.ts:179 [debug 4:52:26 ] 更新互动积分: 90
+04:52:26.716 log.ts:179 [debug 4:52:26 ] 积分项: 学习课程 (24E2D4D119E74B76AC349FA12A0B646C) = 8
+04:52:26.716 log.ts:179 [debug 4:52:26 ] 更新学习积分（学习课程）: +8，当前: 8
+04:52:26.716 log.ts:179 [debug 4:52:26 ] 开始执行任务：knowledgeShare
+04:52:26.717 log.ts:179 [debug 4:52:26 ] 提取到pageId: 6d424ae30d064ae38560868164bbdec4, sid: EEE903E776EB4825BE27D2FF7E1E6A95
+04:52:26.717 log.ts:179 [debug 4:52:26 ] 开始知识分享任务（API方式）
+04:52:26.717 log.ts:179 [debug 4:52:26 ] 互动积分分差: 10
+04:52:26.717 log.ts:179 [debug 4:52:26 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:52:26.717 log.ts:179 [debug 4:52:26 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:52:26.719 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+04:52:26.719 dailyPointsPanel.ts:337 [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+04:52:26.962 log.ts:179 [debug 4:52:26 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:52:26.962 log.ts:179 [debug 4:52:26 ] 知识分享成功，第1次调用，累积积分: 0.6/10
+04:52:30.435 log.ts:179 [debug 4:52:30 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+04:52:30.436 log.ts:179 [debug 4:52:30 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+04:52:30.664 log.ts:179 [debug 4:52:30 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+04:52:30.665 log.ts:179 [debug 4:52:30 ] 知识分享成功，第2次调用，累积积分: 1.2/10
+04:52:30.665 log.ts:179 [debug 4:52:30 ] 获取积分详情: 2026-03-14 ~ 2026-03-31
+04:52:30.666 log.ts:179 [debug 4:52:30 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=EEE903E776EB4825BE27D2FF7E1E6A95
+04:52:30.903 log.ts:179 [debug 4:52:30 ] API响应成功: {body: Array(4), code: '0', file: null, message: '成功', user: null}
+04:52:30.904 log.ts:179 [debug 4:52:30 ] 积分项: 知识被分享 (knowledge_shared) = 80
+04:52:30.904 log.ts:179 [debug 4:52:30 ] 更新互动积分: 80
+04:52:30.904 log.ts:179 [debug 4:52:30 ] 积分项: 知识被阅读 (knowledge_read_point) = 16
+04:52:30.904 log.ts:179 [debug 4:52:30 ] 更新贡献积分: 16
+04:52:30.904 log.ts:179 [debug 4:52:30 ] 积分项: 知识分享 (knowledge_sharing) = 10
+04:52:30.904 log.ts:179 [debug 4:52:30 ] 更新互动积分: 90
+04:52:30.905 log.ts:179 [debug 4:52:30 ] 积分项: 学习课程 (24E2D4D119E74B76AC349FA12A0B646C) = 8
+04:52:30.905 log.ts:179 [debug 4:52:30 ] 更新学习积分（学习课程）: +8，当前: 8
+04:52:30.905 log.ts:197  [warn 4:52:30 ] 积分无变化，连续无变化次数: 1/2
+Warn @ log.ts:197
+updatePointsStateFromApi @ dailyPoints.ts:471
+eval @ dailyPoints.ts:964
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+eval @ dailyPoints.ts:8
+__awaiter @ dailyPoints.ts:4
+executeKnowledgeShareTask @ dailyPoints.ts:930
+eval @ dailyPoints.ts:249
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+eval @ dailyPoints.ts:8
+__awaiter @ dailyPoints.ts:4
+executeTaskAfterConfirm @ dailyPoints.ts:217
+eval @ dailyPoints.ts:145
+postMessage
+eval @ dailyPointsPanel.ts:363
+eval @ dailyPointsPanel.ts:447
+04:52:30.905 log.ts:179 [debug 4:52:30 ] 停止每日积分任务
+04:52:30.905 log.ts:179 [debug 4:52:30 ] 每日积分任务已停止
+04:52:30.908 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+04:52:30.908 dailyPointsPanel.ts:337 [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+04:52:30.908 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'TASK_STOPPED'}
+04:52:30.908 dailyPointsPanel.ts:343 [每日积分] panel: 处理TASK_STOPPED
+04:52:34.045 log.ts:179 [debug 4:52:34 ] 知识分享任务已被停止

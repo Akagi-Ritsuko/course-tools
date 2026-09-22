@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-15 10:55:02
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-12 14:45:23
+ * @LastEditTime: 2026-03-13 17:35:26
  * @FilePath: \course-tools\src\mooc\zsgl\utils\utils.ts
  * @Description: zsgl 模块工具函数
  *
@@ -15,6 +15,7 @@ import {
   HttpResponse,
   EventPreventHandler,
 } from "../types";
+import { setMemorySid } from "./exam-utils";
 
 /**
  * 存储所有HTTP请求钩子的Map
@@ -25,9 +26,22 @@ const httpHooks: Map<
 > = new Map();
 
 /**
+ * 存储所有修改响应的钩子
+ */
+const modifyHooks: Map<
+  string,
+  Array<{ modifier: (response: any) => any; context: any }>
+> = new Map();
+
+/**
  * 保存原始的XMLHttpRequest.prototype.open
  */
 const originalOpen = XMLHttpRequest.prototype.open;
+
+/**
+ * 保存原始的 responseText getter
+ */
+let originalResponseTextGetter: (() => string) | null = null;
 
 /**
  * 初始化HTTP钩子（只执行一次）
@@ -41,6 +55,14 @@ function initializeHooks() {
   XMLHttpRequest.prototype.open = function(method: string, url: string) {
     Application.App.log.Debug("拦截到HTTP请求:", url);
 
+    // 页面请求的URL都携带sid，在此捕获供考试API使用
+    const sidMatch = /(?:\?|&)sid=([^&]+)/.exec(String(url));
+    if (sidMatch && sidMatch[1]) {
+      setMemorySid(sidMatch[1]);
+    }
+
+    const xhr = this;
+
     httpHooks.forEach((hooks, urlMatch) => {
       if (url.includes(urlMatch)) {
         Application.App.log.Debug("匹配到钩子:", urlMatch);
@@ -53,10 +75,50 @@ function initializeHooks() {
                 : this.responseText;
 
               hooks.forEach((hook) => {
-                hook.callback(response, hook.context);
+                hook.callback(response, hook.context, url);
               });
             } catch (e) {
               Application.App.log.Error("数据解析失败", e);
+            }
+          }
+        });
+      }
+    });
+
+    modifyHooks.forEach((modifiers, urlMatch) => {
+      if (url.includes(urlMatch)) {
+        Application.App.log.Debug("匹配到修改钩子:", urlMatch);
+
+        this.addEventListener("readystatechange", function() {
+          if (this.readyState === 4 && this.status === 200) {
+            try {
+              let response = this.responseText.startsWith("{")
+                ? JSON.parse(this.responseText)
+                : this.responseText;
+
+              modifiers.forEach((modifier) => {
+                response = modifier.modifier.call(modifier.context, response);
+              });
+
+              const modifiedText = JSON.stringify(response);
+
+              Object.defineProperty(xhr, "responseText", {
+                get: function() {
+                  return modifiedText;
+                },
+                configurable: true,
+              });
+
+              Object.defineProperty(xhr, "response", {
+                get: function() {
+                  return modifiedText;
+                },
+                configurable: true,
+              });
+
+              Application.App.log.Debug("响应已被修改:", urlMatch);
+            } catch (e) {
+              Application.App.log.Error("修改响应失败", e);
             }
           }
         });
@@ -84,8 +146,65 @@ export async function hookHttpRequest(
     httpHooks.set(urlMatch, []);
   }
 
-  httpHooks.get(urlMatch)!.push({ callback, context });
+  const hooks = httpHooks.get(urlMatch)!;
+  // 同一 urlMatch + context 只注册一次,防止重复 Init 时回调扇出
+  if (hooks.some((hook) => hook.context === context)) {
+    Application.App.log.Debug("HTTP钩子已注册,跳过重复注册:", urlMatch);
+    return;
+  }
+
+  hooks.push({ callback, context });
   Application.App.log.Debug("注册HTTP钩子:", urlMatch);
+}
+
+/**
+ * 移除HTTP请求钩子
+ * @param urlMatch URL匹配字符串
+ * @param context 注册时传入的上下文对象
+ */
+export function removeHttpRequestHook(urlMatch: string, context: any): void {
+  const hooks = httpHooks.get(urlMatch);
+  if (!hooks) {
+    return;
+  }
+
+  const filtered = hooks.filter((hook) => hook.context !== context);
+  if (filtered.length > 0) {
+    httpHooks.set(urlMatch, filtered);
+  } else {
+    httpHooks.delete(urlMatch);
+  }
+  Application.App.log.Debug("移除HTTP钩子:", urlMatch);
+}
+
+/**
+ * 拦截并修改HTTP响应
+ * @param urlMatch URL匹配字符串
+ * @param modifier 修改函数，接收原始响应，返回修改后的响应
+ * @param context 上下文对象
+ * @example
+ * // 禁用切换屏幕检测
+ * hookAndModifyHttpResponse("queryCourseDetail.do", (response) => {
+ *   if (response.body) {
+ *     response.body.isOpenSwitchScreen = 0;
+ *     response.body.isOpenScreenShot = 0;
+ *   }
+ *   return response;
+ * }, this);
+ */
+export async function hookAndModifyHttpResponse(
+  urlMatch: string,
+  modifier: (response: any) => any,
+  context: any,
+): Promise<void> {
+  initializeHooks();
+
+  if (!modifyHooks.has(urlMatch)) {
+    modifyHooks.set(urlMatch, []);
+  }
+
+  modifyHooks.get(urlMatch)!.push({ modifier, context });
+  Application.App.log.Debug("注册响应修改钩子:", urlMatch);
 }
 // 修正语法错误并添加类型声明
 export interface StorageHandler {
@@ -140,7 +259,7 @@ export function CssBtn(btn: HTMLButtonElement): HTMLButtonElement {
  */
 export function createEventPreventHandler(): EventPreventHandler {
   return function(this: any, e: Event) {
-    console.log(`${this?.name || "unknown"} ${e.type}事件触发`, e);
+    // console.log(`${this?.name || "unknown"} ${e.type}事件触发`, e);
     e.stopImmediatePropagation();
     e.stopPropagation();
   };
@@ -149,10 +268,11 @@ export function createEventPreventHandler(): EventPreventHandler {
 /**
  * 设置事件阻止，防止页面检测
  * @param target 目标对象
+ * @returns 清理函数,调用后移除所有已注册的阻止监听器
  */
 export function setupEventPrevention(
   target: Window | Document | HTMLElement,
-): void {
+): () => void {
   const handler = createEventPreventHandler();
   const events = [
     "blur",
@@ -161,21 +281,121 @@ export function setupEventPrevention(
     "fullscreenchange",
     "focus",
     "webkitfullscreenchange",
+    "mouseout",
+    "mouseleave",
+    "focusout",
+    "focusin",
+    "pagehide",
+    "pageshow",
+    "beforeunload",
+    "freeze",
+    "resume",
   ];
 
   events.forEach((event) => {
     target.addEventListener(event, handler, true);
   });
+
+  return () => {
+    events.forEach((event) => {
+      target.removeEventListener(event, handler, true);
+    });
+  };
 }
 
 /**
  * 设置视频事件阻止
  * @param video 视频元素
+ * @returns 清理函数,调用后移除所有已注册的阻止监听器
  */
-export function setupVideoEventPrevention(video: HTMLVideoElement): void {
+export function setupVideoEventPrevention(video: HTMLVideoElement): () => void {
   const handler = createEventPreventHandler();
-  video.addEventListener("seeked", handler, true);
-  video.addEventListener("seeking", handler, true);
+  const videoEvents = ["seeked", "seeking", "ratechange", "volumechange"];
+
+  videoEvents.forEach((event) => {
+    video.addEventListener(event, handler, true);
+  });
+
+  return () => {
+    videoEvents.forEach((event) => {
+      video.removeEventListener(event, handler, true);
+    });
+  };
+}
+
+/** 可见性伪装是否已安装(每页只需安装一次) */
+let visibilitySpoofInstalled = false;
+
+/** 切屏赋值拦截是否已安装(每页只需安装一次) */
+let switchScreenNeutralized = false;
+
+/**
+ * 拦截站点对 window.onblur/onfocus/onresize 的属性赋值
+ *
+ * 站点播放页在 queryCourseDetail 返回 isOpenSwitchScreen=1 时,通过
+ * `window.onblur = fn` 属性赋值安装切窗检测(事件阻止与 visibility 伪装均拦不住),
+ * 切窗/最小化后强制暂停并弹窗,超限后直接终止任务。
+ * 将 setter 置为 no-op 后,站点的检测处理器永远安装不上。
+ */
+export function setupSwitchScreenNeutralizer(): void {
+  if (switchScreenNeutralized) {
+    return;
+  }
+  switchScreenNeutralized = true;
+
+  try {
+    for (const prop of ["onblur", "onfocus", "onresize"] as const) {
+      Object.defineProperty(window, prop, {
+        configurable: true,
+        get: () => null,
+        set: () =>
+          Application.App.log.Debug(`[切屏防御] 已拦截 window.${prop} 赋值`),
+      });
+    }
+    Application.App.log.Info(
+      "[切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效",
+    );
+  } catch (e) {
+    Application.App.log.Warn("[切屏防御] 安装失败:", e);
+  }
+}
+
+/**
+ * 伪装页面可见性,绕过后台播放检测
+ *
+ * 站点通过读取 document.hidden / document.visibilityState / document.hasFocus
+ * 判断前台状态并暂停视频。事件拦截(setupEventPrevention)只能阻止事件传播,
+ * 无法拦截属性读取,因此需要属性欺骗。本项目 mooc.js 注入主世界执行,
+ * 此处的 defineProperty 对站点代码直接生效。
+ */
+export function setupVisibilitySpoof(): void {
+  if (visibilitySpoofInstalled) {
+    return;
+  }
+  visibilitySpoofInstalled = true;
+
+  try {
+    Object.defineProperty(document, "hidden", {
+      get: () => false,
+      configurable: true,
+    });
+    Object.defineProperty(document, "visibilityState", {
+      get: () => "visible",
+      configurable: true,
+    });
+    Object.defineProperty(document, "webkitHidden", {
+      get: () => false,
+      configurable: true,
+    });
+    Object.defineProperty(document, "webkitVisibilityState", {
+      get: () => "visible",
+      configurable: true,
+    });
+    document.hasFocus = () => true;
+    Application.App.log.Info("[可见性伪装] 已启用,页面切后台将继续播放");
+  } catch (e) {
+    Application.App.log.Warn("[可见性伪装] 安装失败:", e);
+  }
 }
 
 /**

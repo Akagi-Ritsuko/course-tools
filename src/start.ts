@@ -17,19 +17,15 @@ import sources = chrome.devtools.panels.sources;
 
 class start implements Launcher {
   public async start() {
-    if (Application.App.debug) {
-      let cacheJsonText = JSON.stringify(
-        await Application.App.config.ConfigList(),
+    let cacheJsonText = JSON.stringify(
+      await Application.App.config.ConfigList(),
+    );
+    get(chrome.extension.getURL("src/mooc.js"), function(source: string) {
+      Injected(
+        document,
+        "window.configData=" + cacheJsonText + ";\n" + source,
       );
-      get(chrome.extension.getURL("src/mooc.js"), function(source: string) {
-        Injected(
-          document,
-          "window.configData=" + cacheJsonText + ";\n" + source,
-        );
-      });
-    } else {
-      chrome.runtime.sendMessage({ status: "loading" });
-    }
+    });
     let msg = NewChromeServerMessage("cxmooc-tools");
     msg.Accept((client, data) => {
       switch (data.type) {
@@ -91,9 +87,10 @@ class start implements Launcher {
 }
 
 async function init() {
+  // 内容脚本世界:日志落地 localStorage(key 与注入世界区分,避免互相覆盖)
   let component = new Map<string, any>()
     .set("config", new ChromeConfigItems(await NewBackendConfig()))
-    .set("logger", new ConsoleLog());
+    .set("logger", new ConsoleLog("zsgl_log_cs"));
   let application = new Application(Content, new start(), component);
   application.run();
 }

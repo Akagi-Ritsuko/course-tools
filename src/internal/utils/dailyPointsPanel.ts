@@ -3,8 +3,10 @@ import { ZsglDailyPoints } from "../../mooc/zsgl/dailyPoints";
 
 export interface PointsProgressData {
   knowledgeLink: string;
+  learningLimit: number;
   contributionLimit: number;
   interactionLimit: number;
+  taskDelay: number;
 }
 
 export class DailyPointsFloatingPanel {
@@ -12,9 +14,9 @@ export class DailyPointsFloatingPanel {
          private isRunning = false;
          private isStopped = false;
          private progressData = {
-           learning: { current: 0, limit: 100 },
-           contribution: { current: 0, limit: 300 },
-           interaction: { current: 0, limit: 100 },
+           learning: { current: 0, target: 100 },
+           contribution: { current: 0, target: 300 },
+           interaction: { current: 0, target: 100 },
          };
 
          constructor() {
@@ -345,14 +347,14 @@ export class DailyPointsFloatingPanel {
                  "[每日积分] panel: 处理UPDATE_PROGRESS",
                  message.data,
                );
-               this.updateProgress(message.data);
+               this.handlePointsUpdated(message.data);
              } else if (message.type === "POINTS_UPDATED") {
                console.log(
                  "[每日积分] panel: 处理POINTS_UPDATED",
                  message.data,
                );
                if (message.data) {
-                 this.updateProgress(message.data);
+                 this.handlePointsUpdated(message.data);
                }
              } else if (message.type === "TASK_STOPPED") {
                console.log("[每日积分] panel: 处理TASK_STOPPED");
@@ -363,39 +365,41 @@ export class DailyPointsFloatingPanel {
 
          public start(data: PointsProgressData) {
            console.log(
-             "[每日积分] panel: start方法被调用",
-             data,
-             "isRunning:",
-             this.isRunning,
-           );
-           if (this.isRunning) {
-             console.log("[每日积分] panel: 任务已在运行中，跳过");
-             return;
-           }
+            "[每日积分] panel: start方法被调用",
+            data,
+            "isRunning:",
+            this.isRunning,
+          );
+          if (this.isRunning) {
+            console.log("[每日积分] panel: 任务已在运行中，跳过");
+            return;
+          }
 
-           this.progressData.contribution.limit = data.contributionLimit || 300;
-           this.progressData.interaction.limit = data.interactionLimit || 100;
+          this.progressData.learning.target = data.learningLimit !== undefined ? data.learningLimit : 100;
+          this.progressData.contribution.target = data.contributionLimit !== undefined ? data.contributionLimit : 300;
+          this.progressData.interaction.target = data.interactionLimit !== undefined ? data.interactionLimit : 100;
 
-           this.showConfirmationDialog(() => {
-             this.isRunning = true;
-             this.isStopped = false;
-             console.log("[每日积分] panel: 创建进度悬浮窗");
-             this.createPanel();
+          this.showConfirmationDialog(() => {
+            this.isRunning = true;
+            this.isStopped = false;
+            console.log("[每日积分] panel: 创建进度悬浮窗");
+            this.createPanel();
 
-             window.postMessage(
-               { type: "CONFIRM_START_TASK", data: data },
-               "*",
-             );
+            window.postMessage(
+              { type: "CONFIRM_START_TASK", data: data },
+              "*",
+            );
 
-             Application.App.log?.Info("每日积分任务已开始");
-           });
-         }
+            Application.App.log?.Info("每日积分任务已开始");
+          });
+        }
 
          public stop() {
            console.log("[每日积分] panel: stop方法被调用");
            this.isRunning = false;
            this.isStopped = false;
            this.removePanel();
+          //  window.postMessage({ type: "STOP_DAILY_POINTS" }, "*");
            Application.App.log?.Info("每日积分任务已停止");
          }
 
@@ -414,25 +418,25 @@ export class DailyPointsFloatingPanel {
            }
          }
 
-         public updateProgress(data: {
-           learning?: { current: number; limit?: number };
-           contribution?: { current: number; limit?: number };
-           interaction?: { current: number; limit?: number };
+         private handlePointsUpdated(data: {
+           learning?: { current: number; target?: number };
+           contribution?: { current: number; target?: number };
+           interaction?: { current: number; target?: number };
          }) {
            if (data.learning) {
              this.progressData.learning.current = data.learning.current;
-             if (data.learning.limit)
-               this.progressData.learning.limit = data.learning.limit;
+             if (data.learning.target)
+               this.progressData.learning.target = data.learning.target;
            }
            if (data.contribution) {
              this.progressData.contribution.current = data.contribution.current;
-             if (data.contribution.limit)
-               this.progressData.contribution.limit = data.contribution.limit;
+             if (data.contribution.target)
+               this.progressData.contribution.target = data.contribution.target;
            }
            if (data.interaction) {
              this.progressData.interaction.current = data.interaction.current;
-             if (data.interaction.limit)
-               this.progressData.interaction.limit = data.interaction.limit;
+             if (data.interaction.target)
+               this.progressData.interaction.target = data.interaction.target;
            }
            this.updatePanelContent();
          }
@@ -513,6 +517,8 @@ export class DailyPointsFloatingPanel {
         <div class="confirmation-notice">
           <p>⚠️ 注意事项：</p>
           <ul>
+            <li><strong>知识链接要求：</strong>需填写非个人空间主创或辅创的知识空间文章链接</li>
+            <li><strong>风险提示：</strong>本功能通过调用知识分享和知识阅读API实现积分获取，属于利用系统漏洞，请在了解风险后谨慎使用</li>
             <li>任务执行期间请勿关闭页面</li>
             <li>可随时点击"结束任务"停止</li>
             <li>积分数据仅供参考，以实际为准</li>
@@ -520,7 +526,7 @@ export class DailyPointsFloatingPanel {
         </div>
         <label class="confirmation-checkbox">
           <input type="checkbox" id="agree-terms" />
-          <span>我已了解任务内容，同意开始执行</span>
+          <span>我已了解任务内容及风险，同意开始执行</span>
         </label>
       </div>
     </div>
@@ -575,8 +581,8 @@ export class DailyPointsFloatingPanel {
           <div class="progress-label">
             <span class="label">学习积分</span>
             <span class="value">${this.progressData.learning.current} / ${
-             this.progressData.learning.limit
-           }</span>
+              this.progressData.learning.target
+            }</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill learning" style="width: ${learningPercent}%"></div>
@@ -587,8 +593,8 @@ export class DailyPointsFloatingPanel {
           <div class="progress-label">
             <span class="label">贡献积分</span>
             <span class="value">${this.progressData.contribution.current} / ${
-             this.progressData.contribution.limit
-           }</span>
+              this.progressData.contribution.target
+            }</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill contribution" style="width: ${contributionPercent}%"></div>
@@ -599,8 +605,8 @@ export class DailyPointsFloatingPanel {
           <div class="progress-label">
             <span class="label">互动积分</span>
             <span class="value">${this.progressData.interaction.current} / ${
-             this.progressData.interaction.limit
-           }</span>
+              this.progressData.interaction.target
+            }</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill interaction" style="width: ${interactionPercent}%"></div>
@@ -640,25 +646,25 @@ export class DailyPointsFloatingPanel {
              const items = content.querySelectorAll(".progress-item");
 
              items[0].querySelector(
-               ".value",
-             )!.textContent = `${this.progressData.learning.current} / ${this.progressData.learning.limit}`;
-             (items[0].querySelector(
-               ".progress-fill",
-             ) as HTMLElement)!.style.width = `${learningPercent}%`;
+              ".value",
+            )!.textContent = `${this.progressData.learning.current} / ${this.progressData.learning.target}`;
+            (items[0].querySelector(
+              ".progress-fill",
+            ) as HTMLElement)!.style.width = `${learningPercent}%`;
 
-             items[1].querySelector(
-               ".value",
-             )!.textContent = `${this.progressData.contribution.current} / ${this.progressData.contribution.limit}`;
-             (items[1].querySelector(
-               ".progress-fill",
-             ) as HTMLElement)!.style.width = `${contributionPercent}%`;
+            items[1].querySelector(
+              ".value",
+            )!.textContent = `${this.progressData.contribution.current} / ${this.progressData.contribution.target}`;
+            (items[1].querySelector(
+              ".progress-fill",
+            ) as HTMLElement)!.style.width = `${contributionPercent}%`;
 
-             items[2].querySelector(
-               ".value",
-             )!.textContent = `${this.progressData.interaction.current} / ${this.progressData.interaction.limit}`;
-             (items[2].querySelector(
-               ".progress-fill",
-             ) as HTMLElement)!.style.width = `${interactionPercent}%`;
+            items[2].querySelector(
+              ".value",
+            )!.textContent = `${this.progressData.interaction.current} / ${this.progressData.interaction.target}`;
+            (items[2].querySelector(
+              ".progress-fill",
+            ) as HTMLElement)!.style.width = `${interactionPercent}%`;
 
              const totalItem = items[3];
              totalItem.querySelector(
@@ -670,21 +676,21 @@ export class DailyPointsFloatingPanel {
            }
          }
 
-         private getPercent(data: { current: number; limit: number }): number {
-           return Math.min((data.current / data.limit) * 100, 100);
-         }
+         private getPercent(data: { current: number; target: number }): number {
+          return Math.min((data.current / data.target) * 100, 100);
+        }
 
-         private getTotalPercent(): number {
-           const totalCurrent =
-             this.progressData.learning.current +
-             this.progressData.contribution.current +
-             this.progressData.interaction.current;
-           const totalLimit =
-             this.progressData.learning.limit +
-             this.progressData.contribution.limit +
-             this.progressData.interaction.limit;
-           return Math.min((totalCurrent / totalLimit) * 100, 100);
-         }
+        private getTotalPercent(): number {
+          const totalCurrent =
+            this.progressData.learning.current +
+            this.progressData.contribution.current +
+            this.progressData.interaction.current;
+          const totalTarget =
+            this.progressData.learning.target +
+            this.progressData.contribution.target +
+            this.progressData.interaction.target;
+          return Math.min((totalCurrent / totalTarget) * 100, 100);
+        }
 
          private initDraggable() {
            if (!this.container) return;
@@ -702,7 +708,10 @@ export class DailyPointsFloatingPanel {
              "#daily-points-stop",
            ) as HTMLElement;
 
-           closeBtn?.addEventListener("click", () => this.stop());
+           closeBtn?.addEventListener("click", () => {
+             this.stop();
+             window.postMessage({ type: "STOP_DAILY_POINTS" }, "*");
+           });
            refreshBtn?.addEventListener("click", () => {
              window.postMessage({ type: "REFRESH_POINTS" }, "*");
            });

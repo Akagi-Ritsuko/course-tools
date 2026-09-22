@@ -208,29 +208,22 @@ export class SystemConfig {
            //     }],
            // },
            zsgl: {
-             name: "知识管理",
-             items: [
-               {
-                title: "视频任务挂机",
-                description: "进入页面自动开始播放视频并处理后续任务",
+            name: "知识管理",
+            items: [
+              {
+                title: "自动挂机",
+                description: "控制所有课程页面的自动挂机状态（包括视频、学习地图等任务）",
                 type: "checkbox",
                 key: "auto",
                 value: true,
               },
                {
-                 title: "是否自动考试",
-                 description: "开启后会自动考试",
+                 title: "跳过选修",
+                 description: "开启后自动挂机时会跳过选修课程",
                  type: "checkbox",
-                 key: "exam_auto",
+                 key: "skip_elective",
                  value: false,
-               },
-               {
-                 title: "学习地图任务挂机",
-                 description: "进入页面自动开始学习地图并处理后续任务",
-                 type: "checkbox",
-                 key: "map_auto",
-                 value: false,
-               },
+              },
                {
                  title: "视频静音",
                  description: "播放视频时自动开启静音",
@@ -247,13 +240,29 @@ export class SystemConfig {
                  value: "1",
                },
                {
-                 title: "跳转间隔",
-                 description: "视频完成后等待时间（单位：分钟）",
-                 type: "text",
-                 key: "interval",
-                 unit: "分",
-                 value: "1",
-               },
+                title: "跳转间隔",
+                description: "视频完成后等待时间（单位：分钟）",
+                type: "text",
+                key: "interval",
+                unit: "分",
+                value: "1",
+              },
+              {
+                title: "考试答案导出",
+                description:
+                  "考试完成后自动将题目与答案导出为Markdown文件（保存到浏览器默认下载目录）",
+                type: "checkbox",
+                key: "answer_export_enabled",
+                value: true,
+              },
+              {
+                title: "日志转存",
+                description:
+                  "将运行日志定期写入浏览器本地存储，页面崩溃后重新打开课程页会自动导出日志文件；关闭后不写入任何日志",
+                type: "checkbox",
+                key: "log_persist_enabled",
+                value: true,
+              },
              ],
            },
          };

@@ -1,0 +1,1229 @@
+21:03:19.770  commonFull true
+21:03:19.770  window.outerWidth 1920
+21:03:19.770  screen.availWidth 1920
+21:03:19.770  windowF11Full false
+21:03:19.770  isFullScreen true
+21:03:20.542  commonFull true
+21:03:20.542  window.outerWidth 1920
+21:03:20.542  screen.availWidth 1920
+21:03:20.542  windowF11Full false
+21:03:20.542  isFullScreen true
+21:03:20.542  commonFull true
+21:03:20.542  window.outerWidth 1920
+21:03:20.542  screen.availWidth 1920
+21:03:20.542  windowF11Full false
+21:03:20.542  isFullScreen true
+21:03:27.462 已导航到https://zsgl.lzlj.com/
+21:03:27.554  [每日积分] panel: 构造函数被调用
+21:03:27.555  [每日积分] panel: init方法被调用
+21:03:27.555  [debug 21:3:27 ] Start document state: loading
+21:03:27.555  create mooc
+21:03:27.555  mooc start null
+21:03:27.836  navigator.userAgent=mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/146.0.0.0 safari/537.36 edg/146.0.0.0
+21:03:27.836  BROWSER_INFO: type=chrome, ver=146.0.0.0
+21:03:28.591  0530-1
+21:03:28.604  showSearch true
+21:03:28.651  showSearch true
+21:03:28.690  [每日积分] panel: window.onload 触发
+21:03:28.691  [每日积分] panel: 初始化消息监听
+21:03:28.692  [debug 21:3:28 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1774443600626, isRunning: true, …}
+21:03:28.801  --------------- Wed Mar 25 2026 21:03:28 GMT+0800 (中国标准时间)
+21:03:28.967  showSearch true
+21:03:29.040  showSearch true
+21:03:29.048  com.mlearning.paznluzhoulaojiao appId-------
+21:03:29.287  showSearch true
+21:03:29.299  personRules (3) [{…}, {…}, {…}]
+21:03:29.300  rankData undefined
+21:03:55.551 已导航到https://zsgl.lzlj.com/znWeb/knowledge-cloud/
+21:03:55.669  [每日积分] panel: 构造函数被调用
+21:03:55.669  [每日积分] panel: init方法被调用
+21:03:55.670  [debug 21:3:55 ] Start document state: loading
+21:03:55.670  create mooc
+21:03:55.670  mooc start null
+21:03:56.204  0530-2
+21:03:56.280  [每日积分] panel: window.onload 触发
+21:03:56.281  [每日积分] panel: 初始化消息监听
+21:03:56.282  [debug 21:3:56 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1774443600626, isRunning: true, …}
+21:03:56.483 main.7bcdfd5f.chunk.js:1 Uncaught (in promise) r {message: undefined}
+ee @ main.7bcdfd5f.chunk.js:1
+u @ main.7bcdfd5f.chunk.js:1
+Promise.then
+ee @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+Zc @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+qi @ 7.79e3e0dd.chunk.js:1
+Ki @ 7.79e3e0dd.chunk.js:1
+Yc @ 7.79e3e0dd.chunk.js:1
+vo @ 7.79e3e0dd.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+f @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+T @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+Promise.then
+T @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+B @ 7.79e3e0dd.chunk.js:1
+x.port1.onmessage @ 7.79e3e0dd.chunk.js:1
+21:03:56.490 main.7bcdfd5f.chunk.js:1 Uncaught (in promise) r {message: undefined}
+ee @ main.7bcdfd5f.chunk.js:1
+u @ main.7bcdfd5f.chunk.js:1
+Promise.then
+ee @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+B @ 7.79e3e0dd.chunk.js:1
+x.port1.onmessage @ 7.79e3e0dd.chunk.js:1
+21:03:56.490 main.7bcdfd5f.chunk.js:1 Uncaught (in promise) r {message: undefined}
+ee @ main.7bcdfd5f.chunk.js:1
+u @ main.7bcdfd5f.chunk.js:1
+Promise.then
+ee @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+Zc @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+qi @ 7.79e3e0dd.chunk.js:1
+Ki @ 7.79e3e0dd.chunk.js:1
+Yc @ 7.79e3e0dd.chunk.js:1
+vo @ 7.79e3e0dd.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+f @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+T @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+Promise.then
+T @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+t.unstable_runWithPriority @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+B @ 7.79e3e0dd.chunk.js:1
+x.port1.onmessage @ 7.79e3e0dd.chunk.js:1
+21:03:58.296  [每日积分] start: 收到消息 {type: 'START_DAILY_POINTS', data: {…}}
+21:03:58.297  [每日积分] start: 转发START_DAILY_POINTS消息到页面 {knowledgeLink: 'https://zsgl.lzlj.com/znWeb/knowledge-cloud/#/knowledgePage/6d424ae30d064ae38560868164bbdec4', learningLimit: 100, contributionLimit: 300, interactionLimit: 100, taskDelay: 8}
+21:03:58.300  [每日积分] panel: 收到页面消息1 {type: 'START_DAILY_POINTS', data: {…}}
+21:03:58.301  [每日积分] panel: 处理START_DAILY_POINTS {knowledgeLink: 'https://zsgl.lzlj.com/znWeb/knowledge-cloud/#/knowledgePage/6d424ae30d064ae38560868164bbdec4', learningLimit: 100, contributionLimit: 300, interactionLimit: 100, taskDelay: 8}
+21:03:58.301  [每日积分] panel: start方法被调用 {knowledgeLink: 'https://zsgl.lzlj.com/znWeb/knowledge-cloud/#/knowledgePage/6d424ae30d064ae38560868164bbdec4', learningLimit: 100, contributionLimit: 300, interactionLimit: 100, taskDelay: 8} isRunning: false
+21:04:00.644  [每日积分] panel: 创建进度悬浮窗
+21:04:00.647  [每日积分] panel: 收到页面消息1 {type: 'CONFIRM_START_TASK', data: {…}}
+21:04:00.647  [debug 21:4:0 ] 收到确认开始任务消息 100 300 100
+21:04:00.647  [debug 21:4:0 ] 用户确认开始任务，开始执行
+21:04:00.648  [debug 21:4:0 ] 从知识页面链接提取pageId: 6d424ae30d064ae38560868164bbdec4
+21:04:00.648  [debug 21:4:0 ] 从localStorage获取sid: 3C4E348F97EF4396A3569850CD484E6B
+21:04:00.648  [debug 21:4:0 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:00.648  [debug 21:4:0 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:01.192  [debug 21:4:1 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:01.193  [debug 21:4:1 ] 积分项: 知识被阅读 (knowledge_read_point) = 300
+21:04:01.193  [debug 21:4:1 ] 更新贡献积分: 300
+21:04:01.193  [debug 21:4:1 ] 积分项: 知识被分享 (knowledge_shared) = 90
+21:04:01.194  [debug 21:4:1 ] 更新互动积分: 90
+21:04:01.194  [debug 21:4:1 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:01.194  [debug 21:4:1 ] 更新互动积分: 100
+21:04:01.195  [debug 21:4:1 ] 开始执行任务：course
+21:04:01.196  [debug 21:4:1 ] 开始普通课程任务
+21:04:01.196  [debug 21:4:1 ] 主动请求课程列表: curPage=1
+21:04:01.197  [debug 21:4:1 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/course/courselist.do?curPage=1&numPerPage=30&sortType=2&ver=3.8.2&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:01.200  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:01.200  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:01.445  [debug 21:4:1 ] API响应成功: {body: {…}, code: '0', message: '操作成功', totalPage: '233'}
+21:04:01.445  [debug 21:4:1 ] fetchCourseListWithPage 成功, result.data: {body: {…}, code: '0', message: '操作成功', totalPage: '233'}
+21:04:01.445  [debug 21:4:1 ] 课程列表响应: {body: {…}, code: '0', message: '操作成功', totalPage: '233'}
+21:04:01.445  [debug 21:4:1 ] response.body: {courseArr: Array(30), courseNum: '30'}
+21:04:01.445  [debug 21:4:1 ] response.body.courseArr: (30) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+21:04:01.446  [debug 21:4:1 ] response.body.courseArr length: 30
+21:04:01.446  [debug 21:4:1 ] 开始查找未完成课程, 共 30 个课程
+21:04:01.446  [debug 21:4:1 ] 课程: 2025年“安全生产月”主题宣传片, isCompleted: 1, isUnfinished: false
+21:04:01.446  [debug 21:4:1 ] 课程: AI产品交互设计核心课：打造高用户感知的智能产品, isCompleted: 0, isUnfinished: true
+21:04:01.446  [debug 21:4:1 ] 找到未完成的课程 AI产品交互设计核心课：打造高用户感知的智能产品
+21:04:01.446  [debug 21:4:1 ] findUnfinishedCourseFromData 结果: {activityPrice: null, approvalStatus: null, author: '', bowseNumber: '18', canComment: '1', …}
+21:04:01.447  [debug 21:4:1 ] 设置任务开始状态: zsgl_daily_task_N007850 {status: 'started', expire: 1774445641447}
+21:04:01.447  [debug 21:4:1 ] 在新窗口打开课程: https://zsgl.lzlj.com/znWeb/znPortal/#/home/courseDetail/N007850
+21:04:01.467  [warn 21:4:1 ] 请注意!最小化可能导致视频无法正常播放!允许切换窗口.
+Warn @ webpack://cxmooc-too…l/utils/log.ts?:197
+eval @ webpack://cxmooc-too…rc/mooc/mooc.ts?:59
+21:04:08.737  [每日积分] panel: 收到页面消息1 {tag: 'cxmooc-tools', conn_tag: 0.7547501819351458, msg: {…}, source: 'client'}
+21:04:08.737  [每日积分] panel: 收到页面消息1 {tag: 'cxmooc-tools', conn_tag: 0.9349919491014783, msg: {…}, source: 'client'}
+21:04:08.737  [每日积分] panel: 收到页面消息1 {type: 'REFRESH_POINTS'}
+21:04:08.737  [debug 21:4:8 ] 手动刷新积分进度
+21:04:08.737  [debug 21:4:8 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:08.737  [debug 21:4:8 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:09.031  [debug 21:4:9 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:09.031  [debug 21:4:9 ] 积分项: 知识被阅读 (knowledge_read_point) = 300
+21:04:09.031  [debug 21:4:9 ] 更新贡献积分: 300
+21:04:09.031  [debug 21:4:9 ] 积分项: 知识被分享 (knowledge_shared) = 90
+21:04:09.032  [debug 21:4:9 ] 更新互动积分: 90
+21:04:09.032  [debug 21:4:9 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:09.032  [debug 21:4:9 ] 更新互动积分: 100
+21:04:09.033  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:09.033  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:09.033  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:09.033  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:21.611  [每日积分] panel: 收到页面消息1 {type: 'STOP_DAILY_POINTS'}
+21:04:21.612  [每日积分] panel: 处理STOP_DAILY_POINTS
+21:04:21.612  [每日积分] panel: stop方法被调用
+21:04:21.612  [debug 21:4:21 ] 停止每日积分任务
+21:04:21.612  [debug 21:4:21 ] 每日积分任务已停止，所有监听器已移除
+21:04:21.613  [每日积分] panel: 收到页面消息1 {type: 'TASK_STOPPED'}
+21:04:21.613  [每日积分] panel: 处理TASK_STOPPED
+21:04:30.813 已导航到https://zsgl.lzlj.com/znWeb/knowledge-cloud/
+21:04:31.026  [每日积分] panel: 构造函数被调用
+21:04:31.027  [每日积分] panel: init方法被调用
+21:04:31.027  [debug 21:4:31 ] Start document state: loading
+21:04:31.027  create mooc
+21:04:31.027  mooc start null
+21:04:32.204  0530-2
+21:04:32.245  [每日积分] panel: window.onload 触发
+21:04:32.246  [每日积分] panel: 初始化消息监听
+21:04:32.246  [debug 21:4:32 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1774443861612, isRunning: false, …}
+21:04:32.475 main.7bcdfd5f.chunk.js:1 Uncaught (in promise) r {message: undefined}
+ee @ main.7bcdfd5f.chunk.js:1
+u @ main.7bcdfd5f.chunk.js:1
+Promise.then
+ee @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+Zc @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+qi @ 7.79e3e0dd.chunk.js:1
+Ki @ 7.79e3e0dd.chunk.js:1
+Yc @ 7.79e3e0dd.chunk.js:1
+vo @ 7.79e3e0dd.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+f @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+T @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+Promise.then
+T @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+B @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+21:04:32.485 main.7bcdfd5f.chunk.js:1 Uncaught (in promise) r {message: undefined}
+ee @ main.7bcdfd5f.chunk.js:1
+u @ main.7bcdfd5f.chunk.js:1
+Promise.then
+ee @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+B @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+21:04:32.485 main.7bcdfd5f.chunk.js:1 Uncaught (in promise) r {message: undefined}
+ee @ main.7bcdfd5f.chunk.js:1
+u @ main.7bcdfd5f.chunk.js:1
+Promise.then
+ee @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+Zc @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+qi @ 7.79e3e0dd.chunk.js:1
+Ki @ 7.79e3e0dd.chunk.js:1
+Yc @ 7.79e3e0dd.chunk.js:1
+vo @ 7.79e3e0dd.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+f @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+T @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+Promise.then
+T @ main.7bcdfd5f.chunk.js:1
+i @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+(匿名) @ main.7bcdfd5f.chunk.js:1
+ic @ 7.79e3e0dd.chunk.js:1
+ms @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+Vi @ 7.79e3e0dd.chunk.js:1
+vs @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+B @ 7.79e3e0dd.chunk.js:1
+(匿名) @ 7.79e3e0dd.chunk.js:1
+21:04:34.261  [每日积分] start: 收到消息 {type: 'START_DAILY_POINTS', data: {…}}
+21:04:34.262  [每日积分] start: 转发START_DAILY_POINTS消息到页面 {knowledgeLink: 'https://zsgl.lzlj.com/znWeb/knowledge-cloud/#/knowledgePage/6d424ae30d064ae38560868164bbdec4', learningLimit: 100, contributionLimit: 300, interactionLimit: 100, taskDelay: 0}
+21:04:34.263  [每日积分] panel: 收到页面消息1 {type: 'START_DAILY_POINTS', data: {…}}
+21:04:34.263  [每日积分] panel: 处理START_DAILY_POINTS {knowledgeLink: 'https://zsgl.lzlj.com/znWeb/knowledge-cloud/#/knowledgePage/6d424ae30d064ae38560868164bbdec4', learningLimit: 100, contributionLimit: 300, interactionLimit: 100, taskDelay: 0}
+21:04:34.263  [每日积分] panel: start方法被调用 {knowledgeLink: 'https://zsgl.lzlj.com/znWeb/knowledge-cloud/#/knowledgePage/6d424ae30d064ae38560868164bbdec4', learningLimit: 100, contributionLimit: 300, interactionLimit: 100, taskDelay: 0} isRunning: false
+21:04:37.228  [每日积分] panel: 创建进度悬浮窗
+21:04:37.231  [每日积分] panel: 收到页面消息1 {type: 'CONFIRM_START_TASK', data: {…}}
+21:04:37.231  [debug 21:4:37 ] 收到确认开始任务消息 100 300 100
+21:04:37.231  [debug 21:4:37 ] 用户确认开始任务，开始执行
+21:04:37.231  [debug 21:4:37 ] 从知识页面链接提取pageId: 6d424ae30d064ae38560868164bbdec4
+21:04:37.231  [debug 21:4:37 ] 从localStorage获取sid: 3C4E348F97EF4396A3569850CD484E6B
+21:04:37.232  [debug 21:4:37 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:37.232  [debug 21:4:37 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:37.456  [debug 21:4:37 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:37.457  [debug 21:4:37 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:37.457  [debug 21:4:37 ] 更新贡献积分: 200
+21:04:37.457  [debug 21:4:37 ] 积分项: 知识被分享 (knowledge_shared) = 9
+21:04:37.457  [debug 21:4:37 ] 更新互动积分: 9
+21:04:37.457  [debug 21:4:37 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:37.457  [debug 21:4:37 ] 更新互动积分: 19
+21:04:37.458  [debug 21:4:37 ] 开始执行任务：knowledgeShare
+21:04:37.458  [debug 21:4:37 ] 提取到pageId: 6d424ae30d064ae38560868164bbdec4, sid: 3C4E348F97EF4396A3569850CD484E6B
+21:04:37.458  [debug 21:4:37 ] 开始知识分享任务（API方式）
+21:04:37.458  [debug 21:4:37 ] 互动积分分差: 81
+21:04:37.458  [debug 21:4:37 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:37.458  [debug 21:4:37 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:37.462  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:37.462  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:37.669  [debug 21:4:37 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:37.670  [debug 21:4:37 ] 知识分享成功，第1次调用，累积积分: 0.6/81
+21:04:37.670  [debug 21:4:37 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:37.671  [debug 21:4:37 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:37.862  [debug 21:4:37 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:37.863  [debug 21:4:37 ] 知识分享成功，第2次调用，累积积分: 1.2/81
+21:04:37.863  [debug 21:4:37 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:37.863  [debug 21:4:37 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:38.014  [debug 21:4:38 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:38.015  [debug 21:4:38 ] 知识分享成功，第3次调用，累积积分: 1.7999999999999998/81
+21:04:38.015  [debug 21:4:38 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:38.015  [debug 21:4:38 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:38.205  [debug 21:4:38 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:38.205  [debug 21:4:38 ] 知识分享成功，第4次调用，累积积分: 2.4/81
+21:04:38.205  [debug 21:4:38 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:38.205  [debug 21:4:38 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:38.395  [debug 21:4:38 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:38.395  [debug 21:4:38 ] 知识分享成功，第5次调用，累积积分: 3/81
+21:04:38.396  [debug 21:4:38 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:38.396  [debug 21:4:38 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:38.747  [debug 21:4:38 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:38.747  [debug 21:4:38 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:38.748  [debug 21:4:38 ] 更新贡献积分: 200
+21:04:38.748  [debug 21:4:38 ] 积分项: 知识被分享 (knowledge_shared) = 9
+21:04:38.749  [debug 21:4:38 ] 更新互动积分: 9
+21:04:38.749  [debug 21:4:38 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:38.749  [debug 21:4:38 ] 更新互动积分: 19
+21:04:38.750  [debug 21:4:38 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:38.750  [debug 21:4:38 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:38.758  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:38.759  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:38.967  [debug 21:4:38 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:38.967  [debug 21:4:38 ] 知识分享成功，第6次调用，累积积分: 0.6/81
+21:04:38.967  [debug 21:4:38 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:38.968  [debug 21:4:38 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:39.187  [debug 21:4:39 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:39.187  [debug 21:4:39 ] 知识分享成功，第7次调用，累积积分: 1.2/81
+21:04:39.188  [debug 21:4:39 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:39.189  [debug 21:4:39 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:39.379  [debug 21:4:39 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:39.379  [debug 21:4:39 ] 知识分享成功，第8次调用，累积积分: 1.7999999999999998/81
+21:04:39.380  [debug 21:4:39 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:39.380  [debug 21:4:39 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:39.592  [debug 21:4:39 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:39.592  [debug 21:4:39 ] 知识分享成功，第9次调用，累积积分: 2.4/81
+21:04:39.592  [debug 21:4:39 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:39.592  [debug 21:4:39 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:39.703  [debug 21:4:39 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:39.703  [debug 21:4:39 ] 知识分享成功，第10次调用，累积积分: 3/81
+21:04:39.703  [debug 21:4:39 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:39.703  [debug 21:4:39 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:40.003  [debug 21:4:40 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:40.003  [debug 21:4:40 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:40.004  [debug 21:4:40 ] 更新贡献积分: 200
+21:04:40.004  [debug 21:4:40 ] 积分项: 知识被分享 (knowledge_shared) = 9
+21:04:40.004  [debug 21:4:40 ] 更新互动积分: 9
+21:04:40.004  [debug 21:4:40 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:40.004  [debug 21:4:40 ] 更新互动积分: 19
+21:04:40.004  [debug 21:4:40 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:40.004  [debug 21:4:40 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:40.009  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:40.009  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:40.027  [每日积分] panel: 收到页面消息1 {tag: 'cxmooc-tools', conn_tag: 0.6375547916247932, msg: {…}, source: 'client'}
+21:04:40.027  [每日积分] panel: 收到页面消息1 {tag: 'cxmooc-tools', conn_tag: 0.2701265198503422, msg: {…}, source: 'client'}
+21:04:40.132  [debug 21:4:40 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:40.133  [debug 21:4:40 ] 知识分享成功，第11次调用，累积积分: 0.6/81
+21:04:40.133  [debug 21:4:40 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:40.133  [debug 21:4:40 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:40.342  [debug 21:4:40 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:40.342  [debug 21:4:40 ] 知识分享成功，第12次调用，累积积分: 1.2/81
+21:04:40.342  [debug 21:4:40 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:40.342  [debug 21:4:40 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:40.509  [debug 21:4:40 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:40.509  [debug 21:4:40 ] 知识分享成功，第13次调用，累积积分: 1.7999999999999998/81
+21:04:40.509  [debug 21:4:40 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:40.509  [debug 21:4:40 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:40.690  [debug 21:4:40 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:40.690  [debug 21:4:40 ] 知识分享成功，第14次调用，累积积分: 2.4/81
+21:04:40.690  [debug 21:4:40 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:40.690  [debug 21:4:40 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:40.906  [debug 21:4:40 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:40.906  [debug 21:4:40 ] 知识分享成功，第15次调用，累积积分: 3/81
+21:04:40.907  [debug 21:4:40 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:40.907  [debug 21:4:40 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:41.226  [debug 21:4:41 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:41.227  [debug 21:4:41 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:41.228  [debug 21:4:41 ] 更新贡献积分: 200
+21:04:41.228  [debug 21:4:41 ] 积分项: 知识被分享 (knowledge_shared) = 9
+21:04:41.228  [debug 21:4:41 ] 更新互动积分: 9
+21:04:41.229  [debug 21:4:41 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:41.229  [debug 21:4:41 ] 更新互动积分: 19
+21:04:41.230  [debug 21:4:41 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:41.230  [debug 21:4:41 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:41.239  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:41.240  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:41.430  [debug 21:4:41 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:41.430  [debug 21:4:41 ] 知识分享成功，第16次调用，累积积分: 0.6/81
+21:04:41.430  [debug 21:4:41 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:41.430  [debug 21:4:41 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:41.546  [debug 21:4:41 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:41.547  [debug 21:4:41 ] 知识分享成功，第17次调用，累积积分: 1.2/81
+21:04:41.547  [debug 21:4:41 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:41.547  [debug 21:4:41 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:41.709  [debug 21:4:41 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:41.710  [debug 21:4:41 ] 知识分享成功，第18次调用，累积积分: 1.7999999999999998/81
+21:04:41.710  [debug 21:4:41 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:41.711  [debug 21:4:41 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:41.858  [debug 21:4:41 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:41.859  [debug 21:4:41 ] 知识分享成功，第19次调用，累积积分: 2.4/81
+21:04:41.860  [debug 21:4:41 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:41.860  [debug 21:4:41 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:41.996  [debug 21:4:41 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:41.996  [debug 21:4:41 ] 知识分享成功，第20次调用，累积积分: 3/81
+21:04:41.997  [debug 21:4:41 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:41.997  [debug 21:4:41 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:42.276  [debug 21:4:42 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:42.276  [debug 21:4:42 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:42.277  [debug 21:4:42 ] 更新贡献积分: 200
+21:04:42.277  [debug 21:4:42 ] 积分项: 知识被分享 (knowledge_shared) = 9
+21:04:42.277  [debug 21:4:42 ] 更新互动积分: 9
+21:04:42.278  [debug 21:4:42 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:42.278  [debug 21:4:42 ] 更新互动积分: 19
+21:04:42.279  [debug 21:4:42 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:42.279  [debug 21:4:42 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:42.286  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:42.286  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:42.407  [debug 21:4:42 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:42.407  [debug 21:4:42 ] 知识分享成功，第21次调用，累积积分: 0.6/81
+21:04:42.408  [debug 21:4:42 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:42.408  [debug 21:4:42 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:42.558  [debug 21:4:42 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:42.559  [debug 21:4:42 ] 知识分享成功，第22次调用，累积积分: 1.2/81
+21:04:42.560  [debug 21:4:42 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:42.560  [debug 21:4:42 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:42.689  [debug 21:4:42 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:42.690  [debug 21:4:42 ] 知识分享成功，第23次调用，累积积分: 1.7999999999999998/81
+21:04:42.690  [debug 21:4:42 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:42.690  [debug 21:4:42 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:42.840  [debug 21:4:42 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:42.840  [debug 21:4:42 ] 知识分享成功，第24次调用，累积积分: 2.4/81
+21:04:42.840  [debug 21:4:42 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:42.840  [debug 21:4:42 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:43.047  [debug 21:4:43 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:43.047  [debug 21:4:43 ] 知识分享成功，第25次调用，累积积分: 3/81
+21:04:43.047  [debug 21:4:43 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:43.048  [debug 21:4:43 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:43.319  [debug 21:4:43 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:43.320  [debug 21:4:43 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:43.320  [debug 21:4:43 ] 更新贡献积分: 200
+21:04:43.321  [debug 21:4:43 ] 积分项: 知识被分享 (knowledge_shared) = 9
+21:04:43.321  [debug 21:4:43 ] 更新互动积分: 9
+21:04:43.322  [debug 21:4:43 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:43.322  [debug 21:4:43 ] 更新互动积分: 19
+21:04:43.323  [debug 21:4:43 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:43.323  [debug 21:4:43 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:43.330  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:43.330  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:43.443  [debug 21:4:43 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:43.443  [debug 21:4:43 ] 知识分享成功，第26次调用，累积积分: 0.6/81
+21:04:43.443  [debug 21:4:43 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:43.443  [debug 21:4:43 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:43.635  [debug 21:4:43 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:43.636  [debug 21:4:43 ] 知识分享成功，第27次调用，累积积分: 1.2/81
+21:04:43.637  [debug 21:4:43 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:43.637  [debug 21:4:43 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:43.853  [debug 21:4:43 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:43.854  [debug 21:4:43 ] 知识分享成功，第28次调用，累积积分: 1.7999999999999998/81
+21:04:43.854  [debug 21:4:43 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:43.855  [debug 21:4:43 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:44.036  [debug 21:4:44 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:44.036  [debug 21:4:44 ] 知识分享成功，第29次调用，累积积分: 2.4/81
+21:04:44.036  [debug 21:4:44 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:44.036  [debug 21:4:44 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:44.218  [debug 21:4:44 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:44.219  [debug 21:4:44 ] 知识分享成功，第30次调用，累积积分: 3/81
+21:04:44.219  [debug 21:4:44 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:44.220  [debug 21:4:44 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:44.446  [debug 21:4:44 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:44.446  [debug 21:4:44 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:44.446  [debug 21:4:44 ] 更新贡献积分: 200
+21:04:44.447  [debug 21:4:44 ] 积分项: 知识被分享 (knowledge_shared) = 9
+21:04:44.447  [debug 21:4:44 ] 更新互动积分: 9
+21:04:44.447  [debug 21:4:44 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:44.447  [debug 21:4:44 ] 更新互动积分: 19
+21:04:44.447  [debug 21:4:44 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:44.447  [debug 21:4:44 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:44.450  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:44.450  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:44.600  [debug 21:4:44 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:44.601  [debug 21:4:44 ] 知识分享成功，第31次调用，累积积分: 0.6/81
+21:04:44.601  [debug 21:4:44 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:44.602  [debug 21:4:44 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:44.797  [debug 21:4:44 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:44.797  [debug 21:4:44 ] 知识分享成功，第32次调用，累积积分: 1.2/81
+21:04:44.798  [debug 21:4:44 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:44.798  [debug 21:4:44 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:44.952  [debug 21:4:44 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:44.953  [debug 21:4:44 ] 知识分享成功，第33次调用，累积积分: 1.7999999999999998/81
+21:04:44.953  [debug 21:4:44 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:44.953  [debug 21:4:44 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:45.095  [debug 21:4:45 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:45.096  [debug 21:4:45 ] 知识分享成功，第34次调用，累积积分: 2.4/81
+21:04:45.096  [debug 21:4:45 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:45.096  [debug 21:4:45 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:45.251  [debug 21:4:45 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:45.251  [debug 21:4:45 ] 知识分享成功，第35次调用，累积积分: 3/81
+21:04:45.252  [debug 21:4:45 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:45.252  [debug 21:4:45 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:45.546  [debug 21:4:45 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:45.546  [debug 21:4:45 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:45.546  [debug 21:4:45 ] 更新贡献积分: 200
+21:04:45.546  [debug 21:4:45 ] 积分项: 知识被分享 (knowledge_shared) = 9
+21:04:45.547  [debug 21:4:45 ] 更新互动积分: 9
+21:04:45.547  [debug 21:4:45 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:45.547  [debug 21:4:45 ] 更新互动积分: 19
+21:04:45.547  [debug 21:4:45 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:45.547  [debug 21:4:45 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:45.551  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:45.551  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:45.735  [debug 21:4:45 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:45.735  [debug 21:4:45 ] 知识分享成功，第36次调用，累积积分: 0.6/81
+21:04:45.736  [debug 21:4:45 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:45.736  [debug 21:4:45 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:45.864  [debug 21:4:45 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:45.864  [debug 21:4:45 ] 知识分享成功，第37次调用，累积积分: 1.2/81
+21:04:45.864  [debug 21:4:45 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:45.864  [debug 21:4:45 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:45.981  [debug 21:4:45 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:45.981  [debug 21:4:45 ] 知识分享成功，第38次调用，累积积分: 1.7999999999999998/81
+21:04:45.981  [debug 21:4:45 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:45.982  [debug 21:4:45 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:46.095  [debug 21:4:46 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:46.095  [debug 21:4:46 ] 知识分享成功，第39次调用，累积积分: 2.4/81
+21:04:46.096  [debug 21:4:46 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:46.096  [debug 21:4:46 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:46.299  [debug 21:4:46 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:46.300  [debug 21:4:46 ] 知识分享成功，第40次调用，累积积分: 3/81
+21:04:46.301  [debug 21:4:46 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:46.301  [debug 21:4:46 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:46.596  [debug 21:4:46 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:46.596  [debug 21:4:46 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:46.596  [debug 21:4:46 ] 更新贡献积分: 200
+21:04:46.597  [debug 21:4:46 ] 积分项: 知识被分享 (knowledge_shared) = 9
+21:04:46.597  [debug 21:4:46 ] 更新互动积分: 9
+21:04:46.597  [debug 21:4:46 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:46.598  [debug 21:4:46 ] 更新互动积分: 19
+21:04:46.598  [debug 21:4:46 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:46.598  [debug 21:4:46 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:46.602  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:46.602  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:46.753  [debug 21:4:46 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:46.753  [debug 21:4:46 ] 知识分享成功，第41次调用，累积积分: 0.6/81
+21:04:46.754  [debug 21:4:46 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:46.754  [debug 21:4:46 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:46.877  [debug 21:4:46 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:46.878  [debug 21:4:46 ] 知识分享成功，第42次调用，累积积分: 1.2/81
+21:04:46.878  [debug 21:4:46 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:46.878  [debug 21:4:46 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:47.035  [debug 21:4:47 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:47.036  [debug 21:4:47 ] 知识分享成功，第43次调用，累积积分: 1.7999999999999998/81
+21:04:47.036  [debug 21:4:47 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:47.037  [debug 21:4:47 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:47.199  [debug 21:4:47 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:47.200  [debug 21:4:47 ] 知识分享成功，第44次调用，累积积分: 2.4/81
+21:04:47.200  [debug 21:4:47 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:47.201  [debug 21:4:47 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:47.325  [debug 21:4:47 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:47.326  [debug 21:4:47 ] 知识分享成功，第45次调用，累积积分: 3/81
+21:04:47.327  [debug 21:4:47 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:47.328  [debug 21:4:47 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:47.621  [debug 21:4:47 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:47.622  [debug 21:4:47 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:47.622  [debug 21:4:47 ] 更新贡献积分: 200
+21:04:47.623  [debug 21:4:47 ] 积分项: 知识被分享 (knowledge_shared) = 9
+21:04:47.623  [debug 21:4:47 ] 更新互动积分: 9
+21:04:47.624  [debug 21:4:47 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:47.624  [debug 21:4:47 ] 更新互动积分: 19
+21:04:47.625  [debug 21:4:47 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:47.626  [debug 21:4:47 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:47.633  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:47.633  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:47.754  [debug 21:4:47 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:47.755  [debug 21:4:47 ] 知识分享成功，第46次调用，累积积分: 0.6/81
+21:04:47.755  [debug 21:4:47 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:47.756  [debug 21:4:47 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:47.957  [debug 21:4:47 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:47.958  [debug 21:4:47 ] 知识分享成功，第47次调用，累积积分: 1.2/81
+21:04:47.958  [debug 21:4:47 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:47.958  [debug 21:4:47 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:48.110  [debug 21:4:48 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:48.111  [debug 21:4:48 ] 知识分享成功，第48次调用，累积积分: 1.7999999999999998/81
+21:04:48.111  [debug 21:4:48 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:48.111  [debug 21:4:48 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:48.261  [debug 21:4:48 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:48.261  [debug 21:4:48 ] 知识分享成功，第49次调用，累积积分: 2.4/81
+21:04:48.261  [debug 21:4:48 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:48.262  [debug 21:4:48 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:48.442  [debug 21:4:48 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:48.442  [debug 21:4:48 ] 知识分享成功，第50次调用，累积积分: 3/81
+21:04:48.443  [debug 21:4:48 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:48.443  [debug 21:4:48 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:48.734  [debug 21:4:48 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:48.735  [debug 21:4:48 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:48.735  [debug 21:4:48 ] 更新贡献积分: 200
+21:04:48.735  [debug 21:4:48 ] 积分项: 知识被分享 (knowledge_shared) = 9
+21:04:48.735  [debug 21:4:48 ] 更新互动积分: 9
+21:04:48.735  [debug 21:4:48 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:48.736  [debug 21:4:48 ] 更新互动积分: 19
+21:04:48.736  [debug 21:4:48 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:48.736  [debug 21:4:48 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:48.741  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:48.741  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:48.925  [debug 21:4:48 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:48.926  [debug 21:4:48 ] 知识分享成功，第51次调用，累积积分: 0.6/81
+21:04:48.927  [debug 21:4:48 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:48.927  [debug 21:4:48 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:49.061  [debug 21:4:49 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:49.061  [debug 21:4:49 ] 知识分享成功，第52次调用，累积积分: 1.2/81
+21:04:49.061  [debug 21:4:49 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:49.062  [debug 21:4:49 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:49.278  [debug 21:4:49 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:49.279  [debug 21:4:49 ] 知识分享成功，第53次调用，累积积分: 1.7999999999999998/81
+21:04:49.280  [debug 21:4:49 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:49.280  [debug 21:4:49 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:49.425  [debug 21:4:49 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:49.426  [debug 21:4:49 ] 知识分享成功，第54次调用，累积积分: 2.4/81
+21:04:49.426  [debug 21:4:49 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:49.426  [debug 21:4:49 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:49.576  [debug 21:4:49 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:49.576  [debug 21:4:49 ] 知识分享成功，第55次调用，累积积分: 3/81
+21:04:49.576  [debug 21:4:49 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:49.576  [debug 21:4:49 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:49.799  [debug 21:4:49 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:49.799  [debug 21:4:49 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:49.799  [debug 21:4:49 ] 更新贡献积分: 200
+21:04:49.799  [debug 21:4:49 ] 积分项: 知识被分享 (knowledge_shared) = 9
+21:04:49.800  [debug 21:4:49 ] 更新互动积分: 9
+21:04:49.800  [debug 21:4:49 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:49.800  [debug 21:4:49 ] 更新互动积分: 19
+21:04:49.800  [debug 21:4:49 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:49.800  [debug 21:4:49 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:49.803  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:49.803  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:49.987  [debug 21:4:49 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:49.988  [debug 21:4:49 ] 知识分享成功，第56次调用，累积积分: 0.6/81
+21:04:49.988  [debug 21:4:49 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:49.988  [debug 21:4:49 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:50.155  [debug 21:4:50 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:50.155  [debug 21:4:50 ] 知识分享成功，第57次调用，累积积分: 1.2/81
+21:04:50.155  [debug 21:4:50 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:50.155  [debug 21:4:50 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:50.311  [debug 21:4:50 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:50.312  [debug 21:4:50 ] 知识分享成功，第58次调用，累积积分: 1.7999999999999998/81
+21:04:50.312  [debug 21:4:50 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:50.312  [debug 21:4:50 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:50.462  [debug 21:4:50 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:50.462  [debug 21:4:50 ] 知识分享成功，第59次调用，累积积分: 2.4/81
+21:04:50.462  [debug 21:4:50 ] 获取知识分享: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:50.462  [debug 21:4:50 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledge/cloud/page/like/isShareOut.do?pageId=6d424ae30d064ae38560868164bbdec4&shareOutType=&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:50.612  [debug 21:4:50 ] API响应成功: {body: {…}, code: '0', file: null, message: '成功', user: null}
+21:04:50.613  [debug 21:4:50 ] 知识分享成功，第60次调用，累积积分: 3/81
+21:04:50.613  [debug 21:4:50 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:50.613  [debug 21:4:50 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:50.867  [debug 21:4:50 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:50.868  [debug 21:4:50 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:50.868  [debug 21:4:50 ] 更新贡献积分: 200
+21:04:50.868  [debug 21:4:50 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:04:50.868  [debug 21:4:50 ] 更新互动积分: 900
+21:04:50.868  [debug 21:4:50 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:50.868  [debug 21:4:50 ] 更新互动积分: 910
+21:04:50.869  [debug 21:4:50 ] 互动积分已达目标或需要切换任务，停止知识分享任务
+21:04:50.869  [debug 21:4:50 ] 互动积分已达目标，知识分享任务完成
+21:04:50.869  [debug 21:4:50 ] 提取到pageId: 6d424ae30d064ae38560868164bbdec4, sid: 3C4E348F97EF4396A3569850CD484E6B
+21:04:50.869  [debug 21:4:50 ] 开始知识阅读任务（API方式）
+21:04:50.869  [debug 21:4:50 ] 贡献积分分差: 100
+21:04:50.870  [debug 21:4:50 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:50.870  [debug 21:4:50 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:50.874  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:50.874  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:51.248  [debug 21:4:51 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:51.248  [debug 21:4:51 ] 知识阅读成功，第1次调用，累积积分: 0.6/100
+21:04:51.248  [debug 21:4:51 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:51.248  [debug 21:4:51 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:51.498  [debug 21:4:51 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:51.499  [debug 21:4:51 ] 知识阅读成功，第2次调用，累积积分: 1.2/100
+21:04:51.499  [debug 21:4:51 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:51.499  [debug 21:4:51 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:51.684  [debug 21:4:51 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:51.685  [debug 21:4:51 ] 知识阅读成功，第3次调用，累积积分: 1.7999999999999998/100
+21:04:51.685  [debug 21:4:51 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:51.685  [debug 21:4:51 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:51.948  [debug 21:4:51 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:51.948  [debug 21:4:51 ] 知识阅读成功，第4次调用，累积积分: 2.4/100
+21:04:51.948  [debug 21:4:51 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:51.948  [debug 21:4:51 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:52.193  [debug 21:4:52 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:52.194  [debug 21:4:52 ] 知识阅读成功，第5次调用，累积积分: 3/100
+21:04:52.194  [debug 21:4:52 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:52.195  [debug 21:4:52 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:52.479  [debug 21:4:52 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:52.480  [debug 21:4:52 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:52.480  [debug 21:4:52 ] 更新贡献积分: 200
+21:04:52.481  [debug 21:4:52 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:04:52.481  [debug 21:4:52 ] 更新互动积分: 900
+21:04:52.482  [debug 21:4:52 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:52.483  [debug 21:4:52 ] 更新互动积分: 910
+21:04:52.483  [debug 21:4:52 ] 重新计算分差: 100
+21:04:52.484  [debug 21:4:52 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:52.484  [debug 21:4:52 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:52.494  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:52.495  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:52.806  [debug 21:4:52 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:52.807  [debug 21:4:52 ] 知识阅读成功，第6次调用，累积积分: 0.6/100
+21:04:52.808  [debug 21:4:52 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:52.808  [debug 21:4:52 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:53.152  [debug 21:4:53 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:53.153  [debug 21:4:53 ] 知识阅读成功，第7次调用，累积积分: 1.2/100
+21:04:53.154  [debug 21:4:53 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:53.155  [debug 21:4:53 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:53.415  [debug 21:4:53 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:53.415  [debug 21:4:53 ] 知识阅读成功，第8次调用，累积积分: 1.7999999999999998/100
+21:04:53.415  [debug 21:4:53 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:53.415  [debug 21:4:53 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:53.693  [debug 21:4:53 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:53.694  [debug 21:4:53 ] 知识阅读成功，第9次调用，累积积分: 2.4/100
+21:04:53.695  [debug 21:4:53 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:53.696  [debug 21:4:53 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:54.089  [debug 21:4:54 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:54.089  [debug 21:4:54 ] 知识阅读成功，第10次调用，累积积分: 3/100
+21:04:54.090  [debug 21:4:54 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:54.090  [debug 21:4:54 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:54.393  [debug 21:4:54 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:54.394  [debug 21:4:54 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:54.395  [debug 21:4:54 ] 更新贡献积分: 200
+21:04:54.395  [debug 21:4:54 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:04:54.396  [debug 21:4:54 ] 更新互动积分: 900
+21:04:54.396  [debug 21:4:54 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:54.396  [debug 21:4:54 ] 更新互动积分: 910
+21:04:54.396  [debug 21:4:54 ] 重新计算分差: 100
+21:04:54.396  [debug 21:4:54 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:54.396  [debug 21:4:54 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:54.403  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:54.403  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:54.679  [debug 21:4:54 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:54.680  [debug 21:4:54 ] 知识阅读成功，第11次调用，累积积分: 0.6/100
+21:04:54.681  [debug 21:4:54 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:54.681  [debug 21:4:54 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:54.917  [debug 21:4:54 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:54.918  [debug 21:4:54 ] 知识阅读成功，第12次调用，累积积分: 1.2/100
+21:04:54.919  [debug 21:4:54 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:54.919  [debug 21:4:54 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:55.295  [debug 21:4:55 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:55.296  [debug 21:4:55 ] 知识阅读成功，第13次调用，累积积分: 1.7999999999999998/100
+21:04:55.296  [debug 21:4:55 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:55.296  [debug 21:4:55 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:55.526  [debug 21:4:55 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:55.527  [debug 21:4:55 ] 知识阅读成功，第14次调用，累积积分: 2.4/100
+21:04:55.528  [debug 21:4:55 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:55.528  [debug 21:4:55 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:55.797  [debug 21:4:55 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:55.798  [debug 21:4:55 ] 知识阅读成功，第15次调用，累积积分: 3/100
+21:04:55.798  [debug 21:4:55 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:55.799  [debug 21:4:55 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:56.188  [debug 21:4:56 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:56.189  [debug 21:4:56 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:56.189  [debug 21:4:56 ] 更新贡献积分: 200
+21:04:56.190  [debug 21:4:56 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:04:56.190  [debug 21:4:56 ] 更新互动积分: 900
+21:04:56.190  [debug 21:4:56 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:56.191  [debug 21:4:56 ] 更新互动积分: 910
+21:04:56.191  [debug 21:4:56 ] 重新计算分差: 100
+21:04:56.192  [debug 21:4:56 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:56.192  [debug 21:4:56 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:56.197  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:56.197  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:56.555  [debug 21:4:56 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:56.556  [debug 21:4:56 ] 知识阅读成功，第16次调用，累积积分: 0.6/100
+21:04:56.557  [debug 21:4:56 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:56.557  [debug 21:4:56 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:56.774  [debug 21:4:56 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:56.774  [debug 21:4:56 ] 知识阅读成功，第17次调用，累积积分: 1.2/100
+21:04:56.775  [debug 21:4:56 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:56.775  [debug 21:4:56 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:56.962  [debug 21:4:56 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:56.963  [debug 21:4:56 ] 知识阅读成功，第18次调用，累积积分: 1.7999999999999998/100
+21:04:56.963  [debug 21:4:56 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:56.964  [debug 21:4:56 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:57.448  [debug 21:4:57 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:57.449  [debug 21:4:57 ] 知识阅读成功，第19次调用，累积积分: 2.4/100
+21:04:57.450  [debug 21:4:57 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:57.450  [debug 21:4:57 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:57.785  [debug 21:4:57 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:57.786  [debug 21:4:57 ] 知识阅读成功，第20次调用，累积积分: 3/100
+21:04:57.787  [debug 21:4:57 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:57.787  [debug 21:4:57 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:58.019  [debug 21:4:58 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:58.019  [debug 21:4:58 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:58.019  [debug 21:4:58 ] 更新贡献积分: 200
+21:04:58.019  [debug 21:4:58 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:04:58.019  [debug 21:4:58 ] 更新互动积分: 900
+21:04:58.019  [debug 21:4:58 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:58.019  [debug 21:4:58 ] 更新互动积分: 910
+21:04:58.020  [debug 21:4:58 ] 重新计算分差: 100
+21:04:58.020  [debug 21:4:58 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:58.020  [debug 21:4:58 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:58.029  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:58.029  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:58.236  [debug 21:4:58 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:58.236  [debug 21:4:58 ] 知识阅读成功，第21次调用，累积积分: 0.6/100
+21:04:58.237  [debug 21:4:58 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:58.237  [debug 21:4:58 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:58.468  [debug 21:4:58 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:58.469  [debug 21:4:58 ] 知识阅读成功，第22次调用，累积积分: 1.2/100
+21:04:58.469  [debug 21:4:58 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:58.470  [debug 21:4:58 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:58.729  [debug 21:4:58 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:58.730  [debug 21:4:58 ] 知识阅读成功，第23次调用，累积积分: 1.7999999999999998/100
+21:04:58.730  [debug 21:4:58 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:58.730  [debug 21:4:58 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:59.044  [debug 21:4:59 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:59.044  [debug 21:4:59 ] 知识阅读成功，第24次调用，累积积分: 2.4/100
+21:04:59.045  [debug 21:4:59 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:59.046  [debug 21:4:59 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:59.319  [debug 21:4:59 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:59.319  [debug 21:4:59 ] 知识阅读成功，第25次调用，累积积分: 3/100
+21:04:59.319  [debug 21:4:59 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:04:59.319  [debug 21:4:59 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:04:59.584  [debug 21:4:59 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:04:59.585  [debug 21:4:59 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:04:59.586  [debug 21:4:59 ] 更新贡献积分: 200
+21:04:59.586  [debug 21:4:59 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:04:59.586  [debug 21:4:59 ] 更新互动积分: 900
+21:04:59.587  [debug 21:4:59 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:04:59.587  [debug 21:4:59 ] 更新互动积分: 910
+21:04:59.588  [debug 21:4:59 ] 重新计算分差: 100
+21:04:59.589  [debug 21:4:59 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:59.590  [debug 21:4:59 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:04:59.601  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:04:59.602  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:04:59.806  [debug 21:4:59 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:04:59.807  [debug 21:4:59 ] 知识阅读成功，第26次调用，累积积分: 0.6/100
+21:04:59.808  [debug 21:4:59 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:04:59.808  [debug 21:4:59 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:00.103  [debug 21:5:0 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:00.104  [debug 21:5:0 ] 知识阅读成功，第27次调用，累积积分: 1.2/100
+21:05:00.105  [debug 21:5:0 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:00.105  [debug 21:5:0 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:00.431  [debug 21:5:0 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:00.431  [debug 21:5:0 ] 知识阅读成功，第28次调用，累积积分: 1.7999999999999998/100
+21:05:00.432  [debug 21:5:0 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:00.432  [debug 21:5:0 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:00.644  [debug 21:5:0 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:00.644  [debug 21:5:0 ] 知识阅读成功，第29次调用，累积积分: 2.4/100
+21:05:00.645  [debug 21:5:0 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:00.645  [debug 21:5:0 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:00.858  [debug 21:5:0 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:00.859  [debug 21:5:0 ] 知识阅读成功，第30次调用，累积积分: 3/100
+21:05:00.860  [debug 21:5:0 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:05:00.860  [debug 21:5:0 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:05:01.169  [debug 21:5:1 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:05:01.170  [debug 21:5:1 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:05:01.171  [debug 21:5:1 ] 更新贡献积分: 200
+21:05:01.172  [debug 21:5:1 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:05:01.172  [debug 21:5:1 ] 更新互动积分: 900
+21:05:01.173  [debug 21:5:1 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:05:01.173  [debug 21:5:1 ] 更新互动积分: 910
+21:05:01.174  [debug 21:5:1 ] 重新计算分差: 100
+21:05:01.175  [debug 21:5:1 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:01.175  [debug 21:5:1 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:01.189  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:05:01.189  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:05:01.433  [debug 21:5:1 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:01.433  [debug 21:5:1 ] 知识阅读成功，第31次调用，累积积分: 0.6/100
+21:05:01.434  [debug 21:5:1 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:01.434  [debug 21:5:1 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:01.718  [debug 21:5:1 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:01.719  [debug 21:5:1 ] 知识阅读成功，第32次调用，累积积分: 1.2/100
+21:05:01.720  [debug 21:5:1 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:01.720  [debug 21:5:1 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:01.977  [debug 21:5:1 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:01.978  [debug 21:5:1 ] 知识阅读成功，第33次调用，累积积分: 1.7999999999999998/100
+21:05:01.979  [debug 21:5:1 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:01.979  [debug 21:5:1 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:02.198  [debug 21:5:2 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:02.199  [debug 21:5:2 ] 知识阅读成功，第34次调用，累积积分: 2.4/100
+21:05:02.200  [debug 21:5:2 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:02.200  [debug 21:5:2 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:02.470  [debug 21:5:2 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:02.471  [debug 21:5:2 ] 知识阅读成功，第35次调用，累积积分: 3/100
+21:05:02.472  [debug 21:5:2 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:05:02.473  [debug 21:5:2 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:05:02.710  [debug 21:5:2 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:05:02.711  [debug 21:5:2 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:05:02.712  [debug 21:5:2 ] 更新贡献积分: 200
+21:05:02.712  [debug 21:5:2 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:05:02.713  [debug 21:5:2 ] 更新互动积分: 900
+21:05:02.714  [debug 21:5:2 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:05:02.714  [debug 21:5:2 ] 更新互动积分: 910
+21:05:02.715  [debug 21:5:2 ] 重新计算分差: 100
+21:05:02.716  [debug 21:5:2 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:02.716  [debug 21:5:2 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:02.723  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:05:02.724  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:05:03.004  [debug 21:5:3 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:03.005  [debug 21:5:3 ] 知识阅读成功，第36次调用，累积积分: 0.6/100
+21:05:03.006  [debug 21:5:3 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:03.006  [debug 21:5:3 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:03.222  [debug 21:5:3 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:03.222  [debug 21:5:3 ] 知识阅读成功，第37次调用，累积积分: 1.2/100
+21:05:03.223  [debug 21:5:3 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:03.223  [debug 21:5:3 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:03.479  [debug 21:5:3 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:03.480  [debug 21:5:3 ] 知识阅读成功，第38次调用，累积积分: 1.7999999999999998/100
+21:05:03.481  [debug 21:5:3 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:03.481  [debug 21:5:3 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:03.681  [debug 21:5:3 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:03.682  [debug 21:5:3 ] 知识阅读成功，第39次调用，累积积分: 2.4/100
+21:05:03.682  [debug 21:5:3 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:03.682  [debug 21:5:3 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:03.868  [debug 21:5:3 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:03.868  [debug 21:5:3 ] 知识阅读成功，第40次调用，累积积分: 3/100
+21:05:03.869  [debug 21:5:3 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:05:03.869  [debug 21:5:3 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:05:04.143  [debug 21:5:4 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:05:04.145  [debug 21:5:4 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:05:04.145  [debug 21:5:4 ] 更新贡献积分: 200
+21:05:04.146  [debug 21:5:4 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:05:04.146  [debug 21:5:4 ] 更新互动积分: 900
+21:05:04.147  [debug 21:5:4 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:05:04.147  [debug 21:5:4 ] 更新互动积分: 910
+21:05:04.148  [debug 21:5:4 ] 重新计算分差: 100
+21:05:04.149  [debug 21:5:4 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:04.149  [debug 21:5:4 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:04.156  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:05:04.156  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:05:04.462  [debug 21:5:4 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:04.463  [debug 21:5:4 ] 知识阅读成功，第41次调用，累积积分: 0.6/100
+21:05:04.464  [debug 21:5:4 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:04.464  [debug 21:5:4 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:04.727  [debug 21:5:4 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:04.728  [debug 21:5:4 ] 知识阅读成功，第42次调用，累积积分: 1.2/100
+21:05:04.729  [debug 21:5:4 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:04.729  [debug 21:5:4 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:04.993  [debug 21:5:4 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:04.993  [debug 21:5:4 ] 知识阅读成功，第43次调用，累积积分: 1.7999999999999998/100
+21:05:04.994  [debug 21:5:4 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:04.994  [debug 21:5:4 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:05.211  [debug 21:5:5 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:05.212  [debug 21:5:5 ] 知识阅读成功，第44次调用，累积积分: 2.4/100
+21:05:05.213  [debug 21:5:5 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:05.213  [debug 21:5:5 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:05.428  [debug 21:5:5 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:05.429  [debug 21:5:5 ] 知识阅读成功，第45次调用，累积积分: 3/100
+21:05:05.430  [debug 21:5:5 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:05:05.430  [debug 21:5:5 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:05:05.724  [debug 21:5:5 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:05:05.725  [debug 21:5:5 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:05:05.726  [debug 21:5:5 ] 更新贡献积分: 200
+21:05:05.726  [debug 21:5:5 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:05:05.727  [debug 21:5:5 ] 更新互动积分: 900
+21:05:05.727  [debug 21:5:5 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:05:05.727  [debug 21:5:5 ] 更新互动积分: 910
+21:05:05.728  [debug 21:5:5 ] 重新计算分差: 100
+21:05:05.728  [debug 21:5:5 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:05.729  [debug 21:5:5 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:05.737  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:05:05.737  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:05:06.008  [debug 21:5:6 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:06.009  [debug 21:5:6 ] 知识阅读成功，第46次调用，累积积分: 0.6/100
+21:05:06.010  [debug 21:5:6 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:06.010  [debug 21:5:6 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:06.289  [debug 21:5:6 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:06.290  [debug 21:5:6 ] 知识阅读成功，第47次调用，累积积分: 1.2/100
+21:05:06.291  [debug 21:5:6 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:06.291  [debug 21:5:6 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:06.513  [debug 21:5:6 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:06.514  [debug 21:5:6 ] 知识阅读成功，第48次调用，累积积分: 1.7999999999999998/100
+21:05:06.515  [debug 21:5:6 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:06.515  [debug 21:5:6 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:06.736  [debug 21:5:6 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:06.737  [debug 21:5:6 ] 知识阅读成功，第49次调用，累积积分: 2.4/100
+21:05:06.738  [debug 21:5:6 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:06.738  [debug 21:5:6 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:07.049  [debug 21:5:7 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:07.049  [debug 21:5:7 ] 知识阅读成功，第50次调用，累积积分: 3/100
+21:05:07.050  [debug 21:5:7 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:05:07.051  [debug 21:5:7 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:05:07.323  [debug 21:5:7 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:05:07.323  [debug 21:5:7 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:05:07.324  [debug 21:5:7 ] 更新贡献积分: 200
+21:05:07.325  [debug 21:5:7 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:05:07.325  [debug 21:5:7 ] 更新互动积分: 900
+21:05:07.326  [debug 21:5:7 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:05:07.326  [debug 21:5:7 ] 更新互动积分: 910
+21:05:07.327  [debug 21:5:7 ] 重新计算分差: 100
+21:05:07.328  [debug 21:5:7 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:07.328  [debug 21:5:7 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:07.338  [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:05:07.338  [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:05:07.646  [debug 21:5:7 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:07.646  [debug 21:5:7 ] 知识阅读成功，第51次调用，累积积分: 0.6/100
+21:05:07.647  [debug 21:5:7 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:07.648  [debug 21:5:7 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:07.906  [debug 21:5:7 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:07.907  [debug 21:5:7 ] 知识阅读成功，第52次调用，累积积分: 1.2/100
+21:05:07.907  [debug 21:5:7 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:07.908  [debug 21:5:7 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:08.129  [debug 21:5:8 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:08.130  [debug 21:5:8 ] 知识阅读成功，第53次调用，累积积分: 1.7999999999999998/100
+21:05:08.131 log.ts:179 [debug 21:5:8 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:08.131 log.ts:179 [debug 21:5:8 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:08.401 log.ts:179 [debug 21:5:8 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:08.402 log.ts:179 [debug 21:5:8 ] 知识阅读成功，第54次调用，累积积分: 2.4/100
+21:05:08.402 log.ts:179 [debug 21:5:8 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:08.403 log.ts:179 [debug 21:5:8 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:08.612 log.ts:179 [debug 21:5:8 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:08.613 log.ts:179 [debug 21:5:8 ] 知识阅读成功，第55次调用，累积积分: 3/100
+21:05:08.614 log.ts:179 [debug 21:5:8 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:05:08.614 log.ts:179 [debug 21:5:8 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:05:08.843 log.ts:179 [debug 21:5:8 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:05:08.844 log.ts:179 [debug 21:5:8 ] 积分项: 知识被阅读 (knowledge_read_point) = 200
+21:05:08.844 log.ts:179 [debug 21:5:8 ] 更新贡献积分: 200
+21:05:08.844 log.ts:179 [debug 21:5:8 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:05:08.845 log.ts:179 [debug 21:5:8 ] 更新互动积分: 900
+21:05:08.846 log.ts:179 [debug 21:5:8 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:05:08.846 log.ts:179 [debug 21:5:8 ] 更新互动积分: 910
+21:05:08.847 log.ts:179 [debug 21:5:8 ] 重新计算分差: 100
+21:05:08.848 log.ts:179 [debug 21:5:8 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:08.848 log.ts:179 [debug 21:5:8 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:08.855 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:05:08.855 dailyPointsPanel.ts:337 [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+21:05:09.121 log.ts:179 [debug 21:5:9 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:09.121 log.ts:179 [debug 21:5:9 ] 知识阅读成功，第56次调用，累积积分: 0.6/100
+21:05:09.121 log.ts:179 [debug 21:5:9 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:09.121 log.ts:179 [debug 21:5:9 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:09.394 log.ts:179 [debug 21:5:9 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:09.395 log.ts:179 [debug 21:5:9 ] 知识阅读成功，第57次调用，累积积分: 1.2/100
+21:05:09.396 log.ts:179 [debug 21:5:9 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:09.397 log.ts:179 [debug 21:5:9 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:09.634 log.ts:179 [debug 21:5:9 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:09.635 log.ts:179 [debug 21:5:9 ] 知识阅读成功，第58次调用，累积积分: 1.7999999999999998/100
+21:05:09.636 log.ts:179 [debug 21:5:9 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:09.636 log.ts:179 [debug 21:5:9 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:09.851 log.ts:179 [debug 21:5:9 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:09.852 log.ts:179 [debug 21:5:9 ] 知识阅读成功，第59次调用，累积积分: 2.4/100
+21:05:09.853 log.ts:179 [debug 21:5:9 ] 获取知识阅读: pageId=6d424ae30d064ae38560868164bbdec4
+21:05:09.853 log.ts:179 [debug 21:5:9 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/knowledgecloud/page/details.do?pageId=6d424ae30d064ae38560868164bbdec4&sid=3C4E348F97EF4396A3569850CD484E6B&os=99
+21:05:10.063 log.ts:179 [debug 21:5:10 ] API响应成功: {code: 0, body: {…}, message: '成功'}
+21:05:10.063 log.ts:179 [debug 21:5:10 ] 知识阅读成功，第60次调用，累积积分: 3/100
+21:05:10.064 log.ts:179 [debug 21:5:10 ] 获取积分详情: 2026-03-25 ~ 2026-03-31
+21:05:10.064 log.ts:179 [debug 21:5:10 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=3C4E348F97EF4396A3569850CD484E6B
+21:05:10.365 log.ts:179 [debug 21:5:10 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+21:05:10.366 log.ts:179 [debug 21:5:10 ] 积分项: 知识被阅读 (knowledge_read_point) = 300
+21:05:10.367 log.ts:179 [debug 21:5:10 ] 更新贡献积分: 300
+21:05:10.368 log.ts:179 [debug 21:5:10 ] 积分项: 知识被分享 (knowledge_shared) = 900
+21:05:10.369 log.ts:179 [debug 21:5:10 ] 更新互动积分: 900
+21:05:10.369 log.ts:179 [debug 21:5:10 ] 积分项: 知识分享 (knowledge_sharing) = 10
+21:05:10.370 log.ts:179 [debug 21:5:10 ] 更新互动积分: 910
+21:05:10.371 log.ts:179 [debug 21:5:10 ] 重新计算分差: 0
+21:05:10.372 log.ts:179 [debug 21:5:10 ] 贡献积分已达目标或需要切换任务，停止知识阅读任务
+21:05:10.372 log.ts:179 [debug 21:5:10 ] 贡献积分已达目标，知识阅读任务完成
+21:05:10.373 log.ts:197 [warn 21:5:10 ] [任务切换] 正在切换中，跳过重复调用
+Warn @ log.ts:197
+eval @ dailyPoints.ts:522
+eval @ dailyPoints.ts:8
+__awaiter @ dailyPoints.ts:4
+switchToNextTask @ dailyPoints.ts:520
+eval @ dailyPoints.ts:983
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+Promise.then
+step @ dailyPoints.ts:7
+fulfilled @ dailyPoints.ts:5
+21:05:10.381 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+21:05:10.381 dailyPointsPanel.ts:337 [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}

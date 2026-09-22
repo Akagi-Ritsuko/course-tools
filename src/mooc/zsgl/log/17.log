@@ -1,0 +1,61 @@
+02:17:18.365 dailyPointsPanel.ts:368 [每日积分] panel: stop方法被调用
+02:17:18.368 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {tag: 'cxmooc-tools', conn_tag: 0.11297487784561211, msg: {…}, source: 'client'}
+02:17:18.368 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {tag: 'cxmooc-tools', conn_tag: 0.7632868313476666, msg: {…}, source: 'client'}
+02:17:25.853 start.ts:50 [每日积分] start: 收到消息 {type: 'START_DAILY_POINTS', data: {…}}
+02:17:25.853 start.ts:55 [每日积分] start: 转发START_DAILY_POINTS消息到页面 {knowledgeLink: '', learningLimit: 100, contributionLimit: 300, interactionLimit: 100}
+02:17:25.854 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'START_DAILY_POINTS', data: {…}}
+02:17:25.854 dailyPointsPanel.ts:325 [每日积分] panel: 处理START_DAILY_POINTS {knowledgeLink: '', learningLimit: 100, contributionLimit: 300, interactionLimit: 100}
+02:17:25.855 dailyPointsPanel.ts:349 [每日积分] panel: start方法被调用 {knowledgeLink: '', learningLimit: 100, contributionLimit: 300, interactionLimit: 100} isRunning: false
+02:17:27.653 dailyPointsPanel.ts:360 [每日积分] panel: 创建进度悬浮窗
+02:17:27.657 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'CONFIRM_START_TASK', data: {…}}
+02:17:27.657 log.ts:179 [debug 2:17:27 ] 用户确认开始任务，开始执行
+02:17:27.657 log.ts:179 [debug 2:17:27 ] 从localStorage获取sid: EEE903E776EB4825BE27D2FF7E1E6A95
+02:17:27.657 log.ts:179 [debug 2:17:27 ] 获取积分详情: 2026-03-14 ~ 2026-03-31
+02:17:27.657 log.ts:179 [debug 2:17:27 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=EEE903E776EB4825BE27D2FF7E1E6A95
+02:17:27.847 log.ts:179 [debug 2:17:27 ] API响应成功: {body: Array(0), code: '0', file: null, message: '成功', user: null}
+02:17:27.847 log.ts:179 [debug 2:17:27 ] 开始执行任务：course
+02:17:27.848 log.ts:179 [debug 2:17:27 ] 开始普通课程任务
+02:17:27.848 log.ts:179 [debug 2:17:27 ] 主动请求课程列表: curPage=1
+02:17:27.848 log.ts:179 [debug 2:17:27 ] 发送API请求: GET https://zsgl.lzlj.com/learn/app/clientapi/course/courselist.do?curPage=1&numPerPage=30&sortType=2&ver=3.8.2&sid=EEE903E776EB4825BE27D2FF7E1E6A95&os=99
+02:17:27.848 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+02:17:27.849 dailyPointsPanel.ts:337 [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+02:17:28.124 log.ts:179 [debug 2:17:28 ] API响应成功: {body: {…}, code: '0', message: '操作成功', totalPage: '214'}
+02:17:28.124 log.ts:179 [debug 2:17:28 ] fetchCourseListWithPage 成功, result.data: {body: {…}, code: '0', message: '操作成功', totalPage: '214'}
+02:17:28.124 log.ts:179 [debug 2:17:28 ] 课程列表响应: {body: {…}, code: '0', message: '操作成功', totalPage: '214'}
+02:17:28.124 log.ts:179 [debug 2:17:28 ] response.body: {courseArr: Array(30), courseNum: '30'}
+02:17:28.124 log.ts:179 [debug 2:17:28 ] response.body.courseArr: (30) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]无属性
+02:17:28.124 log.ts:179 [debug 2:17:28 ] response.body.courseArr length: 30
+02:17:28.124 log.ts:179 [debug 2:17:28 ] 开始查找未完成课程, 共 30 个课程
+02:17:28.124 log.ts:179 [debug 2:17:28 ] 课程: 《泸州老窖的十年》2015-2025, isCompleted: 1, isUnfinished: false
+02:17:28.124 log.ts:179 [debug 2:17:28 ] 课程: 《小卉穿越啦！》看知识管理神助攻, isCompleted: 1, isUnfinished: false
+02:17:28.124 log.ts:179 [debug 2:17:28 ] 课程: 澳网优秀团长的“七件武器-2025.12.23, isCompleted: 1, isUnfinished: false
+02:17:28.124 log.ts:179 [debug 2:17:28 ] 课程: 澳网考察团情境演练：团队配合的N个场景-2025.12.23, isCompleted: 1, isUnfinished: false
+02:17:28.124 log.ts:179 [debug 2:17:28 ] 课程: 急救知识培训-2025.12.23, isCompleted: 1, isUnfinished: false
+02:17:28.124 log.ts:179 [debug 2:17:28 ] 课程: 中国白酒常识分享-2025.12.23, isCompleted: 1, isUnfinished: false
+02:17:28.124 log.ts:179 [debug 2:17:28 ] 课程: 2026年泸州老窖澳网观赛考察项目行程应知应会-2025.12.23, isCompleted: 1, isUnfinished: false
+02:17:28.124 log.ts:179 [debug 2:17:28 ] 课程: 从破冰到应变-澳网团长情感连接实战分享-2025.12.23, isCompleted: 1, isUnfinished: false
+02:17:28.124 log.ts:179 [debug 2:17:28 ] 课程: 2026年泸州老窖澳网观赛考察项目团长管理机制及SOP流程-2025.12.23, isCompleted: 1, isUnfinished: false
+02:17:28.124 log.ts:179 [debug 2:17:28 ] 课程: 泸州老窖澳网合作项目体育营销简介-2025.12.23, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: 2025年“安全生产月”主题宣传片, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: 51单片机也能玩TFT彩屏, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: RANDARRAY函数的掌握, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: Arraytotext函数的掌握, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: 55个句式助你玩转新媒体，引流、转化、营造10万+（抖音、小红书、公众号）, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: E起去旅行：旅游管理系统开发实战, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: HarmonyOS 应用开发实战指南——初探鸿蒙, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: SWITCH函数的掌握, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: 工业品牌打造：成为客户心智中的首选, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: PERCENTOF函数的掌握, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: LCD1602和12864显示器, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: 温度传感器DS18B20, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: 百度文心一言大模型AI智能体应用开发从入门到精通, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: 红外遥控技术：从NEC协议到程序移植调试, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: AD 与 DA 转换：从原理到代码实践, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: 实时时钟DS1302, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: I2C通信之EEPROM, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: 剪映专业版系统教程【基础+进阶+实战】, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: 从零学会用 AI豆包帮我干活, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 课程: AI智能体从入门到精通, isCompleted: 1, isUnfinished: false
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 未找到未完成的课程
+02:17:28.125 log.ts:179 [debug 2:17:28 ] findUnfinishedCourseFromData 结果: null
+02:17:28.125 log.ts:179 [debug 2:17:28 ] 当前页: 1, 总页数: 1

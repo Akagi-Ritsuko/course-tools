@@ -16,7 +16,8 @@ export interface ConfigItems extends Config {
   vtoken: string;
   rand_answer: boolean;
   auto: boolean;
-  studymap_auto: boolean;
+  skip_elective: boolean;
+  // exam_auto: boolean;
   video_mute: boolean;
   answer_ignore: boolean;
   video_cdn: string;
@@ -120,11 +121,13 @@ export class ChromeConfigItems implements ConfigItems {
          public set auto(val: boolean) {
            this.SetConfig("auto", boolToString(val));
          }
-         public get studymap_auto() {
-           return toBool(this.GetConfig("map_auto", "false"));
+
+         public get skip_elective() {
+           return toBool(this.GetConfig("skip_elective", "false"));
          }
-         public set studymap_auto(val: boolean) {
-           this.SetConfig("map_auto", boolToString(val));
+
+         public set skip_elective(val: boolean) {
+           this.SetConfig("skip_elective", boolToString(val));
          }
 
          public get knowledge_page_url(): string {
@@ -343,6 +346,7 @@ class backendConfig implements Config {
   }
 
   public SetConfig(key: string, val: any): Promise<void> {
+    console.log("SetConfig  setconfig:" + key + "=" + val);
     return new Promise<any>((resolve) => {
       let info: { [key: string]: number } = {};
       info[key] = val;

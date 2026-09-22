@@ -2,8 +2,8 @@
  * @Author: guotao
  * @Date: 2025-09-26 17:51:14
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-11 11:44:36
- * @FilePath: \course-tools\src\mooc\zsgl\platform.ts
+ * @LastEditTime: 2026-03-13 00:48:22
+ * @FilePath: \course-tools1\src\mooc\zsgl\platform.ts
  * @Description: zsgl 平台工厂
  *
  * Copyright (c) 2025 by lzlj, All Rights Reserved.
@@ -26,17 +26,18 @@ export class ZsglPlatform implements MoocFactory {
    * 通过URL特征进行平台识别
    */
   public CreateMooc(): Mooc {
-    // 每日积分模式（优先级最高）
-    if (Application.App.config.daily_points_mode) {
-      Application.App.log.Info("当前平台：zsgl-dailyPoints");
-      Application.App.config.SetNamespace("zsgl");
-      return new ZsglDailyPoints();
-    }
+    // // 每日积分模式（优先级最高）
+    // if (Application.App.config.daily_points_mode) {
+    //   Application.App.log.Info("当前平台：zsgl-dailyPoints");
+    //   // Application.App.config.SetNamespace("zsgl");
+    //   return new ZsglDailyPoints();
+    // }
+    Application.App.config.SetNamespace("zsgl");
 
     // 课程详情页
     if (this.isZsglCoursePage()) {
       Application.App.log.Info("当前平台：zsgl");
-      Application.App.config.SetNamespace("zsgl");
+      // Application.App.config.SetNamespace("zsgl");
       return new ZsglCourse();
     }
 

@@ -11,7 +11,17 @@ export const ZSGL_CONSTANTS = {
     CHECK_INTERVAL_MS: 500,
     VIDEO_SEARCH_INTERVAL_MS: 1000,
     VIDEO_PLAY_RESUME_INTERVAL_MS: 5000,
-    PLAYER_INIT_DELAY_MS: 5000,
+    PLAYER_INIT_DELAY_MS: 500,
+    /** 自动恢复播放的最大重试次数,超过后停止重试(黑屏/无源保护) */
+    MAX_PLAY_RETRY: 10,
+    /** 播放按钮点击限流间隔(ms):loadedmetadata/canplay/轮询多事件源叠加时防止密集点击导致播放器反复启停 */
+    PLAY_CLICK_MIN_INTERVAL_MS: 2000,
+    /** 暂停风暴熔断:窗口时间内暂停次数达到该值后停止自动恢复(切窗死循环/限制弹窗保护) */
+    PAUSE_STORM_MAX_COUNT: 8,
+    /** 暂停风暴熔断的统计窗口(ms) */
+    PAUSE_STORM_WINDOW_MS: 60000,
+    /** scorm Start 等待开始按钮点击的超时时间 */
+    START_TIMEOUT_MS: 30000,
     TASK_EXPIRE_MS: 1000 * 60 * 60 * 10,
     
     SELECTORS: {
@@ -47,6 +57,7 @@ export const ZSGL_CONSTANTS = {
         QUERY_QUESTION_DETAIL: 'queryQuestionDetail.do',
         QUERY_STUDYMAP_GATE: 'queryStudymapGate.do',
         QUERY_STUDYMAP_GATE_TASK: 'queryStudymapGateTask.do',
+        QUERY_NEW_EXAM_PAPER: 'queryNewExamPaper.do',
     },
     
     URL_PATTERNS: {

@@ -1,0 +1,54 @@
+start.ts:85 Hash changed: #/home/homePage
+main.2faaeed8.js:1 showSearch true
+main.2faaeed8.js:1 showSearch false
+main.2faaeed8.js:1 showSearch false
+已导航到https://zsgl.lzlj.com/znWeb/znPortal/
+dailyPointsPanel.ts:16 [每日积分] panel: 构造函数被调用
+dailyPointsPanel.ts:20 [每日积分] panel: init方法被调用
+log.ts:179 [debug 16:44:11 ] Start document state: loading
+mooc.ts:8 create mooc
+mooc.ts:39 mooc start null
+webim.min.js:1 navigator.userAgent=mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/145.0.0.0 safari/537.36 edg/145.0.0.0
+webim.min.js:1 BROWSER_INFO: type=chrome, ver=145.0.0.0
+main.2faaeed8.js:1 0530-1
+main.2faaeed8.js:1 showSearch false
+main.2faaeed8.js:1 showSearch false
+dailyPointsPanel.ts:22 [每日积分] panel: window.onload 触发
+dailyPointsPanel.ts:318 [每日积分] panel: 初始化消息监听
+log.ts:179 [debug 16:44:12 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1773391077842, isRunning: true}
+main.2faaeed8.js:1 --------------- Fri Mar 13 2026 16:44:12 GMT+0800 (中国标准时间)
+main.2faaeed8.js:1 showSearch false
+main.2faaeed8.js:1 showSearch false
+main.2faaeed8.js:1 com.mlearning.paznluzhoulaojiao appId-------
+main.2faaeed8.js:1 showSearch false
+main.2faaeed8.js:1 showSearch false
+start.ts:50 [每日积分] start: 收到消息 {type: 'START_DAILY_POINTS', data: {…}}
+start.ts:55 [每日积分] start: 转发START_DAILY_POINTS消息到页面 {knowledgeLink: '', learningLimit: 100, contributionLimit: 300, interactionLimit: 100}
+dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'START_DAILY_POINTS', data: {…}}
+dailyPointsPanel.ts:325 [每日积分] panel: 处理START_DAILY_POINTS {knowledgeLink: '', learningLimit: 100, contributionLimit: 300, interactionLimit: 100}
+dailyPointsPanel.ts:349 [每日积分] panel: start方法被调用 {knowledgeLink: '', learningLimit: 100, contributionLimit: 300, interactionLimit: 100} isRunning: false
+dailyPointsPanel.ts:360 [每日积分] panel: 创建进度悬浮窗
+dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'CONFIRM_START_TASK', data: {…}}
+log.ts:179 [debug 16:44:25 ] 用户确认开始任务，开始执行
+log.ts:179 [debug 16:44:25 ] 从localStorage获取sid: 1E7DBF042F764F68B7849CA0CE0F2806
+log.ts:179 [debug 16:44:25 ] 获取积分详情: 2026-03-13 ~ 2026-03-31
+log.ts:179 [debug 16:44:25 ] 发送API请求: POST https://zsgl.lzlj.com/learn/app/clientapi/personal/statistics/queryUserPointPercent.do?os=99&sid=1E7DBF042F764F68B7849CA0CE0F2806
+log.ts:179 [debug 16:44:25 ] API响应成功: {body: Array(3), code: '0', file: null, message: '成功', user: null}
+log.ts:179 [debug 16:44:25 ] 积分项: 学习课程 (24E2D4D119E74B76AC349FA12A0B646C) = 98
+log.ts:179 [debug 16:44:25 ] 更新学习积分（学习课程）: +98，当前: 98
+log.ts:179 [debug 16:44:25 ] 积分项: 知识阅读 (knowledge_reading_point) = 2
+log.ts:179 [debug 16:44:25 ] 积分项: 知识被阅读 (knowledge_read_point) = 0
+log.ts:179 [debug 16:44:25 ] 更新贡献积分: 0
+log.ts:179 [debug 16:44:25 ] 开始执行任务：course
+log.ts:179 [debug 16:44:25 ] 开始普通课程任务
+log.ts:179 [debug 16:44:25 ] 跳转到课程列表页面
+dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {type: 'POINTS_UPDATED', data: {…}}
+dailyPointsPanel.ts:337 [每日积分] panel: 处理POINTS_UPDATED {learning: {…}, contribution: {…}, interaction: {…}}
+start.ts:85 Hash changed: #/home/course
+main.2faaeed8.js:1 showSearch true
+main.2faaeed8.js:1 showSearch true
+main.2faaeed8.js:1 showSearch true
+main.2faaeed8.js:1 showSearch true
+main.2faaeed8.js:1 showSearch true
+main.2faaeed8.js:1 showSearch true
+main.2faaeed8.js:1 showSearch true

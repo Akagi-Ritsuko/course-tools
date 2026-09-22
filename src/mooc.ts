@@ -18,9 +18,11 @@ import {DefaultMoocFactory} from "@App/internal/app/mooc";
 
 let logger: Logger;
 if (top == self) {
-    logger = new PageLog();
+    // 顶层注入世界:日志落地 localStorage,浏览器崩溃后下次启动可自动导出
+    logger = new PageLog("zsgl_log_main");
 } else {
-    logger = new ConsoleLog();
+    // iframe 世界不落地,仅控制台输出
+    logger = new ConsoleLog(null);
 }
 
 let component = new Map<string, any>()

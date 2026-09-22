@@ -9,6 +9,7 @@ import { TabsRoot, TabsList, TabsTrigger, TabsContent } from '@/components/ui/ta
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import DailyPointsConfig from "./components/DailyPointsConfig.vue";
 
 class popup implements Launcher {
@@ -27,6 +28,11 @@ class popup implements Launcher {
             Button,
             Input,
             Label,
+            Card,
+            CardContent,
+            CardHeader,
+            CardTitle,
+            CardDescription,
             DailyPointsConfig,
           },
           setup() {
@@ -136,66 +142,97 @@ class popup implements Launcher {
                   }
 
                   console.log("[每日积分] popup: 当前标签页", currentTab);
+                  console.log("[每日积分] popup: 当前URL", currentTab.url);
 
-                  chrome.tabs.onUpdated.addListener(function listener(
-                    tabId,
-                    info,
-                  ) {
-                    if (tabId === currentTab.id && info.status === "complete") {
-                      console.log("[每日积分] popup: 标签页跳转完成");
-                      chrome.tabs.onUpdated.removeListener(listener);
+                  const currentUrl = currentTab.url || "";
+                  const isSameUrl = currentUrl === targetUrl || 
+                                    currentUrl.includes(targetUrl.replace(/^https?:\/\//, '')) ||
+                                    targetUrl.includes(currentUrl.replace(/^https?:\/\//, ''));
 
-                      const sendMessageWithRetry = (
-                        tabId: number,
-                        message: any,
-                        retries: number = 5,
-                        delay: number = 2000,
-                      ) => {
-                        console.log(
-                          `[每日积分] popup: 尝试发送消息 (剩余重试次数: ${retries})`,
+                  const sendMessageWithRetry = (
+                    tabId: number,
+                    message: any,
+                    retries: number = 5,
+                    delay: number = 2000,
+                  ) => {
+                    console.log(
+                      `[每日积分] popup: 尝试发送消息 (剩余重试次数: ${retries})`,
+                    );
+
+                    chrome.tabs.sendMessage(tabId, message, (response) => {
+                      if (chrome.runtime.lastError) {
+                        console.warn(
+                          "[每日积分] popup: 发送消息失败",
+                          chrome.runtime.lastError.message,
                         );
 
-                        chrome.tabs.sendMessage(tabId, message, (response) => {
-                          if (chrome.runtime.lastError) {
-                            console.warn(
-                              "[每日积分] popup: 发送消息失败",
-                              chrome.runtime.lastError.message,
+                        if (retries > 0) {
+                          console.log(
+                            `[每日积分] popup: ${delay}ms 后重试...`,
+                          );
+                          setTimeout(() => {
+                            sendMessageWithRetry(
+                              tabId,
+                              message,
+                              retries - 1,
+                              delay,
                             );
+                          }, delay);
+                        } else {
+                          console.error(
+                            "[每日积分] popup: 重试次数用尽，消息发送失败",
+                          );
+                        }
+                      } else {
+                        console.log("[每日积分] popup: 收到响应", response);
+                      }
+                    });
+                  };
 
-                            if (retries > 0) {
-                              console.log(
-                                `[每日积分] popup: ${delay}ms 后重试...`,
-                              );
-                              setTimeout(() => {
-                                sendMessageWithRetry(
-                                  tabId,
-                                  message,
-                                  retries - 1,
-                                  delay,
-                                );
-                              }, delay);
-                            } else {
-                              console.error(
-                                "[每日积分] popup: 重试次数用尽，消息发送失败",
-                              );
-                            }
-                          } else {
-                            console.log("[每日积分] popup: 收到响应", response);
-                          }
-                        });
+                  if (isSameUrl) {
+                    console.log("[每日积分] popup: 当前已在目标页面，刷新页面");
+                    chrome.tabs.reload(currentTab.id, {}, () => {
+                      const listener = function listenerFn(
+                        tabId: number,
+                        info: chrome.tabs.TabChangeInfo,
+                      ) {
+                        if (tabId === currentTab.id && info.status === "complete") {
+                          console.log("[每日积分] popup: 页面刷新完成");
+                          chrome.tabs.onUpdated.removeListener(listenerFn);
+                          
+                          setTimeout(() => {
+                            sendMessageWithRetry(currentTab.id!, {
+                              type: "START_DAILY_POINTS",
+                              data: config,
+                            });
+                          }, 2000);
+                        }
                       };
+                      chrome.tabs.onUpdated.addListener(listener);
+                    });
+                  } else {
+                    console.log("[每日积分] popup: 需要跳转到目标页面");
+                    
+                    const listener = function listenerFn(
+                      tabId: number,
+                      info: chrome.tabs.TabChangeInfo,
+                    ) {
+                      if (tabId === currentTab.id && info.status === "complete") {
+                        console.log("[每日积分] popup: 标签页跳转完成");
+                        chrome.tabs.onUpdated.removeListener(listenerFn);
 
-                      setTimeout(() => {
-                        sendMessageWithRetry(currentTab.id!, {
-                          type: "START_DAILY_POINTS",
-                          data: config,
-                        });
-                      }, 2000);
-                    }
-                  });
-
-                  chrome.tabs.update(currentTab.id, { url: targetUrl });
-                  console.log("[每日积分] popup: 开始跳转到目标页面");
+                        setTimeout(() => {
+                          sendMessageWithRetry(currentTab.id!, {
+                            type: "START_DAILY_POINTS",
+                            data: config,
+                          });
+                        }, 2000);
+                      }
+                    };
+                    chrome.tabs.onUpdated.addListener(listener);
+                    chrome.tabs.update(currentTab.id, { url: targetUrl });
+                    console.log("[每日积分] popup: 开始跳转到目标页面");
+                  }
                 },
               );
             };
@@ -213,7 +250,7 @@ class popup implements Launcher {
             };
           },
           template: `
-            <div class="w-[420px] min-h-[500px] bg-background">
+            <div class="w-[480px] h-[520px] bg-background overflow-hidden">
               <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4">
                 <h1 class="text-white text-lg font-medium">
                   <span class="text-blue-200">网课</span>小工具
@@ -244,42 +281,49 @@ class popup implements Launcher {
                       v-for="(config, key) in configs" 
                       :key="key"
                       :value="key"
-                      class="space-y-3"
                     >
-                      <div 
-                        v-for="(item, index) in config.items" 
-                        :key="item.key"
-                        class="flex items-center gap-2"
-                      >
-                        <template v-if="item.type === 'text'">
-                          <Label :for="item.key" class="min-w-24 text-sm" :title="item.description">
-                            {{ item.title }}:
-                          </Label>
-                          <Input
-                            :id="item.key"
-                            v-model="item.value"
-                            type="text"
-                            class="flex-1 h-8 text-sm"
-                            :title="item.description"
-                            @input="change(key, item.key, 'text', item.value, index, item.prompt)"
-                          />
-                          <Label v-if="item.unit" class="text-sm text-muted-foreground">
-                            {{ item.unit }}
-                          </Label>
-                        </template>
-                        <template v-else-if="item.type === 'checkbox'">
-                          <input
-                            type="checkbox"
-                            :id="item.key"
-                            v-model="item.value"
-                            class="w-4 h-4 rounded border-gray-300"
-                            @change="change(key, item.key, 'checkbox', item.value, index, item.prompt)"
-                          />
-                          <Label :for="item.key" class="text-sm cursor-pointer" :title="item.description">
-                            {{ item.title }}
-                          </Label>
-                        </template>
-                      </div>
+                      <Card class="w-full">
+                        <CardHeader class="pb-3">
+                          <CardTitle class="text-base">{{ config.name }}配置</CardTitle>
+                          <CardDescription class="text-xs">配置{{ config.name }}平台相关参数</CardDescription>
+                        </CardHeader>
+                        <CardContent class="space-y-3">
+                          <div 
+                            v-for="(item, index) in config.items" 
+                            :key="item.key"
+                            class="flex items-center gap-2"
+                          >
+                            <template v-if="item.type === 'text'">
+                              <Label :for="item.key" class="min-w-24 text-sm" :title="item.description">
+                                {{ item.title }}:
+                              </Label>
+                              <Input
+                                :id="item.key"
+                                v-model="item.value"
+                                type="text"
+                                class="flex-1 h-8 text-sm"
+                                :title="item.description"
+                                @input="change(key, item.key, 'text', item.value, index, item.prompt)"
+                              />
+                              <Label v-if="item.unit" class="text-sm text-muted-foreground">
+                                {{ item.unit }}
+                              </Label>
+                            </template>
+                            <template v-else-if="item.type === 'checkbox'">
+                              <input
+                                type="checkbox"
+                                :id="item.key"
+                                v-model="item.value"
+                                class="w-4 h-4 rounded border-gray-300"
+                                @change="change(key, item.key, 'checkbox', item.value, index, item.prompt)"
+                              />
+                              <Label :for="item.key" class="text-sm cursor-pointer" :title="item.description">
+                                {{ item.title }}
+                              </Label>
+                            </template>
+                          </div>
+                        </CardContent>
+                      </Card>
                     </TabsContent>
                     
                     <TabsContent value="daily-points">

@@ -34,11 +34,14 @@ export interface CourseDetailItem {
 }
 
 export interface QuestionInfo {
+    questionId: string;
     questionText: string;
+    questionType: "S" | "M" | "T"; // S: 单选, M: 多选, T: 判断题
     sectionRespList: QuestionSection[];
 }
 
 export interface QuestionSection {
+    sectionId: string;
     sectionText: string;
     isCorrect: string;
 }
@@ -49,10 +52,12 @@ export interface StudyMapData {
     status: number;
     finishTaskNum: number;
     taskNum: number;
+    studymapGateId?: string;
 }
 
 export interface GateTaskData {
     taskName: string;
+    resourceType: string;
     resourceId: string;
     status: number;
 }
@@ -65,7 +70,7 @@ export interface TaskStatus {
 export interface CourseItem {
   courseId: string;
   courseName: string;
-  iscompleted: number;
+  iscompleted: number | string;
   [key: string]: any;
 }
 
@@ -73,6 +78,7 @@ export interface CourseListResponse {
   code: number;
   body: {
     courseArr: CourseItem[];
+    totalPage?: number;
     [key: string]: any;
   };
   message: string;
@@ -85,7 +91,7 @@ export interface HttpResponse {
   courseId?: string;
 }
 
-export type HttpRequestCallback = (response: HttpResponse, context: any) => void;
+export type HttpRequestCallback = (response: HttpResponse, context: any, url: string) => void;
 
 export interface EventPreventHandler {
     (this: any, e: Event): void;

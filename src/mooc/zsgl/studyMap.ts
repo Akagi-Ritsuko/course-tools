@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-15 10:55:02
  * @LastEditors: guotao
- * @LastEditTime: 2026-03-10 17:17:33
+ * @LastEditTime: 2026-09-17 17:57:34
  * @FilePath: \course-tools\src\mooc\zsgl\studyMap.ts
  * @Description: zsgl 学习地图模块
  *
@@ -24,6 +24,7 @@ export class ZsglStudyMap extends Task {
     protected gateTaskData: GateTaskData;
     /** 学习地图数据 */
     protected studyMapData: StudyMapData;
+    protected studyMapDataList: StudyMapData[] = [];
     /** 定时器管理器 */
     private timerManager: TimerManager = new TimerManager();
 
@@ -40,14 +41,13 @@ export class ZsglStudyMap extends Task {
                 } else {
                     this.Done();
                 }
-                
                 const taskKey = `${ZSGL_CONSTANTS.STORAGE_PREFIX}${this.gateTaskData?.resourceId}`;
                 Application.App.log.Debug("zsglStudyMap开始初始化任务", taskKey);
 
                 this.setupMessageListener(taskKey);
                 Application.App.log.Debug("拦截请求完成hookStudymapGateTaskRequests", this.gateTaskData);
-                this.defaultStartButton();
-                Application.App.log.Debug("Application.App.config.studymap_auto", Application.App.config.studymap_auto);
+                // this.defaultStartButton();
+                Application.App.log.Debug("Application.App.config.auto", Application.App.config.auto);
 
                 this.addEventListenerOnce("load", () => {
                     Application.App.log.Debug("reload");
@@ -77,7 +77,8 @@ export class ZsglStudyMap extends Task {
                     currentbutton.addEventListener('click', async () => {
                         Application.App.log.Info('按钮被点击，开始执行任务');
                         // 这里添加自定义逻辑
-                        if (this.gateTaskData && Application.App.config.studymap_auto === true) {
+                        await this.hookStudymapGateTaskRequests();
+                        if (this.gateTaskData && Application.App.config.auto === true) {
                             await this.Start();
                         }
                     });
@@ -117,20 +118,20 @@ export class ZsglStudyMap extends Task {
             if (prev) {
                 const startBtn = CssBtn(
                     createBtn(
-                        Application.App.config.studymap_auto ? ZSGL_CONSTANTS.BUTTON_TEXT.STOP_AUTO : ZSGL_CONSTANTS.BUTTON_TEXT.START_AUTO,
-                        "点击开始自动挂机",
+                        Application.App.config.auto ? ZSGL_CONSTANTS.BUTTON_TEXT.STOP_AUTO : ZSGL_CONSTANTS.BUTTON_TEXT.START_AUTO,
+                        "控制所有课程页面的自动挂机状态",
                         ZSGL_CONSTANTS.CSS_CLASSES.ZSGL_AUTO_BTN
                     )
                 );
 
                 startBtn.addEventListener("click", () => {
                     if (startBtn.innerText === ZSGL_CONSTANTS.BUTTON_TEXT.STOP_AUTO) {
-                        Application.App.config.studymap_auto = false;
+                        Application.App.config.auto = false;
                         startBtn.innerText = ZSGL_CONSTANTS.BUTTON_TEXT.START_AUTO;
-                        startBtn.title = "点击开始自动挂机";
+                        startBtn.title = "控制所有课程页面的自动挂机状态";
                         Application.App.log.Info("挂机停止了");
                     } else {
-                        Application.App.config.studymap_auto = true;
+                        Application.App.config.auto = true;
                         startBtn.innerText = ZSGL_CONSTANTS.BUTTON_TEXT.STOP_AUTO;
                         startBtn.title = "停止挂机,开始好好学习";
                         Application.App.log.Info("挂机开始了");
@@ -154,25 +155,34 @@ export class ZsglStudyMap extends Task {
                 ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_STUDYMAP_GATE,
                 (response, self) => {
                     Application.App.log.Debug("原始响应数据", response);
-                    const responseData = response?.body;
-                    self.studyMapData = responseData
+                    self.studyMapDataList = response?.body;
+                    const skipElective = Application.App.config.skip_elective;
+                    Application.App.log.Debug("是否跳过选修课程", skipElective);
+                    self.studyMapData = self.studyMapDataList
                         .map((item: any, index: number): StudyMapData => {
                             const gateName = item.gateName;
                             const gateNameIndex = index;
-                            Application.App.log.Debug(gateName, gateNameIndex, "当前关卡");
+                            Application.App.log.Debug(gateName, gateNameIndex, "当前关卡", "status:", item.status, "finishTaskNum:", item.finishTaskNum, "taskNum:", item.taskNum);
                             return {
                                 gateName,
                                 gateNameIndex,
                                 status: item.status,
                                 finishTaskNum: item.finishTaskNum,
                                 taskNum: item.taskNum,
+                                studymapGateId: item.studymapGateId,
                             };
                         })
-                        .find((item: StudyMapData) => item.status !== 3 || item.finishTaskNum !== item.taskNum);
-
+                        .find((item: StudyMapData) => {
+                            if (skipElective) {
+                                return item.status != 3;
+                            }
+                            return item.finishTaskNum !== item.taskNum;
+                        });
+                    
                     Application.App.log.Debug("成功拦截课程数据", {
                         courseCount: self.studyMapData?.length || 0,
                         gateName: self.studyMapData?.gateName || "",
+                        studymapGateId: self.studyMapData?.studymapGateId || "",
                     });
                     Application.App.log.Debug("筛选的结果数据", self.studyMapData);
                     resolve();
@@ -193,17 +203,66 @@ export class ZsglStudyMap extends Task {
                     resolved = true;
                     resolve();
                 }
-            }, 5000);
+            }, 3000);
 
             hookHttpRequest(
                 ZSGL_CONSTANTS.HTTP_ENDPOINTS.QUERY_STUDYMAP_GATE_TASK,
-                (response, self) => {
+                (response, self, url) => {
                     if (!resolved) {
+                        const urlParams = new URLSearchParams(url.split('?')[1]);
+                        const requestGateId = urlParams.get('studymapGateId');
+                        
                         Application.App.log.Debug("原始响应数据queryStudymapGateTask", response);
+                        Application.App.log.Debug("请求的studymapGateId:", requestGateId, "期望的studymapGateId:", self.studyMapData?.studymapGateId);
+                        
+                        if (requestGateId && self.studyMapData?.studymapGateId && 
+                            requestGateId !== self.studyMapData.studymapGateId) {
+                            Application.App.log.Debug("studymapGateId不匹配，跳过此请求，继续等待正确的请求");
+                            
+                            return;
+                        }
+                        
                         const responseData = response?.body;
                         self.gateTaskData = responseData.taskList.find(
-                            (item: { status: number }) => item.status !== 1
+                            (item: { resourceType: number; status: number }) => 
+                                item.status !== 1 && item.resourceType !== 2
                         );
+                        
+                        if (!self.gateTaskData) {
+                            const unfinishedTasks = responseData.taskList.filter(
+                                (item: { status: number }) => item.status !== 1
+                            );
+                            const examTasks = unfinishedTasks.filter(
+                                (item: { resourceType: number }) => item.resourceType === 2
+                            );
+                            
+                            if (unfinishedTasks.length === 0) {
+                                Application.App.log.Info("当前关卡所有任务已完成，跳过此关卡");
+                                const currentIndex = self.studyMapData?.gateNameIndex;
+                                if (currentIndex !== undefined && self.studyMapDataList[currentIndex]) {
+                                    self.studyMapDataList[currentIndex].status = 3;
+                                }
+                                self.findNextLevelAndStart();
+                                clearTimeout(timeout);
+                                resolved = true;
+                                resolve();
+                                return;
+                            }
+                            
+                            if (unfinishedTasks.length === examTasks.length) {
+                                Application.App.log.Info("当前关卡只剩考试任务未完成，跳过此关卡");
+                                const currentIndex = self.studyMapData?.gateNameIndex;
+                                if (currentIndex !== undefined && self.studyMapDataList[currentIndex]) {
+                                    self.studyMapDataList[currentIndex].status = 1;
+                                }
+                                self.findNextLevelAndStart();
+                                clearTimeout(timeout);
+                                resolved = true;
+                                resolve();
+                                return;
+                            }
+                        }
+                        
                         Application.App.log.Debug("成功拦截课程任务数据queryStudymapGateTask", {
                             taskCount: self.gateTaskData?.length || 0,
                             taskName: self.gateTaskData?.taskName || "",
@@ -217,6 +276,41 @@ export class ZsglStudyMap extends Task {
                 this
             );
         });
+    }
+
+    /** 查找下一个关卡并开始执行 */
+    private async findNextLevelAndStart(): Promise<void> {
+        const skipElective = Application.App.config.skip_elective;
+        
+        this.studyMapData = this.studyMapDataList
+            .map((item: any, index: number): StudyMapData => {
+                return {
+                    gateName: item.gateName,
+                    gateNameIndex: index,
+                    status: item.status,
+                    finishTaskNum: item.finishTaskNum,
+                    taskNum: item.taskNum,
+                    studymapGateId: item.studymapGateId,
+                };
+            })
+            .find((item: StudyMapData) => {
+                if (skipElective) {
+                    return item.status != 3;
+                }
+                return item.finishTaskNum !== item.taskNum;
+            });
+        
+        if (this.studyMapData) {
+            Application.App.log.Info("找到下一个关卡", this.studyMapData.gateName);
+            await this.setupCurrentLevelButton();
+            await this.hookStudymapGateTaskRequests();
+            if (this.gateTaskData && Application.App.config.auto === true) {
+                await this.Start();
+            }
+        } else {
+            Application.App.log.Info("所有关卡已完成");
+            this.studyMapData = null;
+        }
     }
 
     public Done(): boolean {
