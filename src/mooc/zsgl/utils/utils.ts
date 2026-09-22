@@ -53,7 +53,7 @@ function initializeHooks() {
   hooksInitialized = true;
 
   XMLHttpRequest.prototype.open = function(method: string, url: string) {
-    Application.App.log.Debug("拦截到HTTP请求:", url);
+    // Application.App.log.Debug("拦截到HTTP请求:", url);
 
     // 页面请求的URL都携带sid，在此捕获供考试API使用
     const sidMatch = /(?:\?|&)sid=([^&]+)/.exec(String(url));

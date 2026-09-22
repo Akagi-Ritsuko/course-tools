@@ -29,6 +29,8 @@ export interface LessonInfo {
   lessonId: string;
   lessonName: string;
   finished: boolean;
+  /** 内容类型(attribute.type,兜底 contentTypes[0]):video/audio 可自动挂机,其余类型需人工处理 */
+  type?: string;
 }
 
 /** 课后题信息(GET /study/0/{courseId}/questions 响应元素,直接含 answer) */

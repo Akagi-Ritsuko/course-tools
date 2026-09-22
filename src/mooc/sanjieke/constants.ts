@@ -40,9 +40,12 @@ export const SANJIEKE_CONSTANTS = {
          LESSON_DOM_CHECK_MAX_ATTEMPTS: 15,
 
          URL_PATTERNS: {
-           /** 学习页路径前缀: /study/0/{courseId}/{lessonId} */
-           STUDY_PATH: "/study/0/",
-         },
+          /** 学习页路径前缀: /study/0/{courseId}/{lessonId} */
+          STUDY_PATH: "/study/0/",
+        },
+
+        /** 可自动挂机的内容类型(attribute.type/contentTypes):其余类型(考试/文档/直播等)跳过不处理,剩余全为此类时视为课程任务完成;支持新类型时在此扩展 */
+        AUTO_STUDY_CONTENT_TYPES: ["video", "audio"],
 
          HTTP_ENDPOINTS: {
            /** 课时内容树 GET /study/0/{courseId}/content/tree */

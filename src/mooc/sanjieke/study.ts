@@ -247,14 +247,26 @@ export class SanjiekeStudy extends EventListener<MoocEvent>
       (l) => !l.finished && !isLessonDoneMarked(this.courseId, l.lessonId),
     );
 
-    if (pending.length === 0) {
-      // 全部课时完成(树/DOM/本域标记任一视角) → 毕业闭环
+    // 不可自动挂机的课时(考试/文档/直播等)跳过且不写完成标记:
+    // 挂完所有可自动课时后,若剩余全是此类课时则视为课程任务完成。
+    // 扩展点:后续支持考试等类型自动挂机时,将类型加入
+    // AUTO_STUDY_CONTENT_TYPES 并扩展此处的任务工厂分发即可
+    const autoPending = pending.filter((l) => isAutoStudyType(l.type));
+    if (autoPending.length === 0) {
+      if (pending.length > 0) {
+        const detail = pending
+          .map((l) => `${l.lessonName}(${l.lessonId},${l.type || "未知"})`)
+          .join("、");
+        Application.App.log.Warn(
+          `[三节课] 剩余 ${pending.length} 个课时均为不可自动挂机类型,扩展视为课程任务完成: ${detail}`,
+        );
+      }
       this.courseComplete();
       return;
     }
 
-    // 进入页面即对齐到最近的未完成课时
-    const first = pending[0];
+    // 进入页面即对齐到最近的未完成可自动课时(跳过不可自动类型)
+    const first = autoPending[0];
     if (currentLessonId && currentLessonId !== first.lessonId) {
       Application.App.log.Info(
         `[三节课] 当前课时(${currentLessonId})非首个未完成课时,跳转至 ${first.lessonName}(${first.lessonId})`,
@@ -322,9 +334,11 @@ export class SanjiekeStudy extends EventListener<MoocEvent>
       setLessonDoneMark(this.courseId, lessonId);
     }
 
-    const pending = mergeLessons(this.lessons, getLessonsFromDom()).filter(
-      (l) => !l.finished && !isLessonDoneMarked(this.courseId, l.lessonId),
-    );
+    // 仅在可自动挂机的未完成课时中推进(考试/文档等类型跳过不标记,
+    // 与 buildCurrentLessonTasks 的 autoPending 语义一致)
+    const pending = mergeLessons(this.lessons, getLessonsFromDom())
+      .filter((l) => !l.finished && !isLessonDoneMarked(this.courseId, l.lessonId))
+      .filter((l) => isAutoStudyType(l.type));
     if (pending.length === 0) {
       this.courseComplete();
       return;
@@ -545,13 +559,40 @@ function flattenLessons(
     if (id === undefined || id === null) {
       continue;
     }
+    // 内容类型:attribute.type 优先(实测 video),兜底 contentTypes[0];章节节点 attribute 为 null
+    const attr =
+      node.attribute && typeof node.attribute === "object" ? node.attribute : null;
+    const type =
+      (typeof attr?.type === "string" && attr.type) ||
+      (Array.isArray(node.contentTypes) &&
+      typeof node.contentTypes[0] === "string"
+        ? node.contentTypes[0]
+        : undefined) ||
+      undefined;
     out.push({
       lessonId: String(id),
       lessonName: String(node.name ?? node.title ?? node.lessonName ?? id),
       finished: isNodeFinished(node),
+      type,
     });
   }
   return out;
+}
+
+/**
+ * 是否可自动挂机的内容类型:video/audio(xgplayer 播放)之外
+ * (考试/文档/直播等)跳过不处理(不标记不阻塞),剩余全为此类时视为课程任务完成。
+ * 扩展性:后续支持考试等类型时,将类型加入 AUTO_STUDY_CONTENT_TYPES
+ * 并在 buildCurrentLessonTasks 的任务构建处扩展按类型分发。
+ * 类型未知(如纯 DOM 数据源解析不到类型)时保持旧行为按可自动类型处理
+ */
+function isAutoStudyType(type?: string): boolean {
+  if (!type) {
+    return true;
+  }
+  return (
+    SANJIEKE_CONSTANTS.AUTO_STUDY_CONTENT_TYPES as readonly string[]
+  ).includes(type);
 }
 
 /** 弹性判定节点完成状态(多字段兼容,仅认可信字段,不确定时保守返回未完成) */
@@ -620,7 +661,7 @@ function getLessonsFromDom(): LessonInfo[] | null {
   return lessons.length > 0 ? lessons : null;
 }
 
-/** 合并 DOM 与内容树两个课时数据源:DOM 展示顺序为准,完成状态取并集 */
+/** 合并 DOM 与内容树两个课时数据源:DOM 展示顺序为准,完成状态取并集,类型以树为准(DOM 解析不到类型) */
 function mergeLessons(
   treeLessons: LessonInfo[],
   domLessons: LessonInfo[] | null,
@@ -635,6 +676,7 @@ function mergeLessons(
       lessonId: d.lessonId,
       lessonName: d.lessonName || t?.lessonName || d.lessonId,
       finished: d.finished || !!t?.finished,
+      type: d.type ?? t?.type,
     };
   });
 }
