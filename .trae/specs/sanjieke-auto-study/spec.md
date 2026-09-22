@@ -128,3 +128,105 @@ zsgl 平台存在"混合"型课程：课程详情页点击「立即学习」后�
 - Affected code（编码轮次）：见 What Changes
 - 不触碰 zsgl 现有任务稳定逻辑（video/knowledge/scorm/exam），`course.ts` 改动仅限三方课程分支
 - 配置新增独立命名空间 `sanjieke`，不影响 zsgl 现有配置
+
+---
+
+## 迭代 2（2026-09-22）：平台完成信号确认与课后题精确推进
+
+> 背景：错误会话曾把本迭代需求误做到 `src/mooc/zsgl/video.ts`（已在 3172a7b 恢复干净基线），
+> 本迭代在 sanjieke 模块内正确实施。**明确排除：不实现"秒过"功能**（不主动构造/发送
+> setContentFinished，仅拦截站点自身请求作为信号）——用户明确要求。
+
+### Why
+
+实测发现（用户 curl 抓包 + 站点行为观察）：**视频播完（ended）≠ 服务端确认完成**。站点按"观看区间"
+判定完成，会主动发送 `POST /b-side/api/web/study/0/{courseId}/content/{sectionId}/setContentFinished`
+（body: `{"contentId":<videoId>,"contentType":"video"}`），该请求才是平台侧的"任务完成"权威信号。
+以 ended 直接标记完成会造成"本地标记了但服务端未确认 → 下次进来还要重播"的震荡。
+
+课后题推进此前依赖 DOM 启发式（组件消失/连续无新题）。用户实测给出精确链路：提交答案后出现
+「继续挑战」按钮 → 点击后站点拉取新题 → `video/question` 响应中 `"completedFlag": true` 表示
+**当前题回答之后答题环节即结束**，可按时间（interval 配置）切换下一个视频任务。
+
+### What Changes（迭代 2）
+
+- **MODIFIED** `src/mooc/sanjieke/video.ts`：视频完成判定改为"平台信号确认制"
+  - `Start()` 注册 `hookHttpRequest("setContentFinished")` 钩子，回调按 URL
+    `/content/{lessonId}/setContentFinished` 过滤本课时（实测 URL 中 sectionId 与 study URL 的
+    lessonId 恒等，样例 36727956）
+  - 拦截到本课时的 setContentFinished 响应 → 立即写课时完成标记 → 推进（站点可能在播放中段发送，
+    拦截到即完成，不等 ended）
+  - `ended` 触发但未拦截到信号 → **自动重播**（currentTime=0 重新完整播放），重播上限熔断
+    （VIDEO_REPLAY_MAX=3），超限走任务集既有自愈（整页重载，以服务端状态为准）
+  - 进入页面时视频处于重播状态（ended / `xgplayer-is-replay`，此前看过但服务端未确认）同样走
+    "重新完整播放"链路（既有行为，纳入验收）
+- **MODIFIED** `src/mooc/sanjieke/quiz.ts` + `types.ts` + `constants.ts`：课后题推进改精确信号驱动
+  - `video/question` 钩子解析响应 `data.completedFlag` 并缓存
+  - `completedFlag === true` 的题**提交成功后** → quiz 任务结束（优先级高于 idle 轮次启发式）
+  - 提交答案后查找并点击「继续挑战」按钮（按文本匹配，DOM 待实测校准）→ 站点拉取下一题
+  - 既有兜底不变：无题/无答案/组件消失/30 轮熔断
+- **MODIFIED** `src/mooc/sanjieke/study.ts`：课时切换延迟改用 `config.interval`
+  （单位分钟 ×60000 毫秒，与 course163/zhihuishu/MoocLauncher 语义一致），替代固定
+  `LESSON_TRANSITION_DELAY_MS`（5s 常量保留供其他兜底路径使用）
+
+### 目标链路（迭代 2）
+
+```
+进入页面 → 对齐首个未完成课时 → 视频开始播放
+      ↓
+   ┌─ 拦截到本课时 setContentFinished ──→ 视频任务完成（不等 ended）
+   │                                        ↓
+视频 ended                                   ↓
+   │                                        ↓
+   └─ 未拦截到信号 → 重播（上限 3 次）──────┘
+                                            ↓
+                          课后题：作答 → 提交 → 「继续挑战」→ 新题
+                            ↓ 新题响应 completedFlag=true → 提交后结束
+                                            ↓
+                    按 config.interval 延迟 → 整页跳转下一课时（或毕业闭环）
+```
+
+### 迭代 2 需求
+
+#### Requirement: 视频完成以平台信号为准
+
+系统 SHALL 以拦截到本课时的 `setContentFinished` 响应作为视频任务完成的确认信号；
+`ended` 仅触发重播复查，不再直接标记完成。
+
+#### Scenario: 播放中拦截到信号
+
+- **WHEN** 视频播放过程中（含中段）站点发送本课时 setContentFinished 且响应 200
+- **THEN** 视频任务立即标记完成并推进到课后题
+
+#### Scenario: 播完未拦截到信号
+
+- **WHEN** 视频触发 ended 但未拦截到 setContentFinished
+- **THEN** 自动重播（从头完整播放），不写完成标记、不推进
+
+#### Scenario: 重播熔断
+
+- **WHEN** 连续重播达到上限（3 次）仍未拦截到信号
+- **THEN** 停止重播并输出错误日志，走任务集既有兜底（标记 + 整页重载自愈，服务端状态为准）
+
+#### Requirement: 课后题按 completedFlag 精确推进
+
+系统 SHALL 在 `video/question` 响应 `completedFlag === true` 时，于该题提交后结束课后题任务；
+非结束题提交后 SHALL 自动点击「继续挑战」拉取下一题。
+
+#### Scenario: 最后一题
+
+- **WHEN** 新拉取题目的响应 completedFlag === true 且该题已提交
+- **THEN** quiz 任务结束，按 config.interval 延迟后整页跳转下一课时
+
+### 迭代 2 新增 Assumption
+
+| # | 待验证项 | 验证方式 | 兜底方案 |
+|---|----------|----------|----------|
+| 6 | 「继续挑战」按钮 DOM 结构与文本 | 实测抓取 | 按文本"继续挑战"遍历可点击元素；找不到时退回既有 idle 轮次启发式 |
+| 7 | setContentFinished URL 中 sectionId 与 study URL lessonId 恒等 | 抓包比对（实测样例一致） | 回调兜底匹配其余课时特征；匹配失败仅告警不误标 |
+
+### 迭代 2 Impact
+
+- Affected code：`src/mooc/sanjieke/{video,quiz,study,constants,types}.ts`
+- 不触碰 zsgl 任何文件（含 video.ts —— 上轮误改已修复，本轮零 zsgl 改动）
+- 不新增配置项（复用既有 `interval` 跳转间隔）

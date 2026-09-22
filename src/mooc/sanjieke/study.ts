@@ -345,14 +345,13 @@ export class SanjiekeStudy extends EventListener<MoocEvent>
     }
 
     this.clearLessonRetry(lessonId);
+    const transitionDelayMs = Application.App.config.interval * 60000;
     Application.App.log.Info(
-      `[三节课] 课时完成,${SANJIEKE_CONSTANTS.LESSON_TRANSITION_DELAY_MS /
-        1000}s 后跳转下一课时: ${next.lessonName}(${next.lessonId})`,
+      `[三节课] 课时完成,${Math.round(
+        transitionDelayMs / 1000,
+      )}s 后跳转下一课时: ${next.lessonName}(${next.lessonId})`,
     );
-    this.scheduleNavigation(
-      next.lessonId,
-      SANJIEKE_CONSTANTS.LESSON_TRANSITION_DELAY_MS,
-    );
+    this.scheduleNavigation(next.lessonId, transitionDelayMs);
   }
 
   /** 整页跳转到指定课时(delay 后执行,Stop 可取消) */

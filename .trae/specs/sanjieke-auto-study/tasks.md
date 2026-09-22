@@ -106,6 +106,31 @@
 - Task 5.2 依赖 Task 2.1（zsgl 侧改动独立于三节课页面任务，可提前开发）
 - Task 6.x 依赖 Task 5.x
 
+## M7 迭代 2：平台完成信号确认与课后题精确推进（2026-09-22）
+
+> spec 见「迭代 2」章节。**明确排除：不实现秒过功能**。
+> 背景：错误会话曾把本迭代误做到 zsgl/video.ts（3172a7b 已恢复），本轮仅改 sanjieke 模块。
+
+- [x] Task 7.1: video.ts 平台完成信号确认（`src/mooc/sanjieke/video.ts`）
+  - [x] SubTask 7.1.1: `Start()` 注册 `hookHttpRequest("setContentFinished")` 钩子，回调按 URL `/content/{lessonId}/setContentFinished` 过滤本课时
+  - [x] SubTask 7.1.2: 信号命中 → 写课时完成标记 + 完成 + `callEvent("complete")`（幂等，与既有完成路径收敛为单一收口函数；播放中段触发同样生效）
+  - [x] SubTask 7.1.3: `ended` 未拦截信号 → 重播（currentTime=0 + clickPlay），ended 监听去 `{once:true}`；重播上限 `VIDEO_REPLAY_MAX=3`（constants 新增），超限输出错误日志并按任务集既有兜底推进
+  - [x] SubTask 7.1.4: `Stop()` 移除钩子（`removeHttpRequestHook`）
+- [x] Task 7.2: quiz.ts 精确推进（`src/mooc/sanjieke/quiz.ts` + `types.ts` + `constants.ts`）
+  - [x] SubTask 7.2.1: `QuestionInfo` 增加可选 `completedFlag` 字段；`video/question` 钩子解析并缓存（弹性提取，缺省 undefined）（注：types.ts 既有字段已覆盖，无需改动）
+  - [x] SubTask 7.2.2: 提交后查找「继续挑战」按钮并点击（常量 `CONTINUE_CHALLENGE: "继续挑战"`，文本遍历匹配）；找不到时退回既有 idle 轮次启发式
+  - [x] SubTask 7.2.3: `completedFlag === true` 的题提交成功后 → `finish()`（优先级高于 idle 轮次判定；提交按钮不可用则下轮重试）
+- [x] Task 7.3: study.ts 课时切换延迟改用 `config.interval`（分钟 ×60000；`LESSON_TRANSITION_DELAY_MS` 常量保留给非用户配置路径）
+- [x] Task 7.4: 构建验证：`npm run build` 通过；`npx tsc --noEmit` 对比基线无新增错误
+- [x] Task 7.5: ai-collab 留痕：`docs/changelog.md` 追加迭代记录；`docs/tasks.md` T-016 备注本轮迭代
+- [ ] Task 7.6: 实测验证（用户浏览器）：播放 → 中段/末尾信号确认 → 答题 → 继续挑战 → 最后一题 → 按 interval 切换下一课时
+
+# M7 Task Dependencies
+
+- Task 7.1 / 7.2 / 7.3 相互独立，可并行实施
+- Task 7.4 依赖 7.1~7.3 全部完成
+- Task 7.5 依赖 7.4；Task 7.6 依赖 7.5
+
 # 实测记录（2026-09-22 用户浏览器实测）
 
 - 三节课学习页 URL 实测 `/study/0/34009243/36727951`;`window.__moocInstances__` 为空 →

@@ -68,3 +68,18 @@
 - [ ] 一门完整三节课课程端到端串联实测通过
 - [ ] zsgl 原有任务（video/knowledge/scorm/exam）回归正常
 - [ ] 无控制台未捕获异常
+
+### M7 迭代 2：平台完成信号确认与课后题精确推进（2026-09-22）
+
+- [ ] 拦截到本课时 setContentFinished（含播放中段）→ 视频任务立即标记完成并推进（实测）
+- [ ] ended 未拦截信号 → 自动重播，不写完成标记、不推进（实测）
+- [ ] 进入页面 ended/is-replay 状态走重播链路（实测）
+- [ ] 重播有 3 次熔断上限，超限走任务集自愈，无死循环（实测）
+- [ ] 提交答案后自动点击「继续挑战」拉取下一题（实测）
+- [ ] video/question 响应 completedFlag===true 的题提交后 quiz 任务结束（实测）
+- [ ] 课时切换延迟使用 sanjieke interval 配置（分钟 ×60000）（实测）
+- [x] 未实现秒过（代码中无主动构造/发送 setContentFinished 的逻辑，仅 hook 拦截）
+- [x] 零 zsgl 文件改动（仅 src/mooc/sanjieke/*，git status 确认）
+- [x] npm run build 通过；tsc --noEmit 对比基线无新增错误（仅 task.ts TS2551 既有项）
+- [x] changelog.md / docs/tasks.md 已按 ai-collab.md 留痕
+- [ ] 完整链路实测通过（播放 → 信号 → 答题 → 继续挑战 → 最后一题 → interval 切换下一课时）

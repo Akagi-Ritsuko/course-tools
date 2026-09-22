@@ -246,18 +246,26 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
       const answered =
         unanswered.length > 0
           ? this.answerCurrentQuestion(unanswered, answeredIds)
-          : false;
+          : { clicked: false, question: null as QuestionInfo | null };
       this.timerManager.setTimeout(
         "quizNext",
         () => {
           // 提交(仅当成功选中答案且按钮可用;开放题/无法定位时直接进入下一轮检测)
-          if (answered) {
+          if (answered.clicked) {
             const btn = document.querySelector(
               SANJIEKE_CONSTANTS.SELECTORS.QUIZ_SUBMIT,
             ) as HTMLButtonElement;
             if (btn && !btn.disabled) {
               btn.click();
               Application.App.log.Info("[三节课课后题] 已点击提交按钮");
+              // completedFlag=true 表示本次是最后一题,提交后答题环节即结束
+              if (answered.question?.completedFlag === true) {
+                Application.App.log.Info(
+                  "[三节课课后题] 已完成最后一题(completedFlag=true),课后题任务结束",
+                );
+                this.finish();
+                return;
+              }
             } else {
               Application.App.log.Warn(
                 "[三节课课后题] 提交按钮不可用(选中可能未生效),下一轮重试",
@@ -266,7 +274,12 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
           }
           this.timerManager.setTimeout(
             "quizNext",
-            answerRound,
+            () => {
+              // 提交后站点出现「继续挑战」按钮,点击后站点拉取下一题;
+              // 无论点击成败都继续既有轮次检测(idle 启发式兜底)
+              this.clickContinueChallenge();
+              answerRound();
+            },
             SANJIEKE_CONSTANTS.QUIZ_SUBMIT_INTERVAL_MS,
           );
         },
@@ -289,17 +302,18 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
 
   /**
    * 定位当前展示的题目,选中正确选项
-   * @returns 是否成功选中(选中后才允许提交)
+   * @returns clicked 是否成功选中(选中后才允许提交);question 为本次定位到的题目,
+   *          找不到题或不可作答时为 null
    */
   private answerCurrentQuestion(
     questions: QuestionInfo[],
     answeredIds: Set<number>,
-  ): boolean {
+  ): { clicked: boolean; question: QuestionInfo | null } {
     const quizRoot = document.querySelector(
       SANJIEKE_CONSTANTS.SELECTORS.QUIZ_ROOT,
     ) as HTMLElement;
     if (!quizRoot) {
-      return false;
+      return { clicked: false, question: null };
     }
     const rootText = quizRoot.textContent || "";
 
@@ -312,13 +326,13 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
       Application.App.log.Info(
         "[三节课课后题] 当前题目无答案(开放性问题)或已全部处理,跳过作答",
       );
-      return false;
+      return { clicked: false, question: null };
     }
 
     const optionEls = this.getOptionElements(quizRoot);
     if (optionEls.length === 0) {
       Application.App.log.Warn("[三节课课后题] 未找到可点击的选项元素");
-      return false;
+      return { clicked: false, question: current };
     }
 
     // 依答案字母定位选项并点击;MULTI 多答案逐个点击
@@ -361,7 +375,7 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
       );
     }
     answeredIds.add(current.id);
-    return clicked;
+    return { clicked, question: current };
   }
 
   /** 提取 quiz-list 下的选项元素(结构未知,多选择器兼容) */
@@ -378,6 +392,36 @@ export class SanjiekeQuiz extends SanjiekeTaskBase {
       }
     }
     return [];
+  }
+
+  /**
+   * 尝试点击「继续挑战」按钮(提交后站点出现,点击后站点拉取下一题)
+   * 找到且未禁用则点击并返回 true;找不到不视为异常,由既有轮次检测兜底
+   */
+  private clickContinueChallenge(): boolean {
+    const candidates = document.querySelectorAll(
+      "button, a, [role='button'], [class*='btn'], [class*='button']",
+    );
+    for (const node of Array.from(candidates)) {
+      const el = node as HTMLElement;
+      const text = el.textContent?.trim() || "";
+      if (!text.includes(SANJIEKE_CONSTANTS.BUTTON_TEXT.CONTINUE_CHALLENGE)) {
+        continue;
+      }
+      if (
+        el.hasAttribute("disabled") ||
+        el.getAttribute("aria-disabled") === "true"
+      ) {
+        continue;
+      }
+      el.click();
+      Application.App.log.Info("[三节课课后题] 已点击「继续挑战」");
+      return true;
+    }
+    Application.App.log.Debug(
+      "[三节课课后题] 未找到「继续挑战」按钮,走既有推进逻辑",
+    );
+    return false;
   }
 
   /** 标记完成并推进 */

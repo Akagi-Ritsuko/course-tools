@@ -9,7 +9,12 @@ import { Application } from "@App/internal/application";
 import { SanjiekeTaskBase } from "./task";
 import { SanjiekeTaskInfo } from "./types";
 import { SANJIEKE_CONSTANTS } from "./constants";
-import { setLessonDoneMark, parseStudyUrl } from "./utils/utils";
+import {
+  setLessonDoneMark,
+  parseStudyUrl,
+  hookHttpRequest,
+  removeHttpRequestHook,
+} from "./utils/utils";
 
 /**
  * SanjiekeVideo 课时视频任务
@@ -30,6 +35,10 @@ export class SanjiekeVideo extends SanjiekeTaskBase {
   private playAborted: boolean = false;
   /** 上次点击播放按钮的时间(限流用) */
   private lastPlayClickTime: number = 0;
+  /** 平台是否已通过 setContentFinished 确认课时完成 */
+  private finishedSignal: boolean = false;
+  /** ended 未获平台确认时的自动重播次数 */
+  private replayCount: number = 0;
 
   constructor(taskinfo: SanjiekeTaskInfo) {
     super();
@@ -55,6 +64,9 @@ export class SanjiekeVideo extends SanjiekeTaskBase {
         `[三节课视频] 开始任务: ${this.taskinfo.lessonName ||
           this.taskinfo.lessonId}`,
       );
+
+      // 0. 注册平台完成信号钩子(须先于起播动作,站点可能在观看中段即发送)
+      this.setupFinishHook();
 
       // 1. 触发 xgplayer 懒创建:点击播放区锚点(video 注入前 .xgplayer-play 可能尚不存在)
       this.triggerPlayerCreation();
@@ -157,6 +169,49 @@ export class SanjiekeVideo extends SanjiekeTaskBase {
     }
   }
 
+  /**
+   * 注册平台完成信号 HTTP 钩子:
+   * 站点在视频观看过程中(实测约 25% 进度)会主动 POST
+   * /b-side/api/web/study/0/{courseId}/content/{sectionId}/setContentFinished,
+   * 响应 200 即视为平台确认课时完成,URL 中 sectionId 与 taskinfo.lessonId 恒等
+   */
+  private setupFinishHook(): void {
+    hookHttpRequest(
+      SANJIEKE_CONSTANTS.HTTP_ENDPOINTS.SET_CONTENT_FINISHED,
+      (response, context, url) => {
+        const safeUrl = url || "";
+        const match = safeUrl.match(/\/content\/(\d+)\/setContentFinished/);
+        if (!match || match[1] !== String(this.taskinfo.lessonId)) {
+          Application.App.log.Debug(
+            `[三节课视频] 忽略 setContentFinished 信号(跨课时/无法识别): ${safeUrl}`,
+          );
+          return;
+        }
+        if (this.finishedSignal) {
+          return;
+        }
+        this.finishedSignal = true;
+        Application.App.log.Info(
+          "[三节课视频] 已拦截到 setContentFinished,平台确认课时完成",
+        );
+        this.finishTask("平台确认完成(setContentFinished)");
+      },
+      this,
+    ).catch(() => {});
+  }
+
+  /** 任务收口:幂等,统一清理自动恢复定时器、写完成标记并推进任务集 */
+  private finishTask(reason: string): void {
+    if (this.done) {
+      return;
+    }
+    this.timerManager.clearInterval("videoAutoResume");
+    this.markLessonDone();
+    this.done = true;
+    Application.App.log.Info(`[三节课视频] 任务完成: ${reason}`);
+    this.callEvent("complete");
+  }
+
   /** 挂载视频事件监听(全部托管,Stop 时统一移除) */
   private setupVideoHandlers(): void {
     // 应用倍速/静音配置
@@ -230,19 +285,26 @@ export class SanjiekeVideo extends SanjiekeTaskBase {
       true,
     );
 
-    // 播放结束 → 写课时完成标记 → 推进下一课时
-    this.addManagedListener(
-      this.video,
-      "ended",
-      () => {
-        Application.App.log.Info("[三节课视频] 视频播放结束");
-        this.timerManager.clearInterval("videoAutoResume");
-        this.markLessonDone();
-        this.done = true;
-        this.callEvent("complete");
-      },
-      { once: true },
-    );
+    // 播放结束:平台已确认(setContentFinished)则已在 finishTask 收口,此处仅兜底。
+    // 无 once 选项——重播后 ended 会再次触发,直至平台确认或重播上限兜底
+    this.addManagedListener(this.video, "ended", () => {
+      if (this.done || this.finishedSignal) {
+        return;
+      }
+      this.replayCount++;
+      if (this.replayCount > SANJIEKE_CONSTANTS.VIDEO_REPLAY_MAX) {
+        Application.App.log.Error(
+          "[三节课视频] 重播达上限仍未拦截到 setContentFinished,按任务集兜底推进",
+        );
+        this.finishTask("重播上限兜底");
+        return;
+      }
+      Application.App.log.Warn(
+        `[三节课视频] 视频已播完但未拦截到 setContentFinished(平台未确认),自动重播(${this.replayCount}/${SANJIEKE_CONSTANTS.VIDEO_REPLAY_MAX})`,
+      );
+      this.video.currentTime = 0;
+      this.clickPlay();
+    });
 
     // 自动恢复定时器
     this.startAutoResumeInterval();
@@ -395,5 +457,18 @@ export class SanjiekeVideo extends SanjiekeTaskBase {
     Application.App.log.Info(
       `[三节课视频] 课时完成标记已写入: ${this.taskinfo.lessonId}`,
     );
+  }
+
+  /** Stop:移除平台完成信号 HTTP 钩子(防泄漏),再执行基类定时器/监听器清理 */
+  public Stop(): Promise<void> {
+    try {
+      removeHttpRequestHook(
+        SANJIEKE_CONSTANTS.HTTP_ENDPOINTS.SET_CONTENT_FINISHED,
+        this,
+      );
+    } catch (e) {
+      // 忽略钩子清理失败
+    }
+    return super.Stop();
   }
 }
