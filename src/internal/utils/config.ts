@@ -25,6 +25,7 @@ export interface ConfigItems extends Config {
   interval: number;
   topic_interval: number;
   super_mode: boolean;
+  quiz_auto_answer: boolean;
   knowledge_page_url: string;
   daily_points_mode: boolean;
   daily_points_target: number;
@@ -180,6 +181,10 @@ export class ChromeConfigItems implements ConfigItems {
 
          public get video_mute() {
            return toBool(this.GetConfig("video_mute", "true"));
+         }
+
+         public get quiz_auto_answer() {
+           return toBool(this.GetConfig("quiz_auto_answer", "true"));
          }
 
          public get answer_ignore() {

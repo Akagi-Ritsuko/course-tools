@@ -61,7 +61,7 @@ export class MoocLauncher implements Launcher {
     protected runMoocTask(moocTask: MoocTaskSet) {
         Application.App.log.Debug("runMoocTask 开始执行任务:");
         moocTask.addEventListener("reload", () => {
-            Application.App.log.Warn("runMoocTask reload",Application.App.config.auto,moocTask);
+            // Application.App.log.Warn("runMoocTask reload",Application.App.config.auto,moocTask);
             if (Application.App.config.auto) {
                 this.runTask(moocTask);
             }
@@ -69,7 +69,7 @@ export class MoocLauncher implements Launcher {
             clearTimeout(this.timer);
         });
         moocTask.addEventListener("examReload", () => {
-            Application.App.log.Warn("runMoocTask examReload",Application.App.config.auto,moocTask);
+            // Application.App.log.Warn("runMoocTask examReload",Application.App.config.auto,moocTask);
                 this.runTask(moocTask);
 
             clearTimeout(this.timer);

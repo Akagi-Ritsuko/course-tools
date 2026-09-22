@@ -23,6 +23,8 @@ export const ZSGL_CONSTANTS = {
     /** scorm Start 等待开始按钮点击的超时时间 */
     START_TIMEOUT_MS: 30000,
     TASK_EXPIRE_MS: 1000 * 60 * 60 * 10,
+    /** 三方/混合课程轮询 queryCourseDetail 完成状态的间隔(ms) */
+    THIRD_PARTY_POLL_INTERVAL_MS: 30000,
     
     SELECTORS: {
         WATERMARK_FRAME: '#watermarkFrame',
@@ -58,6 +60,8 @@ export const ZSGL_CONSTANTS = {
         QUERY_STUDYMAP_GATE: 'queryStudymapGate.do',
         QUERY_STUDYMAP_GATE_TASK: 'queryStudymapGateTask.do',
         QUERY_NEW_EXAM_PAPER: 'queryNewExamPaper.do',
+        /** 视频完成标志接口(片段),平台周期性发送,收到即视为任务完成 */
+        SET_CONTENT_FINISHED: 'setContentFinished',
     },
     
     URL_PATTERNS: {
@@ -69,6 +73,7 @@ export const ZSGL_CONSTANTS = {
     BUTTON_TEXT: {
         START_AUTO: '开始挂机',
         STOP_AUTO: '暂停挂机',
+        LEARN_BUTTON: '立即学习',
         PASS_VIDEO: '秒过视频',
         DOWNLOAD_SUBTITLE: '下载字幕',
         DOWNLOAD_RESOURCE: '下载资源',

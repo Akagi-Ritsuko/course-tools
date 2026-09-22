@@ -21,7 +21,8 @@
   "content_scripts": [
     {
       "matches": [
-        "*://zsgl.lzlj.com/*"
+        "*://zsgl.lzlj.com/*",
+        "*://lzlj.b.sanjieke.cn/*"
       ],
       "js": [
         "src/start.js"

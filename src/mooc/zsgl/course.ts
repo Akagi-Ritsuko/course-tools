@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-09-27 02:32:51
  * @LastEditors: guotao
- * @LastEditTime: 2026-09-21 00:17:18
+ * @LastEditTime: 2026-09-22 16:04:21
  * @FilePath: \course-tools\src\mooc\zsgl\course.ts
  * @Description: zsgl 课程任务管理
  *
@@ -23,6 +23,7 @@ import {
   findElementByText,
   setupVisibilitySpoof,
   setupSwitchScreenNeutralizer,
+  sendApiRequest,
 } from "./utils/utils";
 import { createBtn, protocolPrompt } from "@App/internal/utils/utils";
 import { CourseDetailItem, TaskInfo, TaskStatus } from "./types";
@@ -52,6 +53,12 @@ export class ZsglCourse extends EventListener<MoocEvent>
   private cardOperated: boolean = false;
   /** 切屏检测改写钩子是否已注册(幂等) */
   private switchScreenHooked: boolean = false;
+  /** 是否为三方/混合课程(courseFileArr 含 URL 类型任务) */
+  private isThirdPartyCourse: boolean = false;
+  /** 三方课程自动化流程是否已启动(幂等,防重复点击「立即学习」) */
+  private thirdPartyFlowStarted: boolean = false;
+  /** 首次 queryCourseDetail 请求 URL(三方课程轮询复用,免感知具体路径) */
+  private courseDetailRequestUrl: string = "";
 
   public Init(): Promise<any> {
     return new Promise(async (resolve) => {
@@ -153,6 +160,22 @@ export class ZsglCourse extends EventListener<MoocEvent>
           const responseData = response?.body;
           const courseFileArr = responseData?.courseFileArr;
           const courseId = responseData?.courseId;
+
+          // 记录首次请求 URL,供三方课程轮询复用(同源 fetch,无需感知具体路径)
+          if (url && !self.courseDetailRequestUrl) {
+            self.courseDetailRequestUrl = url;
+          }
+
+          // 识别三方/混合课程:任务中含 URL 类型(课程内容由三节课页承载)
+          if (
+            courseFileArr &&
+            courseFileArr.some((item: any) => item.cwType === "URL")
+          ) {
+            self.isThirdPartyCourse = true;
+            Application.App.log.Info(
+              "检测到三方/混合课程(URL 类型任务),将走三方课程分支",
+            );
+          }
 
           if (courseId) {
             self.currentCourseId = courseId;
@@ -384,6 +407,13 @@ export class ZsglCourse extends EventListener<MoocEvent>
 
   /** 处理课程数据 */
   private async processCourseData(): Promise<void> {
+    // 三方/混合课程分支:自动点「立即学习」打开三节课页 + 轮询服务端完成状态,
+    // 不构建本页任务(URL 类型任务由三节课学习页承载)
+    if (this.isThirdPartyCourse && Application.App.config.auto) {
+      this.startThirdPartyFlow();
+      return;
+    }
+
     const loadedFlagValue = this.courseDetailData[0];
     let attemptCount = 0;
 
@@ -409,6 +439,101 @@ export class ZsglCourse extends EventListener<MoocEvent>
       },
       ZSGL_CONSTANTS.CHECK_INTERVAL_MS,
     );
+  }
+
+  /**
+   * 三方/混合课程自动化流程:
+   * 1. 轮询查找「立即学习」按钮并自动点击(仅一次),打开三节课学习页;
+   * 2. 定时轮询 queryCourseDetail(服务端状态为准),全部 hasLearned=1 时
+   *    走现有 courseTaskComplete 闭环(通知学习地图 + 关页)
+   * 不依赖跨域 localStorage:三节课与 zsgl 不同源,以 zsgl 服务端状态为准
+   */
+  private startThirdPartyFlow(): void {
+    if (this.thirdPartyFlowStarted) {
+      return;
+    }
+    this.thirdPartyFlowStarted = true;
+    Application.App.log.Info(
+      "[三方课程] 启动自动化:自动点击「立即学习」+ 轮询课程完成状态",
+    );
+
+    // 1. 轮询查找「立即学习」按钮(MUI Button 由 React 渲染,需等待挂载)
+    let findAttempts = 0;
+    this.timerManager.setInterval(
+      "findLearnButton",
+      () => {
+        findAttempts++;
+        if (findAttempts > ZSGL_CONSTANTS.MAX_ATTEMPT_COUNT * 4) {
+          this.timerManager.clearInterval("findLearnButton");
+          Application.App.log.Error(
+            "[三方课程] 未找到「立即学习」按钮,请人工打开三节课学习页",
+          );
+          return;
+        }
+        let btn: HTMLElement | null = findElementByText(
+          "button",
+          ZSGL_CONSTANTS.BUTTON_TEXT.LEARN_BUTTON,
+        );
+        if (!btn) {
+          // MUI 按钮结构: <button><span class="MuiButton-label">立即学习</span></button>
+          const label = findElementByText(
+            "span",
+            ZSGL_CONSTANTS.BUTTON_TEXT.LEARN_BUTTON,
+          );
+          btn = (label?.closest("button") as HTMLElement) || null;
+        }
+        if (btn) {
+          this.timerManager.clearInterval("findLearnButton");
+          Application.App.log.Info(
+            `[三方课程] 已自动点击「${ZSGL_CONSTANTS.BUTTON_TEXT.LEARN_BUTTON}」`,
+          );
+          btn.click();
+        }
+      },
+      ZSGL_CONSTANTS.CHECK_INTERVAL_MS,
+    );
+
+    // 2. 定时轮询服务端完成状态(默认30s;三方课程页面停留即可维持时长上报)
+    this.timerManager.setInterval(
+      "thirdPartyPoll",
+      () => {
+        this.pollThirdPartyCourseStatus();
+      },
+      ZSGL_CONSTANTS.THIRD_PARTY_POLL_INTERVAL_MS,
+    );
+  }
+
+  /** 轮询三方课程完成状态:全部 hasLearned=1 时走现有 courseTaskComplete 闭环 */
+  private async pollThirdPartyCourseStatus(): Promise<void> {
+    if (!this.courseDetailRequestUrl) {
+      return;
+    }
+    try {
+      const res = await sendApiRequest<any>(
+        "GET",
+        this.courseDetailRequestUrl,
+      );
+      const arr = res?.data?.body?.courseFileArr;
+      if (!Array.isArray(arr) || arr.length === 0) {
+        return;
+      }
+      const learnedCount = arr.filter(
+        (item: any) => String(item.hasLearned) === "1",
+      ).length;
+      if (learnedCount >= arr.length) {
+        this.timerManager.clearInterval("thirdPartyPoll");
+        Application.App.log.Info(
+          "[三方课程] 服务端判定全部任务已学习,走课程完成闭环",
+        );
+        this.courseTaskCompleteFc();
+      } else {
+        Application.App.log.Debug(
+          `[三方课程] 轮询: ${learnedCount}/${arr.length} 已完成`,
+        );
+      }
+    } catch (e) {
+      Application.App.log.Warn("[三方课程] 轮询 queryCourseDetail 失败", e);
+    }
   }
 
   /** 构建任务列表 */

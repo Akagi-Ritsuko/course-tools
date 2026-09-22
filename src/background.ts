@@ -60,13 +60,13 @@ class background implements Launcher {
         if (Application.App.debug) {
             return;
         }
-        chrome.runtime.onInstalled.addListener((details) => {
-            if (details.reason == "install") {
-                chrome.tabs.create({url: "https://cx.icodef.com/"});
-            } else if (details.reason == "update") {
-                chrome.tabs.create({url: "https://github.com/CodFrm/cxmooc-tools/releases"});
-            }
-        });
+        // chrome.runtime.onInstalled.addListener((details) => {
+        //     if (details.reason == "install") {
+        //         chrome.tabs.create({url: "https://cx.icodef.com/"});
+        //     } else if (details.reason == "update") {
+        //         chrome.tabs.create({url: "https://github.com/CodFrm/cxmooc-tools/releases"});
+        //     }
+        // });
     }
 
     protected update() {

@@ -1,0 +1,185 @@
+ [每日积分] panel: 构造函数被调用
+ [每日积分] panel: init方法被调用
+ [debug 12:43:22 ] Start document state: loading
+ create mooc
+ [info 12:43:22 ] 当前平台：sanjieke
+ mooc start 
+ [info 12:43:22 ] [三节课] 学习页初始化 courseId=34009243
+ [info 12:43:22 ] [可见性伪装] 已启用,页面切后台将继续播放
+ [info 12:43:22 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+ [debug 12:43:22 ] 注册HTTP钩子: /content/tree
+ [debug 12:43:22 ] 注册HTTP钩子: /questions
+ [debug 12:43:22 ] 注册HTTP钩子: cert/graduated
+ mooc初始化完成 
+  'mooc.Next'
+ [debug 12:43:22 ] runMoocTask 开始执行任务:
+ path /study/:project_id/:course_id/:node_id
+ [debug 12:43:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/info
+ [debug 12:43:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/userInfo
+ [debug 12:43:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/company/flag_info
+ [debug 12:43:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/token/refresh
+ 初始
+ [debug 12:43:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+ [debug 12:43:23 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+ [debug 12:43:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34009243/stat
+ [debug 12:43:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/info
+ [每日积分] panel: window.onload 触发
+ [每日积分] panel: 初始化消息监听
+ [debug 12:43:23 ] 每日积分模式初始化完成 
+ [debug 12:43:23 ] 拦截到HTTP请求: https://sjk2023.datasink.sensorsdata.cn/sa.gif?project=sanjieke&token=ce25e2aa081388dd
+ 
+ [debug 12:43:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/content/tree
+ [debug 12:43:23 ] 匹配到钩子: /content/tree
+ [debug 12:43:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/cert/graduated?courseId=34009243
+ [debug 12:43:23 ] 匹配到钩子: cert/graduated
+ [debug 12:43:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/questions
+ [debug 12:43:23 ] 匹配到钩子: /questions
+ [debug 12:43:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/exam
+ [warn 12:43:23 ] [三节课课后题] questions 响应结构无法识别,跳过缓存
+ [debug 12:43:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user/watermark
+ [debug 12:43:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/content/36727952
+ [debug 12:43:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/section/36727952/like/info
+ [debug 12:43:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/self?courseId=34009243&sectionId=36727952&projectId=0
+ [debug 12:43:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/qa/list/all?courseId=34009243&sectionId=36727952&projectId=0&page=1&pageSize=20&sortField=hot
+ [debug 12:43:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/course/34009243/appraise/tips
+ aiQaList
+ [debug 12:43:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34009243/video/questions_and_answers?sectionId=36727952&videoId=36725565
+ [debug 12:43:24 ] 匹配到钩子: /questions
+ [debug 12:43:24 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/ranges?business_id=1507&video_id=36725565&course_id=34009243
+ [每日积分] panel: 收到页面消息1 
+ [每日积分] panel: 收到页面消息1 
+ setPlayerConfig
+ [debug 12:43:24 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/ai/0/34009243/video/question?videoId=36725565&sectionId=36727952&retryFlag=false
+ [每日积分] panel: 收到页面消息1 
+ [warn 12:43:24 ] [三节课课后题] questions 响应结构无法识别,跳过缓存
+ [每日积分] panel: 收到页面消息1 
+ [每日积分] panel: 收到页面消息1 
+ [每日积分] panel: 收到页面消息1 
+ [warn 12:43:24 ] runMoocTask reload true 
+ [debug 12:43:24 ] runTask 开始执行任务: false
+ [debug 12:43:24 ] runTask 开始执行任务:
+ [debug 12:43:24 ] [三节课] Next 任务索引: 0 2
+4.4c341ab….chunk.js:1137 Uncaught TypeError: Cannot read properties of undefined (reading 'insertBefore')
+ [debug 12:43:24 ] 拦截到HTTP请求: https://service.sanjieke.cn/video/media/36725565/608p.m3u8?user_id=24443305&class_id=36731665&time=1790052204&nonce=868641&token=4a2e9782a5085712c8c07bb42cb2d8e8f1178e26&t=720p
+ [debug 12:43:25 ] 拦截到HTTP请求: https://service.sanjieke.cn/video/key/36725565?user_id=24443305&class_id=36731665&time=1790052205&nonce=929812&token=04aa2dd1f8ddc5e2cda1185a89a836dde94ac2f4
+ [debug 12:43:25 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/925b82b032c6bc254bc41825e385e307.ts?sign=d5c20a2a358029cfb3c819b1eee29193&t=6ab25bcd
+ [debug 12:43:25 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/21db42bd200bd54f378e2c8e5f9138d8.ts?sign=82e3470110741ce9cf448967478daa5c&t=6ab25bcd
+ cursrc:  src: https://service.sanjieke.cn/video/media/36725565/608p.m3u8?user_id=24443305&class_id=36731665&time=1790052204&nonce=868641&token=4a2e9782a5085712c8c07bb42cb2d8e8f1178e26&t=720p list: 
+ [debug 12:43:25 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/545c61bd38afc13b658953de24f7bf4f.ts?sign=b94c791ec28a53ff5abccc6d756ff1e7&t=6ab25bcd
+ [debug 12:43:25 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/095159863dd8d1dbdb8e541af5879d7a.ts?sign=772a753336ccc796e0eda7c62c37f737&t=6ab25bcd
+ [debug 12:43:25 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/3d868e430a67aef860182f01f1f6679e.ts?sign=db4575f59eebbd7a9a14f12906e44bdf&t=6ab25bcd
+VM218:3 [debug 12:43:26 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/d17baa4591451386e3f461c2f8dae483.ts?sign=439b18f2badc482d46022990ad827de4&t=6ab25bcd
+VM218:3 [debug 12:43:29 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:43:29 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/d55ed5026f2686c62d9272b4f67d1dd8.ts?sign=77ee103be707f51901ededa9344233a2&t=6ab25bcd
+app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+VM218:3 [debug 12:43:33 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/record_duration
+VM218:3 [debug 12:43:34 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:43:39 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/9fb62dcab79ca7b099d3e5031ed88ef9.ts?sign=f888a1932cf23f237f18f7ab0f575d3e&t=6ab25bcd
+VM218:3 [debug 12:43:39 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+VM218:3 [debug 12:43:43 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/record_duration
+VM218:3 [debug 12:43:44 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:43:49 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/fddcd45b6e7f243301b0829f1b859f0b.ts?sign=1a2adc97afdf6b9025299a540cef961c&t=6ab25bcd
+VM218:3 [debug 12:43:50 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+VM218:3 [debug 12:43:53 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/record_duration
+VM218:3 [debug 12:43:53 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+VM218:3 [debug 12:43:55 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:43:59 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/7410d8f7a4d29cade690d54056541b1d.ts?sign=e71aed5f39e1c6a618ca2e8d8379436e&t=6ab25bcd
+VM218:3 [debug 12:44:0 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+VM218:3 [debug 12:44:3 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/record_duration
+VM218:3 [debug 12:44:5 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:44:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+app.bundle.js?458c82a8a99fe9ec9ae1:17 visibilitychange 回来
+VM218:3 [debug 12:44:10 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/852167ab249d3dfbe5c6a74284ca7caa.ts?sign=1f4de496fd481131934809cd995ac7b2&t=6ab25bcd
+VM218:3 [debug 12:44:10 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+VM218:3 [debug 12:44:13 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/record_duration
+VM218:3 [debug 12:44:15 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:44:20 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/2ca7b31a986e9b3958c7750f1613355a.ts?sign=d4b05cf1b0b13fdf1ab6db931d4c93a3&t=6ab25bcd
+VM218:3 [debug 12:44:20 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+VM218:3 [debug 12:44:23 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/record_duration
+VM218:3 [debug 12:44:25 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:44:30 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:44:31 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/7338abf899b84631b220ea866ed08cb5.ts?sign=02c6e2879cd4439e42de5dec017ef426&t=6ab25bcd
+app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+VM218:3 [debug 12:44:33 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/record_duration
+VM218:3 [debug 12:44:35 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:44:40 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+VM218:3 [debug 12:44:40 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:44:41 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/c0e258057fec6522900cea2eac0372d0.ts?sign=c17c9d4ca8c42aa6449c7075d3ca79f8&t=6ab25bcd
+app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+VM218:3 [debug 12:44:43 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/record_duration
+VM218:3 [debug 12:44:45 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:44:45 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/content/36727952/setContentFinished
+VM218:3 [debug 12:44:50 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:44:50 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/content/36727952/setContentFinished
+VM218:3 [debug 12:44:52 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/b5d71abc0d04089561c98015fcf1a1bb.ts?sign=1d850bd48176b2aaab7e29db2c4a7cfd&t=6ab25bcd
+app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+VM218:3 [debug 12:44:53 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/record_duration
+VM218:3 [debug 12:44:55 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:44:55 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/content/36727952/setContentFinished
+VM218:3 [debug 12:45:0 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:45:2 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/dc0bb3093982fd2bd3f4889a45376dec.ts?sign=0687c756055a080a7bc24109f7984d57&t=6ab25bcd
+app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+VM218:3 [debug 12:45:3 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/record_duration
+VM218:3 [debug 12:45:6 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:45:10 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+VM218:3 [debug 12:45:11 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:45:16 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:45:21 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:45:26 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:45:31 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:45:36 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:45:40 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+VM218:3 [debug 12:45:41 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:46:3 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/0ac702b4ff156739ec1337b68074166b.ts?sign=4a4d1f02e29cfe62496d1736b0c9dcaa&t=6ab25bcd
+VM218:3 [debug 12:46:3 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/4a88dff0ef5bb37ee03d257ce511d868.ts?sign=f0428484ac02c43ced5817e1729265f8&t=6ab25bcd
+VM218:3 [debug 12:46:3 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:46:3 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/28ab9234af55a7d2c11c1983b669146d.ts?sign=35a369779f4f617a741efe4e2468486f&t=6ab25bcd
+VM218:3 [debug 12:46:4 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/397cb43fe56169d9b80642de1b8d5c14.ts?sign=193f4b2e7666daaa5e5f64df95d90776&t=6ab25bcd
+VM218:3 [debug 12:46:8 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:46:9 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+VM218:3 [debug 12:46:13 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:46:19 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:46:24 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:46:29 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:46:34 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:46:39 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:46:40 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+VM218:3 [debug 12:46:44 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:47:3 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/6d9ba5fd06e195c8f411cc4892377484.ts?sign=f1fe8585a33a759a214d13c4b8da6bfb&t=6ab25bcd
+VM218:3 [debug 12:47:3 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/f45dcd3c1150ee4bfcde208abf78c778.ts?sign=9b667649f881e16715ae3f964b10c5f8&t=6ab25bcd
+VM218:3 [debug 12:47:3 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:47:3 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/dc80d4b2de3c4680869c849757981a68.ts?sign=1d5fcd4eafcba852ebb87fcaf5a1b0de&t=6ab25bcd
+VM218:3 [debug 12:47:4 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/969294e1fc017f95889f2693fe0a445e.ts?sign=4ad8d0006acfd0a6ef64fe14b244e97d&t=6ab25bcd
+VM218:3 [debug 12:47:8 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:47:10 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+VM218:3 [debug 12:47:14 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:47:19 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:47:24 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:47:29 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:47:34 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:47:39 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:47:44 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:48:3 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/4f9cc5b16a6cd6ef6de0a26ea951f325.ts?sign=5972d694cdb1da276f2657de40edf04d&t=6ab25bcd
+VM218:3 [debug 12:48:3 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+VM218:3 [debug 12:48:3 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/2d96fb41f60c767604dfd9df7b8f61f2.ts?sign=01909051a440643348867fe2d429a6a4&t=6ab25bcd
+VM218:3 [debug 12:48:3 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:48:4 ] 拦截到HTTP请求: https://vcdn.sanjieke.cn/video/36725565/608p/ts/cd53efdf8c2833c1f4836118a35bdc18.ts?sign=3f00455fbb1efb786e017c2bd0cb7134&t=6ab25bcd
+VM218:3 [debug 12:48:8 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:48:13 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:48:18 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:48:23 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:48:28 ] 拦截到HTTP请求: https://video-knot-go.sanjieke.cn/v1/video/play/record
+VM218:3 [debug 12:48:30 ] [三节课视频] 视频被暂停,尝试恢复播放
+VM218:3 [debug 12:48:30 ] taskComplete事件触发
+app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+VM218:3 [debug 12:48:31 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/study/0/34009243/record_duration
+VM218:3 [debug 12:48:31 ] 拦截到HTTP请求: //web-api.sanjieke.cn/b-side/api/web/user_home/badge_list
+VM218:3 [debug 12:48:34 ] runTask 开始执行任务: false
+VM218:3 [debug 12:48:34 ] runTask 开始执行任务:
+VM218:3 [debug 12:48:34 ] [三节课] Next 任务索引: 1 2
+VM218:3 [debug 12:48:34 ] taskComplete事件触发
