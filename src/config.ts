@@ -45,9 +45,7 @@ export class SystemConfig {
              "*://zsgl.lzlj.com/#/home/courseDetail/*",
              "*://zsgl.lzlj.com/#/home/studyDetail/*",
            ],
-           sanjieke: [
-             "*://lzlj.b.sanjieke.cn/*",
-           ],
+           sanjieke: ["*://lzlj.b.sanjieke.cn/*"],
          };
          public static config: { [key: string]: PlatformConfig } = {
            // cx: {
@@ -211,22 +209,23 @@ export class SystemConfig {
            //     }],
            // },
            zsgl: {
-            name: "知识管理",
-            items: [
-              {
-                title: "自动挂机",
-                description: "控制所有课程页面的自动挂机状态（包括视频、学习地图等任务）",
-                type: "checkbox",
-                key: "auto",
-                value: true,
-              },
+             name: "知识管理",
+             items: [
+               {
+                 title: "自动挂机",
+                 description:
+                   "控制所有课程页面的自动挂机状态（包括视频、学习地图等任务）",
+                 type: "checkbox",
+                 key: "auto",
+                 value: true,
+               },
                {
                  title: "跳过选修",
                  description: "开启后自动挂机时会跳过选修课程",
                  type: "checkbox",
                  key: "skip_elective",
                  value: false,
-              },
+               },
                {
                  title: "视频静音",
                  description: "播放视频时自动开启静音",
@@ -243,73 +242,76 @@ export class SystemConfig {
                  value: "1",
                },
                {
-                title: "跳转间隔",
-                description: "视频完成后等待时间（单位：分钟）",
-                type: "text",
-                key: "interval",
-                unit: "分",
-                value: "1",
-              },
-              {
-                title: "考试答案导出",
-                description:
-                  "考试完成后自动将题目与答案导出为Markdown文件（保存到浏览器默认下载目录）",
-                type: "checkbox",
-                key: "answer_export_enabled",
-                value: true,
-              },
-              {
-                title: "日志转存",
-                description:
-                  "将运行日志定期写入浏览器本地存储，页面崩溃后重新打开课程页会自动导出日志文件；关闭后不写入任何日志",
-                type: "checkbox",
-                key: "log_persist_enabled",
-                value: true,
-              },
+                 title: "跳转间隔",
+                 description: "视频完成后等待时间（单位：分钟）",
+                 type: "text",
+                 key: "interval",
+                 unit: "分",
+                 value: "1",
+               },
+               {
+                 title: "考试答案导出",
+                 description:
+                   "考试完成后自动将题目与答案导出为Markdown文件（保存到浏览器默认下载目录）",
+                 type: "checkbox",
+                 key: "answer_export_enabled",
+                 value: true,
+               },
+               {
+                 title: "日志转存",
+                 description:
+                   "将运行日志定期写入浏览器本地存储，页面崩溃后重新打开课程页会自动导出日志文件；关闭后不写入任何日志",
+                 type: "checkbox",
+                 key: "log_persist_enabled",
+                 value: true,
+               },
              ],
            },
            sanjieke: {
-            name: "三节课",
-            items: [
-              {
-                title: "自动挂机",
-                description: "控制三节课学习页面的自动挂机状态（视频、课后题等任务）",
-                type: "checkbox",
-                key: "auto",
-                value: true,
-              },
-              {
-                title: "播放倍速",
-                description: "视频播放倍数（1为正常速度，建议最高2倍速）",
-                type: "text",
-                key: "video_multiple",
-                unit: "倍",
-                prompt:
-                  "三节课平台建议最高2倍速：更高倍速可能无法累计有效完成时长，导致课时实际未完成",
-                value: "1",
-              },
-              {
-                title: "视频静音",
-                description: "播放视频时自动开启静音",
-                type: "checkbox",
-                key: "video_mute",
-                value: true,
-              },
-              {
-                title: "自动答题",
-                description: "课后题自动选择正确答案并提交（仅限有答案的客观题）",
-                type: "checkbox",
-                key: "quiz_auto_answer",
-                value: true,
-              },
-              {
-                title: "跳转间隔",
-                description: "任务完成后等待时间（单位：分钟，支持小数，0.1=6秒）",
-                type: "text",
-                key: "interval",
-                unit: "分",
-                value: "0.1",
-              },
+             name: "三节课",
+             items: [
+               {
+                 title: "自动挂机",
+                 description:
+                   "控制三节课学习页面的自动挂机状态（视频、课后题等任务）",
+                 type: "checkbox",
+                 key: "auto",
+                 value: true,
+               },
+               {
+                 title: "播放倍速",
+                 description: "视频播放倍数（1为正常速度，建议最高2倍速）",
+                 type: "text",
+                 key: "video_multiple",
+                 unit: "倍",
+                 prompt:
+                   "三节课平台建议最高2倍速：更高倍速可能无法累计有效完成时长，导致课时实际未完成",
+                 value: "1",
+               },
+               {
+                 title: "视频静音",
+                 description: "播放视频时自动开启静音",
+                 type: "checkbox",
+                 key: "video_mute",
+                 value: true,
+               },
+               {
+                 title: "自动答题",
+                 description:
+                   "课后题自动选择正确答案并提交（仅限有答案的客观题）",
+                 type: "checkbox",
+                 key: "quiz_auto_answer",
+                 value: true,
+               },
+               {
+                 title: "跳转间隔",
+                 description:
+                   "任务完成后等待时间（单位：分钟，支持小数，0.1=6秒）",
+                 type: "text",
+                 key: "interval",
+                 unit: "分",
+                 value: "0.1",
+               },
              ],
            },
          };

@@ -60,6 +60,8 @@ export const ZSGL_CONSTANTS = {
         QUERY_STUDYMAP_GATE: 'queryStudymapGate.do',
         QUERY_STUDYMAP_GATE_TASK: 'queryStudymapGateTask.do',
         QUERY_NEW_EXAM_PAPER: 'queryNewExamPaper.do',
+        /** 视频完成标志接口(片段),平台周期性发送,收到即视为任务完成 */
+        SET_CONTENT_FINISHED: 'setContentFinished',
     },
     
     URL_PATTERNS: {

@@ -14,6 +14,7 @@ import {Course163Platform} from "../../mooc/course163/platform";
 import {IEventListener} from "@App/internal/utils/event";
 import { Task } from "@App/internal/app/task";
 import { ZsglPlatform } from "@App/mooc/zsgl/platform";
+import { SanjiekePlatform } from "@App/mooc/sanjieke/platform";
 
 // 事件
 export type MoocEvent =
@@ -57,18 +58,11 @@ export interface MoocFactory {
 export class DefaultMoocFactory implements MoocFactory {
     public CreateMooc(): Mooc {
         console.log("create mooc");
+        // 平台按域名天然互斥,顺序仅防御性:先 zsgl 域名,未命中再三节课域名
         let mooc = new ZsglPlatform().CreateMooc();
-        // let mooc = new CxPlatform().CreateMooc();
-        // if (mooc == null) {
-        //     mooc = new ZhsPlatform().CreateMooc();
-        // }
-        // if (mooc == null) {
-        //     mooc = new Course163Platform().CreateMooc();
-        // }
-        // if (mooc == null) {
-            
-        //     mooc = new ZsglPlatform().CreateMooc();
-        // }
+        if (mooc == null) {
+            mooc = new SanjiekePlatform().CreateMooc();
+        }
         return mooc;
     }
 }

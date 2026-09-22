@@ -19,13 +19,20 @@
 
 ## B. 实现验收（M2~M6 编码轮次逐项勾验）
 
+> **2026-09-22**: M2~M6 代码已全部落地，`npm run build` 通过。
+> 另：修复了两处**既有**（与本次改动无关的）jest 编译错误（`internal/utils/message.ts` 死分支缺 super、
+> `internal/utils/utils.ts` resolve 缺实参，均为运行时等价修复），`npm test` 恢复可用并通过（2 套件 9 用例），
+> 为内部工具链（含 sanjieke 复用的 hookHttpRequest 基础设施）提供回归证据。
+> 以下勾验项需加载扩展后在真实三节课/zsgl 页面实测（与 spec Assumptions #1~#5 一并验证），
+> 实测通过后逐项勾选；当前仅构建项可勾。
+
 ### M2 平台接入骨架
 
 - [ ] 三节课页面（`lzlj.b.sanjieke.cn/study/*`）注入扩展脚本，控制台出现平台识别日志
 - [ ] zsgl 页面注入行为不受影响（回归）
 - [ ] popup 出现"三节课"tab，含 `auto`/`video_multiple`/`video_mute`/`quiz_auto_answer` 四项
 - [ ] 配置读写落盘为 `sanjieke_` 前缀 key，与 zsgl 配置互不干扰
-- [ ] 构建无错误
+- [x] 构建无错误
 
 ### M3 视频挂机
 
