@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-15 10:55:02
  * @LastEditors: guotao
- * @LastEditTime: 2026-09-23 16:45:33
+ * @LastEditTime: 2026-09-23 18:27:06
  * @FilePath: \course-tools\src\mooc\zsgl\studyMap.ts
  * @Description: zsgl 学习地图模块
  *
@@ -20,7 +20,11 @@ import {
   setupPageKeepAlive,
 } from "./utils/utils";
 import { createBtn, protocolPrompt } from "@App/internal/utils/utils";
-import { NewChromeServerMessage } from "@App/internal/utils/message";
+import {
+  NewChromeClientMessage,
+  NewChromeServerMessage,
+  ZSGL_PLAIN_TASK_VISIT_TYPE,
+} from "@App/internal/utils/message";
 import { StudyMapData, GateTaskData, TaskStatus } from "./types";
 import { ZSGL_CONSTANTS } from "./constants";
 
@@ -35,10 +39,6 @@ export class ZsglStudyMap extends Task {
   protected studyMapDataList: StudyMapData[] = [];
   /** 定时器管理器 */
   private timerManager: TimerManager = new TimerManager();
-  /** 无媒体任务(resourceType=153)新开标签页句柄:由 window.open 钩子捕获,用于十秒后代关 */
-  private plainTaskWindow: Window | null = null;
-  /** window.open 捕获钩子是否已安装(幂等) */
-  private windowOpenHooked: boolean = false;
 
   public Init(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
@@ -433,9 +433,6 @@ export class ZsglStudyMap extends Task {
       const normalize = (text: string) => text.replace(/\s+/g, "");
       const targetName = normalize(this.gateTaskData?.taskName || "");
       const isPlainTask = Number(this.gateTaskData?.resourceType) === 153;
-      if (isPlainTask) {
-        this.hookWindowOpen();
-      }
       let attemptCount = 0;
       this.timerManager.setInterval(
         "findTaskBtn",
@@ -470,7 +467,13 @@ export class ZsglStudyMap extends Task {
           Application.App.log.Debug(currentbutton, "开始任务中的当前按钮");
           if (currentbutton) {
             this.timerManager.clearInterval("findTaskBtn");
-            currentbutton.click();
+            if (isPlainTask) {
+              // resourceType=153:不点站点卡片(合成点击无用户激活,站点侧
+              // window.open 会被弹窗拦截),按资源地址交由扩展后台开页
+              this.openPlainTask();
+            } else {
+              currentbutton.click();
+            }
 
             const taskKey = `${ZSGL_CONSTANTS.STORAGE_PREFIX}${this.gateTaskData.resourceId}`;
             const taskStatus: TaskStatus = {
@@ -482,9 +485,9 @@ export class ZsglStudyMap extends Task {
             const handler = createStorageHandler(taskKey);
             window.addEventListener("storage", handler);
 
-            // resourceType=153(无媒体图文任务):点击打开的页面非 course 页,
+            // resourceType=153(无媒体图文任务):任务页非 course 页,
             // 课程页的十秒完成闭环(course.ts)不会运行,由学习地图接管——
-            // 十秒后关闭新开标签页并刷新本页进入下一任务
+            // 十秒后(后台同步关页)刷新本页进入下一任务
             if (isPlainTask) {
               this.schedulePlainTaskClose();
             }
@@ -497,57 +500,46 @@ export class ZsglStudyMap extends Task {
   }
 
   /**
-   * 捕获站点 window.open 返回的新标签页句柄(幂等):
-   * 关卡任务点击由站点代码打开新标签页,学习地图需持有句柄才能代为关闭
+   * 无媒体任务(resourceType=153)开页:按资源地址规则直接构造任务页地址
+   * (queryStudymapResoureInfo 响应不含地址,实测地址为
+   * origin + /znWeb/knowledge-cloud/#/knowledgePage/{resourceId}),
+   * 经 start.ts 中继交由 background chrome.tabs 打开——页面侧 window.open
+   * 受用户激活/弹窗拦截限制,后台开页不受限且持 tabId 可精准关闭
    */
-  private hookWindowOpen(): void {
-    if (this.windowOpenHooked) {
-      return;
-    }
-    this.windowOpenHooked = true;
-    const originalOpen = window.open.bind(window);
-    window.open = (
-      url?: string | URL,
-      target?: string,
-      features?: string,
-    ): Window | null => {
-      const win = originalOpen(url, target, features);
-      console.log(win, "window.open 返回的新标签页句柄");
-      if (win) {
-        this.plainTaskWindow = win;
-        Application.App.log.Debug("[无媒体任务] 已捕获新标签页句柄");
-      }
-      return win;
-    };
+  private openPlainTask(): void {
+    const url = `${location.origin}${ZSGL_CONSTANTS.PLAIN_TASK_RESOURCE_PATH}${this.gateTaskData.resourceId}`;
+    Application.App.log.Info(
+      "[无媒体任务] resourceType=153,交由扩展后台打开任务页,十秒后自动关闭",
+      url,
+    );
+    const client = NewChromeClientMessage("cxmooc-tools");
+    client.Recv((resp: any) => {
+      Application.App.log.Debug("[无媒体任务] 后台开页结果 tabId=", resp?.tabId);
+    });
+    client.Send({
+      type: ZSGL_PLAIN_TASK_VISIT_TYPE,
+      url,
+      delayMs: ZSGL_CONSTANTS.PLAIN_COURSE_CLOSE_DELAY_MS,
+    });
   }
 
   /**
    * 无媒体任务(resourceType=153)完成闭环:
-   * 页面停留 PLAIN_COURSE_CLOSE_DELAY_MS 后关闭新开标签页并刷新学习地图,
-   * 由下一轮 Init 重新拉取关卡任务推进(学习记录以页面访问为准,由任务页自行上报)
+   * 任务页已交由后台打开并在 delayMs 后自动关闭;本页停留
+   * PLAIN_COURSE_CLOSE_DELAY_MS 后刷新,由下一轮 Init 重新拉取关卡任务推进
+   * (学习记录以页面访问为准,由任务页自行上报)
    */
   private schedulePlainTaskClose(): void {
     Application.App.log.Info(
-      "[无媒体任务] resourceType=153,页面停留十秒后将关闭任务标签页并刷新学习地图",
+      "[无媒体任务] resourceType=153,十秒后刷新学习地图进入下一任务(任务页由后台定时关闭)",
     );
     this.timerManager.setTimeout(
       "plainTaskClose",
       () => {
-        if (this.plainTaskWindow) {
-          try {
-            this.plainTaskWindow.close();
-          } catch (e) {
-            Application.App.log.Warn("[无媒体任务] 关闭任务标签页失败", e);
-          }
-          Application.App.log.Info(
-            "[无媒体任务] 停留时长已满足,已关闭任务标签页,刷新学习地图进入下一任务",
-          );
-          window.location.reload();
-        } else {
-          Application.App.log.Warn(
-            "[无媒体任务] 未捕获到新标签页句柄(可能被弹窗拦截),请手动关闭任务页;不自动刷新以免重复循环",
-          );
-        }
+        Application.App.log.Info(
+          "[无媒体任务] 停留时长已满足,刷新学习地图进入下一任务",
+        );
+        window.location.reload();
       },
       ZSGL_CONSTANTS.PLAIN_COURSE_CLOSE_DELAY_MS,
     );

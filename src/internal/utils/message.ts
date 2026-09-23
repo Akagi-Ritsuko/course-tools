@@ -18,6 +18,13 @@ export interface Server {
  */
 export const SANJIEKE_COURSE_COMPLETE_TYPE = "sanjieke_course_complete"
 
+/**
+ * 无媒体任务(resourceType=153)访问消息类型
+ * zsgl 学习地图页(主世界) → start.ts 中继 → background chrome.tabs 开任务页
+ * (页面侧 window.open 受用户激活/弹窗拦截限制,后台开页不受限且持 tabId 可精准关闭)
+ */
+export const ZSGL_PLAIN_TASK_VISIT_TYPE = "zsgl_plain_task_visit"
+
 export function NewExtensionServerMessage(port: string): extensionServerMessage {
     return new extensionServerMessage(port)
 }

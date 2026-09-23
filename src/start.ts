@@ -2,6 +2,7 @@ import {
   Client,
   NewChromeServerMessage,
   SANJIEKE_COURSE_COMPLETE_TYPE,
+  ZSGL_PLAIN_TASK_VISIT_TYPE,
 } from "@App/internal/utils/message";
 import {
   get,
@@ -56,6 +57,25 @@ class start implements Launcher {
               courseId: data.details?.courseId,
             },
             () => void chrome.runtime.lastError,
+          );
+          break;
+        }
+        case ZSGL_PLAIN_TASK_VISIT_TYPE: {
+          // 无媒体任务访问中转:学习地图页(主世界) → 后台 chrome.tabs 开任务页
+          // (页面侧 window.open 受用户激活/弹窗拦截限制,后台开页不受限)
+          chrome.runtime.sendMessage(
+            {
+              type: ZSGL_PLAIN_TASK_VISIT_TYPE,
+              url: data.url,
+              delayMs: data.delayMs,
+            },
+            (resp: any) => {
+              // 回传后台创建的 tabId 供学习地图页日志追踪
+              client.Send({
+                type: "ZSGL_PLAIN_TASK_VISIT_RESULT",
+                tabId: resp?.tabId,
+              });
+            },
           );
           break;
         }

@@ -1,6 +1,7 @@
 import {
   NewExtensionServerMessage,
   SANJIEKE_COURSE_COMPLETE_TYPE,
+  ZSGL_PLAIN_TASK_VISIT_TYPE,
 } from "./internal/utils/message";
 import {HttpUtils, get, dealHotVersion} from "./internal/utils/utils";
 import {Application, Backend, Launcher} from "./internal/application";
@@ -72,6 +73,35 @@ class background implements Launcher {
                 });
             }
             sendResponse({ success: true });
+        });
+        // 无媒体任务(resourceType=153)访问中转:学习地图页 → 此处 chrome.tabs
+        // 开任务页 → 停留 delayMs 后自动关闭。chrome.tabs 开页不受页面弹窗拦截
+        // 与用户激活限制,tabId 天然可精准关闭(页面侧 window.open 做不到)
+        chrome.runtime.onMessage.addListener((msg: any, _sender, sendResponse) => {
+            if (msg?.type !== ZSGL_PLAIN_TASK_VISIT_TYPE) {
+                return;
+            }
+            const delayMs = msg.delayMs || 10000;
+            chrome.tabs.create({ url: msg.url, active: false }, (tab) => {
+                const tabId = tab?.id;
+                Application.App.log.Info(
+                    "[无媒体任务] 后台已打开任务页,十秒后自动关闭",
+                    msg.url,
+                    "tabId=" + tabId,
+                );
+                setTimeout(() => {
+                    if (tabId !== undefined) {
+                        chrome.tabs.remove(tabId, () => {
+                            void chrome.runtime.lastError;
+                        });
+                        Application.App.log.Info(
+                            "[无媒体任务] 停留时长已满足,已关闭任务页 tabId=" + tabId,
+                        );
+                    }
+                }, delayMs);
+                sendResponse({ tabId });
+            });
+            return true;
         });
         this.injectedScript();
         this.event();

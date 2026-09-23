@@ -57,6 +57,7 @@ export interface StudyMapData {
 
 export interface GateTaskData {
     taskName: string;
+    /** 资源类型:2=考试(拦截时排除),153=无媒体图文任务(点击打开页面非 course 页,由 studyMap 接管十秒完成闭环) */
     resourceType: string;
     resourceId: string;
     status: number;

@@ -189,91 +189,97 @@ export class ZsglCourse extends EventListener<MoocEvent>
         Application.App.log.Info("匹配到课程详情请求:", url);
 
         try {
-          Application.App.log.Debug(
-            "课程详情请求响应:",
-            JSON.stringify(response).substring(0, 500),
-          );
-
-          const responseData = response?.body;
-          const courseFileArr = responseData?.courseFileArr;
-          const courseId = responseData?.courseId;
-
-          // 识别三方/混合课程:任务中含 URL 类型(课程内容由三节课页承载)
-          if (
-            courseFileArr &&
-            courseFileArr.some((item: any) => item.cwType === "URL")
-          ) {
-            self.isThirdPartyCourse = true;
-            Application.App.log.Info(
-              "检测到三方/混合课程(URL 类型任务),将走三方课程分支",
-            );
-          }
-
-          if (courseId) {
-            self.currentCourseId = courseId;
-          }
-
-          // coursewareType===0(无媒体任务课程):学习记录以页面访问为准,
-          // 打开十秒即视为完成——走统一完成闭环(标记 finished 供学习地图刷新 + 关页)
-          if (
-            responseData?.coursewareType === 0 &&
-            !self.plainCourseCloseScheduled
-          ) {
-            self.plainCourseCloseScheduled = true;
-            Application.App.log.Info(
-              "[coursewareType=0] 无媒体任务,页面停留十秒后自动完成并关闭",
-            );
-            self.timerManager.setTimeout(
-              "plainCourseClose",
-              () => {
-                Application.App.log.Info(
-                  "[coursewareType=0] 停留时长已满足,通知学习地图刷新并关闭页面",
-                );
-                self.courseTaskCompleteFc();
-              },
-              ZSGL_CONSTANTS.PLAIN_COURSE_CLOSE_DELAY_MS,
-            );
-            return;
-          }
-
-          if (courseFileArr && courseFileArr.length > 0) {
-            const allCompleted = courseFileArr.every(
-              (item: any) => item.hasLearned === "1",
-            );
-
-            if (allCompleted) {
-              Application.App.log.Info("课程已完成，所有任务都已学习");
-              self.callEvent("courseTaskComplete");
-            } else {
-              self.courseDetailData = courseFileArr
-                .map(
-                  (item: any, index: number): CourseDetailItem => {
-                    return {
-                      hasLearned: item.hasLearned,
-                      fileName: item.fileName,
-                      cwType: item.cwType,
-                      jobIndex: index,
-                      courseId,
-                      playTime: item.playTime,
-                      learnedDuration: item.learnedDuration,
-                    };
-                  },
-                )
-                .filter((item: CourseDetailItem) => {
-                  return item.hasLearned === "0";
-                });
-              Application.App.log.Info(
-                "课程详情数据已获取，共",
-                self.courseDetailData.length,
-                "个未完成任务",
+              Application.App.log.Debug(
+                "课程详情请求响应:",
+                JSON.stringify(response).substring(0, 500),
               );
-              Application.App.log.Debug("课程详情数据", self.courseDetailData);
-            }
-          } else {
-            Application.App.log.Info("课程数据为空");
-            self.callEvent("courseTaskComplete");
-          }
-        } catch (e) {
+
+              const responseData = response?.body;
+              const courseFileArr = responseData?.courseFileArr;
+              const courseId = responseData?.courseId;
+
+              // 识别三方/混合课程:任务中含 URL 类型(课程内容由三节课页承载)
+              if (
+                courseFileArr &&
+                courseFileArr.some((item: any) => item.cwType === "URL")
+              ) {
+                self.isThirdPartyCourse = true;
+                Application.App.log.Info(
+                  "检测到三方/混合课程(URL 类型任务),将走三方课程分支",
+                );
+              }
+
+              if (courseId) {
+                self.currentCourseId = courseId;
+              }
+
+              // coursewareType===0(无媒体任务课程):学习记录以页面访问为准,
+              // 打开十秒即视为完成——走统一完成闭环(标记 finished 供学习地图刷新 + 关页)
+              // 作用域注:仅覆盖直接进入课程页的场景;学习地图关卡任务
+              // (queryStudymapGateTask)的 coursewareType=0 打开页面非 course 页,
+              // 本回调不会运行,由 studyMap 接管(见 studyMap.ts schedulePlainTaskClose)
+              if (
+                responseData?.coursewareType === 0 &&
+                !self.plainCourseCloseScheduled
+              ) {
+                self.plainCourseCloseScheduled = true;
+                Application.App.log.Info(
+                  "[coursewareType=0] 无媒体任务,页面停留十秒后自动完成并关闭",
+                );
+                self.timerManager.setTimeout(
+                  "plainCourseClose",
+                  () => {
+                    Application.App.log.Info(
+                      "[coursewareType=0] 停留时长已满足,通知学习地图刷新并关闭页面",
+                    );
+                    self.courseTaskCompleteFc();
+                  },
+                  ZSGL_CONSTANTS.PLAIN_COURSE_CLOSE_DELAY_MS,
+                );
+                return;
+              }
+
+              if (courseFileArr && courseFileArr.length > 0) {
+                const allCompleted = courseFileArr.every(
+                  (item: any) => item.hasLearned === "1",
+                );
+
+                if (allCompleted) {
+                  Application.App.log.Info("课程已完成，所有任务都已学习");
+                  self.callEvent("courseTaskComplete");
+                } else {
+                  self.courseDetailData = courseFileArr
+                    .map(
+                      (item: any, index: number): CourseDetailItem => {
+                        return {
+                          hasLearned: item.hasLearned,
+                          fileName: item.fileName,
+                          cwType: item.cwType,
+                          jobIndex: index,
+                          courseId,
+                          playTime: item.playTime,
+                          learnedDuration: item.learnedDuration,
+                        };
+                      },
+                    )
+                    .filter((item: CourseDetailItem) => {
+                      return item.hasLearned === "0";
+                    });
+                  Application.App.log.Info(
+                    "课程详情数据已获取，共",
+                    self.courseDetailData.length,
+                    "个未完成任务",
+                  );
+                  Application.App.log.Debug(
+                    "课程详情数据",
+                    self.courseDetailData,
+                  );
+                }
+              } else {
+                Application.App.log.Info("课程数据为空");
+                self.callEvent("courseTaskComplete");
+              }
+            } catch (e) {
           Application.App.log.Error("数据解析失败", e);
         }
       },
