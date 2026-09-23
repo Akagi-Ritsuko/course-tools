@@ -47,6 +47,13 @@ export class ZsglStudyMap extends Task {
         // 持 Web Lock 防后台挂机被浏览器冻结致通知延迟
         setupPageKeepAlive();
 
+        // 课程完成感知(T-003 闭环补链):课程详情页完成任务后写
+        // zsgl_task_{courseId}=finished 并关页,同源 storage 事件跨标签页
+        // 通知本页 reload 推进下一关。课程页与学习地图页分属不同标签页,
+        // setupMessageListener 的 postMessage 桥无发送方(历史设计),
+        // storage 事件是唯一可达通道(本页已持 Web Lock 防冻结漏收)
+        this.setupStorageListener();
+
         // 先注册所有HTTP请求钩子
         await this.hookStudymapGateRequests();
         await this.hookStudymapGateTaskRequests();
@@ -101,7 +108,7 @@ export class ZsglStudyMap extends Task {
           if (currentbutton) {
             this.timerManager.clearInterval("checkLevelBtn");
             currentbutton.addEventListener("click", async () => {
-              Application.App.log.Info("按钮被点击，开始执行任务");
+              // Application.App.log.Info("按钮被点击，开始执行任务");
               // 这里添加自定义逻辑
               await this.hookStudymapGateTaskRequests();
               if (this.gateTaskData && Application.App.config.auto === true) {
@@ -145,6 +152,32 @@ export class ZsglStudyMap extends Task {
           window.location.reload();
           break;
         }
+      }
+    });
+  }
+
+  /**
+   * 课程完成感知:监听同源 storage 事件(课程详情页写 zsgl_task_{courseId}=finished
+   * 时跨标签页触发),收到完成信号 reload 本页 → 重新解析关卡推进下一任务。
+   * 仅认 status=finished 且键前缀 zsgl_task_(排除 zsgl_video_complete_/zsgl_daily_task_ 等旁路键)
+   */
+  private setupStorageListener(): void {
+    window.addEventListener("storage", (e: StorageEvent) => {
+      if (!e.key || !e.key.startsWith(ZSGL_CONSTANTS.STORAGE_PREFIX) || !e.newValue) {
+        return;
+      }
+      try {
+        const val = JSON.parse(e.newValue);
+        if (val?.status !== "finished") {
+          return;
+        }
+        Application.App.log.Info(
+          "[学习地图] 收到课程完成信号,刷新页面推进下一关:",
+          e.key,
+        );
+        window.location.reload();
+      } catch (err) {
+        Application.App.log.Warn("[学习地图] storage 事件解析失败:", e.key, err);
       }
     });
   }

@@ -83,3 +83,16 @@
 - [x] npm run build 通过；tsc --noEmit 对比基线无新增错误（仅 task.ts TS2551 既有项）
 - [x] changelog.md / docs/tasks.md 已按 ai-collab.md 留痕
 - [ ] 完整链路实测通过（播放 → 信号 → 答题 → 继续挑战 → 最后一题 → interval 切换下一课时）
+
+### M8 迭代 3：图文（article）课时自动挂机（2026-09-23）
+
+- [ ] `SanjiekeArticle` 构建于图文课时（替代 SanjiekeVideo，quiz 照旧追加），构建日志类型/任务正确
+- [ ] 分步滚动温和（步长 600px / 间隔 300ms），滚动过程中站点主线程不出现长阻塞（对照调研期 60s 卡死问题）
+- [ ] 滚动到底（scrollTop+clientHeight >= scrollHeight-2）后站点发送 `content/{lessonId}/finished`
+- [ ] 钩子拦截到本课时 finished 响应 → 写课时完成标记 + 任务完成（实测）
+- [ ] 完成信号超时 30s → 兜底收口（写标记 + Warn 日志说明），不无限等待（实测）
+- [ ] 图文课时完成后按 interval 推进下一课时（或 quiz 在其先执行）；衔接既有任务链
+- [ ] tree type 实际值已从 Warn 日志确认并校准 `ARTICLE_CONTENT_TYPES` 白名单（Assumption #10）
+- [ ] `Stop()` 后钩子/定时器/监听器零泄漏
+- [ ] npm run build 通过；tsc --noEmit 对比基线无新增错误（Task 8.4 完成后勾选）
+- [ ] changelog.md / docs/tasks.md 已按 ai-collab.md 留痕（Task 8.5 完成后勾选）

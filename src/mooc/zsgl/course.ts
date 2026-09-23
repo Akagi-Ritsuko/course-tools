@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-09-27 02:32:51
  * @LastEditors: guotao
- * @LastEditTime: 2026-09-22 21:23:26
+ * @LastEditTime: 2026-09-23 21:50:44
  * @FilePath: \course-tools\src\mooc\zsgl\course.ts
  * @Description: zsgl 课程任务管理
  *
@@ -60,8 +60,7 @@ export class ZsglCourse extends EventListener<MoocEvent>
   private thirdPartyFlowStarted: boolean = false;
   /** 三节课毕业推送是否已处理(A 路 opener 直推与 B 路后台中转可能先后到达) */
   private sanjiekeCompleteHandled: boolean = false;
-  /** coursewareType===0 十秒关页定时是否已安排(幂等,防详情接口重复触发) */
-  private plainCourseCloseScheduled: boolean = false;
+
 
   public Init(): Promise<any> {
     return new Promise(async (resolve) => {
@@ -213,31 +212,6 @@ export class ZsglCourse extends EventListener<MoocEvent>
                 self.currentCourseId = courseId;
               }
 
-              // coursewareType===0(无媒体任务课程):学习记录以页面访问为准,
-              // 打开十秒即视为完成——走统一完成闭环(标记 finished 供学习地图刷新 + 关页)
-              // 作用域注:仅覆盖直接进入课程页的场景;学习地图关卡任务
-              // (queryStudymapGateTask)的 coursewareType=0 打开页面非 course 页,
-              // 本回调不会运行,由 studyMap 接管(见 studyMap.ts schedulePlainTaskClose)
-              if (
-                responseData?.coursewareType === 0 &&
-                !self.plainCourseCloseScheduled
-              ) {
-                self.plainCourseCloseScheduled = true;
-                Application.App.log.Info(
-                  "[coursewareType=0] 无媒体任务,页面停留十秒后自动完成并关闭",
-                );
-                self.timerManager.setTimeout(
-                  "plainCourseClose",
-                  () => {
-                    Application.App.log.Info(
-                      "[coursewareType=0] 停留时长已满足,通知学习地图刷新并关闭页面",
-                    );
-                    self.courseTaskCompleteFc();
-                  },
-                  ZSGL_CONSTANTS.PLAIN_COURSE_CLOSE_DELAY_MS,
-                );
-                return;
-              }
 
               if (courseFileArr && courseFileArr.length > 0) {
                 const allCompleted = courseFileArr.every(

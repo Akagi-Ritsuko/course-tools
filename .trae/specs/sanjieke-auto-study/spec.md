@@ -230,3 +230,64 @@ zsgl 平台存在"混合"型课程：课程详情页点击「立即学习」后�
 - Affected code：`src/mooc/sanjieke/{video,quiz,study,constants,types}.ts`
 - 不触碰 zsgl 任何文件（含 video.ts —— 上轮误改已修复，本轮零 zsgl 改动）
 - 不新增配置项（复用既有 `interval` 跳转间隔）
+
+## 迭代 3（2026-09-23）：图文（article）课时自动挂机
+
+### Why
+
+课程 34005412 出现新任务类型"图文"（DOM 图标 `i.section-type.section-text`、`attr-con` 文本"图文"）。当前 `isAutoStudyType` 白名单仅 video/audio，图文课时被类型分发跳过，并可能触发"剩余均为不可自动挂机类型 → 视为课程任务完成"**提前毕业**——图文内容实际未被学习。用户实测确认：**图文课时滚动到内容最底部即完成**，站点随后发送完成请求（curl 实测抓取）。
+
+### 页面调研结论（内置浏览器实测，2026-09-23，URL /study/0/34005412/36786590）
+
+- 图文内容滚动容器：`.right-content`（实测 scrollHeight≈29727 / clientHeight≈807，**内部容器滚动**而非 window）；富文本正文类名 `richtext-module article-rich-text`
+- 完成请求（用户 curl 实测）：`POST /study/0/{courseId}/{lessonId}/finished`，**无请求体**（content-length: 0），与视频的 `setContentFinished` 同族 URL 模式（`/content/{lessonId}/...`）
+- 滚动期间站点周期性 `POST /study/0/{courseId}/record_duration`（阅读时长上报，挂机即发）
+- **快速连滚会使站点主线程长阻塞**（实测单次 evaluate 60s 超时、滚动 12000/29727 后停摆）→ 模拟滚动必须小步长 + 足够间隔
+- `scrollTop` 直跳到底的实验**未观测到 finished 请求**（推断站点按渐进滚动累计阅读判定）→ 模拟滚动须渐进式，且必须有兜底收口
+- 直接 fetch `content/tree` 因缺 `sjk-apikey` 签名被拒（响应仅 message）→ tree 的 `attribute.type` 图文取值待实现期日志实测
+
+### What Changes（迭代 3）
+
+- `constants.ts`：新增图文选择器（滚动容器等）、滚动参数（步长/间隔/最大步数）、完成确认等待超时、图文类型候选值
+- 新建 `article.ts`（`SanjiekeArticle`）：挂 `content/{lessonId}/finished` 响应钩子（按 lessonId 过滤，与 video.ts 迭代 2 模式对称）→ 温和分步滚动到底 → 等待完成信号；超时兜底主动收口
+- `study.ts`：类型分发扩展——图文课时构建 `SanjiekeArticle`（+既有 quiz 追加），白名单/判定扩展
+
+### 迭代 3 需求
+
+#### Requirement: 图文课时自动滚动完成
+
+系统 SHALL 为图文课时构建 `SanjiekeArticle` 任务：渐进式分步滚动图文容器至最底部（每步派发 scroll 事件，步长/间隔受控防主线程阻塞），并 SHALL 以拦截到本课时的 `content/{lessonId}/finished` 响应作为完成确认信号（与视频任务的 setContentFinished 确认制对称）。
+
+#### Scenario: 渐进滚动触发平台完成
+
+- **WHEN** 分步滚动到底且站点发送本课时 finished 请求
+- **THEN** 钩子拦截到响应 → 写课时完成标记 → 任务完成 → 按 interval 推进（无课后题时整页跳转下一课时；有课后题时 quiz 任务在其后执行）
+
+#### Scenario: 完成信号超时兜底
+
+- **WHEN** 滚动到底后等待超过确认超时（30s）仍未拦截到 finished
+- **THEN** 主动写课时完成标记并收口（record_duration 已上报阅读时长，服务端可判定），日志说明走兜底
+
+#### Scenario: 图文课时类型判定
+
+- **WHEN** 构建首个未完成课时任务且该课时类型命中图文候选（tree attribute.type，实现期以 Warn 日志实测校准）
+- **THEN** 构建 `SanjiekeArticle`（替代 `SanjiekeVideo`），quiz 任务照旧追加
+- **AND** 类型未知但 DOM 特征匹配（无 video 元素且存在图文滚动容器）时同样按图文处理
+
+#### Scenario: 滚动防卡死
+
+- **WHEN** 单步滚动导致站点主线程长阻塞（实测风险）
+- **THEN** 步长/间隔参数受限（小步慢滚），总时长超滚动总超时则熔断走兜底收口，不无限重试
+
+### 迭代 3 新增 Assumption
+
+| # | 待验证项 | 验证方式 | 兜底方案 |
+|---|----------|----------|----------|
+| 10 | tree `attribute.type` 图文取值（候选 article/doc/text） | 首次图文课时 study Warn 日志输出实际 type 值 | DOM 特征兜底判定（无 video + 有图文滚动容器） |
+| 11 | 渐进滚动是否必然触发站点 finished | 实测观察钩子命中 | 超时主动收口（写标记），完成判定交给服务端 record_duration |
+| 12 | 图文课时是否含课后题（video/question 接口是否出现） | 实测 | quiz 任务入口已有"无题立即完成"兜底，不阻塞 |
+
+### 迭代 3 Impact
+
+- Affected code：`src/mooc/sanjieke/{article(新建),study,constants}.ts`
+- 不触碰 zsgl 任何文件；不新增配置项（滚动参数为常量）

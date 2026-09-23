@@ -147,7 +147,15 @@ export class MultipleChoiceAnswerStrategy {
     // 按组合大小从 1 到 n 递增枚举，先试小组合（多数答案组合较小，更快命中）
     const combos = this.generateCombos(options);
 
-    for (const combo of combos) {
+    for (let comboIndex = 0; comboIndex < combos.length; comboIndex++) {
+      const combo = combos[comboIndex];
+      // 枚举期间无日志会被误判为卡死(答案组合大时前面几十个组合全部失败,
+      // 单题可静默跑数分钟),每 10 个组合报一次进度
+      if (comboIndex % 10 === 0) {
+        Application.App.log.Info(
+          `题目 ${state.questionId} 枚举进度: ${comboIndex + 1}/${combos.length}(当前组合 ${combo.length} 项)`,
+        );
+      }
       const answerData = {
         attemptId: this.attemptId,
         examId: this.examId,

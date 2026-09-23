@@ -50,48 +50,84 @@ export class ZsglVideo extends ZsglTask {
          public Start(): Promise<any> {
            return new Promise<void>(async (resolve, reject) => {
              Application.App.log.Debug("zsglVideo开始执行任务", this.taskDiv);
-             this.setupVideoEndHandler(); // ended → 完成检测与推进
 
-             // 半自动 v4:修复"站点自动续播先于监听挂载"的竞态——
-             // 挂监听后立即同步一次当前状态(仅当视频已在播放),并监听 play/playing
-             // (缓冲恢复/seek 后亦触发)持续应用倍速/静音
-             const applyPlaybackSettings = (reason: string) => {
-               const mute = Application.App.config.video_mute;
-               const rate = Application.App.config.video_multiple;
-               this.video.volume = mute ? 0 : 1;
-               this.video.playbackRate = rate;
-               Application.App.log.Info(
-                 `[任务进行中] (${reason}) 应用播放设置: 静音=${mute} 倍速=${rate}x`,
-               );
-             };
-             if (!this.video.paused) {
-               applyPlaybackSettings("挂载时视频已在播放,立即同步");
-             }
-             this.addManagedListener(
-               this.video,
-               "play",
-               () => applyPlaybackSettings("play"),
-             );
-             this.addManagedListener(
-               this.video,
-               "playing",
-               () => applyPlaybackSettings("playing"),
-             );
-             this.addManagedListener(
-               this.video,
-               "ratechange",
-               () => {
-                 const rate = Application.App.config.video_multiple;
-                 if (this.video.playbackRate !== rate) {
-                   this.video.playbackRate = rate;
-                 }
-               },
-             );
+             // 2026-09-23 用户反馈:课程详情页默认加载列表第一个视频,
+             // 不点击任务卡会播错视频。点击目标任务行打开对应视频
+             // (T-004 半自动仅移除播放器内部干预——任务卡点击属于课程导航,予以保留)
+             this.taskDiv.click();
              Application.App.log.Info(
-               "[任务进行中] 请手动点击任务卡打开播放器,视频结束后将自动切换下一任务",
+               "[任务进行中] 已点击目标任务卡,等待播放器加载",
              );
-             resolve();
+
+             // 点击后站点切换视频,video 元素可能被重建:轮询重新定位引用,
+             // 监听统一挂载到最终引用上(仅挂一次,避免重复注册)
+             let locateAttempts = 0;
+             const locateVideo = () => {
+               const v = document.querySelector(
+                 ZSGL_CONSTANTS.SELECTORS.COURSE_VIDEO,
+               ) as HTMLVideoElement | null;
+               if (v) {
+                 this.video = v;
+                 this.setupPlaybackListeners();
+                 Application.App.log.Info(
+                   "[任务进行中] 播放器已就绪,视频结束后将自动切换下一任务",
+                 );
+                 resolve();
+                 return;
+               }
+               locateAttempts++;
+               if (locateAttempts >= 15) {
+                 Application.App.log.Error(
+                   "[任务进行中] 点击任务卡后未找到视频元素,请人工检查",
+                 );
+                 resolve();
+                 return;
+               }
+               this.timerManager.setTimeout("locateVideo", locateVideo, 1000);
+             };
+             locateVideo();
            });
+         }
+
+         /** 挂载播放监听(ended 完成检测 + play/playing/ratechange 应用倍速静音) */
+         private setupPlaybackListeners(): void {
+           this.setupVideoEndHandler();
+
+           // 半自动 v4:修复"站点自动续播先于监听挂载"的竞态——
+           // 挂监听后立即同步一次当前状态(仅当视频已在播放),并监听 play/playing
+           // (缓冲恢复/seek 后亦触发)持续应用倍速/静音
+           const applyPlaybackSettings = (reason: string) => {
+             const mute = Application.App.config.video_mute;
+             const rate = Application.App.config.video_multiple;
+             this.video.volume = mute ? 0 : 1;
+             this.video.playbackRate = rate;
+             Application.App.log.Info(
+               `[任务进行中] (${reason}) 应用播放设置: 静音=${mute} 倍速=${rate}x`,
+             );
+           };
+           if (!this.video.paused) {
+             applyPlaybackSettings("挂载时视频已在播放,立即同步");
+           }
+           this.addManagedListener(
+             this.video,
+             "play",
+             () => applyPlaybackSettings("play"),
+           );
+           this.addManagedListener(
+             this.video,
+             "playing",
+             () => applyPlaybackSettings("playing"),
+           );
+           this.addManagedListener(
+             this.video,
+             "ratechange",
+             () => {
+               const rate = Application.App.config.video_multiple;
+               if (this.video.playbackRate !== rate) {
+                 this.video.playbackRate = rate;
+               }
+             },
+           );
          }
 
          /** 启动保持活跃机制 */

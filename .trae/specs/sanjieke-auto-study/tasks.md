@@ -131,6 +131,34 @@
 - Task 7.4 依赖 7.1~7.3 全部完成
 - Task 7.5 依赖 7.4；Task 7.6 依赖 7.5
 
+## M8 迭代 3：图文（article）课时自动挂机（2026-09-23）
+
+> spec 见「迭代 3」章节。调研依据：内置浏览器实测（滚动容器/主线程阻塞/record_duration）+ 用户 curl 实测完成请求 `POST /study/0/{courseId}/{lessonId}/finished`。
+
+- [ ] Task 8.1: constants.ts 图文参数与类型（`src/mooc/sanjieke/constants.ts`）
+  - [ ] SubTask 8.1.1: 新增选择器 `ARTICLE_SCROLL_CONTAINER: ".right-content"`（含注释：内部容器滚动，非 window）
+  - [ ] SubTask 8.1.2: 新增滚动常量：`ARTICLE_SCROLL_STEP_PX`(600)、`ARTICLE_SCROLL_INTERVAL_MS`(300)、`ARTICLE_SCROLL_MAX_STEPS`(120)、`ARTICLE_FINISH_WAIT_TIMEOUT_MS`(30000)
+  - [ ] SubTask 8.1.3: 新增 `ARTICLE_CONTENT_TYPES: ["article", "doc", "text"]` 候选（实现期以 study Warn 日志实测 type 值校准，Assumption #10）
+- [ ] Task 8.2: 新建 article.ts（`src/mooc/sanjieke/article.ts`）
+  - [ ] SubTask 8.2.1: `SanjiekeArticle extends SanjiekeTaskBase`，`Type(): "video"`（沿用任务类型通道）；`Init()` 定位滚动容器，缺失 reject
+  - [ ] SubTask 8.2.2: `Start()` 注册 `hookHttpRequest("/finished")` 钩子，按 URL `/content/{lessonId}/finished` 过滤本课时（对称 video.ts 7.1.1）；命中且响应 200 → `finishArticle()` 收口
+  - [ ] SubTask 8.2.3: 温和分步滚动：每步 scrollTop += STEP_PX + dispatch scroll 事件，间隔 INTERVAL_MS，最多 MAX_STEPS；触底判定（scrollTop+clientHeight >= scrollHeight-2）
+  - [ ] SubTask 8.2.4: 触底后轮询等待 finished 钩子命中，超时 ARTICLE_FINISH_WAIT_TIMEOUT_MS → 兜底收口（写课时完成标记，Warn 说明走兜底）
+  - [ ] SubTask 8.2.5: `finishArticle()` 幂等收口（写标记 + callEvent("complete")，对齐 video.ts 7.1.2 模式）；`Stop()` 移除钩子 + 清理定时器监听器
+- [ ] Task 8.3: study.ts 类型分发扩展（`src/mooc/sanjieke/study.ts`）
+  - [ ] SubTask 8.3.1: `isAutoStudyType` 白名单并入 `ARTICLE_CONTENT_TYPES`（或新增 isArticleType 辅助）
+  - [ ] SubTask 8.3.2: `buildCurrentLessonTasks` 任务工厂按类型分发：video → `SanjiekeVideo`，图文类型 → `SanjiekeArticle`，quiz 统一追加（保留 [task, quiz] 结构）
+  - [ ] SubTask 8.3.3: DOM 特征兜底判定：类型未知但当前页无 video 且存在 `.right-content` 图文滚动容器 → 按图文处理（Assumption #10 兜底）
+- [ ] Task 8.4: 构建验证：`npm run build` 通过；`npx tsc --noEmit` 对比基线无新增错误
+- [ ] Task 8.5: ai-collab 留痕：`docs/changelog.md` 追加迭代记录；`docs/tasks.md` T-016 备注迭代 3
+- [ ] Task 8.6: 实测验证（用户浏览器）：图文课时自动滚动到底 → finished 钩子命中（或兜底）→ 完成推进；校准 tree type 实际值回填白名单（Assumption #10/#11/#12）
+
+# M8 Task Dependencies
+
+- Task 8.2 依赖 Task 8.1（常量先行）
+- Task 8.3 依赖 Task 8.1（类型候选）
+- Task 8.4 依赖 8.2/8.3；Task 8.5 依赖 8.4；Task 8.6 依赖 8.5
+
 # 实测记录（2026-09-22 用户浏览器实测）
 
 - 三节课学习页 URL 实测 `/study/0/34009243/36727951`;`window.__moocInstances__` 为空 →
