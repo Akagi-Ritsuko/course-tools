@@ -1,0 +1,445 @@
+00:58:22.608 app.bundle.js?458c82a8a99fe9ec9ae1:22 path /study/:project_id/:course_id/:node_id
+00:58:22.629 app.bundle.js?458c82a8a99fe9ec9ae1:17 初始
+00:58:22.644 sensorsdata.min.js:1 [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+s @ sensorsdata.min.js:1
+00:58:23.027 4.4c341ab71b6afca7650e.chunk.js:1137 Object
+00:58:29.125 app.bundle.js?458c82a8a99fe9ec9ae1:17 visibilitychange 离开
+00:58:31.027 app.bundle.js?458c82a8a99fe9ec9ae1:17 visibilitychange 回来
+00:58:33.296 4.4c341ab71b6afca7650e.chunk.js:1137 aiQaList
+00:58:33.644 4.4c341ab71b6afca7650e.chunk.js:1137 setPlayerConfig
+00:58:33.649 4.4c341ab71b6afca7650e.chunk.js:587 [Violation]
+    Added non-passive event listener to a scroll-blocking 'touchstart' event. Consider marking event handler as 'passive' to make the page more responsive. See https://www.chromestatus.com/feature/5745543795965952
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:587
+method @ 4.4c341ab71b6afca7650e.chunk.js:587
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:427
+value @ 4.4c341ab71b6afca7650e.chunk.js:427
+t @ 4.4c341ab71b6afca7650e.chunk.js:427
+t @ 4.4c341ab71b6afca7650e.chunk.js:755
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+is @ app.bundle.js:39
+vu @ app.bundle.js:39
+(匿名) @ app.bundle.js:47
+qi @ app.bundle.js:39
+mu @ app.bundle.js:39
+(匿名) @ app.bundle.js:39
+F @ app.bundle.js:47
+(匿名) @ app.bundle.js:47
+postMessage
+r @ app.bundle.js:47
+(匿名) @ app.bundle.js:47
+Gi @ app.bundle.js:39
+Js @ app.bundle.js:39
+Ks @ app.bundle.js:39
+ma @ app.bundle.js:39
+T @ 4.4c341ab71b6afca7650e.chunk.js:1137
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+Promise.then
+C @ 4.4c341ab71b6afca7650e.chunk.js:1137
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+is @ app.bundle.js:39
+vu @ app.bundle.js:39
+(匿名) @ app.bundle.js:47
+qi @ app.bundle.js:39
+mu @ app.bundle.js:39
+(匿名) @ app.bundle.js:39
+F @ app.bundle.js:47
+(匿名) @ app.bundle.js:47
+postMessage
+r @ app.bundle.js:47
+(匿名) @ app.bundle.js:47
+Gi @ app.bundle.js:39
+Js @ app.bundle.js:39
+Ks @ app.bundle.js:39
+ma @ app.bundle.js:39
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+Promise.then
+getCourseContentReq @ 4.4c341ab71b6afca7650e.chunk.js:1137
+be @ 4.4c341ab71b6afca7650e.chunk.js:1137
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+is @ app.bundle.js:39
+vu @ app.bundle.js:39
+(匿名) @ app.bundle.js:47
+qi @ app.bundle.js:39
+mu @ app.bundle.js:39
+(匿名) @ app.bundle.js:39
+F @ app.bundle.js:47
+(匿名) @ app.bundle.js:47
+postMessage
+r @ app.bundle.js:47
+(匿名) @ app.bundle.js:47
+Gi @ app.bundle.js:39
+Js @ app.bundle.js:39
+Ks @ app.bundle.js:39
+ma @ app.bundle.js:39
+_e @ 4.4c341ab71b6afca7650e.chunk.js:1137
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+ae @ 4.4c341ab71b6afca7650e.chunk.js:1137
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+onClick @ 4.4c341ab71b6afca7650e.chunk.js:1137
+s @ app.bundle.js:39
+h @ app.bundle.js:39
+(匿名) @ app.bundle.js:39
+g @ app.bundle.js:39
+at @ app.bundle.js:39
+it @ app.bundle.js:39
+st @ app.bundle.js:39
+ht @ app.bundle.js:39
+D @ app.bundle.js:39
+H @ app.bundle.js:39
+Qt @ app.bundle.js:39
+Jt @ app.bundle.js:39
+(匿名) @ app.bundle.js:47
+qi @ app.bundle.js:39
+I @ app.bundle.js:39
+Vt @ app.bundle.js:39
+00:58:34.287 已导航到     https://lzlj.b.sanjieke.cn/study/0/34005412/35316469
+00:58:34.339 dailyPointsPanel.ts:16 [每日积分] panel: 构造函数被调用
+00:58:34.339 dailyPointsPanel.ts:20 [每日积分] panel: init方法被调用
+00:58:34.339 log.ts:550 [debug 0:58:34 ] Start document state: loading
+00:58:34.339 mooc.ts:9 create mooc
+00:58:34.340 log.ts:561 [info 0:58:34 ] 当前平台：sanjieke
+00:58:34.340 mooc.ts:39 mooc start SanjiekeStudy {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: TimerManager, lessons: Array(0), …}
+00:58:34.340 log.ts:561 [info 0:58:34 ] [三节课] 学习页初始化 courseId=34005412
+00:58:34.340 log.ts:561 [info 0:58:34 ] [可见性伪装] 已启用,页面切后台将继续播放
+00:58:34.340 log.ts:561 [info 0:58:34 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+00:58:34.341 log.ts:550 [debug 0:58:34 ] 注册HTTP钩子: /content/tree
+00:58:34.341 log.ts:550 [debug 0:58:34 ] 注册HTTP钩子: /questions
+00:58:34.341 log.ts:550 [debug 0:58:34 ] 注册HTTP钩子: video/question
+00:58:34.341 log.ts:550 [debug 0:58:34 ] 注册HTTP钩子: cert/graduated
+00:58:34.341 mooc.ts:42 mooc初始化完成 SanjiekeStudy {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: TimerManager, lessons: Array(0), …}
+00:58:34.341 mooc.ts:43 Next() {
+        return new Promise((resolve) => {
+            application_1.Application.App.log.Debug("[三节课] Next 任务索引:", this.taskIndex, this.taskList.length);
+            if (this.taskList.length … 'mooc.Next'
+00:58:34.341 log.ts:550 [debug 0:58:34 ] runMoocTask 开始执行任务:
+00:58:34.420 app.bundle.js?458c82a8a99fe9ec9ae1:22 path /study/:project_id/:course_id/:node_id
+00:58:34.430 app.bundle.js?458c82a8a99fe9ec9ae1:17 初始
+00:58:34.476 sensorsdata.min.js:1 [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+s @ sensorsdata.min.js:1
+w @ sensorsdata.min.js:1
+qe @ sensorsdata.min.js:1
+initScrollmap @ sensorsdata.min.js:3
+Wt @ sensorsdata.min.js:2
+Vt @ sensorsdata.min.js:2
+qt @ sensorsdata.min.js:2
+cr.init @ sensorsdata.min.js:5
+(匿名) @ sensorsdata.min.js:5
+(匿名) @ sensorsdata.min.js:1
+(匿名) @ sensorsdata.min.js:1
+PendingScript
+sdk_url @ app.bundle.js:22
+value @ app.bundle.js:22
+e @ app.bundle.js:22
+t.default @ app.bundle.js:22
+(匿名) @ app.bundle.js:23
+(匿名) @ app.bundle.js:23
+o @ app.bundle.js:1
+(匿名) @ app.bundle.js:23
+o @ app.bundle.js:1
+(匿名) @ app.bundle.js:1
+(匿名) @ app.bundle.js:1
+00:58:34.709 dailyPointsPanel.ts:22 [每日积分] panel: window.onload 触发
+00:58:34.709 dailyPointsPanel.ts:318 [每日积分] panel: 初始化消息监听
+00:58:34.710 log.ts:550 [debug 0:58:34 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1790182714710, isRunning: false, …}
+00:58:34.985 4.4c341ab71b6afca7650e.chunk.js:1137 {history: {…}, location: {…}, match: {…}, staticContext: undefined, store: {…}, …}
+00:58:34.989 log.ts:550 [debug 0:58:34 ] 匹配到钩子: /content/tree
+00:58:34.990 log.ts:550 [debug 0:58:34 ] 匹配到钩子: cert/graduated
+00:58:34.991 log.ts:550 [debug 0:58:34 ] 匹配到钩子: /questions
+00:58:35.589 已导航到     https://lzlj.b.sanjieke.cn/study/0/34005412/36786590
+00:58:35.652 dailyPointsPanel.ts:16 [每日积分] panel: 构造函数被调用
+00:58:35.652 dailyPointsPanel.ts:20 [每日积分] panel: init方法被调用
+00:58:35.652 log.ts:550 [debug 0:58:35 ] Start document state: loading
+00:58:35.652 mooc.ts:9 create mooc
+00:58:35.653 log.ts:561 [info 0:58:35 ] 当前平台：sanjieke
+00:58:35.653 mooc.ts:39 mooc start SanjiekeStudy {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: TimerManager, lessons: Array(0), …}
+00:58:35.653 log.ts:561 [info 0:58:35 ] [三节课] 学习页初始化 courseId=34005412
+00:58:35.653 log.ts:561 [info 0:58:35 ] [可见性伪装] 已启用,页面切后台将继续播放
+00:58:35.653 log.ts:561 [info 0:58:35 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+00:58:35.653 log.ts:550 [debug 0:58:35 ] 注册HTTP钩子: /content/tree
+00:58:35.654 log.ts:550 [debug 0:58:35 ] 注册HTTP钩子: /questions
+00:58:35.654 log.ts:550 [debug 0:58:35 ] 注册HTTP钩子: video/question
+00:58:35.654 log.ts:550 [debug 0:58:35 ] 注册HTTP钩子: cert/graduated
+00:58:35.654 mooc.ts:42 mooc初始化完成 SanjiekeStudy {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: TimerManager, lessons: Array(0), …}
+00:58:35.654 mooc.ts:43 Next() {
+        return new Promise((resolve) => {
+            application_1.Application.App.log.Debug("[三节课] Next 任务索引:", this.taskIndex, this.taskList.length);
+            if (this.taskList.length … 'mooc.Next'
+00:58:35.654 log.ts:550 [debug 0:58:35 ] runMoocTask 开始执行任务:
+00:58:35.726 app.bundle.js?458c82a8a99fe9ec9ae1:22 path /study/:project_id/:course_id/:node_id
+00:58:35.743 app.bundle.js?458c82a8a99fe9ec9ae1:17 初始
+00:58:35.779 sensorsdata.min.js:1 [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+s @ sensorsdata.min.js:1
+w @ sensorsdata.min.js:1
+qe @ sensorsdata.min.js:1
+initScrollmap @ sensorsdata.min.js:3
+Wt @ sensorsdata.min.js:2
+Vt @ sensorsdata.min.js:2
+qt @ sensorsdata.min.js:2
+cr.init @ sensorsdata.min.js:5
+(匿名) @ sensorsdata.min.js:5
+(匿名) @ sensorsdata.min.js:1
+(匿名) @ sensorsdata.min.js:1
+PendingScript
+sdk_url @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+value @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+e @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+t.default @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+00:58:35.983 dailyPointsPanel.ts:22 [每日积分] panel: window.onload 触发
+00:58:35.984 dailyPointsPanel.ts:318 [每日积分] panel: 初始化消息监听
+00:58:35.984 log.ts:550 [debug 0:58:35 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1790182715984, isRunning: false, …}
+00:58:36.303 4.4c341ab71b6afca7650e.chunk.js:1137 {history: {…}, location: {…}, match: {…}, staticContext: undefined, store: {…}, …}
+00:58:36.310 log.ts:550 [debug 0:58:36 ] 匹配到钩子: /content/tree
+00:58:36.311 log.ts:550 [debug 0:58:36 ] 匹配到钩子: cert/graduated
+00:58:36.312 log.ts:550 [debug 0:58:36 ] 匹配到钩子: /questions
+00:58:36.778 log.ts:550 [debug 0:58:36 ] runTask 开始执行任务: false
+00:58:36.779 log.ts:550 [debug 0:58:36 ] runTask 开始执行任务:
+00:58:36.779 log.ts:550 [debug 0:58:36 ] [三节课] Next 任务索引: 0 2
+00:58:37.050 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {action: 'article:mounted', vendor: 'sanjieke', params: {…}}
+00:58:37.050 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+00:58:37.140 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+00:58:37.250 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+00:58:45.753 app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+00:58:46.787 4.4c341ab71b6afca7650e.chunk.js:1137 图文节10s完成
+00:58:46.787 4.4c341ab71b6afca7650e.chunk.js:1137 图文节，技术作业节，测试题节，scorm标记完成
+00:58:55.753 app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+00:59:05.745 app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+00:59:07.073 log.ts:572 [warn 0:59:7 ] [三节课图文] 等待平台 finished 信号超时,走兜底收口(阅读时长已由 record_duration 上报)
+Warn @ log.ts:572
+check @ article.ts:125
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+eval @ utils.ts:405
+setTimeout
+setTimeout @ utils.ts:403
+check @ article.ts:129
+waitForFinishSignal @ article.ts:131
+scrollStep @ article.ts:91
+eval @ article.ts:71
+Start @ article.ts:48
+eval @ mooc.ts:139
+fulfilled @ mooc.ts:5
+Promise.then
+step @ mooc.ts:7
+eval @ mooc.ts:8
+__awaiter @ mooc.ts:4
+runTask @ mooc.ts:120
+eval @ mooc.ts:71
+eval @ event.ts:30
+callEvent @ event.ts:29
+buildCurrentLessonTasks @ study.ts:230
+onContentTree @ study.ts:143
+eval @ study.ts:67
+eval @ utils.ts:84
+eval @ utils.ts:83
+XMLHttpRequest.send
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+e.exports @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+e.exports @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+Promise.then
+u.request @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+r.forEach.u.<computed> @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+A @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+C @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+p @ app.bundle.js?458c82a8a99fe9ec9ae1:17
+getMenuReq @ 4.4c341ab71b6afca7650e.chunk.js:1137
+Z @ 4.4c341ab71b6afca7650e.chunk.js:1137
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+is @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+vu @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+t.unstable_runWithPriority @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+qi @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+mu @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+Xs @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+t.unstable_runWithPriority @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+qi @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+Wi @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+Zi @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+Ks @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+ma @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+Promise.then
+getCourseInfoReq @ 4.4c341ab71b6afca7650e.chunk.js:1137
+er @ 4.4c341ab71b6afca7650e.chunk.js:1137
+(匿名) @ 4.4c341ab71b6afca7650e.chunk.js:1137
+is @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+vu @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+t.unstable_runWithPriority @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+qi @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+mu @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+F @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+x.port1.onmessage @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+postMessage
+r @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+t.unstable_scheduleCallback @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+Gi @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+Js @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+Ks @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+ma @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+Promise.then
+O @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+is @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+vu @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+t.unstable_runWithPriority @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+qi @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+mu @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+F @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+x.port1.onmessage @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+postMessage
+r @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+t.unstable_scheduleCallback @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+Ui @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+pu @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+hu @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+t.unstable_runWithPriority @ app.bundle.js?458c82a8a99fe9ec9ae1:47
+qi @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+du @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+Xs @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+Ks @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+Nu @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+tu @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+qu @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+t.render @ app.bundle.js?458c82a8a99fe9ec9ae1:39
+p @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+00:59:07.075 log.ts:550 [debug 0:59:7 ] taskComplete事件触发

@@ -1,0 +1,77 @@
+00:46:45.990 app.bundle.js?458c82a8a99fe9ec9ae1:22 path /study/:project_id/:course_id/:node_id
+00:46:46.010 app.bundle.js?458c82a8a99fe9ec9ae1:17 初始
+00:46:46.025 sensorsdata.min.js:1 [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+s @ sensorsdata.min.js:1
+00:46:46.439 4.4c341ab71b6afca7650e.chunk.js:1137 Object
+00:46:56.024 app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+00:47:06.013 app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+00:47:09.117 app.bundle.js?458c82a8a99fe9ec9ae1:17 visibilitychange 离开
+00:47:51.260 app.bundle.js?458c82a8a99fe9ec9ae1:17 visibilitychange 回来
+00:47:57.592 app.bundle.js?458c82a8a99fe9ec9ae1:17 visibilitychange 离开
+00:49:03.796 app.bundle.js?458c82a8a99fe9ec9ae1:17 visibilitychange 回来
+00:49:04.802 app.bundle.js?458c82a8a99fe9ec9ae1:17 执行
+00:49:05.415 app.bundle.js?458c82a8a99fe9ec9ae1:17 visibilitychange 离开
+00:49:07.402 app.bundle.js?458c82a8a99fe9ec9ae1:17 visibilitychange 回来
+00:49:09.714 已导航到     https://lzlj.b.sanjieke.cn/study/0/34005412/36786590
+00:49:09.782 dailyPointsPanel.ts:16 [每日积分] panel: 构造函数被调用
+00:49:09.783 dailyPointsPanel.ts:20 [每日积分] panel: init方法被调用
+00:49:09.783 log.ts:550 [debug 0:49:9 ] Start document state: loading
+00:49:09.783 mooc.ts:9 create mooc
+00:49:09.783 log.ts:561 [info 0:49:9 ] 当前平台：sanjieke
+00:49:09.784 mooc.ts:39 mooc start SanjiekeStudy {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: TimerManager, lessons: Array(0), …}
+00:49:09.784 log.ts:561 [info 0:49:9 ] [三节课] 学习页初始化 courseId=34005412
+00:49:09.784 log.ts:561 [info 0:49:9 ] [可见性伪装] 已启用,页面切后台将继续播放
+00:49:09.784 log.ts:561 [info 0:49:9 ] [切屏防御] 已启用:站点切窗检测(onblur/onfocus/onresize)已失效
+00:49:09.784 log.ts:550 [debug 0:49:9 ] 注册HTTP钩子: /content/tree
+00:49:09.785 log.ts:550 [debug 0:49:9 ] 注册HTTP钩子: /questions
+00:49:09.785 log.ts:550 [debug 0:49:9 ] 注册HTTP钩子: video/question
+00:49:09.785 log.ts:550 [debug 0:49:9 ] 注册HTTP钩子: cert/graduated
+00:49:09.785 mooc.ts:42 mooc初始化完成 SanjiekeStudy {event: {…}, taskList: Array(0), taskIndex: 0, timerManager: TimerManager, lessons: Array(0), …}
+00:49:09.785 mooc.ts:43 Next() {
+        return new Promise((resolve) => {
+            application_1.Application.App.log.Debug("[三节课] Next 任务索引:", this.taskIndex, this.taskList.length);
+            if (this.taskList.length … 'mooc.Next'
+00:49:09.785 log.ts:550 [debug 0:49:9 ] runMoocTask 开始执行任务:
+00:49:09.871 app.bundle.js?458c82a8a99fe9ec9ae1:22 path /study/:project_id/:course_id/:node_id
+00:49:09.888 app.bundle.js?458c82a8a99fe9ec9ae1:17 初始
+00:49:09.917 sensorsdata.min.js:1 [Violation]
+    Permissions policy violation: unload is not allowed in this document.
+s @ sensorsdata.min.js:1
+w @ sensorsdata.min.js:1
+qe @ sensorsdata.min.js:1
+initScrollmap @ sensorsdata.min.js:3
+Wt @ sensorsdata.min.js:2
+Vt @ sensorsdata.min.js:2
+qt @ sensorsdata.min.js:2
+cr.init @ sensorsdata.min.js:5
+(匿名) @ sensorsdata.min.js:5
+(匿名) @ sensorsdata.min.js:1
+(匿名) @ sensorsdata.min.js:1
+PendingScript
+sdk_url @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+value @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+e @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+t.default @ app.bundle.js?458c82a8a99fe9ec9ae1:22
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:23
+o @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+(匿名) @ app.bundle.js?458c82a8a99fe9ec9ae1:1
+00:49:10.233 dailyPointsPanel.ts:22 [每日积分] panel: window.onload 触发
+00:49:10.234 dailyPointsPanel.ts:318 [每日积分] panel: 初始化消息监听
+00:49:10.234 log.ts:550 [debug 0:49:10 ] 每日积分模式初始化完成 {learning: {…}, contribution: {…}, interaction: {…}, lastUpdate: 1790182150234, isRunning: false, …}
+00:49:10.511 4.4c341ab71b6afca7650e.chunk.js:1137 {history: {…}, location: {…}, match: {…}, staticContext: undefined, store: {…}, …}
+00:49:10.515 log.ts:550 [debug 0:49:10 ] 匹配到钩子: /content/tree
+00:49:10.516 log.ts:550 [debug 0:49:10 ] 匹配到钩子: cert/graduated
+00:49:10.516 log.ts:550 [debug 0:49:10 ] 匹配到钩子: /questions
+00:49:10.979 log.ts:550 [debug 0:49:10 ] runTask 开始执行任务: false
+00:49:10.979 log.ts:550 [debug 0:49:10 ] runTask 开始执行任务:
+00:49:10.979 log.ts:550 [debug 0:49:10 ] [三节课] Next 任务索引: 0 2
+00:49:11.211 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {action: 'article:mounted', vendor: 'sanjieke', params: {…}}
+00:49:11.211 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+00:49:11.306 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+00:49:11.421 dailyPointsPanel.ts:323 [每日积分] panel: 收到页面消息1 {action: 'article:loaded', vendor: 'sanjieke', params: {…}}
+00:49:19.897 app.bundle.js?458c82a8a99fe9ec9ae1:17 执行

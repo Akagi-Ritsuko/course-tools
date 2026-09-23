@@ -23,6 +23,7 @@ import {
 import { SANJIEKE_CONSTANTS } from "./constants";
 import { ContentTreeNode, LessonInfo } from "./types";
 import { SanjiekeVideo } from "./video";
+import { SanjiekeArticle } from "./article";
 import { SanjiekeQuiz } from "./quiz";
 import { cacheSanjiekeQuestions } from "./quiz";
 import {
@@ -41,8 +42,8 @@ const COMPLETE_NOTIFY_CLOSE_DELAY_MS = 500;
 
 export class SanjiekeStudy extends EventListener<MoocEvent>
   implements MoocTaskSet {
-  /** 当前课时的任务列表(视频+课后题) */
-  private taskList: Array<SanjiekeVideo | SanjiekeQuiz> = [];
+  /** 当前课时的任务列表(视频/图文+课后题) */
+  private taskList: Array<SanjiekeVideo | SanjiekeArticle | SanjiekeQuiz> = [];
   /** 任务索引 */
   private taskIndex: number = 0;
   /** 课程ID(来自 URL) */
@@ -277,7 +278,7 @@ export class SanjiekeStudy extends EventListener<MoocEvent>
 
     // 构建当前课时任务:视频 + 课后题(课后题超时自动跳过)
     Application.App.log.Info(
-      `[三节课] 构建课时任务: ${first.lessonName}(${first.lessonId}), 剩余未完成 ${pending.length} 个`,
+      `[三节课] 构建课时任务: ${first.lessonName}(${first.lessonId}), 类型: ${first.type || "未知"}, 剩余未完成 ${autoPending.length} 个`,
     );
     const taskInfo = {
       courseId: this.courseId,
@@ -285,14 +286,25 @@ export class SanjiekeStudy extends EventListener<MoocEvent>
       lessonName: first.lessonName,
       index: 0,
     };
-    const video = new SanjiekeVideo(taskInfo);
+    // 按课时类型分发主任务:视频 → SanjiekeVideo,图文 → SanjiekeArticle;
+    // 类型未知时以 DOM 特征兜底(当前页无 video 且存在图文滚动容器 → 图文,spec Assumption #10)
+    const useArticle =
+      isArticleType(first.type) ||
+      (!first.type &&
+        !document.querySelector("video") &&
+        !!document.querySelector(
+          SANJIEKE_CONSTANTS.SELECTORS.ARTICLE_SCROLL_CONTAINER
+        ));
+    const mainTask = useArticle
+      ? new SanjiekeArticle(taskInfo)
+      : new SanjiekeVideo(taskInfo);
     const quiz = new SanjiekeQuiz(taskInfo);
-    [video, quiz].forEach((task, index) => {
+    [mainTask, quiz].forEach((task, index) => {
       task.addEventListener("complete", () => {
         this.callEvent("taskComplete", index, task);
       });
     });
-    this.taskList = [video, quiz];
+    this.taskList = [mainTask, quiz];
     this.taskIndex = 0;
     this.callEvent("reload");
   }
@@ -585,14 +597,27 @@ function flattenLessons(
  * 扩展性:后续支持考试等类型时,将类型加入 AUTO_STUDY_CONTENT_TYPES
  * 并在 buildCurrentLessonTasks 的任务构建处扩展按类型分发。
  * 类型未知(如纯 DOM 数据源解析不到类型)时保持旧行为按可自动类型处理
+ * 图文候选并入(迭代 3):ARTICLE_CONTENT_TYPES 交由 SanjiekeArticle 处理
  */
 function isAutoStudyType(type?: string): boolean {
   if (!type) {
     return true;
   }
+  const whitelist = [
+    ...(SANJIEKE_CONSTANTS.AUTO_STUDY_CONTENT_TYPES as readonly string[]),
+    ...(SANJIEKE_CONSTANTS.ARTICLE_CONTENT_TYPES as readonly string[]),
+  ];
+  return whitelist.includes(type);
+}
+
+/** 是否图文类型课时(构建 SanjiekeArticle;候选值待实测校准,见 spec Assumption #10) */
+function isArticleType(type?: string): boolean {
   return (
-    SANJIEKE_CONSTANTS.AUTO_STUDY_CONTENT_TYPES as readonly string[]
-  ).includes(type);
+    !!type &&
+    (SANJIEKE_CONSTANTS.ARTICLE_CONTENT_TYPES as readonly string[]).includes(
+      type
+    )
+  );
 }
 
 /** 弹性判定节点完成状态(多字段兼容,仅认可信字段,不确定时保守返回未完成) */

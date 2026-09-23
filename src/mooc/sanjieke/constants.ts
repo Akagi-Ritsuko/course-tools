@@ -35,17 +35,33 @@ export const SANJIEKE_CONSTANTS = {
          LESSON_DONE_TTL_MS: 1000 * 60 * 60 * 24,
          /** 等待 content/tree 响应的超时时间(ms) */
          TREE_WAIT_TIMEOUT_MS: 30000,
-         /** DOM 课时列表轮询间隔/上限(内容树钩子未就绪时的兜底数据源) */
-         LESSON_DOM_CHECK_INTERVAL_MS: 2000,
-         LESSON_DOM_CHECK_MAX_ATTEMPTS: 15,
+        /** DOM 课时列表轮询间隔/上限(内容树钩子未就绪时的兜底数据源) */
+        LESSON_DOM_CHECK_INTERVAL_MS: 2000,
+        LESSON_DOM_CHECK_MAX_ATTEMPTS: 15,
 
-         URL_PATTERNS: {
+        /** 图文渐进滚动步长(px):小步慢滚,快速连滚会使站点主线程长阻塞(实测) */
+        ARTICLE_SCROLL_STEP_PX: 600,
+        /** 图文滚动步间隔(ms) */
+        ARTICLE_SCROLL_INTERVAL_MS: 300,
+        /** 图文滚动最大步数(熔断:超限强制置底) */
+        ARTICLE_SCROLL_MAX_STEPS: 120,
+        /** 图文滚动到底后等待平台 finished 信号的超时(ms),超时走兜底收口 */
+        ARTICLE_FINISH_WAIT_TIMEOUT_MS: 30000,
+        /** 图文内容就绪判定:scrollHeight 超出视口该值以上才算可滚动(防内容未挂载时触底判定恒真) */
+        ARTICLE_CONTENT_MIN_SCROLLABLE_PX: 100,
+        /** 图文内容就绪等待超时(ms),超时走兜底收口 */
+        ARTICLE_CONTENT_READY_TIMEOUT_MS: 30000,
+
+        URL_PATTERNS: {
           /** 学习页路径前缀: /study/0/{courseId}/{lessonId} */
           STUDY_PATH: "/study/0/",
         },
 
         /** 可自动挂机的内容类型(attribute.type/contentTypes):其余类型(考试/文档/直播等)跳过不处理,剩余全为此类时视为课程任务完成;支持新类型时在此扩展 */
         AUTO_STUDY_CONTENT_TYPES: ["video", "audio"],
+
+        /** 图文课时内容类型(tree attribute.type,实测 2026-09-24 课程 34005412 值为 "text") */
+        ARTICLE_CONTENT_TYPES: ["text"],
 
          HTTP_ENDPOINTS: {
            /** 课时内容树 GET /study/0/{courseId}/content/tree */
@@ -85,9 +101,11 @@ export const SANJIEKE_CONSTANTS = {
            /** 课时列表:每课时一个 .chapter-container,内含 .node-item[node-id] */
            LESSON_NODE: ".menu-container .node-item[node-id]",
            LESSON_NODE_NAME: ".node-name-con",
-           /** 课时完成标记:容器 class chapter-finish 或节点内 .status-con.section-finish */
+            /** 课时完成标记:容器 class chapter-finish 或节点内 .status-con.section-finish */
            LESSON_FINISHED_STATUS: ".status-con.section-finish",
-         },
+           /** 图文课时滚动容器(内部容器滚动,非 window;实测 .right-content) */
+           ARTICLE_SCROLL_CONTAINER: ".right-content",
+        },
 
          CSS_CLASSES: {
            /** 课时容器完成标记 class */

@@ -94,5 +94,5 @@
 - [ ] 图文课时完成后按 interval 推进下一课时（或 quiz 在其先执行）；衔接既有任务链
 - [ ] tree type 实际值已从 Warn 日志确认并校准 `ARTICLE_CONTENT_TYPES` 白名单（Assumption #10）
 - [ ] `Stop()` 后钩子/定时器/监听器零泄漏
-- [ ] npm run build 通过；tsc --noEmit 对比基线无新增错误（Task 8.4 完成后勾选）
-- [ ] changelog.md / docs/tasks.md 已按 ai-collab.md 留痕（Task 8.5 完成后勾选）
+- [x] npm run build 通过；tsc --noEmit 对比基线无新增错误（Task 8.4 完成后勾选）
+- [x] changelog.md / docs/tasks.md 已按 ai-collab.md 留痕（Task 8.5 完成后勾选）
