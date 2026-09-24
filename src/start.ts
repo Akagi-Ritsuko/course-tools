@@ -2,6 +2,7 @@ import {
   Client,
   NewChromeServerMessage,
   SANJIEKE_COURSE_COMPLETE_TYPE,
+  ZSGL_PLAIN_TASK_CLOSE_SELF,
   ZSGL_PLAIN_TASK_VISIT_TYPE,
 } from "@App/internal/utils/message";
 import {
@@ -20,12 +21,53 @@ import {
 import { ConsoleLog } from "./internal/utils/log";
 import sources = chrome.devtools.panels.sources;
 
+// 无媒体任务(resourceType=153)页侧自动关页:
+// 关页 URL 参数由 studyMap.openPlainTask 写入(query 在 hash 之前),
+// 页面自身计时后请求后台关闭自身(MV3 SW 定时器不可靠,时机由任务页掌控)
+let plainTaskCloseScheduled = false;
+
+function schedulePlainTaskCloseIfRequested(): void {
+  if (plainTaskCloseScheduled) {
+    return;
+  }
+  plainTaskCloseScheduled = true;
+  const rawDelay = new URLSearchParams(location.search).get(
+    "cxPlainTaskClose",
+  );
+  const delay = rawDelay ? parseInt(rawDelay, 10) : NaN;
+  if (isNaN(delay) || delay <= 0) {
+    return;
+  }
+  Application.App.log.Info(
+    "[无媒体任务] 检测到自动关页参数,停留 " + delay + "ms 后请求后台关闭",
+  );
+  window.setTimeout(() => {
+    chrome.runtime.sendMessage(
+      { type: ZSGL_PLAIN_TASK_CLOSE_SELF },
+      () => void chrome.runtime.lastError,
+    );
+  }, delay);
+}
+
+// 毕业通知 B 路发送:等待后台 ack,失败或无响应时小间隔重试
+// (SW 冷启动可能延迟首次应答;最多重试 2 次,总窗口 < 关页延迟 1500ms)
+function sendRelayWithAck(payload: any, retries: number = 2): void {
+  chrome.runtime.sendMessage(payload, (resp: any) => {
+    if (chrome.runtime.lastError || !resp?.success) {
+      if (retries > 0) {
+        window.setTimeout(() => sendRelayWithAck(payload, retries - 1), 400);
+      }
+    }
+  });
+}
+
 class start implements Launcher {
   public async start() {
+    schedulePlainTaskCloseIfRequested();
     let cacheJsonText = JSON.stringify(
       await Application.App.config.ConfigList(),
     );
-    get(chrome.extension.getURL("src/mooc.js"), function(source: string) {
+    get(chrome.runtime.getURL("src/mooc.js"), function(source: string) {
       Injected(
         document,
         "window.configData=" + cacheJsonText + ";\n" + source,
@@ -51,13 +93,12 @@ class start implements Launcher {
         }
         case SANJIEKE_COURSE_COMPLETE_TYPE: {
           // 三节课毕业通知:经后台中转回 zsgl 课程页(opener 直推失效时的兜底通路)
-          chrome.runtime.sendMessage(
-            {
-              type: SANJIEKE_COURSE_COMPLETE_TYPE,
-              courseId: data.details?.courseId,
-            },
-            () => void chrome.runtime.lastError,
-          );
+          // sendRelayWithAck 等待后台 ack,SW 冷启动无响应/失败时自动重试,
+          // 确保页面在关页延迟(1500ms)内送达
+          sendRelayWithAck({
+            type: SANJIEKE_COURSE_COMPLETE_TYPE,
+            courseId: data.details?.courseId,
+          });
           break;
         }
         case ZSGL_PLAIN_TASK_VISIT_TYPE: {

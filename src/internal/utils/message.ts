@@ -25,6 +25,13 @@ export const SANJIEKE_COURSE_COMPLETE_TYPE = "sanjieke_course_complete"
  */
 export const ZSGL_PLAIN_TASK_VISIT_TYPE = "zsgl_plain_task_visit"
 
+/**
+ * 无媒体任务页自动关闭消息类型
+ * 任务页 start.ts 按 URL 参数计时后发送,background 依据 sender.tab.id 关闭任务页
+ * (MV3 SW 定时器不可靠,关页时机由任务页侧掌控)
+ */
+export const ZSGL_PLAIN_TASK_CLOSE_SELF = "zsgl_plain_task_close_self"
+
 export function NewExtensionServerMessage(port: string): extensionServerMessage {
     return new extensionServerMessage(port)
 }

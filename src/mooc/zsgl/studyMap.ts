@@ -520,7 +520,7 @@ export class ZsglStudyMap extends Task {
 
             // resourceType=153(无媒体图文任务):任务页非 course 页,
             // 课程页的十秒完成闭环(course.ts)不会运行,由学习地图接管——
-            // 十秒后(后台同步关页)刷新本页进入下一任务
+            // 十秒后(任务页侧计时自关)刷新本页进入下一任务
             if (isPlainTask) {
               this.schedulePlainTaskClose();
             }
@@ -536,13 +536,22 @@ export class ZsglStudyMap extends Task {
    * 无媒体任务(resourceType=153)开页:按资源地址规则直接构造任务页地址
    * (queryStudymapResoureInfo 响应不含地址,实测地址为
    * origin + /znWeb/knowledge-cloud/#/knowledgePage/{resourceId}),
+   * URL 携带 cxPlainTaskClose 参数供任务页侧计时自关,
    * 经 start.ts 中继交由 background chrome.tabs 打开——页面侧 window.open
    * 受用户激活/弹窗拦截限制,后台开页不受限且持 tabId 可精准关闭
    */
   private openPlainTask(): void {
-    const url = `${location.origin}${ZSGL_CONSTANTS.PLAIN_TASK_RESOURCE_PATH}${this.gateTaskData.resourceId}`;
+    const base = `${location.origin}${ZSGL_CONSTANTS.PLAIN_TASK_RESOURCE_PATH}${this.gateTaskData.resourceId}`;
+    // 查询参数必须位于 hash 之前(路径常量含 "#/knowledgePage/"),
+    // 任务页 start.ts 依据该参数在停留时长满足后请求后台关闭自身
+    const hashIndex = base.indexOf("#");
+    const closeQuery = `?cxPlainTaskClose=${ZSGL_CONSTANTS.PLAIN_COURSE_CLOSE_DELAY_MS}`;
+    const url =
+      hashIndex >= 0
+        ? `${base.slice(0, hashIndex)}${closeQuery}${base.slice(hashIndex)}`
+        : `${base}${closeQuery}`;
     Application.App.log.Info(
-      "[无媒体任务] resourceType=153,交由扩展后台打开任务页,十秒后自动关闭",
+      "[无媒体任务] resourceType=153,交由扩展后台打开任务页,任务页停留十秒后计时自关",
       url,
     );
     const client = NewChromeClientMessage("cxmooc-tools");
@@ -558,13 +567,13 @@ export class ZsglStudyMap extends Task {
 
   /**
    * 无媒体任务(resourceType=153)完成闭环:
-   * 任务页已交由后台打开并在 delayMs 后自动关闭;本页停留
+   * 任务页已交由后台打开并按 cxPlainTaskClose 参数计时自关;本页停留
    * PLAIN_COURSE_CLOSE_DELAY_MS 后刷新,由下一轮 Init 重新拉取关卡任务推进
    * (学习记录以页面访问为准,由任务页自行上报)
    */
   private schedulePlainTaskClose(): void {
     Application.App.log.Info(
-      "[无媒体任务] resourceType=153,十秒后刷新学习地图进入下一任务(任务页由后台定时关闭)",
+      "[无媒体任务] resourceType=153,十秒后刷新学习地图进入下一任务(任务页侧计时自关)",
     );
     this.timerManager.setTimeout(
       "plainTaskClose",

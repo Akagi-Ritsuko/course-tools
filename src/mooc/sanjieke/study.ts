@@ -37,8 +37,8 @@ import {
 /** 课时同页重试次数上限(超过后停止导航,防止无限重载风暴) */
 const LESSON_RETRY_MAX = 3;
 const LESSON_RETRY_PREFIX = "sanjieke_lesson_retry_";
-/** 毕业通知发出后延迟关页(ms),保证 opener 直推与扩展中转消息发出后再销毁页面 */
-const COMPLETE_NOTIFY_CLOSE_DELAY_MS = 500;
+/** 毕业通知发出后延迟关页(ms):B 路含 SW 冷启动窗口与 ack 重试(最多 2 次,间隔 400ms),留足投递余量 */
+const COMPLETE_NOTIFY_CLOSE_DELAY_MS = 1500;
 
 export class SanjiekeStudy extends EventListener<MoocEvent>
   implements MoocTaskSet {
