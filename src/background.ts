@@ -3,6 +3,7 @@ import {
   SANJIEKE_COURSE_COMPLETE_TYPE,
   ZSGL_PLAIN_TASK_VISIT_TYPE,
   ZSGL_PLAIN_TASK_CLOSE_SELF,
+  MOOC_INJECT_REQUEST,
 } from "./internal/utils/message";
 import { HttpUtils } from "./internal/utils/utils";
 import { Application, Backend, Launcher } from "./internal/application";
@@ -138,6 +139,45 @@ chrome.runtime.onMessage.addListener((msg: any, sender, sendResponse) => {
     }
     sendResponse({ success: true });
     return;
+  }
+  if (msg?.type === MOOC_INJECT_REQUEST) {
+    // MAIN world 注入:先写 configData 再注 mooc.js,顺序执行保证配置先就位;
+    // 浏览器侧注入不受页面 CSP 约束(页面 CSP 会拦截内容脚本的 innerHTML 内联注入)
+    const execScript = (details: any) =>
+      new Promise<void>((resolve, reject) => {
+        chrome.scripting.executeScript(details, () => {
+          if (chrome.runtime.lastError) {
+            reject(new Error(chrome.runtime.lastError.message));
+          } else {
+            resolve();
+          }
+        });
+      });
+    const inject = async () => {
+      const tabId = sender.tab?.id;
+      const frameId = sender.frameId;
+      if (tabId === undefined || frameId === undefined) {
+        sendResponse({ ok: false });
+        return;
+      }
+      const target = { tabId: tabId, frameIds: [frameId] };
+      await execScript({
+        target: target,
+        world: "MAIN",
+        func: (json: string) => {
+          (window as any).configData = JSON.parse(json);
+        },
+        args: [msg.configJson],
+      });
+      await execScript({
+        target: target,
+        world: "MAIN",
+        files: ["src/mooc.js"],
+      });
+      sendResponse({ ok: true });
+    };
+    inject().catch(() => sendResponse({ ok: false }));
+    return true; // 异步应答
   }
 });
 

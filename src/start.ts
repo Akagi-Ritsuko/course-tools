@@ -1,5 +1,6 @@
 import {
   Client,
+  MOOC_INJECT_REQUEST,
   NewChromeServerMessage,
   SANJIEKE_COURSE_COMPLETE_TYPE,
   ZSGL_PLAIN_TASK_CLOSE_SELF,
@@ -61,18 +62,44 @@ function sendRelayWithAck(payload: any, retries: number = 2): void {
   });
 }
 
+// 请求 background 以 chrome.scripting MAIN world 注入 configData + mooc.js
+// (浏览器侧注入不受页面 CSP 约束;失败时由调用方回退内联注入)
+function requestMainWorldInject(configJson: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    try {
+      chrome.runtime.sendMessage(
+        { type: MOOC_INJECT_REQUEST, configJson: configJson },
+        (resp: any) => {
+          if (chrome.runtime.lastError || !resp?.ok) {
+            resolve(false);
+            return;
+          }
+          resolve(true);
+        },
+      );
+    } catch (e) {
+      resolve(false);
+    }
+  });
+}
+
 class start implements Launcher {
   public async start() {
     schedulePlainTaskCloseIfRequested();
-    let cacheJsonText = JSON.stringify(
+    const cacheJsonText = JSON.stringify(
       await Application.App.config.ConfigList(),
     );
-    get(chrome.runtime.getURL("src/mooc.js"), function(source: string) {
-      Injected(
-        document,
-        "window.configData=" + cacheJsonText + ";\n" + source,
-      );
-    });
+    // MV3:优先交由 background 以 chrome.scripting MAIN world 注入(浏览器侧注入
+    // 不受页面 CSP 约束);失败(旧内核无 world:MAIN/后台异常)时回退内联注入
+    const mainWorldInjected = await requestMainWorldInject(cacheJsonText);
+    if (!mainWorldInjected) {
+      get(chrome.runtime.getURL("src/mooc.js"), function(source: string) {
+        Injected(
+          document,
+          "window.configData=" + cacheJsonText + ";\n" + source,
+        );
+      });
+    }
     let msg = NewChromeServerMessage("cxmooc-tools");
     msg.Accept((client, data) => {
       switch (data.type) {

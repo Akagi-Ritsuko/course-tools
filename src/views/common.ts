@@ -1,4 +1,6 @@
-window.addEventListener("load", () => {
+// MV3 迁移:本模块经 background→log.ts 打包链路被副作用引入,
+// Service Worker 环境无 window(样式注入仅页面环境需要),必须判空跳过
+if (typeof window !== "undefined") window.addEventListener("load", () => {
     let css = `
 @keyframes aniripple  
 {

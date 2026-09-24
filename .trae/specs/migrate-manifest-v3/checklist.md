@@ -26,9 +26,10 @@
 - [x] 迁移改动全部在 `feature/mv3-migration` 分支上（当前分支已确认；改动未提交，待用户指示）
 
 ## 待手动验证项说明
-以下 6 项依赖真实 Chrome + zsgl/sanjieke 企业站点环境（登录态、SW 冷启动操作），无法在本环境自动化完成，需按 spec 场景手动执行：
-1. Chrome 加载 `build/cxmooc-tools/`（加载已解压扩展程序）
-2. zsgl/sanjieke 页面注入与挂机
-3. 无媒体任务端到端闭环（开页→10 秒自关→学习地图刷新）
-4. 毕业通知中转 + `chrome://serviceworker-internals` 手动 Stop SW 后复测
-5. 每日积分 popup 链路
+以下检查点依赖真实 Chrome + zsgl/sanjieke 企业站点环境（登录态、SW 冷启动操作），无法在本环境自动化完成。详细操作步骤、预期结果与结果记录表见同目录 [manual-verification.md](./manual-verification.md)：
+1. 扩展加载与 SW 状态（测试 1）
+2. zsgl/sanjieke 注入与挂机（测试 2）
+3. 无媒体任务端到端闭环（测试 3，含 Stop SW 加固点）
+4. 毕业通知中转 + 冷启动复测（测试 4，Console 模拟法）
+5. 右键菜单唯一性（测试 5）
+6. 每日积分 popup 链路（测试 6）

@@ -30,7 +30,7 @@ Chrome 商店已停止接受 MV2 扩展并逐步禁用运行，迁移 MV3 不可
 - `manifest_version: 3`
 - `background: { service_worker: "src/background.js" }`（classic，不声明 module）
 - `action` 替代 `browser_action`（字段内容不变）
-- `permissions`: `storage`、`contextMenus`、`notifications`、`tabs`（新增，保证 `chrome.tabs.query({url})` 匹配不依赖 host 授权状态）
+- `permissions`: `storage`、`contextMenus`、`notifications`、`tabs`（新增，保证 `chrome.tabs.query({url})` 匹配不依赖 host 授权状态）、`alarms`（新增，`chrome.alarms` API 必需，缺失时 API 对象为 undefined）、`scripting`（新增，MAIN world 注入必需）
 - `host_permissions`: `*://zsgl.lzlj.com/*`、`*://lzlj.b.sanjieke.cn/*`、`https://cx.icodef.com/*`（更新检查 fetch 需要跨域授权）
 - `web_accessible_resources` 改为对象数组：`[{ resources: ["src/mooc.js"], matches: ["*://zsgl.lzlj.com/*", "*://lzlj.b.sanjieke.cn/*"] }]`（与 MV2 暴露范围等价）
 - 移除 `content_security_policy` 字段（MV3 默认值 `script-src 'self'; object-src 'self'` 即所需，禁止 unsafe-eval）
@@ -74,11 +74,11 @@ resourceType=153 任务页的 10 秒自动关闭 SHALL 从 SW `setTimeout` 迁�
 ## MODIFIED Requirements
 
 ### Requirement: 主世界脚本注入链路
-`src/mooc.js` 注入 SHALL 继续由内容脚本读取扩展资源后以 `innerHTML` 方式注入主世界（保留现有方式），仅将 `chrome.extension.getURL` 替换为 `chrome.runtime.getURL`（[start.ts L28](../../src/start.ts#L28) 等 5 处）。
+`src/mooc.js` 注入 SHALL 优先由 background 通过 `chrome.scripting.executeScript` 以 `world: "MAIN"` 注入（浏览器侧注入不受页面 CSP 约束）：先注入 `configData`（func + args），再注入 `files: ["src/mooc.js"]`，顺序执行。内容脚本 `chrome.runtime.getURL` 读取 + `innerHTML` 内联注入 SHALL 保留为回退路径（旧内核无 `world: "MAIN"` 或后台异常时）。`chrome.extension.getURL` 不得出现。
 
-#### Scenario: zsgl/sanjieke 注入正常
-- **WHEN** 打开 zsgl 或 sanjieke 任意匹配页面
-- **THEN** mooc.js 正常注入主世界（页面出现 injected-js 节点、功能日志输出），无 `chrome.extension is not defined` 报错
+#### Scenario: zsgl/sanjieke 注入正常（含严格 CSP 页面）
+- **WHEN** 打开 zsgl 或 sanjieke 任意匹配页面（含启用严格 CSP 的页面）
+- **THEN** mooc.js 经 MAIN world 正常注入主世界（页面出现 injected-js 等效效果、功能日志输出），无 CSP 内联脚本拦截报错
 
 ### Requirement: sanjieke 毕业通知 B 路加固
 B 路中转（内容脚本→background→zsgl 课程页）SHALL 加固：

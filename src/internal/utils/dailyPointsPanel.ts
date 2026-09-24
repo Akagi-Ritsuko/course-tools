@@ -26,12 +26,21 @@ export class DailyPointsFloatingPanel {
 
          private init() {
            console.log("[每日积分] panel: init方法被调用");
-           window.addEventListener("load", () => {
+           // MV3:mooc.js 可能晚于 load 事件注入(SW 往返延迟),晚到时需直接初始化
+           const startPanel = () => {
              console.log("[每日积分] panel: window.onload 触发");
              this.injectStyles();
              this.listenForMessages();
               new ZsglDailyPoints();
-           });
+           };
+           // mooc/mooc.ts 中本面板构造早于 Application 赋值(App 未就绪),延迟一拍确保配置就绪
+           window.setTimeout(() => {
+             if (document.readyState === "loading") {
+               window.addEventListener("load", startPanel);
+             } else {
+               startPanel();
+             }
+           }, 0);
          }
 
          private injectStyles() {

@@ -32,6 +32,14 @@ export const ZSGL_PLAIN_TASK_VISIT_TYPE = "zsgl_plain_task_visit"
  */
 export const ZSGL_PLAIN_TASK_CLOSE_SELF = "zsgl_plain_task_close_self"
 
+/**
+ * mooc.js 主世界注入请求消息类型
+ * MV3 下页面 CSP 可能拦截内容脚本的 innerHTML 内联注入(可拖拽工具栏/自动化脚本全部失效),
+ * 改由 background 通过 chrome.scripting 以 MAIN world 注入(浏览器侧注入不受页面 CSP 约束);
+ * start.ts 在失败时回退旧内联方式以兼容不支持 world:MAIN 的旧内核
+ */
+export const MOOC_INJECT_REQUEST = "mooc_inject_request"
+
 export function NewExtensionServerMessage(port: string): extensionServerMessage {
     return new extensionServerMessage(port)
 }

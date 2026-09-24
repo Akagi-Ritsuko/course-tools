@@ -34,7 +34,9 @@
     "storage",
     "contextMenus",
     "notifications",
-    "tabs"
+    "tabs",
+    "alarms",
+    "scripting"
   ],
   "host_permissions": [
     "*://zsgl.lzlj.com/*",
