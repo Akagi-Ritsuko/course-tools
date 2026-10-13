@@ -461,7 +461,8 @@ export class PageLog implements Logger {
   constructor(storageKey: string | null = null) {
     this.el = undefined;
     this.recorder = getRecorder(storageKey);
-    window.addEventListener("load", () => {
+    // MV3:mooc.js 可能晚于 load 事件注入(SW 往返延迟),晚到时需直接构建面板
+    const buildPanel = () => {
       this.div = document.createElement("div");
       // 主要布局
       this.div.innerHTML = `
@@ -567,7 +568,17 @@ export class PageLog implements Logger {
           );
         };
       };
-    });
+    };
+    // readyState 判断:晚于 load 注入时直接构建,避免监听器永不触发;
+    // mooc.ts 中 PageLog 构造先于 Application 构造(App 未赋值),延迟一拍确保配置就绪
+    const startPanel = () => {
+      if (document.readyState === "loading") {
+        window.addEventListener("load", buildPanel);
+      } else {
+        buildPanel();
+      }
+    };
+    window.setTimeout(startPanel, 0);
   }
 
   protected getNowTime(): string {

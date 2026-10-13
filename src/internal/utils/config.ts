@@ -52,16 +52,23 @@ export class ChromeConfigItems implements ConfigItems {
          protected localCache: { [key: string]: any };
 
          constructor(config: Config) {
-           this.config = config;
-           let list: string[] = [];
-           configDefaultValue.forEach((val, key) => {
-             list.push(key);
-           });
-           this.config.Watch(list, (key, val) => {
-             this.localCache[key] = val;
-           });
-           this.localCache = localStorage;
-         }
+                                       this.config = config;
+                                       let list: string[] = [];
+                                       configDefaultValue.forEach(
+                                         (val, key) => {
+                                           list.push(key);
+                                         },
+                                       );
+                                       this.config.Watch(list, (key, val) => {
+                                         this.localCache[key] = val;
+                                       });
+                                       // MV3 SW 中无 localStorage:后台侧 localCache 仅作兜底容器,
+                                       // 真实配置读写走 this.config(backendConfig/chrome.storage)
+                                       this.localCache =
+                                         typeof localStorage !== "undefined"
+                                           ? localStorage
+                                           : ({} as { [key: string]: any });
+                                     }
 
          // 设置配置的命名空间,储存格式为 namepace_configkey
          public SetNamespace(namespace: string): void {
@@ -302,10 +309,22 @@ class backendConfig implements Config {
     this.watch = new configWatch();
     chrome.runtime.onMessage.addListener((request) => {
       if (request.type && request.type == "cxconfig") {
-        this.cache[request.key] = request.value;
-        this.watch.WatchEvent(request.key, request.value);
-        this.updateConfigStorage();
-      }
+                                                        // 缓存未就绪(updateCache 未完成)时忽略本条:该消息源自某端 SetConfig,
+                                                        // 其已同步写入 storage,本端 updateCache 完成后会读到最新值
+                                                        if (
+                                                          this.cache ==
+                                                          undefined
+                                                        )
+                                                          return;
+                                                        this.cache[
+                                                          request.key
+                                                        ] = request.value;
+                                                        this.watch.WatchEvent(
+                                                          request.key,
+                                                          request.value,
+                                                        );
+                                                        this.updateConfigStorage();
+                                                      }
     });
   }
 
@@ -358,13 +377,22 @@ class backendConfig implements Config {
       //通知前端和后端
       this.cache[key] = val;
       chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {
-          type: "cxconfig",
-          key: key,
-          value: val,
-        });
+        chrome.tabs.sendMessage(
+          tabs[0].id,
+          {
+            type: "cxconfig",
+            key: key,
+            value: val,
+          },
+          () => void chrome.runtime.lastError,
+        );
       });
-      chrome.runtime.sendMessage({ type: "cxconfig", key: key, value: val });
+      // 无回调的 sendMessage 在 MV3 下返回 Promise,接收端监听器抛错会成为
+      // 未处理的 Promise 拒绝,这里显式吞掉 lastError
+      chrome.runtime.sendMessage(
+        { type: "cxconfig", key: key, value: val },
+        () => void chrome.runtime.lastError,
+      );
       this.updateConfigStorage();
       resolve(undefined);
     });

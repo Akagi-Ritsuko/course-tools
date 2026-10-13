@@ -2,7 +2,10 @@ const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const home = __dirname + '/src';
-module.exports = {
+
+// MV3 迁移:cxmooc-tools 与 zsgl-tools 为同源双分发目录,
+// 采用多编译器配置保证两目录产物始终一致(此前 zsgl-tools 仅手工拷贝,曾出现旧产物加载报错)
+const makeConfig = (distName) => ({
     entry: {
         mooc: home + '/mooc.ts',
         start: home + '/start.ts',
@@ -10,14 +13,14 @@ module.exports = {
         popup: home + '/views/popup.ts'
     },
     output: {
-        path: __dirname + '/build/cxmooc-tools/src',
+        path: __dirname + '/build/' + distName + '/src',
         filename: '[name].js',
         clean: false
     },
     plugins: [
         new VueLoaderPlugin(),
         new htmlWebpackPlugin({
-            filename: __dirname + '/build/cxmooc-tools/src/popup.html',
+            filename: __dirname + '/build/' + distName + '/src/popup.html',
             template: home + '/views/popup.html',
             inject: 'head',
             title: '弹出页面',
@@ -61,4 +64,6 @@ module.exports = {
     performance: {
         hints: false
     }
-};
+});
+
+module.exports = [makeConfig('cxmooc-tools'), makeConfig('zsgl-tools')];
