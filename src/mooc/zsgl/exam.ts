@@ -2,7 +2,7 @@
  * @Author: guotao
  * @Date: 2025-03-09
  * @LastEditors: guotao
- * @LastEditTime: 2026-09-20 11:44:40
+ * @LastEditTime: 2026-10-13 15:16:08
  * @FilePath: \course-tools\src\mooc\zsgl\exam.ts
  * @Description: zsgl 考试模块
  *
@@ -10,7 +10,13 @@
  */
 import { Task, TaskType } from "@App/internal/app/task";
 import { Application } from "@App/internal/application";
-import { CssBtn, hookHttpRequest, TimerManager, findElementByText } from "./utils/utils";
+import {
+  CssBtn,
+  hookHttpRequest,
+  TimerManager,
+  findElementByText,
+  sleep,
+} from "./utils/utils";
 import { createBtn, protocolPrompt } from "@App/internal/utils/utils";
 import { NewChromeServerMessage } from "@App/internal/utils/message";
 import { ZsglTask, ZsglTaskControlBar } from "./task";
@@ -77,6 +83,21 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
   private initHookSettled: boolean = false;
   /** 已安排破解的题目ID：批次重复到达（翻页回退重新请求）时跳过，避免重复破解 */
   private crackScheduledIds: Set<string> = new Set();
+  /** 自动勾选：MutationObserver 实例（exam_auto_select 开启时才挂载，Stop 时断开） */
+  private autoSelectObserver: MutationObserver | null = null;
+  /** 自动勾选：是否正在执行勾选流程（勾选动作本身会引发 DOM 变更，防止 Observer 重入） */
+  private autoSelectBusy: boolean = false;
+  /** 自动勾选：最近一次完成勾选流程的题目ID，避免同一屏显题被 Observer 重复处理 */
+  private autoSelectLastHandledId: string = "";
+  /** 自动勾选：最近一次提示"未破解"的题目ID，同一题连续触发不重复刷提示 */
+  private autoSelectLastUnansweredId: string = "";
+  /** 自动勾选：选项元素未就绪时的重试状态（题面先渲染、选项晚到的时序兜底） */
+  private autoSelectRetry: { questionId: string; count: number } = {
+    questionId: "",
+    count: 0,
+  };
+  /** 自动勾选：已按"一次性语义"应用过答案的题目ID（自定义选项控件无法回读选中态时的幂等保护） */
+  private autoSelectAppliedIds: Set<string> = new Set();
 
   /**
    * 初始化考试
@@ -91,6 +112,8 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
         Application.App.log.Warn("获取考试参数失败(Init)", e);
       });
       this.setupReturnButton();
+      // 自动勾选 Observer：exam_auto_select 关闭时内部直接跳过，不注册不操作 DOM
+      this.setupAutoSelectObserver();
       await this.hookQuestionDetailRequests();
       await this.OperateCard();
       this.setupNavigationButtons();
@@ -210,6 +233,595 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
         return p.textContent?.includes(questionText);
       }) || null
     );
+  }
+
+  // ==================== 考试答案自动勾选（exam_auto_select） ====================
+  // 仅勾选页面选项，绝不触碰"下一题/上一题/交卷"按钮，不调用任何提交接口；
+  // 选项点击与 ZsglQuestionTask 的交卷监听天然隔离（该监听只匹配按钮文本）。
+
+  /** 是否开启考试答案自动勾选（运行时读取，兼容 boolean/string 配置值） */
+  private isExamAutoSelectEnabled(): boolean {
+    // 与 answer_export_enabled 相同的读取写法：String() 兼容 boolean 配置值
+    const enabled = String(
+      Application.App.config.GetConfig(
+        ZSGL_CONSTANTS.EXAM_AUTO_SELECT.CONFIG_KEY,
+        "false",
+      ),
+    );
+    return enabled.toLowerCase() === "true";
+  }
+
+  /** 注册换题检测 Observer：exam_auto_select 为 false 时不注册、不做任何 DOM 操作 */
+  private setupAutoSelectObserver(): void {
+    if (!this.isExamAutoSelectEnabled()) {
+      Application.App.log.Debug("考试答案自动勾选未开启，跳过 Observer 注册");
+      return;
+    }
+    if (this.autoSelectObserver) {
+      return;
+    }
+    this.autoSelectObserver = new MutationObserver(() => {
+      this.scheduleAutoSelect();
+    });
+    // 监听 document.body：SPA 会重建题面容器，挂 body 免去容器重建后的重挂处理
+    this.autoSelectObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+    Application.App.log.Info("考试答案自动勾选已开启（仅勾选选项，不提交）");
+  }
+
+  /** 防抖调度一次正向触发（复用 TimerManager 的按 key 覆盖语义实现防抖） */
+  private scheduleAutoSelect(): void {
+    this.timerManager.setTimeout(
+      "autoSelectDebounce",
+      () => {
+        this.autoSelectTick(false).catch((e) => {
+          Application.App.log.Warn("考试答案自动勾选执行失败", e);
+        });
+      },
+      ZSGL_CONSTANTS.EXAM_AUTO_SELECT.DEBOUNCE_MS,
+    );
+  }
+
+  /**
+   * 自动勾选执行入口
+   * @param force true=反向触发（破解链尾答案回写后），忽略"已处理"缓存强制重查当前屏显题
+   */
+  private async autoSelectTick(force: boolean): Promise<void> {
+    // 每次触发都重读配置：兼容运行时改配置，关闭时立即停手
+    if (!this.isExamAutoSelectEnabled() || this.autoSelectBusy) {
+      return;
+    }
+    if (this.questionList.length === 0) {
+      return; // 题目数据未就绪，等下一次触发
+    }
+
+    const matched = this.matchOnScreenQuestions();
+    if (matched.length !== 1) {
+      return; // 零命中/多命中已在匹配步骤日志提示，绝不勾选
+    }
+
+    const { question, paper } = matched[0];
+    if (!force && question.questionId === this.autoSelectLastHandledId) {
+      Application.App.log.Debug(
+        "考试答案自动勾选：当前屏显题已处理，跳过",
+        question.questionId,
+      );
+      return;
+    }
+
+    // 目标集合：已破解出 isCorrect="Y" 的选项；无任何 "Y" 视为未破解，绝不点击
+    const targetSections = question.sectionRespList.filter(
+      (section: QuestionSection) => section.isCorrect === "Y",
+    );
+    if (targetSections.length === 0) {
+      if (this.autoSelectLastUnansweredId !== question.questionId) {
+        this.autoSelectLastUnansweredId = question.questionId;
+        Application.App.log.Info(
+          `考试答案自动勾选：题目尚未破解出答案，跳过勾选（题号 ${question.questionId}）`,
+        );
+      }
+      return;
+    }
+    this.autoSelectLastUnansweredId = "";
+
+    let units = this.collectOptionUnits(paper);
+    if (units.length === 0) {
+      // 选择器未命中时按选项文本定位兜底：站点选项为自定义 div（React onClick
+      // 调 onSelectOption），无 input/aria/MuiRadio 结构——实机确认（deobfuscated.js）
+      units = this.findOptionUnitsByText(paper, question);
+      if (units.length > 0) {
+        Application.App.log.Info(
+          "考试答案自动勾选：OPTION_SELECTORS 未命中，已按选项文本定位兜底（站点为自定义选项控件）",
+        );
+      }
+    }
+    if (units.length === 0) {
+      // 选项可能晚于题面分帧渲染：延迟重试，重试耗尽再输出诊断并放弃
+      if (
+        this.autoSelectRetry.questionId === question.questionId &&
+        this.autoSelectRetry.count >= ZSGL_CONSTANTS.EXAM_AUTO_SELECT.MAX_RETRY
+      ) {
+        this.autoSelectRetry = { questionId: "", count: 0 };
+        this.logOptionSelectorDiagnostics(paper);
+        Application.App.log.Warn(
+          "考试答案自动勾选：重试后题面容器内仍未找到选项元素（OPTION_SELECTORS 待实机校准，命中统计见 Debug）",
+          paper,
+        );
+        return;
+      }
+      if (this.autoSelectRetry.questionId !== question.questionId) {
+        this.autoSelectRetry = { questionId: question.questionId, count: 0 };
+      }
+      this.autoSelectRetry.count++;
+      this.timerManager.setTimeout(
+        "autoSelectRetry",
+        () => {
+          this.autoSelectTick(true).catch((e) => {
+            Application.App.log.Warn("考试答案自动勾选执行失败", e);
+          });
+        },
+        ZSGL_CONSTANTS.EXAM_AUTO_SELECT.RETRY_DELAY_MS,
+      );
+      return;
+    }
+    this.autoSelectRetry = { questionId: "", count: 0 };
+    const unitBySection = this.mapSectionsToUnits(question, units);
+    if (!unitBySection) {
+      return;
+    }
+
+    // 先占位"已处理"再点击：勾选动作引发的 DOM 变更会再次进入本流程
+    this.autoSelectLastHandledId = question.questionId;
+    this.autoSelectBusy = true;
+    try {
+      await this.applyAutoSelect(
+        question,
+        targetSections,
+        units,
+        unitBySection,
+        paper,
+      );
+    } finally {
+      this.autoSelectBusy = false;
+    }
+  }
+
+  /**
+   * 屏显题面匹配：题目数据 → 页面题面容器
+   * 在 MUI_PAPER_ROOT 范围内，用归一化文本（stripHtml + 去除全部空白字符）
+   * 比对 questionText 与容器文本，返回全部命中题（含各自命中的容器）；
+   * 唯一性校验由调用方负责：恰好唯一命中一道题才执行勾选
+   */
+  private matchOnScreenQuestions(): Array<{
+    question: QuestionInfo;
+    paper: HTMLElement;
+  }> {
+    const papers = Array.from(
+      document.querySelectorAll(ZSGL_CONSTANTS.SELECTORS.MUI_PAPER_ROOT),
+    ) as HTMLElement[];
+    if (papers.length === 0) {
+      Application.App.log.Debug(
+        "考试答案自动勾选：未找到题面容器(.MuiPaper-root)，等待页面渲染",
+      );
+      return [];
+    }
+    const paperTexts = papers.map((paper) =>
+      this.normalizeMatchText(paper.textContent || ""),
+    );
+
+    const matched: Array<{ question: QuestionInfo; paper: HTMLElement }> = [];
+    for (const question of this.questionList) {
+      const keys = this.getQuestionMatchKeys(question);
+      if (keys.length === 0) {
+        continue;
+      }
+      const candidateIdx: number[] = [];
+      for (let i = 0; i < papers.length; i++) {
+        if (keys.some((key) => paperTexts[i].includes(key))) {
+          candidateIdx.push(i);
+        }
+      }
+      if (candidateIdx.length === 0) {
+        continue;
+      }
+      // 候选按归一化文本升序（内层优先），优先选取含选项元素者——
+      // 题面文本可能在父层 Paper 复读，选项总与真实题面同层；
+      // 都不含选项时回退文本最短者
+      candidateIdx.sort((a, b) => paperTexts[a].length - paperTexts[b].length);
+      const bestPaper =
+        candidateIdx
+          .map((i) => papers[i])
+          .find((p) => this.collectOptionUnits(p).length > 0) ||
+        papers[candidateIdx[0]];
+      matched.push({ question, paper: bestPaper });
+    }
+
+    if (matched.length === 0) {
+      Application.App.log.Warn(
+        "考试答案自动勾选：题面匹配零命中，跳过勾选（归一化匹配规则待实机校准）",
+      );
+    } else if (matched.length > 1) {
+      Application.App.log.Warn(
+        `考试答案自动勾选：题面匹配到 ${matched.length} 道题，非唯一命中，跳过勾选`,
+        matched.slice(0, 3).map((m) => m.question.questionId),
+      );
+    }
+    return matched;
+  }
+
+  /** 归一化匹配文本：stripHtml 后移除全部空白字符 */
+  private normalizeMatchText(text: string): string {
+    return stripHtml(text || "").replace(/\s+/g, "");
+  }
+
+  /**
+   * 题干可比文本键：优先完整题干，附加最后一个 <p> 段落兜底
+   * （取段思路与 findMatchingElement 一致，任一键命中即视为屏显）
+   */
+  private getQuestionMatchKeys(question: QuestionInfo): string[] {
+    const keys: string[] = [];
+    const full = this.normalizeMatchText(question.questionText);
+    if (full) {
+      keys.push(full);
+    }
+    const questionTextList = question.questionText.split(/<p>/i);
+    const lastPart =
+      questionTextList.length > 1
+        ? questionTextList[questionTextList.length - 1]
+        : questionTextList[0];
+    const last = this.normalizeMatchText(lastPart.replace(/<\/p>/i, ""));
+    if (last && last !== full) {
+      keys.push(last);
+    }
+    return keys;
+  }
+
+  /**
+   * 收集题面容器内的选项元素
+   * 原生 input 通常被 MUI 可视包装（MuiRadio-root 等）包住，提升到包装层并去重，
+   * 避免同一选项被 input 选择器与包装选择器各计一次
+   */
+  private collectOptionUnits(paper: HTMLElement): HTMLElement[] {
+    const nodes = Array.from(
+      paper.querySelectorAll(
+        ZSGL_CONSTANTS.EXAM_AUTO_SELECT.OPTION_SELECTORS.join(","),
+      ),
+    ) as HTMLElement[];
+    const units: HTMLElement[] = [];
+    const seen = new Set<HTMLElement>();
+    for (const node of nodes) {
+      const unit =
+        (node.closest(
+          ZSGL_CONSTANTS.EXAM_AUTO_SELECT.OPTION_CONTAINER_SELECTOR,
+        ) as HTMLElement | null) || node;
+      if (seen.has(unit)) {
+        continue;
+      }
+      seen.add(unit);
+      units.push(unit);
+    }
+    return units;
+  }
+
+  /** 选项选择器命中统计（校准用）：逐个选择器输出在题面容器内的命中数 */
+  private logOptionSelectorDiagnostics(paper: HTMLElement): void {
+    const counts = ZSGL_CONSTANTS.EXAM_AUTO_SELECT.OPTION_SELECTORS.map(
+      (selector) => `${selector}:${paper.querySelectorAll(selector).length}`,
+    );
+    Application.App.log.Debug(
+      "考试答案自动勾选：OPTION_SELECTORS 命中统计（校准依据）",
+      counts.join(" , "),
+    );
+  }
+
+  /** 选项文本：优先取 MUI FormControlLabel（同时包裹选项控件与文字），取不到回退选项自身 */
+  private getOptionText(unit: HTMLElement): string {
+    const label = unit.closest(
+      ZSGL_CONSTANTS.EXAM_AUTO_SELECT.OPTION_TEXT_SELECTOR,
+    ) as HTMLElement | null;
+    return (label || unit).textContent || "";
+  }
+
+  /**
+   * 读取选项当前选中状态
+   * 优先原生 input.checked，其次最近祖先（含自身）[aria-checked]，
+   * 最后回退 MUI 选中 class（选择器结构待实机校准）
+   */
+  private isOptionSelected(unit: HTMLElement): boolean {
+    const input =
+      unit instanceof HTMLInputElement &&
+      (unit.type === "radio" || unit.type === "checkbox")
+        ? unit
+        : (unit.querySelector(
+            'input[type="radio"],input[type="checkbox"]',
+          ) as HTMLInputElement | null);
+    if (input) {
+      return input.checked;
+    }
+    const aria = unit.closest("[aria-checked]") as HTMLElement | null;
+    if (aria) {
+      return aria.getAttribute("aria-checked") === "true";
+    }
+    return (
+      unit.classList.contains("Mui-checked") ||
+      !!unit.querySelector(".Mui-checked")
+    );
+  }
+
+  /** 选项单元是否具备可回读的选中状态源（input/aria-checked/Mui-checked 任一） */
+  private hasStateSource(unit: HTMLElement): boolean {
+    return !!(
+      unit.querySelector('input[type="radio"],input[type="checkbox"]') ||
+      unit.closest("[aria-checked]") ||
+      unit.querySelector("[aria-checked]") ||
+      unit.classList.contains("Mui-checked") ||
+      unit.querySelector(".Mui-checked")
+    );
+  }
+
+  /** 点击选项单元：优先点内部表单控件/label，否则点单元自身（React 事件委托在根节点，点后代同样触发 onClick） */
+  private clickOptionUnit(unit: HTMLElement): void {
+    const control = unit.querySelector("input,label") as HTMLElement | null;
+    (control || unit).click();
+  }
+
+  /**
+   * 选项单元→题面容器的祖先链 class 签名（弱验证用）
+   * 选中态 class 挂在选项行级祖先（如站点把 selectedOption 加在 option 行 div 上），
+   * 而文本兜底定位点击的是文本后代——单元自身 class 不变，需对比整条祖先链
+   */
+  private ancestorChainSignature(
+    unit: HTMLElement,
+    paper: HTMLElement,
+  ): string {
+    const parts: string[] = [];
+    let el: HTMLElement | null = unit;
+    while (el) {
+      parts.push(el.className);
+      if (el === paper) {
+        break;
+      }
+      el = el.parentElement;
+    }
+    return parts.join("|");
+  }
+
+  /**
+   * 选项选择器未命中时的兜底定位：按选项文本找最小命中元素
+   * 站点选项为自定义 div（key=sectionId、onClick 调 onSelectOption，选中态仅切 class），
+   * 无 input/aria/MuiRadio 结构；React 事件委托在根节点，点击文本后代即可触发选项 onClick。
+   * 短文本（数字选项"7/15/30"、"对/错"）用全等匹配，长文本用包含匹配（minLen 只约束包含分支）
+   */
+  private findOptionUnitsByText(
+    paper: HTMLElement,
+    question: QuestionInfo,
+  ): HTMLElement[] {
+    const minLen =
+      ZSGL_CONSTANTS.EXAM_AUTO_SELECT.OPTION_TEXT_FALLBACK_MIN_LEN;
+    const sectionTexts = question.sectionRespList
+      .map((section) => this.normalizeMatchText(section.sectionText))
+      .filter((text) => text.length > 0);
+    if (sectionTexts.length === 0) {
+      return [];
+    }
+    // 两遍式：先收集全部命中元素，再只保留最小命中者（不包含其他命中的元素）。
+    // 不能单遍历即时去重——文档序里选项容器（含全部选项文本）先于选项行出现，
+    // 会把内部命中全部挡住（实机第 4 轮 pageCount=1 勘误）
+    // 匹配语义：长文本用包含匹配；短文本（数字选项"7/15/30"、"对/错"等）用全等匹配
+    // ——包含匹配会误命中大量无关元素，而选项文本元素（<p>15</p>）归一化后恰为全等
+    // （实机第 5 轮：minLen 过滤把纯数字选项全部/部分滤掉，pageCount=0/3 勘误）
+    const matched: HTMLElement[] = [];
+    for (const el of Array.from(
+      paper.querySelectorAll("*"),
+    ) as HTMLElement[]) {
+      const text = this.normalizeMatchText(el.textContent || "");
+      if (
+        text &&
+        sectionTexts.some(
+          (st) => text === st || (st.length >= minLen && text.includes(st)),
+        )
+      ) {
+        matched.push(el);
+      }
+    }
+    return matched.filter(
+      (el) => !matched.some((other) => other !== el && el.contains(other)),
+    );
+  }
+
+  /**
+   * 选项与 sectionRespList 的对应关系
+   * 优先归一化 sectionText 文本匹配选项元素文本（页面文本包含数据选项文本）；
+   * 有选项匹配不上且两侧数量完全一致时按顺序对应
+   * （该回退策略待实机校准）；数量也不一致则放弃本次勾选
+   */
+  private mapSectionsToUnits(
+    question: QuestionInfo,
+    units: HTMLElement[],
+  ): Map<QuestionSection, HTMLElement> | null {
+    const byText = new Map<QuestionSection, HTMLElement>();
+    const used = new Set<HTMLElement>();
+    let allMatched = true;
+    for (const section of question.sectionRespList) {
+      const norm = this.normalizeMatchText(section.sectionText);
+      let hit: HTMLElement | null = null;
+      if (norm) {
+        hit =
+          units.find(
+            (unit) =>
+              !used.has(unit) &&
+              this.normalizeMatchText(this.getOptionText(unit)).includes(norm),
+          ) || null;
+      }
+      if (hit) {
+        byText.set(section, hit);
+        used.add(hit);
+      } else {
+        allMatched = false;
+      }
+    }
+    if (allMatched) {
+      return byText;
+    }
+    // 文本匹配不上且数量一致：按 DOM 顺序对应（该回退策略待实机校准）
+    if (units.length === question.sectionRespList.length) {
+      Application.App.log.Warn(
+        "考试答案自动勾选：选项文本匹配不全，按顺序对应（待实机校准）",
+        question.questionId,
+      );
+      const byOrder = new Map<QuestionSection, HTMLElement>();
+      question.sectionRespList.forEach((section, index) => {
+        byOrder.set(section, units[index]);
+      });
+      return byOrder;
+    }
+    Application.App.log.Warn(
+      "考试答案自动勾选：选项与页面元素无法对应，跳过勾选",
+      {
+        questionId: question.questionId,
+        dataCount: question.sectionRespList.length,
+        pageCount: units.length,
+      },
+    );
+    return null;
+  }
+
+  /**
+   * 勾选执行（两条路径按"是否有可回读状态源"分流）：
+   * - 可回读（input/aria-checked/Mui-checked）：差集幂等——S/T 点目标（radio 互斥），
+   *   M 先取消非目标已选再点目标；已满足不动；勾后回读验证，失败降级面板提示
+   * - 不可回读（站点自定义 div 选项，选中态仅切 class）：一次性应用语义（appliedIds 防重），
+   *   只点目标项；用"点击前后祖先链 class 签名是否变化"做弱验证（选中态 class 挂在行级
+   *   祖先上，单元自身不变），未变化则 Warn + 面板降级
+   */
+  private async applyAutoSelect(
+    question: QuestionInfo,
+    targetSections: QuestionSection[],
+    units: HTMLElement[],
+    unitBySection: Map<QuestionSection, HTMLElement>,
+    paper: HTMLElement,
+  ): Promise<void> {
+    const targetUnits = targetSections
+      .map((section) => unitBySection.get(section))
+      .filter((unit): unit is HTMLElement => !!unit);
+    if (targetUnits.length !== targetSections.length) {
+      Application.App.log.Warn(
+        "考试答案自动勾选：目标选项映射缺失，跳过勾选",
+        question.questionId,
+      );
+      return;
+    }
+
+    const answerText = targetSections
+      .map((section: QuestionSection) => stripHtml(section.sectionText))
+      .join(" | ");
+
+    // 路径 B：自定义控件，无状态源可回读
+    if (!units.some((unit) => this.hasStateSource(unit))) {
+      if (this.autoSelectAppliedIds.has(question.questionId)) {
+        Application.App.log.Debug(
+          "考试答案自动勾选：该题已按一次性语义应用过，跳过重复点击",
+          question.questionId,
+        );
+        return;
+      }
+      this.autoSelectAppliedIds.add(question.questionId);
+      // 弱验证基线：对比"单元→题面容器"祖先链 class 签名（选中态 class 挂在行级祖先）
+      const beforeSigs = targetUnits.map((unit) =>
+        this.ancestorChainSignature(unit, paper),
+      );
+      for (const unit of targetUnits) {
+        this.clickOptionUnit(unit);
+        await sleep(ZSGL_CONSTANTS.EXAM_AUTO_SELECT.CLICK_STEP_MS);
+      }
+      const classChanged = targetUnits.some(
+        (unit, index) =>
+          this.ancestorChainSignature(unit, paper) !== beforeSigs[index],
+      );
+      if (classChanged) {
+        Application.App.log.Info(
+          `考试答案自动勾选完成：${stripHtml(question.questionText).slice(
+            0,
+            50,
+          )} → ${answerText}`,
+        );
+      } else {
+        Application.App.log.Warn(
+          "考试答案自动勾选：点击后选项样式未变化，勾选可能未生效（自定义控件弱验证）",
+          question.questionId,
+        );
+        Application.App.log.Info(
+          `考试答案自动勾选降级提示，该题正确答案：${answerText}`,
+        );
+      }
+      return;
+    }
+
+    // 路径 A：可回读状态源，差集幂等勾选
+    const isMulti = question.questionType === "M";
+    const selectedUnits = units.filter((unit) => this.isOptionSelected(unit));
+    const selectedSet = new Set(selectedUnits);
+    const targetSet = new Set(targetUnits);
+
+    const toSelect = targetUnits.filter((unit) => !selectedSet.has(unit));
+    const toDeselect = isMulti
+      ? selectedUnits.filter((unit) => !targetSet.has(unit))
+      : [];
+
+    if (toSelect.length === 0 && toDeselect.length === 0) {
+      Application.App.log.Debug(
+        "考试答案自动勾选：当前选中集合已等于正确答案集合，不动作",
+        question.questionId,
+      );
+      return;
+    }
+
+    for (const unit of toDeselect) {
+      this.clickOptionUnit(unit);
+      await sleep(ZSGL_CONSTANTS.EXAM_AUTO_SELECT.CLICK_STEP_MS);
+    }
+    for (const unit of toSelect) {
+      this.clickOptionUnit(unit);
+      await sleep(ZSGL_CONSTANTS.EXAM_AUTO_SELECT.CLICK_STEP_MS);
+    }
+
+    // 勾后验证：回读选中状态与目标集合比对
+    await sleep(ZSGL_CONSTANTS.EXAM_AUTO_SELECT.VERIFY_DELAY_MS);
+    const afterSelected = units.filter((unit) => this.isOptionSelected(unit));
+    const afterSet = new Set(afterSelected);
+    const verified =
+      targetUnits.every((unit) => afterSet.has(unit)) &&
+      (!isMulti || afterSelected.every((unit) => targetSet.has(unit)));
+
+    if (verified) {
+      Application.App.log.Info(
+        `考试答案自动勾选完成：${stripHtml(question.questionText).slice(
+          0,
+          50,
+        )} → ${answerText}`,
+      );
+    } else {
+      Application.App.log.Warn(
+        "考试答案自动勾选验证失败：页面选中状态与正确答案集合不一致",
+        question.questionId,
+      );
+      // 降级：面板提示该题正确答案文本
+      Application.App.log.Info(
+        `考试答案自动勾选降级提示，该题正确答案：${answerText}`,
+      );
+    }
+  }
+
+  /** 停止自动勾选：断开 Observer 并清防抖/重试定时器 */
+  private stopAutoSelect(): void {
+    if (this.autoSelectObserver) {
+      this.autoSelectObserver.disconnect();
+      this.autoSelectObserver = null;
+    }
+    this.timerManager.clearTimeout("autoSelectDebounce");
+    this.timerManager.clearTimeout("autoSelectRetry");
   }
 
   /**
@@ -415,9 +1027,7 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
               } else {
                 clearTimeout(timeoutId);
                 // 字段不完整时 reject，避免调用方 await 永久挂起
-                reject(
-                  new Error("queryNewExamPaper响应字段不完整，无法继续"),
-                );
+                reject(new Error("queryNewExamPaper响应字段不完整，无法继续"));
               }
             }
           } catch (e) {
@@ -458,6 +1068,8 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
 
   /** 停止 */
   public Stop(): Promise<any> {
+    // 先断开 Observer 再清定时器：避免断开前的最后一次变更又排入新的防抖任务
+    this.stopAutoSelect();
     this.timerManager.clearAll();
     return Promise.resolve();
   }
@@ -665,6 +1277,11 @@ export class ZsglExam extends EventListener<MoocEvent> implements MoocTaskSet {
     // 自动答题完成后刷新展示当前页题目的题目与答案
     // 导出由链尾的 maybeExportAllAnswers / 交卷兜底负责，此处不导出
     await this.answerMessage(this.questionList);
+
+    // 反向触发：本批答案已回写，补勾当前屏显题（覆盖"用户翻题早于答案就绪"的漏勾场景）
+    this.autoSelectTick(true).catch((e) => {
+      Application.App.log.Warn("考试答案自动勾选（反向触发）失败", e);
+    });
   }
 
   /**

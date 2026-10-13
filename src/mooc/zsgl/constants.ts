@@ -63,7 +63,7 @@ export const ZSGL_CONSTANTS = {
            QUERY_QUESTION_DETAIL: "queryQuestionDetail.do",
            QUERY_STUDYMAP_GATE: "queryStudymapGate.do",
            QUERY_STUDYMAP_GATE_TASK: "queryStudymapGateTask.do",
-         QUERY_NEW_EXAM_PAPER: "queryNewExamPaper.do",
+           QUERY_NEW_EXAM_PAPER: "queryNewExamPaper.do",
          },
 
          URL_PATTERNS: {
@@ -83,6 +83,38 @@ export const ZSGL_CONSTANTS = {
            SUBMIT_EXAM: "交卷",
            NEXT_QUESTION: "下一题",
            PREV_QUESTION: "上一题",
+         },
+
+         /** 考试答案自动勾选（exam_auto_select）相关常量 */
+         EXAM_AUTO_SELECT: {
+           /** 配置开关键（config.ts zsgl 块 checkbox，默认 false） */
+           CONFIG_KEY: "exam_auto_select",
+           /** MutationObserver 防抖间隔(ms)：换题/选项渲染的瞬时抖动不触发匹配 */
+           DEBOUNCE_MS: 300,
+           /** 连续点击选项的间隔(ms)：给页面框架受控组件留出状态更新时间 */
+           CLICK_STEP_MS: 100,
+           /** 勾选后回读选中状态的验证延时(ms)：选中态(class/属性)更新是异步的 */
+           VERIFY_DELAY_MS: 200,
+           /** 选项候选选择器（选择器待实机校准）：原生 input 与 MUI 可视包装并列，收集时提升去重 */
+           OPTION_SELECTORS: [
+             'input[type="radio"]',
+             'input[type="checkbox"]',
+             '[role="radio"]',
+             '[role="checkbox"]',
+             ".MuiRadio-root",
+             ".MuiCheckbox-root",
+           ],
+           /** 选项可视包装选择器：把原生 input 提升为选项单元，避免同一选项被 input 与包装各计一次 */
+           OPTION_CONTAINER_SELECTOR:
+             '.MuiRadio-root, .MuiCheckbox-root, [role="radio"], [role="checkbox"]',
+           /** 选项文本优先容器：MUI FormControlLabel 同时包裹选项控件与文字，取不到再回退选项自身 */
+           OPTION_TEXT_SELECTOR: ".MuiFormControlLabel-root",
+           /** 选项文本兜底"包含匹配"的最小归一化长度；短于此值改用全等匹配（数字选项"7/15"、"对/错"等），防止包含匹配误命中 */
+           OPTION_TEXT_FALLBACK_MIN_LEN: 2,
+           /** 选项未就绪重试间隔(ms)：题面与选项可能分帧渲染 */
+           RETRY_DELAY_MS: 800,
+           /** 选项未就绪最大重试次数，超过后输出各选择器命中统计并放弃本轮 */
+           MAX_RETRY: 2,
          },
 
          ERROR_MESSAGES: {

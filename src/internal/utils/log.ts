@@ -463,6 +463,13 @@ export class PageLog implements Logger {
     this.recorder = getRecorder(storageKey);
     // MV3:mooc.js 可能晚于 load 事件注入(SW 往返延迟),晚到时需直接构建面板
     const buildPanel = () => {
+      // 浮窗显示开关:配置关闭时不创建面板,Info 日志自动回落 console 输出
+      if (
+        (Application.App.config.GetConfig("show_float_panel") || "true") !=
+        "true"
+      ) {
+        return;
+      }
       this.div = document.createElement("div");
       // 主要布局
       this.div.innerHTML = `
@@ -486,6 +493,7 @@ export class PageLog implements Logger {
       (<HTMLButtonElement>this.div.querySelector(".close")).onclick = () => {
         this.el = undefined;
         this.div.remove();
+        Application.App.config.SetConfig("show_float_panel", "false");
       };
       let checkbox = <HTMLInputElement>this.div.querySelector("#checkbox");
       checkbox.checked =

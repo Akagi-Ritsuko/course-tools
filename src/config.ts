@@ -258,15 +258,31 @@ export class SystemConfig {
                  value: true,
                },
                {
-                 title: "日志转存",
-                 description:
-                   "将运行日志定期写入浏览器本地存储，页面崩溃后重新打开课程页会自动导出日志文件；关闭后不写入任何日志",
-                 type: "checkbox",
-                 key: "log_persist_enabled",
-                 value: true,
-               },
-             ],
-           },
+                title: "日志转存",
+                description:
+                  "将运行日志定期写入浏览器本地存储，页面崩溃后重新打开课程页会自动导出日志文件；关闭后不写入任何日志",
+                type: "checkbox",
+                key: "log_persist_enabled",
+                value: true,
+              },
+              {
+                title: "显示工具浮窗",
+                description:
+                  "是否在页面上显示小工具通知条浮窗；关闭后不再出现，也可通过浮窗右上角 x 关闭并自动记忆",
+                type: "checkbox",
+                key: "show_float_panel",
+                value: true,
+              },
+              {
+                title: "考试自动勾选",
+                description:
+                  "考试时自动将已破解题目的正确选项勾选到页面上（仅勾选不提交，仍由你点击下一题/交卷）",
+                type: "checkbox",
+                key: "exam_auto_select",
+                value: false,
+              },
+            ],
+          },
            sanjieke: {
              name: "三节课",
              items: [
